@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/themes/app_colors.dart';
 
 class PendingBadge extends StatelessWidget {
   final int count;
@@ -11,13 +12,13 @@ class PendingBadge extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: context.paddingSmall, vertical: context.paddingSmall * 0.25),
       decoration: BoxDecoration(
-        color: Colors.red.withValues(alpha: 0.1),
+        color: AppColors.error.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: Colors.red.withValues(alpha: 0.2)),
+        border: Border.all(color: AppColors.error.withValues(alpha: 0.2)),
       ),
       child: Text(
         '$count pending',
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.red, fontWeight: FontWeight.w600),
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.error, fontWeight: FontWeight.w600),
       ),
     );
   }

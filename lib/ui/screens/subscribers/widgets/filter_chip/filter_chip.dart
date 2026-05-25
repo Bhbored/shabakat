@@ -1,45 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 
-class StatusFilter extends StatelessWidget {
-  final String currentFilter;
-  final ValueChanged<String> onFilterChanged;
-
-  const StatusFilter({
-    super.key,
-    required this.currentFilter,
-    required this.onFilterChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final filters = ['All', 'Paid', 'Unpaid', 'Overdue'];
-    
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: filters.map((filter) {
-          final isActive = currentFilter == filter;
-          return Padding(
-            padding: EdgeInsets.only(right: context.paddingSmall),
-            child: _FilterChip(
-              label: filter,
-              isActive: isActive,
-              onTap: () => onFilterChanged(filter),
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
-
-class _FilterChip extends StatelessWidget {
+class StatusFilterChip extends StatelessWidget {
   final String label;
   final bool isActive;
   final VoidCallback onTap;
 
-  const _FilterChip({
+  const StatusFilterChip({
+    super.key,
     required this.label,
     required this.isActive,
     required this.onTap,
@@ -49,7 +17,7 @@ class _FilterChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(context.borderRadiusMedium),

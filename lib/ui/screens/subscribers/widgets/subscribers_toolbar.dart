@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
-import 'status_filter.dart';
+import 'status_filter/status_filter.dart';
 
 class SubscribersToolbar extends StatelessWidget {
   final TextEditingController searchController;

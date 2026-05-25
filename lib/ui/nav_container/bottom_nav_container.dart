@@ -46,7 +46,7 @@ class BottomNavContainer extends StatelessWidget {
             ),
             BottomNavItem(
               icon: LucideIcons.bell,
-              label: 'Alerts',
+              label: 'Notifications',
               isActive: currentIndex == 3,
               onTap: () => onTabChanged(3),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/ui/data/app_data.dart';
 import 'package:shabakat/ui/widgets/status_badge.dart';
 import 'package:shabakat/ui/screens/dashboard/widgets/common/dashboard_avatar.dart';
 
@@ -7,7 +8,7 @@ class DueItem extends StatelessWidget {
   final String name;
   final String amount;
   final String date;
-  final BadgeStatus status;
+  final SubscriberStatus status;
   final bool isLast;
 
   const DueItem({

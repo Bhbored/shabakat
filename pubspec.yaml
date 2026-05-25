@@ -21,6 +21,7 @@ dependencies:
   google_fonts: ^8.1.0
   json_annotation: ^4.11.0
   logger: ^2.7.0
+  fl_chart: ^0.70.2
   lucide_icons: ^0.257.0
   riverpod_annotation: ^4.0.2
   shared_preferences: ^2.5.5

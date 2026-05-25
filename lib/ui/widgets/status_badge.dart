@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/themes/app_colors.dart';
 import 'package:shabakat/core/themes/controls_themes.dart';
-
-enum BadgeStatus { paid, unpaid, overdue }
+import 'package:shabakat/ui/data/app_data.dart';
 
 class StatusBadge extends StatelessWidget {
-  final BadgeStatus status;
+  final SubscriberStatus status;
 
   const StatusBadge({super.key, required this.status});
 
@@ -17,17 +16,17 @@ class StatusBadge extends StatelessWidget {
     IconData icon;
 
     switch (status) {
-      case BadgeStatus.paid:
+      case SubscriberStatus.paid:
         color = const Color(0xFF10B981); // Emerald
         label = 'Paid';
         icon = Icons.check_circle_outline;
         break;
-      case BadgeStatus.unpaid:
+      case SubscriberStatus.unpaid:
         color = AppColors.warning;
         label = 'Unpaid';
         icon = Icons.access_time;
         break;
-      case BadgeStatus.overdue:
+      case SubscriberStatus.overdue:
         color = AppColors.error;
         label = 'Overdue';
         icon = Icons.error_outline;

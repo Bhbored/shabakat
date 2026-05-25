@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/themes/app_colors.dart';
+import 'app_drawer.dart';
 import 'bottom_nav_container.dart';
 import '../screens/dashboard/dashboard_screen.dart';
 import '../screens/subscribers/subscribers_screen.dart';
+import '../screens/invoices/invoices_screen.dart';
+import '../screens/notifications/notifications_screen.dart';
 
 class MainTabPage extends StatefulWidget {
   const MainTabPage({super.key});
@@ -37,15 +43,23 @@ class _MainTabPageState extends State<MainTabPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
+      appBar: _buildAppBar(theme, colorScheme),
+      drawer: const AppDrawer(),
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) => setState(() => _currentIndex = index),
-        children: const [
-          DashboardScreen(),
-          SubscribersScreen(),
-          Center(child: Text('Invoices')),
-          Center(child: Text('Notifications')),
+        children: [
+          DashboardScreen(
+            onViewAllPayments: () => _onTabChanged(1),
+            onSendReminders: () => _onTabChanged(3),
+          ),
+          const SubscribersScreen(),
+          const InvoicesScreen(),
+          const NotificationsScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavContainer(
@@ -54,4 +68,102 @@ class _MainTabPageState extends State<MainTabPage> {
       ),
     );
   }
+
+  AppBar? _buildAppBar(ThemeData theme, ColorScheme colorScheme) {
+    switch (_currentIndex) {
+      case 0:
+        return AppBar(
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Dashboard',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSecondary,
+                ),
+              ),
+              Text(
+                'El-Nour Generators · May 2025',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: colorScheme.onSecondary,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(LucideIcons.search),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Stack(
+                children: [
+                  const Icon(LucideIcons.bell),
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: const BoxDecoration(
+                        color: AppColors.error,
+                        shape: BoxShape.circle,
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 8,
+                        minHeight: 8,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: context.paddingSmall),
+          ],
+        );
+      case 1:
+        return AppBar(
+          title: Text(
+            'Subscribers',
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: colorScheme.onSecondary,
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: _onAddSubscriber,
+              icon: const Icon(LucideIcons.plus),
+            ),
+            SizedBox(width: context.paddingSmall),
+          ],
+        );
+      case 2:
+        return AppBar(
+          title: Text(
+            'Invoices',
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: colorScheme.onSecondary,
+            ),
+          ),
+        );
+      case 3:
+        return AppBar(
+          title: Text(
+            'Notifications',
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: colorScheme.onSecondary,
+            ),
+          ),
+        );
+      default:
+        return null;
+    }
+  }
+
+  void _onAddSubscriber() {}
 }
