@@ -17,7 +17,6 @@ class MyApp extends ConsumerWidget {
     final themeModeAsync = ref.watch(themeModeProvider);
 
     return MaterialApp(
-      title: 'Shabakat',
       debugShowCheckedModeBanner: false,
       theme: ThemeSelector.light(),
       darkTheme: ThemeSelector.dark(),
