@@ -27,10 +27,13 @@ class StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return Container(
       padding: EdgeInsets.all(context.paddingMedium),
-      decoration: ControlsThemes.statCardDecoration(colorScheme, isAccent: isAccent),
+      decoration: ControlsThemes.statCardDecoration(
+        colorScheme,
+        isAccent: isAccent,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -43,7 +46,7 @@ class StatCard extends StatelessWidget {
                   style: theme.textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.2,
-                    color: isAccent 
+                    color: isAccent
                         ? colorScheme.onPrimary.withValues(alpha: 0.6)
                         : colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
@@ -52,15 +55,21 @@ class StatCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(context.paddingSmall),
                 decoration: BoxDecoration(
-                  color: isAccent 
+                  color: isAccent
                       ? colorScheme.onPrimary.withValues(alpha: 0.1)
-                      : (iconColor ?? colorScheme.primary).withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+                      : (iconColor ?? colorScheme.primary).withValues(
+                          alpha: 0.1,
+                        ),
+                  borderRadius: BorderRadius.circular(
+                    context.borderRadiusMedium,
+                  ),
                 ),
                 child: Icon(
                   icon,
                   size: 16,
-                  color: isAccent ? colorScheme.onPrimary : (iconColor ?? colorScheme.primary),
+                  color: isAccent
+                      ? colorScheme.onPrimary
+                      : (iconColor ?? colorScheme.primary),
                 ),
               ),
             ],
@@ -74,11 +83,11 @@ class StatCard extends StatelessWidget {
               color: isAccent ? colorScheme.onPrimary : colorScheme.onSurface,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: context.spaceSmall),
           Text(
             trend,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: isAccent 
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: isAccent
                   ? colorScheme.onPrimary.withValues(alpha: 0.55)
                   : (trendColor ?? AppColors.success),
             ),
