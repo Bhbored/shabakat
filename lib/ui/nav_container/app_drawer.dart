@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/data/providers/auth/auth_provider.dart';
+import 'package:shabakat/ui/auth/login/login_screen.dart';
 import 'package:shabakat/ui/screens/dashboard/widgets/common/dashboard_avatar.dart';
 import 'package:shabakat/ui/settings/settings_screen.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final authState = ref.watch(authStateProvider);
 
     return Drawer(
       backgroundColor: colorScheme.surface,
@@ -21,7 +25,10 @@ class AppDrawer extends StatelessWidget {
               padding: EdgeInsets.all(context.paddingMedium),
               child: Row(
                 children: [
-                  DashboardAvatar(name: 'Admin User', size: 48),
+                  DashboardAvatar(
+                    name: 'Admin User',
+                    size: context.screenWidth * 0.12,
+                  ),
                   SizedBox(width: context.paddingSmall),
                   Expanded(
                     child: Column(
@@ -76,11 +83,39 @@ class AppDrawer extends StatelessWidget {
               padding: EdgeInsets.all(context.paddingMedium),
               child: SizedBox(
                 width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(LucideIcons.logOut, size: 18),
-                  label: const Text('Sign Out'),
-                ),
+                child: authState.isLoading
+                    ? ElevatedButton(
+                        onPressed: null,
+                        child: SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: colorScheme.onPrimary,
+                          ),
+                        ),
+                      )
+                    : ElevatedButton.icon(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          await ref.read(authStateProvider.notifier).logout();
+                          if (context.mounted) {
+                            await Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (_) => const LoginScreen(),
+                              ),
+                              (route) => false,
+                            );
+                          }
+                        },
+                        icon: const Icon(LucideIcons.logOut, size: 18),
+                        label: authState.isLoading
+                            ? CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: colorScheme.onPrimary,
+                              )
+                            : const Text('Logout'),
+                      ),
               ),
             ),
           ],

@@ -1,9 +1,17 @@
 import 'package:dio/dio.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/constants/api_errors.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/configs/http_methods.dart';
 import 'package:shabakat/core/network/request/api_request.dart';
 import 'package:shabakat/core/network/response/api_response.dart';
+
+part 'api_executor.g.dart';
+
+@riverpod
+ApiExecutor apiExecutor(Ref ref, Dio dio) {
+  return ApiExecutor(dio);
+}
 
 class ApiExecutor {
   final Dio _dio;
