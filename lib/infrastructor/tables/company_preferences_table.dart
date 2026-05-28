@@ -1,10 +1,17 @@
 import 'package:drift/drift.dart';
+import 'app_user_table.dart';
 
-class CompanyPreferences extends Table {
-  TextColumn get id => text().unique()();
+@DataClassName('CompanyPreferences')
+class CompanyPreferencesTable extends Table {
+  TextColumn get id => text()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
-  TextColumn get companyId => text()();
+  TextColumn get companyId => text().references(
+    AppUsers,
+    #id,
+    onDelete: KeyAction.cascade,
+    onUpdate: KeyAction.cascade,
+  )();
   RealColumn get pricePerKilowat => real()();
   RealColumn get pricePerAmp => real()();
   RealColumn get fixedCharge => real()();

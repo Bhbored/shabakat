@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CompanyPreferences {
 
- String get id; DateTime get createdAt; DateTime get updatedAt; DateTime? get deletedAt; bool get isDeleted; String get companyId; double get pricePerKilowat; double get pricePerAmp; double get fixedCharge; double get tva; String get language; int get triggerDate; String? get triggerMessage;
+ String get id; DateTime get createdAt; DateTime get updatedAt; String get companyId; double get pricePerKilowat; double get pricePerAmp; double get fixedCharge; double get tva; String get language; int get triggerDate; String? get triggerMessage;
 /// Create a copy of CompanyPreferences
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CompanyPreferencesCopyWith<CompanyPreferences> get copyWith => _$CompanyPrefere
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CompanyPreferences&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.pricePerKilowat, pricePerKilowat) || other.pricePerKilowat == pricePerKilowat)&&(identical(other.pricePerAmp, pricePerAmp) || other.pricePerAmp == pricePerAmp)&&(identical(other.fixedCharge, fixedCharge) || other.fixedCharge == fixedCharge)&&(identical(other.tva, tva) || other.tva == tva)&&(identical(other.language, language) || other.language == language)&&(identical(other.triggerDate, triggerDate) || other.triggerDate == triggerDate)&&(identical(other.triggerMessage, triggerMessage) || other.triggerMessage == triggerMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CompanyPreferences&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.pricePerKilowat, pricePerKilowat) || other.pricePerKilowat == pricePerKilowat)&&(identical(other.pricePerAmp, pricePerAmp) || other.pricePerAmp == pricePerAmp)&&(identical(other.fixedCharge, fixedCharge) || other.fixedCharge == fixedCharge)&&(identical(other.tva, tva) || other.tva == tva)&&(identical(other.language, language) || other.language == language)&&(identical(other.triggerDate, triggerDate) || other.triggerDate == triggerDate)&&(identical(other.triggerMessage, triggerMessage) || other.triggerMessage == triggerMessage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,deletedAt,isDeleted,companyId,pricePerKilowat,pricePerAmp,fixedCharge,tva,language,triggerDate,triggerMessage);
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,companyId,pricePerKilowat,pricePerAmp,fixedCharge,tva,language,triggerDate,triggerMessage);
 
 @override
 String toString() {
-  return 'CompanyPreferences(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, isDeleted: $isDeleted, companyId: $companyId, pricePerKilowat: $pricePerKilowat, pricePerAmp: $pricePerAmp, fixedCharge: $fixedCharge, tva: $tva, language: $language, triggerDate: $triggerDate, triggerMessage: $triggerMessage)';
+  return 'CompanyPreferences(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, companyId: $companyId, pricePerKilowat: $pricePerKilowat, pricePerAmp: $pricePerAmp, fixedCharge: $fixedCharge, tva: $tva, language: $language, triggerDate: $triggerDate, triggerMessage: $triggerMessage)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CompanyPreferencesCopyWith<$Res>  {
   factory $CompanyPreferencesCopyWith(CompanyPreferences value, $Res Function(CompanyPreferences) _then) = _$CompanyPreferencesCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, DateTime? deletedAt, bool isDeleted, String companyId, double pricePerKilowat, double pricePerAmp, double fixedCharge, double tva, String language, int triggerDate, String? triggerMessage
+ String id, DateTime createdAt, DateTime updatedAt, String companyId, double pricePerKilowat, double pricePerAmp, double fixedCharge, double tva, String language, int triggerDate, String? triggerMessage
 });
 
 
@@ -65,14 +65,12 @@ class _$CompanyPreferencesCopyWithImpl<$Res>
 
 /// Create a copy of CompanyPreferences
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? deletedAt = freezed,Object? isDeleted = null,Object? companyId = null,Object? pricePerKilowat = null,Object? pricePerAmp = null,Object? fixedCharge = null,Object? tva = null,Object? language = null,Object? triggerDate = null,Object? triggerMessage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? companyId = null,Object? pricePerKilowat = null,Object? pricePerAmp = null,Object? fixedCharge = null,Object? tva = null,Object? language = null,Object? triggerDate = null,Object? triggerMessage = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
-as bool,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
+as DateTime,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
 as String,pricePerKilowat: null == pricePerKilowat ? _self.pricePerKilowat : pricePerKilowat // ignore: cast_nullable_to_non_nullable
 as double,pricePerAmp: null == pricePerAmp ? _self.pricePerAmp : pricePerAmp // ignore: cast_nullable_to_non_nullable
 as double,fixedCharge: null == fixedCharge ? _self.fixedCharge : fixedCharge // ignore: cast_nullable_to_non_nullable
@@ -162,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  DateTime? deletedAt,  bool isDeleted,  String companyId,  double pricePerKilowat,  double pricePerAmp,  double fixedCharge,  double tva,  String language,  int triggerDate,  String? triggerMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  double pricePerKilowat,  double pricePerAmp,  double fixedCharge,  double tva,  String language,  int triggerDate,  String? triggerMessage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CompanyPreferences() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.deletedAt,_that.isDeleted,_that.companyId,_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.tva,_that.language,_that.triggerDate,_that.triggerMessage);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.tva,_that.language,_that.triggerDate,_that.triggerMessage);case _:
   return orElse();
 
 }
@@ -183,10 +181,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.deletedAt,_that.i
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  DateTime? deletedAt,  bool isDeleted,  String companyId,  double pricePerKilowat,  double pricePerAmp,  double fixedCharge,  double tva,  String language,  int triggerDate,  String? triggerMessage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  double pricePerKilowat,  double pricePerAmp,  double fixedCharge,  double tva,  String language,  int triggerDate,  String? triggerMessage)  $default,) {final _that = this;
 switch (_that) {
 case _CompanyPreferences():
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.deletedAt,_that.isDeleted,_that.companyId,_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.tva,_that.language,_that.triggerDate,_that.triggerMessage);}
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.tva,_that.language,_that.triggerDate,_that.triggerMessage);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -200,10 +198,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.deletedAt,_that.i
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  DateTime? deletedAt,  bool isDeleted,  String companyId,  double pricePerKilowat,  double pricePerAmp,  double fixedCharge,  double tva,  String language,  int triggerDate,  String? triggerMessage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  double pricePerKilowat,  double pricePerAmp,  double fixedCharge,  double tva,  String language,  int triggerDate,  String? triggerMessage)?  $default,) {final _that = this;
 switch (_that) {
 case _CompanyPreferences() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.deletedAt,_that.isDeleted,_that.companyId,_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.tva,_that.language,_that.triggerDate,_that.triggerMessage);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.tva,_that.language,_that.triggerDate,_that.triggerMessage);case _:
   return null;
 
 }
@@ -215,14 +213,12 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.deletedAt,_that.i
 @JsonSerializable()
 
 class _CompanyPreferences implements CompanyPreferences {
-  const _CompanyPreferences({required this.id, required this.createdAt, required this.updatedAt, this.deletedAt, this.isDeleted = false, required this.companyId, required this.pricePerKilowat, required this.pricePerAmp, required this.fixedCharge, required this.tva, this.language = 'en', this.triggerDate = 1, this.triggerMessage});
+  const _CompanyPreferences({required this.id, required this.createdAt, required this.updatedAt, required this.companyId, required this.pricePerKilowat, required this.pricePerAmp, required this.fixedCharge, required this.tva, this.language = 'en', this.triggerDate = 1, this.triggerMessage});
   factory _CompanyPreferences.fromJson(Map<String, dynamic> json) => _$CompanyPreferencesFromJson(json);
 
 @override final  String id;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
-@override final  DateTime? deletedAt;
-@override@JsonKey() final  bool isDeleted;
 @override final  String companyId;
 @override final  double pricePerKilowat;
 @override final  double pricePerAmp;
@@ -245,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CompanyPreferences&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.pricePerKilowat, pricePerKilowat) || other.pricePerKilowat == pricePerKilowat)&&(identical(other.pricePerAmp, pricePerAmp) || other.pricePerAmp == pricePerAmp)&&(identical(other.fixedCharge, fixedCharge) || other.fixedCharge == fixedCharge)&&(identical(other.tva, tva) || other.tva == tva)&&(identical(other.language, language) || other.language == language)&&(identical(other.triggerDate, triggerDate) || other.triggerDate == triggerDate)&&(identical(other.triggerMessage, triggerMessage) || other.triggerMessage == triggerMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CompanyPreferences&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.pricePerKilowat, pricePerKilowat) || other.pricePerKilowat == pricePerKilowat)&&(identical(other.pricePerAmp, pricePerAmp) || other.pricePerAmp == pricePerAmp)&&(identical(other.fixedCharge, fixedCharge) || other.fixedCharge == fixedCharge)&&(identical(other.tva, tva) || other.tva == tva)&&(identical(other.language, language) || other.language == language)&&(identical(other.triggerDate, triggerDate) || other.triggerDate == triggerDate)&&(identical(other.triggerMessage, triggerMessage) || other.triggerMessage == triggerMessage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,deletedAt,isDeleted,companyId,pricePerKilowat,pricePerAmp,fixedCharge,tva,language,triggerDate,triggerMessage);
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,companyId,pricePerKilowat,pricePerAmp,fixedCharge,tva,language,triggerDate,triggerMessage);
 
 @override
 String toString() {
-  return 'CompanyPreferences(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, isDeleted: $isDeleted, companyId: $companyId, pricePerKilowat: $pricePerKilowat, pricePerAmp: $pricePerAmp, fixedCharge: $fixedCharge, tva: $tva, language: $language, triggerDate: $triggerDate, triggerMessage: $triggerMessage)';
+  return 'CompanyPreferences(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, companyId: $companyId, pricePerKilowat: $pricePerKilowat, pricePerAmp: $pricePerAmp, fixedCharge: $fixedCharge, tva: $tva, language: $language, triggerDate: $triggerDate, triggerMessage: $triggerMessage)';
 }
 
 
@@ -265,7 +261,7 @@ abstract mixin class _$CompanyPreferencesCopyWith<$Res> implements $CompanyPrefe
   factory _$CompanyPreferencesCopyWith(_CompanyPreferences value, $Res Function(_CompanyPreferences) _then) = __$CompanyPreferencesCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, DateTime? deletedAt, bool isDeleted, String companyId, double pricePerKilowat, double pricePerAmp, double fixedCharge, double tva, String language, int triggerDate, String? triggerMessage
+ String id, DateTime createdAt, DateTime updatedAt, String companyId, double pricePerKilowat, double pricePerAmp, double fixedCharge, double tva, String language, int triggerDate, String? triggerMessage
 });
 
 
@@ -282,14 +278,12 @@ class __$CompanyPreferencesCopyWithImpl<$Res>
 
 /// Create a copy of CompanyPreferences
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? deletedAt = freezed,Object? isDeleted = null,Object? companyId = null,Object? pricePerKilowat = null,Object? pricePerAmp = null,Object? fixedCharge = null,Object? tva = null,Object? language = null,Object? triggerDate = null,Object? triggerMessage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? companyId = null,Object? pricePerKilowat = null,Object? pricePerAmp = null,Object? fixedCharge = null,Object? tva = null,Object? language = null,Object? triggerDate = null,Object? triggerMessage = freezed,}) {
   return _then(_CompanyPreferences(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
-as bool,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
+as DateTime,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
 as String,pricePerKilowat: null == pricePerKilowat ? _self.pricePerKilowat : pricePerKilowat // ignore: cast_nullable_to_non_nullable
 as double,pricePerAmp: null == pricePerAmp ? _self.pricePerAmp : pricePerAmp // ignore: cast_nullable_to_non_nullable
 as double,fixedCharge: null == fixedCharge ? _self.fixedCharge : fixedCharge // ignore: cast_nullable_to_non_nullable

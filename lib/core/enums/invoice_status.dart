@@ -1,16 +1,9 @@
-enum InvoiceStatus {
-  unpaid('Unpaid'),
-  partiallypaid('Partially Paid'),
-  paid('Paid');
+enum InvoiceStatus { unpaid, partiallypaid, paid }
 
-  final String label;
-
-  const InvoiceStatus(this.label);
-
-  static InvoiceStatus fromName(String name) {
-    return InvoiceStatus.values.firstWhere(
-      (e) => e.name == name.toLowerCase(),
-      orElse: () => InvoiceStatus.unpaid,
-    );
-  }
+extension InvoiceStatusX on InvoiceStatus {
+  String get label => switch (this) {
+    InvoiceStatus.unpaid => 'Unpaid',
+    InvoiceStatus.partiallypaid => 'Partially Paid',
+    InvoiceStatus.paid => 'Paid',
+  };
 }

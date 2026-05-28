@@ -9,8 +9,6 @@ sealed class Expenses with _$Expenses {
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    DateTime? deletedAt,
-    @Default(false) bool isDeleted,
     required String companyId,
     required double fuelExpense,
     required double maintenanceExpenses,

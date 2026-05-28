@@ -1,15 +1,8 @@
-enum PaymentMethod {
-  cash('Cash'),
-  wish('Wish');
+enum PaymentMethod { cash, wish }
 
-  final String label;
-
-  const PaymentMethod(this.label);
-
-  static PaymentMethod fromName(String name) {
-    return PaymentMethod.values.firstWhere(
-      (e) => e.name == name.toLowerCase(),
-      orElse: () => PaymentMethod.cash,
-    );
-  }
+extension PaymentMethodX on PaymentMethod {
+  String get label => switch (this) {
+    PaymentMethod.cash => 'Cash',
+    PaymentMethod.wish => 'Wish',
+  };
 }

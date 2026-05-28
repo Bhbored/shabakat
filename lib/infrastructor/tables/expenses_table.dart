@@ -1,10 +1,17 @@
 import 'package:drift/drift.dart';
+import 'app_user_table.dart';
 
-class Expenses extends Table {
+@DataClassName('Expenses')
+class ExpensesTable extends Table {
   TextColumn get id => text()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
-  TextColumn get companyId => text()();
+  TextColumn get companyId => text().references(
+    AppUsers,
+    #id,
+    onDelete: KeyAction.cascade,
+    onUpdate: KeyAction.cascade,
+  )();
   RealColumn get fuelExpense => real()();
   RealColumn get maintenanceExpenses => real()();
   RealColumn get employeesExpenses => real()();

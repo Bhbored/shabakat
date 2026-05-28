@@ -46,10 +46,11 @@ class $AppUsersTable extends AppUsers with TableInfo<$AppUsersTable, AppUser> {
     aliasedName,
     false,
     type: DriftSqlType.bool,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("is_banned" IN (0, 1))',
     ),
+    defaultValue: const Constant(false),
   );
   static const VerificationMeta _companyNameMeta = const VerificationMeta(
     'companyName',
@@ -60,7 +61,8 @@ class $AppUsersTable extends AppUsers with TableInfo<$AppUsersTable, AppUser> {
     aliasedName,
     false,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
   );
   static const VerificationMeta _logoUrlMeta = const VerificationMeta(
     'logoUrl',
@@ -119,8 +121,6 @@ class $AppUsersTable extends AppUsers with TableInfo<$AppUsersTable, AppUser> {
         _isBannedMeta,
         isBanned.isAcceptableOrUnknown(data['is_banned']!, _isBannedMeta),
       );
-    } else if (isInserting) {
-      context.missing(_isBannedMeta);
     }
     if (data.containsKey('company_name')) {
       context.handle(
@@ -130,8 +130,6 @@ class $AppUsersTable extends AppUsers with TableInfo<$AppUsersTable, AppUser> {
           _companyNameMeta,
         ),
       );
-    } else if (isInserting) {
-      context.missing(_companyNameMeta);
     }
     if (data.containsKey('logo_url')) {
       context.handle(
@@ -337,13 +335,11 @@ class AppUsersCompanion extends UpdateCompanion<AppUser> {
     required String id,
     this.email = const Value.absent(),
     this.phoneNumber = const Value.absent(),
-    required bool isBanned,
-    required String companyName,
+    this.isBanned = const Value.absent(),
+    this.companyName = const Value.absent(),
     this.logoUrl = const Value.absent(),
     this.rowid = const Value.absent(),
-  }) : id = Value(id),
-       isBanned = Value(isBanned),
-       companyName = Value(companyName);
+  }) : id = Value(id);
   static Insertable<AppUser> custom({
     Expression<String>? id,
     Expression<String>? email,
@@ -426,12 +422,12 @@ class AppUsersCompanion extends UpdateCompanion<AppUser> {
   }
 }
 
-class $CompanyPreferencesTable extends CompanyPreferences
-    with TableInfo<$CompanyPreferencesTable, CompanyPreference> {
+class $CompanyPreferencesTableTable extends CompanyPreferencesTable
+    with TableInfo<$CompanyPreferencesTableTable, CompanyPreferences> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $CompanyPreferencesTable(this.attachedDatabase, [this._alias]);
+  $CompanyPreferencesTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -463,31 +459,6 @@ class $CompanyPreferencesTable extends CompanyPreferences
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
-    'deletedAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
-    'deleted_at',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _isDeletedMeta = const VerificationMeta(
-    'isDeleted',
-  );
-  @override
-  late final GeneratedColumn<bool> isDeleted = GeneratedColumn<bool>(
-    'is_deleted',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_deleted" IN (0, 1))',
-    ),
-  );
   static const VerificationMeta _companyIdMeta = const VerificationMeta(
     'companyId',
   );
@@ -498,6 +469,9 @@ class $CompanyPreferencesTable extends CompanyPreferences
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES app_users (id) ON UPDATE CASCADE ON DELETE CASCADE',
+    ),
   );
   static const VerificationMeta _pricePerKilowatMeta = const VerificationMeta(
     'pricePerKilowat',
@@ -550,7 +524,8 @@ class $CompanyPreferencesTable extends CompanyPreferences
     aliasedName,
     false,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('en'),
   );
   static const VerificationMeta _triggerDateMeta = const VerificationMeta(
     'triggerDate',
@@ -579,8 +554,6 @@ class $CompanyPreferencesTable extends CompanyPreferences
     id,
     createdAt,
     updatedAt,
-    deletedAt,
-    isDeleted,
     companyId,
     pricePerKilowat,
     pricePerAmp,
@@ -594,10 +567,10 @@ class $CompanyPreferencesTable extends CompanyPreferences
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'company_preferences';
+  static const String $name = 'company_preferences_table';
   @override
   VerificationContext validateIntegrity(
-    Insertable<CompanyPreference> instance, {
+    Insertable<CompanyPreferences> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -622,20 +595,6 @@ class $CompanyPreferencesTable extends CompanyPreferences
       );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
-    }
-    if (data.containsKey('deleted_at')) {
-      context.handle(
-        _deletedAtMeta,
-        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
-      );
-    }
-    if (data.containsKey('is_deleted')) {
-      context.handle(
-        _isDeletedMeta,
-        isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_isDeletedMeta);
     }
     if (data.containsKey('company_id')) {
       context.handle(
@@ -691,8 +650,6 @@ class $CompanyPreferencesTable extends CompanyPreferences
         _languageMeta,
         language.isAcceptableOrUnknown(data['language']!, _languageMeta),
       );
-    } else if (isInserting) {
-      context.missing(_languageMeta);
     }
     if (data.containsKey('trigger_date')) {
       context.handle(
@@ -720,9 +677,9 @@ class $CompanyPreferencesTable extends CompanyPreferences
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  CompanyPreference map(Map<String, dynamic> data, {String? tablePrefix}) {
+  CompanyPreferences map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return CompanyPreference(
+    return CompanyPreferences(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -734,14 +691,6 @@ class $CompanyPreferencesTable extends CompanyPreferences
       updatedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at'],
-      )!,
-      deletedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}deleted_at'],
-      ),
-      isDeleted: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}is_deleted'],
       )!,
       companyId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -779,18 +728,16 @@ class $CompanyPreferencesTable extends CompanyPreferences
   }
 
   @override
-  $CompanyPreferencesTable createAlias(String alias) {
-    return $CompanyPreferencesTable(attachedDatabase, alias);
+  $CompanyPreferencesTableTable createAlias(String alias) {
+    return $CompanyPreferencesTableTable(attachedDatabase, alias);
   }
 }
 
-class CompanyPreference extends DataClass
-    implements Insertable<CompanyPreference> {
+class CompanyPreferences extends DataClass
+    implements Insertable<CompanyPreferences> {
   final String id;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime? deletedAt;
-  final bool isDeleted;
   final String companyId;
   final double pricePerKilowat;
   final double pricePerAmp;
@@ -799,12 +746,10 @@ class CompanyPreference extends DataClass
   final String language;
   final int triggerDate;
   final String? triggerMessage;
-  const CompanyPreference({
+  const CompanyPreferences({
     required this.id,
     required this.createdAt,
     required this.updatedAt,
-    this.deletedAt,
-    required this.isDeleted,
     required this.companyId,
     required this.pricePerKilowat,
     required this.pricePerAmp,
@@ -820,10 +765,6 @@ class CompanyPreference extends DataClass
     map['id'] = Variable<String>(id);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    if (!nullToAbsent || deletedAt != null) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt);
-    }
-    map['is_deleted'] = Variable<bool>(isDeleted);
     map['company_id'] = Variable<String>(companyId);
     map['price_per_kilowat'] = Variable<double>(pricePerKilowat);
     map['price_per_amp'] = Variable<double>(pricePerAmp);
@@ -837,15 +778,11 @@ class CompanyPreference extends DataClass
     return map;
   }
 
-  CompanyPreferencesCompanion toCompanion(bool nullToAbsent) {
-    return CompanyPreferencesCompanion(
+  CompanyPreferencesTableCompanion toCompanion(bool nullToAbsent) {
+    return CompanyPreferencesTableCompanion(
       id: Value(id),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: deletedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(deletedAt),
-      isDeleted: Value(isDeleted),
       companyId: Value(companyId),
       pricePerKilowat: Value(pricePerKilowat),
       pricePerAmp: Value(pricePerAmp),
@@ -859,17 +796,15 @@ class CompanyPreference extends DataClass
     );
   }
 
-  factory CompanyPreference.fromJson(
+  factory CompanyPreferences.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return CompanyPreference(
+    return CompanyPreferences(
       id: serializer.fromJson<String>(json['id']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
-      isDeleted: serializer.fromJson<bool>(json['isDeleted']),
       companyId: serializer.fromJson<String>(json['companyId']),
       pricePerKilowat: serializer.fromJson<double>(json['pricePerKilowat']),
       pricePerAmp: serializer.fromJson<double>(json['pricePerAmp']),
@@ -887,8 +822,6 @@ class CompanyPreference extends DataClass
       'id': serializer.toJson<String>(id),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
-      'isDeleted': serializer.toJson<bool>(isDeleted),
       'companyId': serializer.toJson<String>(companyId),
       'pricePerKilowat': serializer.toJson<double>(pricePerKilowat),
       'pricePerAmp': serializer.toJson<double>(pricePerAmp),
@@ -900,12 +833,10 @@ class CompanyPreference extends DataClass
     };
   }
 
-  CompanyPreference copyWith({
+  CompanyPreferences copyWith({
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
-    Value<DateTime?> deletedAt = const Value.absent(),
-    bool? isDeleted,
     String? companyId,
     double? pricePerKilowat,
     double? pricePerAmp,
@@ -914,12 +845,10 @@ class CompanyPreference extends DataClass
     String? language,
     int? triggerDate,
     Value<String?> triggerMessage = const Value.absent(),
-  }) => CompanyPreference(
+  }) => CompanyPreferences(
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
-    isDeleted: isDeleted ?? this.isDeleted,
     companyId: companyId ?? this.companyId,
     pricePerKilowat: pricePerKilowat ?? this.pricePerKilowat,
     pricePerAmp: pricePerAmp ?? this.pricePerAmp,
@@ -931,13 +860,11 @@ class CompanyPreference extends DataClass
         ? triggerMessage.value
         : this.triggerMessage,
   );
-  CompanyPreference copyWithCompanion(CompanyPreferencesCompanion data) {
-    return CompanyPreference(
+  CompanyPreferences copyWithCompanion(CompanyPreferencesTableCompanion data) {
+    return CompanyPreferences(
       id: data.id.present ? data.id.value : this.id,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
-      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
       companyId: data.companyId.present ? data.companyId.value : this.companyId,
       pricePerKilowat: data.pricePerKilowat.present
           ? data.pricePerKilowat.value
@@ -961,12 +888,10 @@ class CompanyPreference extends DataClass
 
   @override
   String toString() {
-    return (StringBuffer('CompanyPreference(')
+    return (StringBuffer('CompanyPreferences(')
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('isDeleted: $isDeleted, ')
           ..write('companyId: $companyId, ')
           ..write('pricePerKilowat: $pricePerKilowat, ')
           ..write('pricePerAmp: $pricePerAmp, ')
@@ -984,8 +909,6 @@ class CompanyPreference extends DataClass
     id,
     createdAt,
     updatedAt,
-    deletedAt,
-    isDeleted,
     companyId,
     pricePerKilowat,
     pricePerAmp,
@@ -998,12 +921,10 @@ class CompanyPreference extends DataClass
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is CompanyPreference &&
+      (other is CompanyPreferences &&
           other.id == this.id &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
-          other.deletedAt == this.deletedAt &&
-          other.isDeleted == this.isDeleted &&
           other.companyId == this.companyId &&
           other.pricePerKilowat == this.pricePerKilowat &&
           other.pricePerAmp == this.pricePerAmp &&
@@ -1014,12 +935,11 @@ class CompanyPreference extends DataClass
           other.triggerMessage == this.triggerMessage);
 }
 
-class CompanyPreferencesCompanion extends UpdateCompanion<CompanyPreference> {
+class CompanyPreferencesTableCompanion
+    extends UpdateCompanion<CompanyPreferences> {
   final Value<String> id;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime?> deletedAt;
-  final Value<bool> isDeleted;
   final Value<String> companyId;
   final Value<double> pricePerKilowat;
   final Value<double> pricePerAmp;
@@ -1029,12 +949,10 @@ class CompanyPreferencesCompanion extends UpdateCompanion<CompanyPreference> {
   final Value<int> triggerDate;
   final Value<String?> triggerMessage;
   final Value<int> rowid;
-  const CompanyPreferencesCompanion({
+  const CompanyPreferencesTableCompanion({
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    this.deletedAt = const Value.absent(),
-    this.isDeleted = const Value.absent(),
     this.companyId = const Value.absent(),
     this.pricePerKilowat = const Value.absent(),
     this.pricePerAmp = const Value.absent(),
@@ -1045,38 +963,32 @@ class CompanyPreferencesCompanion extends UpdateCompanion<CompanyPreference> {
     this.triggerMessage = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  CompanyPreferencesCompanion.insert({
+  CompanyPreferencesTableCompanion.insert({
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    this.deletedAt = const Value.absent(),
-    required bool isDeleted,
     required String companyId,
     required double pricePerKilowat,
     required double pricePerAmp,
     required double fixedCharge,
     required double tva,
-    required String language,
+    this.language = const Value.absent(),
     required int triggerDate,
     this.triggerMessage = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        createdAt = Value(createdAt),
        updatedAt = Value(updatedAt),
-       isDeleted = Value(isDeleted),
        companyId = Value(companyId),
        pricePerKilowat = Value(pricePerKilowat),
        pricePerAmp = Value(pricePerAmp),
        fixedCharge = Value(fixedCharge),
        tva = Value(tva),
-       language = Value(language),
        triggerDate = Value(triggerDate);
-  static Insertable<CompanyPreference> custom({
+  static Insertable<CompanyPreferences> custom({
     Expression<String>? id,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
-    Expression<DateTime>? deletedAt,
-    Expression<bool>? isDeleted,
     Expression<String>? companyId,
     Expression<double>? pricePerKilowat,
     Expression<double>? pricePerAmp,
@@ -1091,8 +1003,6 @@ class CompanyPreferencesCompanion extends UpdateCompanion<CompanyPreference> {
       if (id != null) 'id': id,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
-      if (deletedAt != null) 'deleted_at': deletedAt,
-      if (isDeleted != null) 'is_deleted': isDeleted,
       if (companyId != null) 'company_id': companyId,
       if (pricePerKilowat != null) 'price_per_kilowat': pricePerKilowat,
       if (pricePerAmp != null) 'price_per_amp': pricePerAmp,
@@ -1105,12 +1015,10 @@ class CompanyPreferencesCompanion extends UpdateCompanion<CompanyPreference> {
     });
   }
 
-  CompanyPreferencesCompanion copyWith({
+  CompanyPreferencesTableCompanion copyWith({
     Value<String>? id,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime?>? deletedAt,
-    Value<bool>? isDeleted,
     Value<String>? companyId,
     Value<double>? pricePerKilowat,
     Value<double>? pricePerAmp,
@@ -1121,12 +1029,10 @@ class CompanyPreferencesCompanion extends UpdateCompanion<CompanyPreference> {
     Value<String?>? triggerMessage,
     Value<int>? rowid,
   }) {
-    return CompanyPreferencesCompanion(
+    return CompanyPreferencesTableCompanion(
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      deletedAt: deletedAt ?? this.deletedAt,
-      isDeleted: isDeleted ?? this.isDeleted,
       companyId: companyId ?? this.companyId,
       pricePerKilowat: pricePerKilowat ?? this.pricePerKilowat,
       pricePerAmp: pricePerAmp ?? this.pricePerAmp,
@@ -1150,12 +1056,6 @@ class CompanyPreferencesCompanion extends UpdateCompanion<CompanyPreference> {
     }
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
-    }
-    if (deletedAt.present) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
-    }
-    if (isDeleted.present) {
-      map['is_deleted'] = Variable<bool>(isDeleted.value);
     }
     if (companyId.present) {
       map['company_id'] = Variable<String>(companyId.value);
@@ -1189,12 +1089,10 @@ class CompanyPreferencesCompanion extends UpdateCompanion<CompanyPreference> {
 
   @override
   String toString() {
-    return (StringBuffer('CompanyPreferencesCompanion(')
+    return (StringBuffer('CompanyPreferencesTableCompanion(')
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('isDeleted: $isDeleted, ')
           ..write('companyId: $companyId, ')
           ..write('pricePerKilowat: $pricePerKilowat, ')
           ..write('pricePerAmp: $pricePerAmp, ')
@@ -1246,31 +1144,6 @@ class $CustomersTable extends Customers
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
-    'deletedAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
-    'deleted_at',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _isDeletedMeta = const VerificationMeta(
-    'isDeleted',
-  );
-  @override
-  late final GeneratedColumn<bool> isDeleted = GeneratedColumn<bool>(
-    'is_deleted',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_deleted" IN (0, 1))',
-    ),
-  );
   static const VerificationMeta _companyIdMeta = const VerificationMeta(
     'companyId',
   );
@@ -1281,6 +1154,9 @@ class $CustomersTable extends Customers
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES app_users (id) ON UPDATE CASCADE ON DELETE CASCADE',
+    ),
   );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
@@ -1370,8 +1246,6 @@ class $CustomersTable extends Customers
     id,
     createdAt,
     updatedAt,
-    deletedAt,
-    isDeleted,
     companyId,
     name,
     phone,
@@ -1414,20 +1288,6 @@ class $CustomersTable extends Customers
       );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
-    }
-    if (data.containsKey('deleted_at')) {
-      context.handle(
-        _deletedAtMeta,
-        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
-      );
-    }
-    if (data.containsKey('is_deleted')) {
-      context.handle(
-        _isDeletedMeta,
-        isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_isDeletedMeta);
     }
     if (data.containsKey('company_id')) {
       context.handle(
@@ -1527,14 +1387,6 @@ class $CustomersTable extends Customers
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at'],
       )!,
-      deletedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}deleted_at'],
-      ),
-      isDeleted: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}is_deleted'],
-      )!,
       companyId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}company_id'],
@@ -1584,8 +1436,6 @@ class Customer extends DataClass implements Insertable<Customer> {
   final String id;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime? deletedAt;
-  final bool isDeleted;
   final String companyId;
   final String name;
   final String? phone;
@@ -1599,8 +1449,6 @@ class Customer extends DataClass implements Insertable<Customer> {
     required this.id,
     required this.createdAt,
     required this.updatedAt,
-    this.deletedAt,
-    required this.isDeleted,
     required this.companyId,
     required this.name,
     this.phone,
@@ -1617,10 +1465,6 @@ class Customer extends DataClass implements Insertable<Customer> {
     map['id'] = Variable<String>(id);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    if (!nullToAbsent || deletedAt != null) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt);
-    }
-    map['is_deleted'] = Variable<bool>(isDeleted);
     map['company_id'] = Variable<String>(companyId);
     map['name'] = Variable<String>(name);
     if (!nullToAbsent || phone != null) {
@@ -1642,10 +1486,6 @@ class Customer extends DataClass implements Insertable<Customer> {
       id: Value(id),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: deletedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(deletedAt),
-      isDeleted: Value(isDeleted),
       companyId: Value(companyId),
       name: Value(name),
       phone: phone == null && nullToAbsent
@@ -1671,8 +1511,6 @@ class Customer extends DataClass implements Insertable<Customer> {
       id: serializer.fromJson<String>(json['id']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
-      isDeleted: serializer.fromJson<bool>(json['isDeleted']),
       companyId: serializer.fromJson<String>(json['companyId']),
       name: serializer.fromJson<String>(json['name']),
       phone: serializer.fromJson<String?>(json['phone']),
@@ -1691,8 +1529,6 @@ class Customer extends DataClass implements Insertable<Customer> {
       'id': serializer.toJson<String>(id),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
-      'isDeleted': serializer.toJson<bool>(isDeleted),
       'companyId': serializer.toJson<String>(companyId),
       'name': serializer.toJson<String>(name),
       'phone': serializer.toJson<String?>(phone),
@@ -1709,8 +1545,6 @@ class Customer extends DataClass implements Insertable<Customer> {
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
-    Value<DateTime?> deletedAt = const Value.absent(),
-    bool? isDeleted,
     String? companyId,
     String? name,
     Value<String?> phone = const Value.absent(),
@@ -1724,8 +1558,6 @@ class Customer extends DataClass implements Insertable<Customer> {
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
-    isDeleted: isDeleted ?? this.isDeleted,
     companyId: companyId ?? this.companyId,
     name: name ?? this.name,
     phone: phone.present ? phone.value : this.phone,
@@ -1741,8 +1573,6 @@ class Customer extends DataClass implements Insertable<Customer> {
       id: data.id.present ? data.id.value : this.id,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
-      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
       companyId: data.companyId.present ? data.companyId.value : this.companyId,
       name: data.name.present ? data.name.value : this.name,
       phone: data.phone.present ? data.phone.value : this.phone,
@@ -1767,8 +1597,6 @@ class Customer extends DataClass implements Insertable<Customer> {
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('isDeleted: $isDeleted, ')
           ..write('companyId: $companyId, ')
           ..write('name: $name, ')
           ..write('phone: $phone, ')
@@ -1787,8 +1615,6 @@ class Customer extends DataClass implements Insertable<Customer> {
     id,
     createdAt,
     updatedAt,
-    deletedAt,
-    isDeleted,
     companyId,
     name,
     phone,
@@ -1806,8 +1632,6 @@ class Customer extends DataClass implements Insertable<Customer> {
           other.id == this.id &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
-          other.deletedAt == this.deletedAt &&
-          other.isDeleted == this.isDeleted &&
           other.companyId == this.companyId &&
           other.name == this.name &&
           other.phone == this.phone &&
@@ -1823,8 +1647,6 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
   final Value<String> id;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime?> deletedAt;
-  final Value<bool> isDeleted;
   final Value<String> companyId;
   final Value<String> name;
   final Value<String?> phone;
@@ -1839,8 +1661,6 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    this.deletedAt = const Value.absent(),
-    this.isDeleted = const Value.absent(),
     this.companyId = const Value.absent(),
     this.name = const Value.absent(),
     this.phone = const Value.absent(),
@@ -1856,8 +1676,6 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    this.deletedAt = const Value.absent(),
-    required bool isDeleted,
     required String companyId,
     required String name,
     this.phone = const Value.absent(),
@@ -1871,7 +1689,6 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
   }) : id = Value(id),
        createdAt = Value(createdAt),
        updatedAt = Value(updatedAt),
-       isDeleted = Value(isDeleted),
        companyId = Value(companyId),
        name = Value(name),
        customerType = Value(customerType),
@@ -1883,8 +1700,6 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
     Expression<String>? id,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
-    Expression<DateTime>? deletedAt,
-    Expression<bool>? isDeleted,
     Expression<String>? companyId,
     Expression<String>? name,
     Expression<String>? phone,
@@ -1900,8 +1715,6 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
       if (id != null) 'id': id,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
-      if (deletedAt != null) 'deleted_at': deletedAt,
-      if (isDeleted != null) 'is_deleted': isDeleted,
       if (companyId != null) 'company_id': companyId,
       if (name != null) 'name': name,
       if (phone != null) 'phone': phone,
@@ -1919,8 +1732,6 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
     Value<String>? id,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime?>? deletedAt,
-    Value<bool>? isDeleted,
     Value<String>? companyId,
     Value<String>? name,
     Value<String?>? phone,
@@ -1936,8 +1747,6 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      deletedAt: deletedAt ?? this.deletedAt,
-      isDeleted: isDeleted ?? this.isDeleted,
       companyId: companyId ?? this.companyId,
       name: name ?? this.name,
       phone: phone ?? this.phone,
@@ -1962,12 +1771,6 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
     }
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
-    }
-    if (deletedAt.present) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
-    }
-    if (isDeleted.present) {
-      map['is_deleted'] = Variable<bool>(isDeleted.value);
     }
     if (companyId.present) {
       map['company_id'] = Variable<String>(companyId.value);
@@ -2008,8 +1811,6 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('isDeleted: $isDeleted, ')
           ..write('companyId: $companyId, ')
           ..write('name: $name, ')
           ..write('phone: $phone, ')
@@ -2025,11 +1826,12 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
   }
 }
 
-class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
+class $ExpensesTableTable extends ExpensesTable
+    with TableInfo<$ExpensesTableTable, Expenses> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $ExpensesTable(this.attachedDatabase, [this._alias]);
+  $ExpensesTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -2061,31 +1863,6 @@ class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
-    'deletedAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
-    'deleted_at',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _isDeletedMeta = const VerificationMeta(
-    'isDeleted',
-  );
-  @override
-  late final GeneratedColumn<bool> isDeleted = GeneratedColumn<bool>(
-    'is_deleted',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_deleted" IN (0, 1))',
-    ),
-  );
   static const VerificationMeta _companyIdMeta = const VerificationMeta(
     'companyId',
   );
@@ -2096,6 +1873,9 @@ class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES app_users (id) ON UPDATE CASCADE ON DELETE CASCADE',
+    ),
   );
   static const VerificationMeta _fuelExpenseMeta = const VerificationMeta(
     'fuelExpense',
@@ -2156,8 +1936,6 @@ class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
     id,
     createdAt,
     updatedAt,
-    deletedAt,
-    isDeleted,
     companyId,
     fuelExpense,
     maintenanceExpenses,
@@ -2169,10 +1947,10 @@ class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'expenses';
+  static const String $name = 'expenses_table';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Expense> instance, {
+    Insertable<Expenses> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -2197,20 +1975,6 @@ class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
       );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
-    }
-    if (data.containsKey('deleted_at')) {
-      context.handle(
-        _deletedAtMeta,
-        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
-      );
-    }
-    if (data.containsKey('is_deleted')) {
-      context.handle(
-        _isDeletedMeta,
-        isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_isDeletedMeta);
     }
     if (data.containsKey('company_id')) {
       context.handle(
@@ -2276,9 +2040,9 @@ class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Expense map(Map<String, dynamic> data, {String? tablePrefix}) {
+  Expenses map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Expense(
+    return Expenses(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -2290,14 +2054,6 @@ class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
       updatedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at'],
-      )!,
-      deletedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}deleted_at'],
-      ),
-      isDeleted: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}is_deleted'],
       )!,
       companyId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -2327,29 +2083,25 @@ class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
   }
 
   @override
-  $ExpensesTable createAlias(String alias) {
-    return $ExpensesTable(attachedDatabase, alias);
+  $ExpensesTableTable createAlias(String alias) {
+    return $ExpensesTableTable(attachedDatabase, alias);
   }
 }
 
-class Expense extends DataClass implements Insertable<Expense> {
+class Expenses extends DataClass implements Insertable<Expenses> {
   final String id;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime? deletedAt;
-  final bool isDeleted;
   final String companyId;
   final double fuelExpense;
   final double maintenanceExpenses;
   final double employeesExpenses;
   final DateTime expenseDate;
   final String? notes;
-  const Expense({
+  const Expenses({
     required this.id,
     required this.createdAt,
     required this.updatedAt,
-    this.deletedAt,
-    required this.isDeleted,
     required this.companyId,
     required this.fuelExpense,
     required this.maintenanceExpenses,
@@ -2363,10 +2115,6 @@ class Expense extends DataClass implements Insertable<Expense> {
     map['id'] = Variable<String>(id);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    if (!nullToAbsent || deletedAt != null) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt);
-    }
-    map['is_deleted'] = Variable<bool>(isDeleted);
     map['company_id'] = Variable<String>(companyId);
     map['fuel_expense'] = Variable<double>(fuelExpense);
     map['maintenance_expenses'] = Variable<double>(maintenanceExpenses);
@@ -2378,15 +2126,11 @@ class Expense extends DataClass implements Insertable<Expense> {
     return map;
   }
 
-  ExpensesCompanion toCompanion(bool nullToAbsent) {
-    return ExpensesCompanion(
+  ExpensesTableCompanion toCompanion(bool nullToAbsent) {
+    return ExpensesTableCompanion(
       id: Value(id),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: deletedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(deletedAt),
-      isDeleted: Value(isDeleted),
       companyId: Value(companyId),
       fuelExpense: Value(fuelExpense),
       maintenanceExpenses: Value(maintenanceExpenses),
@@ -2398,17 +2142,15 @@ class Expense extends DataClass implements Insertable<Expense> {
     );
   }
 
-  factory Expense.fromJson(
+  factory Expenses.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Expense(
+    return Expenses(
       id: serializer.fromJson<String>(json['id']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
-      isDeleted: serializer.fromJson<bool>(json['isDeleted']),
       companyId: serializer.fromJson<String>(json['companyId']),
       fuelExpense: serializer.fromJson<double>(json['fuelExpense']),
       maintenanceExpenses: serializer.fromJson<double>(
@@ -2426,8 +2168,6 @@ class Expense extends DataClass implements Insertable<Expense> {
       'id': serializer.toJson<String>(id),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
-      'isDeleted': serializer.toJson<bool>(isDeleted),
       'companyId': serializer.toJson<String>(companyId),
       'fuelExpense': serializer.toJson<double>(fuelExpense),
       'maintenanceExpenses': serializer.toJson<double>(maintenanceExpenses),
@@ -2437,24 +2177,20 @@ class Expense extends DataClass implements Insertable<Expense> {
     };
   }
 
-  Expense copyWith({
+  Expenses copyWith({
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
-    Value<DateTime?> deletedAt = const Value.absent(),
-    bool? isDeleted,
     String? companyId,
     double? fuelExpense,
     double? maintenanceExpenses,
     double? employeesExpenses,
     DateTime? expenseDate,
     Value<String?> notes = const Value.absent(),
-  }) => Expense(
+  }) => Expenses(
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
-    isDeleted: isDeleted ?? this.isDeleted,
     companyId: companyId ?? this.companyId,
     fuelExpense: fuelExpense ?? this.fuelExpense,
     maintenanceExpenses: maintenanceExpenses ?? this.maintenanceExpenses,
@@ -2462,13 +2198,11 @@ class Expense extends DataClass implements Insertable<Expense> {
     expenseDate: expenseDate ?? this.expenseDate,
     notes: notes.present ? notes.value : this.notes,
   );
-  Expense copyWithCompanion(ExpensesCompanion data) {
-    return Expense(
+  Expenses copyWithCompanion(ExpensesTableCompanion data) {
+    return Expenses(
       id: data.id.present ? data.id.value : this.id,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
-      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
       companyId: data.companyId.present ? data.companyId.value : this.companyId,
       fuelExpense: data.fuelExpense.present
           ? data.fuelExpense.value
@@ -2488,12 +2222,10 @@ class Expense extends DataClass implements Insertable<Expense> {
 
   @override
   String toString() {
-    return (StringBuffer('Expense(')
+    return (StringBuffer('Expenses(')
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('isDeleted: $isDeleted, ')
           ..write('companyId: $companyId, ')
           ..write('fuelExpense: $fuelExpense, ')
           ..write('maintenanceExpenses: $maintenanceExpenses, ')
@@ -2509,8 +2241,6 @@ class Expense extends DataClass implements Insertable<Expense> {
     id,
     createdAt,
     updatedAt,
-    deletedAt,
-    isDeleted,
     companyId,
     fuelExpense,
     maintenanceExpenses,
@@ -2521,12 +2251,10 @@ class Expense extends DataClass implements Insertable<Expense> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Expense &&
+      (other is Expenses &&
           other.id == this.id &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
-          other.deletedAt == this.deletedAt &&
-          other.isDeleted == this.isDeleted &&
           other.companyId == this.companyId &&
           other.fuelExpense == this.fuelExpense &&
           other.maintenanceExpenses == this.maintenanceExpenses &&
@@ -2535,12 +2263,10 @@ class Expense extends DataClass implements Insertable<Expense> {
           other.notes == this.notes);
 }
 
-class ExpensesCompanion extends UpdateCompanion<Expense> {
+class ExpensesTableCompanion extends UpdateCompanion<Expenses> {
   final Value<String> id;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime?> deletedAt;
-  final Value<bool> isDeleted;
   final Value<String> companyId;
   final Value<double> fuelExpense;
   final Value<double> maintenanceExpenses;
@@ -2548,12 +2274,10 @@ class ExpensesCompanion extends UpdateCompanion<Expense> {
   final Value<DateTime> expenseDate;
   final Value<String?> notes;
   final Value<int> rowid;
-  const ExpensesCompanion({
+  const ExpensesTableCompanion({
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    this.deletedAt = const Value.absent(),
-    this.isDeleted = const Value.absent(),
     this.companyId = const Value.absent(),
     this.fuelExpense = const Value.absent(),
     this.maintenanceExpenses = const Value.absent(),
@@ -2562,12 +2286,10 @@ class ExpensesCompanion extends UpdateCompanion<Expense> {
     this.notes = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  ExpensesCompanion.insert({
+  ExpensesTableCompanion.insert({
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    this.deletedAt = const Value.absent(),
-    required bool isDeleted,
     required String companyId,
     required double fuelExpense,
     required double maintenanceExpenses,
@@ -2578,18 +2300,15 @@ class ExpensesCompanion extends UpdateCompanion<Expense> {
   }) : id = Value(id),
        createdAt = Value(createdAt),
        updatedAt = Value(updatedAt),
-       isDeleted = Value(isDeleted),
        companyId = Value(companyId),
        fuelExpense = Value(fuelExpense),
        maintenanceExpenses = Value(maintenanceExpenses),
        employeesExpenses = Value(employeesExpenses),
        expenseDate = Value(expenseDate);
-  static Insertable<Expense> custom({
+  static Insertable<Expenses> custom({
     Expression<String>? id,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
-    Expression<DateTime>? deletedAt,
-    Expression<bool>? isDeleted,
     Expression<String>? companyId,
     Expression<double>? fuelExpense,
     Expression<double>? maintenanceExpenses,
@@ -2602,8 +2321,6 @@ class ExpensesCompanion extends UpdateCompanion<Expense> {
       if (id != null) 'id': id,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
-      if (deletedAt != null) 'deleted_at': deletedAt,
-      if (isDeleted != null) 'is_deleted': isDeleted,
       if (companyId != null) 'company_id': companyId,
       if (fuelExpense != null) 'fuel_expense': fuelExpense,
       if (maintenanceExpenses != null)
@@ -2615,12 +2332,10 @@ class ExpensesCompanion extends UpdateCompanion<Expense> {
     });
   }
 
-  ExpensesCompanion copyWith({
+  ExpensesTableCompanion copyWith({
     Value<String>? id,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime?>? deletedAt,
-    Value<bool>? isDeleted,
     Value<String>? companyId,
     Value<double>? fuelExpense,
     Value<double>? maintenanceExpenses,
@@ -2629,12 +2344,10 @@ class ExpensesCompanion extends UpdateCompanion<Expense> {
     Value<String?>? notes,
     Value<int>? rowid,
   }) {
-    return ExpensesCompanion(
+    return ExpensesTableCompanion(
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      deletedAt: deletedAt ?? this.deletedAt,
-      isDeleted: isDeleted ?? this.isDeleted,
       companyId: companyId ?? this.companyId,
       fuelExpense: fuelExpense ?? this.fuelExpense,
       maintenanceExpenses: maintenanceExpenses ?? this.maintenanceExpenses,
@@ -2656,12 +2369,6 @@ class ExpensesCompanion extends UpdateCompanion<Expense> {
     }
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
-    }
-    if (deletedAt.present) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
-    }
-    if (isDeleted.present) {
-      map['is_deleted'] = Variable<bool>(isDeleted.value);
     }
     if (companyId.present) {
       map['company_id'] = Variable<String>(companyId.value);
@@ -2689,12 +2396,10 @@ class ExpensesCompanion extends UpdateCompanion<Expense> {
 
   @override
   String toString() {
-    return (StringBuffer('ExpensesCompanion(')
+    return (StringBuffer('ExpensesTableCompanion(')
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('isDeleted: $isDeleted, ')
           ..write('companyId: $companyId, ')
           ..write('fuelExpense: $fuelExpense, ')
           ..write('maintenanceExpenses: $maintenanceExpenses, ')
@@ -2743,31 +2448,6 @@ class $InvoicesTable extends Invoices with TableInfo<$InvoicesTable, Invoice> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
-    'deletedAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
-    'deleted_at',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _isDeletedMeta = const VerificationMeta(
-    'isDeleted',
-  );
-  @override
-  late final GeneratedColumn<bool> isDeleted = GeneratedColumn<bool>(
-    'is_deleted',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_deleted" IN (0, 1))',
-    ),
-  );
   static const VerificationMeta _companyIdMeta = const VerificationMeta(
     'companyId',
   );
@@ -2778,6 +2458,9 @@ class $InvoicesTable extends Invoices with TableInfo<$InvoicesTable, Invoice> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES app_users (id) ON UPDATE CASCADE ON DELETE CASCADE',
+    ),
   );
   static const VerificationMeta _customerIdMeta = const VerificationMeta(
     'customerId',
@@ -2789,6 +2472,9 @@ class $InvoicesTable extends Invoices with TableInfo<$InvoicesTable, Invoice> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES customers (id) ON UPDATE CASCADE ON DELETE CASCADE',
+    ),
   );
   static const VerificationMeta _issueDateMeta = const VerificationMeta(
     'issueDate',
@@ -2874,15 +2560,14 @@ class $InvoicesTable extends Invoices with TableInfo<$InvoicesTable, Invoice> {
     aliasedName,
     false,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('unpaid'),
   );
   @override
   List<GeneratedColumn> get $columns => [
     id,
     createdAt,
     updatedAt,
-    deletedAt,
-    isDeleted,
     companyId,
     customerId,
     issueDate,
@@ -2926,20 +2611,6 @@ class $InvoicesTable extends Invoices with TableInfo<$InvoicesTable, Invoice> {
       );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
-    }
-    if (data.containsKey('deleted_at')) {
-      context.handle(
-        _deletedAtMeta,
-        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
-      );
-    }
-    if (data.containsKey('is_deleted')) {
-      context.handle(
-        _isDeletedMeta,
-        isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_isDeletedMeta);
     }
     if (data.containsKey('company_id')) {
       context.handle(
@@ -3027,8 +2698,6 @@ class $InvoicesTable extends Invoices with TableInfo<$InvoicesTable, Invoice> {
           _invoiceStatusMeta,
         ),
       );
-    } else if (isInserting) {
-      context.missing(_invoiceStatusMeta);
     }
     return context;
   }
@@ -3050,14 +2719,6 @@ class $InvoicesTable extends Invoices with TableInfo<$InvoicesTable, Invoice> {
       updatedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at'],
-      )!,
-      deletedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}deleted_at'],
-      ),
-      isDeleted: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}is_deleted'],
       )!,
       companyId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -3112,8 +2773,6 @@ class Invoice extends DataClass implements Insertable<Invoice> {
   final String id;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime? deletedAt;
-  final bool isDeleted;
   final String companyId;
   final String customerId;
   final DateTime issueDate;
@@ -3128,8 +2787,6 @@ class Invoice extends DataClass implements Insertable<Invoice> {
     required this.id,
     required this.createdAt,
     required this.updatedAt,
-    this.deletedAt,
-    required this.isDeleted,
     required this.companyId,
     required this.customerId,
     required this.issueDate,
@@ -3147,10 +2804,6 @@ class Invoice extends DataClass implements Insertable<Invoice> {
     map['id'] = Variable<String>(id);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    if (!nullToAbsent || deletedAt != null) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt);
-    }
-    map['is_deleted'] = Variable<bool>(isDeleted);
     map['company_id'] = Variable<String>(companyId);
     map['customer_id'] = Variable<String>(customerId);
     map['issue_date'] = Variable<DateTime>(issueDate);
@@ -3169,10 +2822,6 @@ class Invoice extends DataClass implements Insertable<Invoice> {
       id: Value(id),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: deletedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(deletedAt),
-      isDeleted: Value(isDeleted),
       companyId: Value(companyId),
       customerId: Value(customerId),
       issueDate: Value(issueDate),
@@ -3195,8 +2844,6 @@ class Invoice extends DataClass implements Insertable<Invoice> {
       id: serializer.fromJson<String>(json['id']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
-      isDeleted: serializer.fromJson<bool>(json['isDeleted']),
       companyId: serializer.fromJson<String>(json['companyId']),
       customerId: serializer.fromJson<String>(json['customerId']),
       issueDate: serializer.fromJson<DateTime>(json['issueDate']),
@@ -3216,8 +2863,6 @@ class Invoice extends DataClass implements Insertable<Invoice> {
       'id': serializer.toJson<String>(id),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
-      'isDeleted': serializer.toJson<bool>(isDeleted),
       'companyId': serializer.toJson<String>(companyId),
       'customerId': serializer.toJson<String>(customerId),
       'issueDate': serializer.toJson<DateTime>(issueDate),
@@ -3235,8 +2880,6 @@ class Invoice extends DataClass implements Insertable<Invoice> {
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
-    Value<DateTime?> deletedAt = const Value.absent(),
-    bool? isDeleted,
     String? companyId,
     String? customerId,
     DateTime? issueDate,
@@ -3251,8 +2894,6 @@ class Invoice extends DataClass implements Insertable<Invoice> {
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
-    isDeleted: isDeleted ?? this.isDeleted,
     companyId: companyId ?? this.companyId,
     customerId: customerId ?? this.customerId,
     issueDate: issueDate ?? this.issueDate,
@@ -3269,8 +2910,6 @@ class Invoice extends DataClass implements Insertable<Invoice> {
       id: data.id.present ? data.id.value : this.id,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
-      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
       companyId: data.companyId.present ? data.companyId.value : this.companyId,
       customerId: data.customerId.present
           ? data.customerId.value
@@ -3300,8 +2939,6 @@ class Invoice extends DataClass implements Insertable<Invoice> {
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('isDeleted: $isDeleted, ')
           ..write('companyId: $companyId, ')
           ..write('customerId: $customerId, ')
           ..write('issueDate: $issueDate, ')
@@ -3321,8 +2958,6 @@ class Invoice extends DataClass implements Insertable<Invoice> {
     id,
     createdAt,
     updatedAt,
-    deletedAt,
-    isDeleted,
     companyId,
     customerId,
     issueDate,
@@ -3341,8 +2976,6 @@ class Invoice extends DataClass implements Insertable<Invoice> {
           other.id == this.id &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
-          other.deletedAt == this.deletedAt &&
-          other.isDeleted == this.isDeleted &&
           other.companyId == this.companyId &&
           other.customerId == this.customerId &&
           other.issueDate == this.issueDate &&
@@ -3359,8 +2992,6 @@ class InvoicesCompanion extends UpdateCompanion<Invoice> {
   final Value<String> id;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime?> deletedAt;
-  final Value<bool> isDeleted;
   final Value<String> companyId;
   final Value<String> customerId;
   final Value<DateTime> issueDate;
@@ -3376,8 +3007,6 @@ class InvoicesCompanion extends UpdateCompanion<Invoice> {
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    this.deletedAt = const Value.absent(),
-    this.isDeleted = const Value.absent(),
     this.companyId = const Value.absent(),
     this.customerId = const Value.absent(),
     this.issueDate = const Value.absent(),
@@ -3394,8 +3023,6 @@ class InvoicesCompanion extends UpdateCompanion<Invoice> {
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    this.deletedAt = const Value.absent(),
-    required bool isDeleted,
     required String companyId,
     required String customerId,
     required DateTime issueDate,
@@ -3405,12 +3032,11 @@ class InvoicesCompanion extends UpdateCompanion<Invoice> {
     required double totalAmount,
     required double paidAmount,
     required double amountDue,
-    required String invoiceStatus,
+    this.invoiceStatus = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        createdAt = Value(createdAt),
        updatedAt = Value(updatedAt),
-       isDeleted = Value(isDeleted),
        companyId = Value(companyId),
        customerId = Value(customerId),
        issueDate = Value(issueDate),
@@ -3419,14 +3045,11 @@ class InvoicesCompanion extends UpdateCompanion<Invoice> {
        tva = Value(tva),
        totalAmount = Value(totalAmount),
        paidAmount = Value(paidAmount),
-       amountDue = Value(amountDue),
-       invoiceStatus = Value(invoiceStatus);
+       amountDue = Value(amountDue);
   static Insertable<Invoice> custom({
     Expression<String>? id,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
-    Expression<DateTime>? deletedAt,
-    Expression<bool>? isDeleted,
     Expression<String>? companyId,
     Expression<String>? customerId,
     Expression<DateTime>? issueDate,
@@ -3443,8 +3066,6 @@ class InvoicesCompanion extends UpdateCompanion<Invoice> {
       if (id != null) 'id': id,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
-      if (deletedAt != null) 'deleted_at': deletedAt,
-      if (isDeleted != null) 'is_deleted': isDeleted,
       if (companyId != null) 'company_id': companyId,
       if (customerId != null) 'customer_id': customerId,
       if (issueDate != null) 'issue_date': issueDate,
@@ -3463,8 +3084,6 @@ class InvoicesCompanion extends UpdateCompanion<Invoice> {
     Value<String>? id,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime?>? deletedAt,
-    Value<bool>? isDeleted,
     Value<String>? companyId,
     Value<String>? customerId,
     Value<DateTime>? issueDate,
@@ -3481,8 +3100,6 @@ class InvoicesCompanion extends UpdateCompanion<Invoice> {
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      deletedAt: deletedAt ?? this.deletedAt,
-      isDeleted: isDeleted ?? this.isDeleted,
       companyId: companyId ?? this.companyId,
       customerId: customerId ?? this.customerId,
       issueDate: issueDate ?? this.issueDate,
@@ -3508,12 +3125,6 @@ class InvoicesCompanion extends UpdateCompanion<Invoice> {
     }
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
-    }
-    if (deletedAt.present) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
-    }
-    if (isDeleted.present) {
-      map['is_deleted'] = Variable<bool>(isDeleted.value);
     }
     if (companyId.present) {
       map['company_id'] = Variable<String>(companyId.value);
@@ -3557,8 +3168,6 @@ class InvoicesCompanion extends UpdateCompanion<Invoice> {
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('isDeleted: $isDeleted, ')
           ..write('companyId: $companyId, ')
           ..write('customerId: $customerId, ')
           ..write('issueDate: $issueDate, ')
@@ -3575,12 +3184,12 @@ class InvoicesCompanion extends UpdateCompanion<Invoice> {
   }
 }
 
-class $OtherExpensesTable extends OtherExpenses
-    with TableInfo<$OtherExpensesTable, OtherExpense> {
+class $OtherExpensesTableTable extends OtherExpensesTable
+    with TableInfo<$OtherExpensesTableTable, OtherExpenses> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $OtherExpensesTable(this.attachedDatabase, [this._alias]);
+  $OtherExpensesTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -3612,31 +3221,6 @@ class $OtherExpensesTable extends OtherExpenses
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
-    'deletedAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
-    'deleted_at',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _isDeletedMeta = const VerificationMeta(
-    'isDeleted',
-  );
-  @override
-  late final GeneratedColumn<bool> isDeleted = GeneratedColumn<bool>(
-    'is_deleted',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_deleted" IN (0, 1))',
-    ),
-  );
   static const VerificationMeta _companyIdMeta = const VerificationMeta(
     'companyId',
   );
@@ -3647,6 +3231,9 @@ class $OtherExpensesTable extends OtherExpenses
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES app_users (id) ON UPDATE CASCADE ON DELETE CASCADE',
+    ),
   );
   static const VerificationMeta _expenseIdMeta = const VerificationMeta(
     'expenseId',
@@ -3658,6 +3245,9 @@ class $OtherExpensesTable extends OtherExpenses
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES expenses_table (id) ON UPDATE CASCADE ON DELETE CASCADE',
+    ),
   );
   static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
@@ -3693,8 +3283,6 @@ class $OtherExpensesTable extends OtherExpenses
     id,
     createdAt,
     updatedAt,
-    deletedAt,
-    isDeleted,
     companyId,
     expenseId,
     amount,
@@ -3705,10 +3293,10 @@ class $OtherExpensesTable extends OtherExpenses
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'other_expenses';
+  static const String $name = 'other_expenses_table';
   @override
   VerificationContext validateIntegrity(
-    Insertable<OtherExpense> instance, {
+    Insertable<OtherExpenses> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -3733,20 +3321,6 @@ class $OtherExpensesTable extends OtherExpenses
       );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
-    }
-    if (data.containsKey('deleted_at')) {
-      context.handle(
-        _deletedAtMeta,
-        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
-      );
-    }
-    if (data.containsKey('is_deleted')) {
-      context.handle(
-        _isDeletedMeta,
-        isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_isDeletedMeta);
     }
     if (data.containsKey('company_id')) {
       context.handle(
@@ -3795,9 +3369,9 @@ class $OtherExpensesTable extends OtherExpenses
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  OtherExpense map(Map<String, dynamic> data, {String? tablePrefix}) {
+  OtherExpenses map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return OtherExpense(
+    return OtherExpenses(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -3809,14 +3383,6 @@ class $OtherExpensesTable extends OtherExpenses
       updatedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at'],
-      )!,
-      deletedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}deleted_at'],
-      ),
-      isDeleted: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}is_deleted'],
       )!,
       companyId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -3842,28 +3408,24 @@ class $OtherExpensesTable extends OtherExpenses
   }
 
   @override
-  $OtherExpensesTable createAlias(String alias) {
-    return $OtherExpensesTable(attachedDatabase, alias);
+  $OtherExpensesTableTable createAlias(String alias) {
+    return $OtherExpensesTableTable(attachedDatabase, alias);
   }
 }
 
-class OtherExpense extends DataClass implements Insertable<OtherExpense> {
+class OtherExpenses extends DataClass implements Insertable<OtherExpenses> {
   final String id;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime? deletedAt;
-  final bool isDeleted;
   final String companyId;
   final String expenseId;
   final double amount;
   final String type;
   final String? description;
-  const OtherExpense({
+  const OtherExpenses({
     required this.id,
     required this.createdAt,
     required this.updatedAt,
-    this.deletedAt,
-    required this.isDeleted,
     required this.companyId,
     required this.expenseId,
     required this.amount,
@@ -3876,10 +3438,6 @@ class OtherExpense extends DataClass implements Insertable<OtherExpense> {
     map['id'] = Variable<String>(id);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    if (!nullToAbsent || deletedAt != null) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt);
-    }
-    map['is_deleted'] = Variable<bool>(isDeleted);
     map['company_id'] = Variable<String>(companyId);
     map['expense_id'] = Variable<String>(expenseId);
     map['amount'] = Variable<double>(amount);
@@ -3890,15 +3448,11 @@ class OtherExpense extends DataClass implements Insertable<OtherExpense> {
     return map;
   }
 
-  OtherExpensesCompanion toCompanion(bool nullToAbsent) {
-    return OtherExpensesCompanion(
+  OtherExpensesTableCompanion toCompanion(bool nullToAbsent) {
+    return OtherExpensesTableCompanion(
       id: Value(id),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: deletedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(deletedAt),
-      isDeleted: Value(isDeleted),
       companyId: Value(companyId),
       expenseId: Value(expenseId),
       amount: Value(amount),
@@ -3909,17 +3463,15 @@ class OtherExpense extends DataClass implements Insertable<OtherExpense> {
     );
   }
 
-  factory OtherExpense.fromJson(
+  factory OtherExpenses.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return OtherExpense(
+    return OtherExpenses(
       id: serializer.fromJson<String>(json['id']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
-      isDeleted: serializer.fromJson<bool>(json['isDeleted']),
       companyId: serializer.fromJson<String>(json['companyId']),
       expenseId: serializer.fromJson<String>(json['expenseId']),
       amount: serializer.fromJson<double>(json['amount']),
@@ -3934,8 +3486,6 @@ class OtherExpense extends DataClass implements Insertable<OtherExpense> {
       'id': serializer.toJson<String>(id),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
-      'isDeleted': serializer.toJson<bool>(isDeleted),
       'companyId': serializer.toJson<String>(companyId),
       'expenseId': serializer.toJson<String>(expenseId),
       'amount': serializer.toJson<double>(amount),
@@ -3944,36 +3494,30 @@ class OtherExpense extends DataClass implements Insertable<OtherExpense> {
     };
   }
 
-  OtherExpense copyWith({
+  OtherExpenses copyWith({
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
-    Value<DateTime?> deletedAt = const Value.absent(),
-    bool? isDeleted,
     String? companyId,
     String? expenseId,
     double? amount,
     String? type,
     Value<String?> description = const Value.absent(),
-  }) => OtherExpense(
+  }) => OtherExpenses(
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
-    isDeleted: isDeleted ?? this.isDeleted,
     companyId: companyId ?? this.companyId,
     expenseId: expenseId ?? this.expenseId,
     amount: amount ?? this.amount,
     type: type ?? this.type,
     description: description.present ? description.value : this.description,
   );
-  OtherExpense copyWithCompanion(OtherExpensesCompanion data) {
-    return OtherExpense(
+  OtherExpenses copyWithCompanion(OtherExpensesTableCompanion data) {
+    return OtherExpenses(
       id: data.id.present ? data.id.value : this.id,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
-      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
       companyId: data.companyId.present ? data.companyId.value : this.companyId,
       expenseId: data.expenseId.present ? data.expenseId.value : this.expenseId,
       amount: data.amount.present ? data.amount.value : this.amount,
@@ -3986,12 +3530,10 @@ class OtherExpense extends DataClass implements Insertable<OtherExpense> {
 
   @override
   String toString() {
-    return (StringBuffer('OtherExpense(')
+    return (StringBuffer('OtherExpenses(')
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('isDeleted: $isDeleted, ')
           ..write('companyId: $companyId, ')
           ..write('expenseId: $expenseId, ')
           ..write('amount: $amount, ')
@@ -4006,8 +3548,6 @@ class OtherExpense extends DataClass implements Insertable<OtherExpense> {
     id,
     createdAt,
     updatedAt,
-    deletedAt,
-    isDeleted,
     companyId,
     expenseId,
     amount,
@@ -4017,12 +3557,10 @@ class OtherExpense extends DataClass implements Insertable<OtherExpense> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is OtherExpense &&
+      (other is OtherExpenses &&
           other.id == this.id &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
-          other.deletedAt == this.deletedAt &&
-          other.isDeleted == this.isDeleted &&
           other.companyId == this.companyId &&
           other.expenseId == this.expenseId &&
           other.amount == this.amount &&
@@ -4030,24 +3568,20 @@ class OtherExpense extends DataClass implements Insertable<OtherExpense> {
           other.description == this.description);
 }
 
-class OtherExpensesCompanion extends UpdateCompanion<OtherExpense> {
+class OtherExpensesTableCompanion extends UpdateCompanion<OtherExpenses> {
   final Value<String> id;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime?> deletedAt;
-  final Value<bool> isDeleted;
   final Value<String> companyId;
   final Value<String> expenseId;
   final Value<double> amount;
   final Value<String> type;
   final Value<String?> description;
   final Value<int> rowid;
-  const OtherExpensesCompanion({
+  const OtherExpensesTableCompanion({
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    this.deletedAt = const Value.absent(),
-    this.isDeleted = const Value.absent(),
     this.companyId = const Value.absent(),
     this.expenseId = const Value.absent(),
     this.amount = const Value.absent(),
@@ -4055,12 +3589,10 @@ class OtherExpensesCompanion extends UpdateCompanion<OtherExpense> {
     this.description = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  OtherExpensesCompanion.insert({
+  OtherExpensesTableCompanion.insert({
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    this.deletedAt = const Value.absent(),
-    required bool isDeleted,
     required String companyId,
     required String expenseId,
     required double amount,
@@ -4070,17 +3602,14 @@ class OtherExpensesCompanion extends UpdateCompanion<OtherExpense> {
   }) : id = Value(id),
        createdAt = Value(createdAt),
        updatedAt = Value(updatedAt),
-       isDeleted = Value(isDeleted),
        companyId = Value(companyId),
        expenseId = Value(expenseId),
        amount = Value(amount),
        type = Value(type);
-  static Insertable<OtherExpense> custom({
+  static Insertable<OtherExpenses> custom({
     Expression<String>? id,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
-    Expression<DateTime>? deletedAt,
-    Expression<bool>? isDeleted,
     Expression<String>? companyId,
     Expression<String>? expenseId,
     Expression<double>? amount,
@@ -4092,8 +3621,6 @@ class OtherExpensesCompanion extends UpdateCompanion<OtherExpense> {
       if (id != null) 'id': id,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
-      if (deletedAt != null) 'deleted_at': deletedAt,
-      if (isDeleted != null) 'is_deleted': isDeleted,
       if (companyId != null) 'company_id': companyId,
       if (expenseId != null) 'expense_id': expenseId,
       if (amount != null) 'amount': amount,
@@ -4103,12 +3630,10 @@ class OtherExpensesCompanion extends UpdateCompanion<OtherExpense> {
     });
   }
 
-  OtherExpensesCompanion copyWith({
+  OtherExpensesTableCompanion copyWith({
     Value<String>? id,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime?>? deletedAt,
-    Value<bool>? isDeleted,
     Value<String>? companyId,
     Value<String>? expenseId,
     Value<double>? amount,
@@ -4116,12 +3641,10 @@ class OtherExpensesCompanion extends UpdateCompanion<OtherExpense> {
     Value<String?>? description,
     Value<int>? rowid,
   }) {
-    return OtherExpensesCompanion(
+    return OtherExpensesTableCompanion(
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      deletedAt: deletedAt ?? this.deletedAt,
-      isDeleted: isDeleted ?? this.isDeleted,
       companyId: companyId ?? this.companyId,
       expenseId: expenseId ?? this.expenseId,
       amount: amount ?? this.amount,
@@ -4142,12 +3665,6 @@ class OtherExpensesCompanion extends UpdateCompanion<OtherExpense> {
     }
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
-    }
-    if (deletedAt.present) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
-    }
-    if (isDeleted.present) {
-      map['is_deleted'] = Variable<bool>(isDeleted.value);
     }
     if (companyId.present) {
       map['company_id'] = Variable<String>(companyId.value);
@@ -4172,12 +3689,10 @@ class OtherExpensesCompanion extends UpdateCompanion<OtherExpense> {
 
   @override
   String toString() {
-    return (StringBuffer('OtherExpensesCompanion(')
+    return (StringBuffer('OtherExpensesTableCompanion(')
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('isDeleted: $isDeleted, ')
           ..write('companyId: $companyId, ')
           ..write('expenseId: $expenseId, ')
           ..write('amount: $amount, ')
@@ -4225,31 +3740,6 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
-    'deletedAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
-    'deleted_at',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _isDeletedMeta = const VerificationMeta(
-    'isDeleted',
-  );
-  @override
-  late final GeneratedColumn<bool> isDeleted = GeneratedColumn<bool>(
-    'is_deleted',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_deleted" IN (0, 1))',
-    ),
-  );
   static const VerificationMeta _companyIdMeta = const VerificationMeta(
     'companyId',
   );
@@ -4260,6 +3750,9 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES app_users (id) ON UPDATE CASCADE ON DELETE CASCADE',
+    ),
   );
   static const VerificationMeta _customerIdMeta = const VerificationMeta(
     'customerId',
@@ -4271,6 +3764,9 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES customers (id) ON UPDATE CASCADE ON DELETE CASCADE',
+    ),
   );
   static const VerificationMeta _invoiceIdMeta = const VerificationMeta(
     'invoiceId',
@@ -4282,6 +3778,9 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES invoices (id) ON UPDATE CASCADE ON DELETE CASCADE',
+    ),
   );
   static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
@@ -4328,8 +3827,6 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
     id,
     createdAt,
     updatedAt,
-    deletedAt,
-    isDeleted,
     companyId,
     customerId,
     invoiceId,
@@ -4370,20 +3867,6 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
       );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
-    }
-    if (data.containsKey('deleted_at')) {
-      context.handle(
-        _deletedAtMeta,
-        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
-      );
-    }
-    if (data.containsKey('is_deleted')) {
-      context.handle(
-        _isDeletedMeta,
-        isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_isDeletedMeta);
     }
     if (data.containsKey('company_id')) {
       context.handle(
@@ -4466,14 +3949,6 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at'],
       )!,
-      deletedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}deleted_at'],
-      ),
-      isDeleted: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}is_deleted'],
-      )!,
       companyId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}company_id'],
@@ -4515,8 +3990,6 @@ class Payment extends DataClass implements Insertable<Payment> {
   final String id;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime? deletedAt;
-  final bool isDeleted;
   final String companyId;
   final String customerId;
   final String invoiceId;
@@ -4528,8 +4001,6 @@ class Payment extends DataClass implements Insertable<Payment> {
     required this.id,
     required this.createdAt,
     required this.updatedAt,
-    this.deletedAt,
-    required this.isDeleted,
     required this.companyId,
     required this.customerId,
     required this.invoiceId,
@@ -4544,10 +4015,6 @@ class Payment extends DataClass implements Insertable<Payment> {
     map['id'] = Variable<String>(id);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    if (!nullToAbsent || deletedAt != null) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt);
-    }
-    map['is_deleted'] = Variable<bool>(isDeleted);
     map['company_id'] = Variable<String>(companyId);
     map['customer_id'] = Variable<String>(customerId);
     map['invoice_id'] = Variable<String>(invoiceId);
@@ -4565,10 +4032,6 @@ class Payment extends DataClass implements Insertable<Payment> {
       id: Value(id),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: deletedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(deletedAt),
-      isDeleted: Value(isDeleted),
       companyId: Value(companyId),
       customerId: Value(customerId),
       invoiceId: Value(invoiceId),
@@ -4590,8 +4053,6 @@ class Payment extends DataClass implements Insertable<Payment> {
       id: serializer.fromJson<String>(json['id']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
-      isDeleted: serializer.fromJson<bool>(json['isDeleted']),
       companyId: serializer.fromJson<String>(json['companyId']),
       customerId: serializer.fromJson<String>(json['customerId']),
       invoiceId: serializer.fromJson<String>(json['invoiceId']),
@@ -4608,8 +4069,6 @@ class Payment extends DataClass implements Insertable<Payment> {
       'id': serializer.toJson<String>(id),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
-      'isDeleted': serializer.toJson<bool>(isDeleted),
       'companyId': serializer.toJson<String>(companyId),
       'customerId': serializer.toJson<String>(customerId),
       'invoiceId': serializer.toJson<String>(invoiceId),
@@ -4624,8 +4083,6 @@ class Payment extends DataClass implements Insertable<Payment> {
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
-    Value<DateTime?> deletedAt = const Value.absent(),
-    bool? isDeleted,
     String? companyId,
     String? customerId,
     String? invoiceId,
@@ -4637,8 +4094,6 @@ class Payment extends DataClass implements Insertable<Payment> {
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
-    isDeleted: isDeleted ?? this.isDeleted,
     companyId: companyId ?? this.companyId,
     customerId: customerId ?? this.customerId,
     invoiceId: invoiceId ?? this.invoiceId,
@@ -4652,8 +4107,6 @@ class Payment extends DataClass implements Insertable<Payment> {
       id: data.id.present ? data.id.value : this.id,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
-      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
       companyId: data.companyId.present ? data.companyId.value : this.companyId,
       customerId: data.customerId.present
           ? data.customerId.value
@@ -4676,8 +4129,6 @@ class Payment extends DataClass implements Insertable<Payment> {
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('isDeleted: $isDeleted, ')
           ..write('companyId: $companyId, ')
           ..write('customerId: $customerId, ')
           ..write('invoiceId: $invoiceId, ')
@@ -4694,8 +4145,6 @@ class Payment extends DataClass implements Insertable<Payment> {
     id,
     createdAt,
     updatedAt,
-    deletedAt,
-    isDeleted,
     companyId,
     customerId,
     invoiceId,
@@ -4711,8 +4160,6 @@ class Payment extends DataClass implements Insertable<Payment> {
           other.id == this.id &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
-          other.deletedAt == this.deletedAt &&
-          other.isDeleted == this.isDeleted &&
           other.companyId == this.companyId &&
           other.customerId == this.customerId &&
           other.invoiceId == this.invoiceId &&
@@ -4726,8 +4173,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
   final Value<String> id;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime?> deletedAt;
-  final Value<bool> isDeleted;
   final Value<String> companyId;
   final Value<String> customerId;
   final Value<String> invoiceId;
@@ -4740,8 +4185,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    this.deletedAt = const Value.absent(),
-    this.isDeleted = const Value.absent(),
     this.companyId = const Value.absent(),
     this.customerId = const Value.absent(),
     this.invoiceId = const Value.absent(),
@@ -4755,8 +4198,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    this.deletedAt = const Value.absent(),
-    required bool isDeleted,
     required String companyId,
     required String customerId,
     required String invoiceId,
@@ -4768,7 +4209,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
   }) : id = Value(id),
        createdAt = Value(createdAt),
        updatedAt = Value(updatedAt),
-       isDeleted = Value(isDeleted),
        companyId = Value(companyId),
        customerId = Value(customerId),
        invoiceId = Value(invoiceId),
@@ -4779,8 +4219,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
     Expression<String>? id,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
-    Expression<DateTime>? deletedAt,
-    Expression<bool>? isDeleted,
     Expression<String>? companyId,
     Expression<String>? customerId,
     Expression<String>? invoiceId,
@@ -4794,8 +4232,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
       if (id != null) 'id': id,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
-      if (deletedAt != null) 'deleted_at': deletedAt,
-      if (isDeleted != null) 'is_deleted': isDeleted,
       if (companyId != null) 'company_id': companyId,
       if (customerId != null) 'customer_id': customerId,
       if (invoiceId != null) 'invoice_id': invoiceId,
@@ -4811,8 +4247,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
     Value<String>? id,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime?>? deletedAt,
-    Value<bool>? isDeleted,
     Value<String>? companyId,
     Value<String>? customerId,
     Value<String>? invoiceId,
@@ -4826,8 +4260,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      deletedAt: deletedAt ?? this.deletedAt,
-      isDeleted: isDeleted ?? this.isDeleted,
       companyId: companyId ?? this.companyId,
       customerId: customerId ?? this.customerId,
       invoiceId: invoiceId ?? this.invoiceId,
@@ -4850,12 +4282,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
     }
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
-    }
-    if (deletedAt.present) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
-    }
-    if (isDeleted.present) {
-      map['is_deleted'] = Variable<bool>(isDeleted.value);
     }
     if (companyId.present) {
       map['company_id'] = Variable<String>(companyId.value);
@@ -4890,8 +4316,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('isDeleted: $isDeleted, ')
           ..write('companyId: $companyId, ')
           ..write('customerId: $customerId, ')
           ..write('invoiceId: $invoiceId, ')
@@ -4909,12 +4333,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $AppUsersTable appUsers = $AppUsersTable(this);
-  late final $CompanyPreferencesTable companyPreferences =
-      $CompanyPreferencesTable(this);
+  late final $CompanyPreferencesTableTable companyPreferencesTable =
+      $CompanyPreferencesTableTable(this);
   late final $CustomersTable customers = $CustomersTable(this);
-  late final $ExpensesTable expenses = $ExpensesTable(this);
+  late final $ExpensesTableTable expensesTable = $ExpensesTableTable(this);
   late final $InvoicesTable invoices = $InvoicesTable(this);
-  late final $OtherExpensesTable otherExpenses = $OtherExpensesTable(this);
+  late final $OtherExpensesTableTable otherExpensesTable =
+      $OtherExpensesTableTable(this);
   late final $PaymentsTable payments = $PaymentsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
@@ -4922,13 +4347,160 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     appUsers,
-    companyPreferences,
+    companyPreferencesTable,
     customers,
-    expenses,
+    expensesTable,
     invoices,
-    otherExpenses,
+    otherExpensesTable,
     payments,
   ];
+  @override
+  StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'app_users',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate('company_preferences_table', kind: UpdateKind.delete),
+      ],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'app_users',
+        limitUpdateKind: UpdateKind.update,
+      ),
+      result: [
+        TableUpdate('company_preferences_table', kind: UpdateKind.update),
+      ],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'app_users',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('customers', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'app_users',
+        limitUpdateKind: UpdateKind.update,
+      ),
+      result: [TableUpdate('customers', kind: UpdateKind.update)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'app_users',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('expenses_table', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'app_users',
+        limitUpdateKind: UpdateKind.update,
+      ),
+      result: [TableUpdate('expenses_table', kind: UpdateKind.update)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'app_users',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('invoices', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'app_users',
+        limitUpdateKind: UpdateKind.update,
+      ),
+      result: [TableUpdate('invoices', kind: UpdateKind.update)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'customers',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('invoices', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'customers',
+        limitUpdateKind: UpdateKind.update,
+      ),
+      result: [TableUpdate('invoices', kind: UpdateKind.update)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'app_users',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('other_expenses_table', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'app_users',
+        limitUpdateKind: UpdateKind.update,
+      ),
+      result: [TableUpdate('other_expenses_table', kind: UpdateKind.update)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'expenses_table',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('other_expenses_table', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'expenses_table',
+        limitUpdateKind: UpdateKind.update,
+      ),
+      result: [TableUpdate('other_expenses_table', kind: UpdateKind.update)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'app_users',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('payments', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'app_users',
+        limitUpdateKind: UpdateKind.update,
+      ),
+      result: [TableUpdate('payments', kind: UpdateKind.update)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'customers',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('payments', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'customers',
+        limitUpdateKind: UpdateKind.update,
+      ),
+      result: [TableUpdate('payments', kind: UpdateKind.update)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'invoices',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('payments', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'invoices',
+        limitUpdateKind: UpdateKind.update,
+      ),
+      result: [TableUpdate('payments', kind: UpdateKind.update)],
+    ),
+  ]);
 }
 
 typedef $$AppUsersTableCreateCompanionBuilder =
@@ -4936,8 +4508,8 @@ typedef $$AppUsersTableCreateCompanionBuilder =
       required String id,
       Value<String?> email,
       Value<String?> phoneNumber,
-      required bool isBanned,
-      required String companyName,
+      Value<bool> isBanned,
+      Value<String> companyName,
       Value<String?> logoUrl,
       Value<int> rowid,
     });
@@ -4951,6 +4523,137 @@ typedef $$AppUsersTableUpdateCompanionBuilder =
       Value<String?> logoUrl,
       Value<int> rowid,
     });
+
+final class $$AppUsersTableReferences
+    extends BaseReferences<_$AppDatabase, $AppUsersTable, AppUser> {
+  $$AppUsersTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<
+    $CompanyPreferencesTableTable,
+    List<CompanyPreferences>
+  >
+  _companyPreferencesTableRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.companyPreferencesTable,
+        aliasName: $_aliasNameGenerator(
+          db.appUsers.id,
+          db.companyPreferencesTable.companyId,
+        ),
+      );
+
+  $$CompanyPreferencesTableTableProcessedTableManager
+  get companyPreferencesTableRefs {
+    final manager = $$CompanyPreferencesTableTableTableManager(
+      $_db,
+      $_db.companyPreferencesTable,
+    ).filter((f) => f.companyId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _companyPreferencesTableRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$CustomersTable, List<Customer>>
+  _customersRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.customers,
+    aliasName: $_aliasNameGenerator(db.appUsers.id, db.customers.companyId),
+  );
+
+  $$CustomersTableProcessedTableManager get customersRefs {
+    final manager = $$CustomersTableTableManager(
+      $_db,
+      $_db.customers,
+    ).filter((f) => f.companyId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_customersRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$ExpensesTableTable, List<Expenses>>
+  _expensesTableRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.expensesTable,
+    aliasName: $_aliasNameGenerator(db.appUsers.id, db.expensesTable.companyId),
+  );
+
+  $$ExpensesTableTableProcessedTableManager get expensesTableRefs {
+    final manager = $$ExpensesTableTableTableManager(
+      $_db,
+      $_db.expensesTable,
+    ).filter((f) => f.companyId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_expensesTableRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$InvoicesTable, List<Invoice>> _invoicesRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.invoices,
+    aliasName: $_aliasNameGenerator(db.appUsers.id, db.invoices.companyId),
+  );
+
+  $$InvoicesTableProcessedTableManager get invoicesRefs {
+    final manager = $$InvoicesTableTableManager(
+      $_db,
+      $_db.invoices,
+    ).filter((f) => f.companyId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_invoicesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$OtherExpensesTableTable, List<OtherExpenses>>
+  _otherExpensesTableRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.otherExpensesTable,
+        aliasName: $_aliasNameGenerator(
+          db.appUsers.id,
+          db.otherExpensesTable.companyId,
+        ),
+      );
+
+  $$OtherExpensesTableTableProcessedTableManager get otherExpensesTableRefs {
+    final manager = $$OtherExpensesTableTableTableManager(
+      $_db,
+      $_db.otherExpensesTable,
+    ).filter((f) => f.companyId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _otherExpensesTableRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$PaymentsTable, List<Payment>> _paymentsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.payments,
+    aliasName: $_aliasNameGenerator(db.appUsers.id, db.payments.companyId),
+  );
+
+  $$PaymentsTableProcessedTableManager get paymentsRefs {
+    final manager = $$PaymentsTableTableManager(
+      $_db,
+      $_db.payments,
+    ).filter((f) => f.companyId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_paymentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
 
 class $$AppUsersTableFilterComposer
     extends Composer<_$AppDatabase, $AppUsersTable> {
@@ -4990,6 +4693,157 @@ class $$AppUsersTableFilterComposer
     column: $table.logoUrl,
     builder: (column) => ColumnFilters(column),
   );
+
+  Expression<bool> companyPreferencesTableRefs(
+    Expression<bool> Function($$CompanyPreferencesTableTableFilterComposer f) f,
+  ) {
+    final $$CompanyPreferencesTableTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.companyPreferencesTable,
+          getReferencedColumn: (t) => t.companyId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$CompanyPreferencesTableTableFilterComposer(
+                $db: $db,
+                $table: $db.companyPreferencesTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<bool> customersRefs(
+    Expression<bool> Function($$CustomersTableFilterComposer f) f,
+  ) {
+    final $$CustomersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.customers,
+      getReferencedColumn: (t) => t.companyId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CustomersTableFilterComposer(
+            $db: $db,
+            $table: $db.customers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> expensesTableRefs(
+    Expression<bool> Function($$ExpensesTableTableFilterComposer f) f,
+  ) {
+    final $$ExpensesTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.expensesTable,
+      getReferencedColumn: (t) => t.companyId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExpensesTableTableFilterComposer(
+            $db: $db,
+            $table: $db.expensesTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> invoicesRefs(
+    Expression<bool> Function($$InvoicesTableFilterComposer f) f,
+  ) {
+    final $$InvoicesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.invoices,
+      getReferencedColumn: (t) => t.companyId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$InvoicesTableFilterComposer(
+            $db: $db,
+            $table: $db.invoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> otherExpensesTableRefs(
+    Expression<bool> Function($$OtherExpensesTableTableFilterComposer f) f,
+  ) {
+    final $$OtherExpensesTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.otherExpensesTable,
+      getReferencedColumn: (t) => t.companyId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$OtherExpensesTableTableFilterComposer(
+            $db: $db,
+            $table: $db.otherExpensesTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> paymentsRefs(
+    Expression<bool> Function($$PaymentsTableFilterComposer f) f,
+  ) {
+    final $$PaymentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payments,
+      getReferencedColumn: (t) => t.companyId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentsTableFilterComposer(
+            $db: $db,
+            $table: $db.payments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$AppUsersTableOrderingComposer
@@ -5062,6 +4916,159 @@ class $$AppUsersTableAnnotationComposer
 
   GeneratedColumn<String> get logoUrl =>
       $composableBuilder(column: $table.logoUrl, builder: (column) => column);
+
+  Expression<T> companyPreferencesTableRefs<T extends Object>(
+    Expression<T> Function($$CompanyPreferencesTableTableAnnotationComposer a)
+    f,
+  ) {
+    final $$CompanyPreferencesTableTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.companyPreferencesTable,
+          getReferencedColumn: (t) => t.companyId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$CompanyPreferencesTableTableAnnotationComposer(
+                $db: $db,
+                $table: $db.companyPreferencesTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<T> customersRefs<T extends Object>(
+    Expression<T> Function($$CustomersTableAnnotationComposer a) f,
+  ) {
+    final $$CustomersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.customers,
+      getReferencedColumn: (t) => t.companyId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CustomersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.customers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> expensesTableRefs<T extends Object>(
+    Expression<T> Function($$ExpensesTableTableAnnotationComposer a) f,
+  ) {
+    final $$ExpensesTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.expensesTable,
+      getReferencedColumn: (t) => t.companyId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExpensesTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.expensesTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> invoicesRefs<T extends Object>(
+    Expression<T> Function($$InvoicesTableAnnotationComposer a) f,
+  ) {
+    final $$InvoicesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.invoices,
+      getReferencedColumn: (t) => t.companyId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$InvoicesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.invoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> otherExpensesTableRefs<T extends Object>(
+    Expression<T> Function($$OtherExpensesTableTableAnnotationComposer a) f,
+  ) {
+    final $$OtherExpensesTableTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.otherExpensesTable,
+          getReferencedColumn: (t) => t.companyId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$OtherExpensesTableTableAnnotationComposer(
+                $db: $db,
+                $table: $db.otherExpensesTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<T> paymentsRefs<T extends Object>(
+    Expression<T> Function($$PaymentsTableAnnotationComposer a) f,
+  ) {
+    final $$PaymentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payments,
+      getReferencedColumn: (t) => t.companyId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.payments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$AppUsersTableTableManager
@@ -5075,9 +5082,16 @@ class $$AppUsersTableTableManager
           $$AppUsersTableAnnotationComposer,
           $$AppUsersTableCreateCompanionBuilder,
           $$AppUsersTableUpdateCompanionBuilder,
-          (AppUser, BaseReferences<_$AppDatabase, $AppUsersTable, AppUser>),
+          (AppUser, $$AppUsersTableReferences),
           AppUser,
-          PrefetchHooks Function()
+          PrefetchHooks Function({
+            bool companyPreferencesTableRefs,
+            bool customersRefs,
+            bool expensesTableRefs,
+            bool invoicesRefs,
+            bool otherExpensesTableRefs,
+            bool paymentsRefs,
+          })
         > {
   $$AppUsersTableTableManager(_$AppDatabase db, $AppUsersTable table)
     : super(
@@ -5113,8 +5127,8 @@ class $$AppUsersTableTableManager
                 required String id,
                 Value<String?> email = const Value.absent(),
                 Value<String?> phoneNumber = const Value.absent(),
-                required bool isBanned,
-                required String companyName,
+                Value<bool> isBanned = const Value.absent(),
+                Value<String> companyName = const Value.absent(),
                 Value<String?> logoUrl = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => AppUsersCompanion.insert(
@@ -5127,9 +5141,165 @@ class $$AppUsersTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$AppUsersTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback:
+              ({
+                companyPreferencesTableRefs = false,
+                customersRefs = false,
+                expensesTableRefs = false,
+                invoicesRefs = false,
+                otherExpensesTableRefs = false,
+                paymentsRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (companyPreferencesTableRefs) db.companyPreferencesTable,
+                    if (customersRefs) db.customers,
+                    if (expensesTableRefs) db.expensesTable,
+                    if (invoicesRefs) db.invoices,
+                    if (otherExpensesTableRefs) db.otherExpensesTable,
+                    if (paymentsRefs) db.payments,
+                  ],
+                  addJoins: null,
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (companyPreferencesTableRefs)
+                        await $_getPrefetchedData<
+                          AppUser,
+                          $AppUsersTable,
+                          CompanyPreferences
+                        >(
+                          currentTable: table,
+                          referencedTable: $$AppUsersTableReferences
+                              ._companyPreferencesTableRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$AppUsersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).companyPreferencesTableRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.companyId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (customersRefs)
+                        await $_getPrefetchedData<
+                          AppUser,
+                          $AppUsersTable,
+                          Customer
+                        >(
+                          currentTable: table,
+                          referencedTable: $$AppUsersTableReferences
+                              ._customersRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$AppUsersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).customersRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.companyId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (expensesTableRefs)
+                        await $_getPrefetchedData<
+                          AppUser,
+                          $AppUsersTable,
+                          Expenses
+                        >(
+                          currentTable: table,
+                          referencedTable: $$AppUsersTableReferences
+                              ._expensesTableRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$AppUsersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).expensesTableRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.companyId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (invoicesRefs)
+                        await $_getPrefetchedData<
+                          AppUser,
+                          $AppUsersTable,
+                          Invoice
+                        >(
+                          currentTable: table,
+                          referencedTable: $$AppUsersTableReferences
+                              ._invoicesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$AppUsersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).invoicesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.companyId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (otherExpensesTableRefs)
+                        await $_getPrefetchedData<
+                          AppUser,
+                          $AppUsersTable,
+                          OtherExpenses
+                        >(
+                          currentTable: table,
+                          referencedTable: $$AppUsersTableReferences
+                              ._otherExpensesTableRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$AppUsersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).otherExpensesTableRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.companyId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (paymentsRefs)
+                        await $_getPrefetchedData<
+                          AppUser,
+                          $AppUsersTable,
+                          Payment
+                        >(
+                          currentTable: table,
+                          referencedTable: $$AppUsersTableReferences
+                              ._paymentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$AppUsersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).paymentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.companyId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
         ),
       );
 }
@@ -5144,34 +5314,37 @@ typedef $$AppUsersTableProcessedTableManager =
       $$AppUsersTableAnnotationComposer,
       $$AppUsersTableCreateCompanionBuilder,
       $$AppUsersTableUpdateCompanionBuilder,
-      (AppUser, BaseReferences<_$AppDatabase, $AppUsersTable, AppUser>),
+      (AppUser, $$AppUsersTableReferences),
       AppUser,
-      PrefetchHooks Function()
+      PrefetchHooks Function({
+        bool companyPreferencesTableRefs,
+        bool customersRefs,
+        bool expensesTableRefs,
+        bool invoicesRefs,
+        bool otherExpensesTableRefs,
+        bool paymentsRefs,
+      })
     >;
-typedef $$CompanyPreferencesTableCreateCompanionBuilder =
-    CompanyPreferencesCompanion Function({
+typedef $$CompanyPreferencesTableTableCreateCompanionBuilder =
+    CompanyPreferencesTableCompanion Function({
       required String id,
       required DateTime createdAt,
       required DateTime updatedAt,
-      Value<DateTime?> deletedAt,
-      required bool isDeleted,
       required String companyId,
       required double pricePerKilowat,
       required double pricePerAmp,
       required double fixedCharge,
       required double tva,
-      required String language,
+      Value<String> language,
       required int triggerDate,
       Value<String?> triggerMessage,
       Value<int> rowid,
     });
-typedef $$CompanyPreferencesTableUpdateCompanionBuilder =
-    CompanyPreferencesCompanion Function({
+typedef $$CompanyPreferencesTableTableUpdateCompanionBuilder =
+    CompanyPreferencesTableCompanion Function({
       Value<String> id,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime?> deletedAt,
-      Value<bool> isDeleted,
       Value<String> companyId,
       Value<double> pricePerKilowat,
       Value<double> pricePerAmp,
@@ -5183,9 +5356,45 @@ typedef $$CompanyPreferencesTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$CompanyPreferencesTableFilterComposer
-    extends Composer<_$AppDatabase, $CompanyPreferencesTable> {
-  $$CompanyPreferencesTableFilterComposer({
+final class $$CompanyPreferencesTableTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $CompanyPreferencesTableTable,
+          CompanyPreferences
+        > {
+  $$CompanyPreferencesTableTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $AppUsersTable _companyIdTable(_$AppDatabase db) =>
+      db.appUsers.createAlias(
+        $_aliasNameGenerator(
+          db.companyPreferencesTable.companyId,
+          db.appUsers.id,
+        ),
+      );
+
+  $$AppUsersTableProcessedTableManager get companyId {
+    final $_column = $_itemColumn<String>('company_id')!;
+
+    final manager = $$AppUsersTableTableManager(
+      $_db,
+      $_db.appUsers,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_companyIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$CompanyPreferencesTableTableFilterComposer
+    extends Composer<_$AppDatabase, $CompanyPreferencesTableTable> {
+  $$CompanyPreferencesTableTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -5204,21 +5413,6 @@ class $$CompanyPreferencesTableFilterComposer
 
   ColumnFilters<DateTime> get updatedAt => $composableBuilder(
     column: $table.updatedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get isDeleted => $composableBuilder(
-    column: $table.isDeleted,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get companyId => $composableBuilder(
-    column: $table.companyId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5256,11 +5450,34 @@ class $$CompanyPreferencesTableFilterComposer
     column: $table.triggerMessage,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$AppUsersTableFilterComposer get companyId {
+    final $$AppUsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableFilterComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
-class $$CompanyPreferencesTableOrderingComposer
-    extends Composer<_$AppDatabase, $CompanyPreferencesTable> {
-  $$CompanyPreferencesTableOrderingComposer({
+class $$CompanyPreferencesTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $CompanyPreferencesTableTable> {
+  $$CompanyPreferencesTableTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -5279,21 +5496,6 @@ class $$CompanyPreferencesTableOrderingComposer
 
   ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
     column: $table.updatedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get isDeleted => $composableBuilder(
-    column: $table.isDeleted,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get companyId => $composableBuilder(
-    column: $table.companyId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5331,11 +5533,34 @@ class $$CompanyPreferencesTableOrderingComposer
     column: $table.triggerMessage,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$AppUsersTableOrderingComposer get companyId {
+    final $$AppUsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
-class $$CompanyPreferencesTableAnnotationComposer
-    extends Composer<_$AppDatabase, $CompanyPreferencesTable> {
-  $$CompanyPreferencesTableAnnotationComposer({
+class $$CompanyPreferencesTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CompanyPreferencesTableTable> {
+  $$CompanyPreferencesTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -5350,15 +5575,6 @@ class $$CompanyPreferencesTableAnnotationComposer
 
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get deletedAt =>
-      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
-
-  GeneratedColumn<bool> get isDeleted =>
-      $composableBuilder(column: $table.isDeleted, builder: (column) => column);
-
-  GeneratedColumn<String> get companyId =>
-      $composableBuilder(column: $table.companyId, builder: (column) => column);
 
   GeneratedColumn<double> get pricePerKilowat => $composableBuilder(
     column: $table.pricePerKilowat,
@@ -5390,43 +5606,65 @@ class $$CompanyPreferencesTableAnnotationComposer
     column: $table.triggerMessage,
     builder: (column) => column,
   );
+
+  $$AppUsersTableAnnotationComposer get companyId {
+    final $$AppUsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
-class $$CompanyPreferencesTableTableManager
+class $$CompanyPreferencesTableTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $CompanyPreferencesTable,
-          CompanyPreference,
-          $$CompanyPreferencesTableFilterComposer,
-          $$CompanyPreferencesTableOrderingComposer,
-          $$CompanyPreferencesTableAnnotationComposer,
-          $$CompanyPreferencesTableCreateCompanionBuilder,
-          $$CompanyPreferencesTableUpdateCompanionBuilder,
-          (
-            CompanyPreference,
-            BaseReferences<
-              _$AppDatabase,
-              $CompanyPreferencesTable,
-              CompanyPreference
-            >,
-          ),
-          CompanyPreference,
-          PrefetchHooks Function()
+          $CompanyPreferencesTableTable,
+          CompanyPreferences,
+          $$CompanyPreferencesTableTableFilterComposer,
+          $$CompanyPreferencesTableTableOrderingComposer,
+          $$CompanyPreferencesTableTableAnnotationComposer,
+          $$CompanyPreferencesTableTableCreateCompanionBuilder,
+          $$CompanyPreferencesTableTableUpdateCompanionBuilder,
+          (CompanyPreferences, $$CompanyPreferencesTableTableReferences),
+          CompanyPreferences,
+          PrefetchHooks Function({bool companyId})
         > {
-  $$CompanyPreferencesTableTableManager(
+  $$CompanyPreferencesTableTableTableManager(
     _$AppDatabase db,
-    $CompanyPreferencesTable table,
+    $CompanyPreferencesTableTable table,
   ) : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$CompanyPreferencesTableFilterComposer($db: db, $table: table),
+              $$CompanyPreferencesTableTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
           createOrderingComposer: () =>
-              $$CompanyPreferencesTableOrderingComposer($db: db, $table: table),
+              $$CompanyPreferencesTableTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
           createComputedFieldComposer: () =>
-              $$CompanyPreferencesTableAnnotationComposer(
+              $$CompanyPreferencesTableTableAnnotationComposer(
                 $db: db,
                 $table: table,
               ),
@@ -5435,8 +5673,6 @@ class $$CompanyPreferencesTableTableManager
                 Value<String> id = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime?> deletedAt = const Value.absent(),
-                Value<bool> isDeleted = const Value.absent(),
                 Value<String> companyId = const Value.absent(),
                 Value<double> pricePerKilowat = const Value.absent(),
                 Value<double> pricePerAmp = const Value.absent(),
@@ -5446,12 +5682,10 @@ class $$CompanyPreferencesTableTableManager
                 Value<int> triggerDate = const Value.absent(),
                 Value<String?> triggerMessage = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => CompanyPreferencesCompanion(
+              }) => CompanyPreferencesTableCompanion(
                 id: id,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                isDeleted: isDeleted,
                 companyId: companyId,
                 pricePerKilowat: pricePerKilowat,
                 pricePerAmp: pricePerAmp,
@@ -5467,23 +5701,19 @@ class $$CompanyPreferencesTableTableManager
                 required String id,
                 required DateTime createdAt,
                 required DateTime updatedAt,
-                Value<DateTime?> deletedAt = const Value.absent(),
-                required bool isDeleted,
                 required String companyId,
                 required double pricePerKilowat,
                 required double pricePerAmp,
                 required double fixedCharge,
                 required double tva,
-                required String language,
+                Value<String> language = const Value.absent(),
                 required int triggerDate,
                 Value<String?> triggerMessage = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => CompanyPreferencesCompanion.insert(
+              }) => CompanyPreferencesTableCompanion.insert(
                 id: id,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                isDeleted: isDeleted,
                 companyId: companyId,
                 pricePerKilowat: pricePerKilowat,
                 pricePerAmp: pricePerAmp,
@@ -5495,41 +5725,79 @@ class $$CompanyPreferencesTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$CompanyPreferencesTableTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({companyId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (companyId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.companyId,
+                                referencedTable:
+                                    $$CompanyPreferencesTableTableReferences
+                                        ._companyIdTable(db),
+                                referencedColumn:
+                                    $$CompanyPreferencesTableTableReferences
+                                        ._companyIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
         ),
       );
 }
 
-typedef $$CompanyPreferencesTableProcessedTableManager =
+typedef $$CompanyPreferencesTableTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $CompanyPreferencesTable,
-      CompanyPreference,
-      $$CompanyPreferencesTableFilterComposer,
-      $$CompanyPreferencesTableOrderingComposer,
-      $$CompanyPreferencesTableAnnotationComposer,
-      $$CompanyPreferencesTableCreateCompanionBuilder,
-      $$CompanyPreferencesTableUpdateCompanionBuilder,
-      (
-        CompanyPreference,
-        BaseReferences<
-          _$AppDatabase,
-          $CompanyPreferencesTable,
-          CompanyPreference
-        >,
-      ),
-      CompanyPreference,
-      PrefetchHooks Function()
+      $CompanyPreferencesTableTable,
+      CompanyPreferences,
+      $$CompanyPreferencesTableTableFilterComposer,
+      $$CompanyPreferencesTableTableOrderingComposer,
+      $$CompanyPreferencesTableTableAnnotationComposer,
+      $$CompanyPreferencesTableTableCreateCompanionBuilder,
+      $$CompanyPreferencesTableTableUpdateCompanionBuilder,
+      (CompanyPreferences, $$CompanyPreferencesTableTableReferences),
+      CompanyPreferences,
+      PrefetchHooks Function({bool companyId})
     >;
 typedef $$CustomersTableCreateCompanionBuilder =
     CustomersCompanion Function({
       required String id,
       required DateTime createdAt,
       required DateTime updatedAt,
-      Value<DateTime?> deletedAt,
-      required bool isDeleted,
       required String companyId,
       required String name,
       Value<String?> phone,
@@ -5546,8 +5814,6 @@ typedef $$CustomersTableUpdateCompanionBuilder =
       Value<String> id,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime?> deletedAt,
-      Value<bool> isDeleted,
       Value<String> companyId,
       Value<String> name,
       Value<String?> phone,
@@ -5559,6 +5825,68 @@ typedef $$CustomersTableUpdateCompanionBuilder =
       Value<double> planValue,
       Value<int> rowid,
     });
+
+final class $$CustomersTableReferences
+    extends BaseReferences<_$AppDatabase, $CustomersTable, Customer> {
+  $$CustomersTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $AppUsersTable _companyIdTable(_$AppDatabase db) =>
+      db.appUsers.createAlias(
+        $_aliasNameGenerator(db.customers.companyId, db.appUsers.id),
+      );
+
+  $$AppUsersTableProcessedTableManager get companyId {
+    final $_column = $_itemColumn<String>('company_id')!;
+
+    final manager = $$AppUsersTableTableManager(
+      $_db,
+      $_db.appUsers,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_companyIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$InvoicesTable, List<Invoice>> _invoicesRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.invoices,
+    aliasName: $_aliasNameGenerator(db.customers.id, db.invoices.customerId),
+  );
+
+  $$InvoicesTableProcessedTableManager get invoicesRefs {
+    final manager = $$InvoicesTableTableManager(
+      $_db,
+      $_db.invoices,
+    ).filter((f) => f.customerId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_invoicesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$PaymentsTable, List<Payment>> _paymentsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.payments,
+    aliasName: $_aliasNameGenerator(db.customers.id, db.payments.customerId),
+  );
+
+  $$PaymentsTableProcessedTableManager get paymentsRefs {
+    final manager = $$PaymentsTableTableManager(
+      $_db,
+      $_db.payments,
+    ).filter((f) => f.customerId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_paymentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
 
 class $$CustomersTableFilterComposer
     extends Composer<_$AppDatabase, $CustomersTable> {
@@ -5581,21 +5909,6 @@ class $$CustomersTableFilterComposer
 
   ColumnFilters<DateTime> get updatedAt => $composableBuilder(
     column: $table.updatedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get isDeleted => $composableBuilder(
-    column: $table.isDeleted,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get companyId => $composableBuilder(
-    column: $table.companyId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5638,6 +5951,79 @@ class $$CustomersTableFilterComposer
     column: $table.planValue,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$AppUsersTableFilterComposer get companyId {
+    final $$AppUsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableFilterComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> invoicesRefs(
+    Expression<bool> Function($$InvoicesTableFilterComposer f) f,
+  ) {
+    final $$InvoicesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.invoices,
+      getReferencedColumn: (t) => t.customerId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$InvoicesTableFilterComposer(
+            $db: $db,
+            $table: $db.invoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> paymentsRefs(
+    Expression<bool> Function($$PaymentsTableFilterComposer f) f,
+  ) {
+    final $$PaymentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payments,
+      getReferencedColumn: (t) => t.customerId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentsTableFilterComposer(
+            $db: $db,
+            $table: $db.payments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$CustomersTableOrderingComposer
@@ -5661,21 +6047,6 @@ class $$CustomersTableOrderingComposer
 
   ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
     column: $table.updatedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get isDeleted => $composableBuilder(
-    column: $table.isDeleted,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get companyId => $composableBuilder(
-    column: $table.companyId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5718,6 +6089,29 @@ class $$CustomersTableOrderingComposer
     column: $table.planValue,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$AppUsersTableOrderingComposer get companyId {
+    final $$AppUsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$CustomersTableAnnotationComposer
@@ -5737,15 +6131,6 @@ class $$CustomersTableAnnotationComposer
 
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get deletedAt =>
-      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
-
-  GeneratedColumn<bool> get isDeleted =>
-      $composableBuilder(column: $table.isDeleted, builder: (column) => column);
-
-  GeneratedColumn<String> get companyId =>
-      $composableBuilder(column: $table.companyId, builder: (column) => column);
 
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
@@ -5776,6 +6161,79 @@ class $$CustomersTableAnnotationComposer
 
   GeneratedColumn<double> get planValue =>
       $composableBuilder(column: $table.planValue, builder: (column) => column);
+
+  $$AppUsersTableAnnotationComposer get companyId {
+    final $$AppUsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> invoicesRefs<T extends Object>(
+    Expression<T> Function($$InvoicesTableAnnotationComposer a) f,
+  ) {
+    final $$InvoicesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.invoices,
+      getReferencedColumn: (t) => t.customerId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$InvoicesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.invoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> paymentsRefs<T extends Object>(
+    Expression<T> Function($$PaymentsTableAnnotationComposer a) f,
+  ) {
+    final $$PaymentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payments,
+      getReferencedColumn: (t) => t.customerId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.payments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$CustomersTableTableManager
@@ -5789,9 +6247,13 @@ class $$CustomersTableTableManager
           $$CustomersTableAnnotationComposer,
           $$CustomersTableCreateCompanionBuilder,
           $$CustomersTableUpdateCompanionBuilder,
-          (Customer, BaseReferences<_$AppDatabase, $CustomersTable, Customer>),
+          (Customer, $$CustomersTableReferences),
           Customer,
-          PrefetchHooks Function()
+          PrefetchHooks Function({
+            bool companyId,
+            bool invoicesRefs,
+            bool paymentsRefs,
+          })
         > {
   $$CustomersTableTableManager(_$AppDatabase db, $CustomersTable table)
     : super(
@@ -5809,8 +6271,6 @@ class $$CustomersTableTableManager
                 Value<String> id = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime?> deletedAt = const Value.absent(),
-                Value<bool> isDeleted = const Value.absent(),
                 Value<String> companyId = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String?> phone = const Value.absent(),
@@ -5825,8 +6285,6 @@ class $$CustomersTableTableManager
                 id: id,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                isDeleted: isDeleted,
                 companyId: companyId,
                 name: name,
                 phone: phone,
@@ -5843,8 +6301,6 @@ class $$CustomersTableTableManager
                 required String id,
                 required DateTime createdAt,
                 required DateTime updatedAt,
-                Value<DateTime?> deletedAt = const Value.absent(),
-                required bool isDeleted,
                 required String companyId,
                 required String name,
                 Value<String?> phone = const Value.absent(),
@@ -5859,8 +6315,6 @@ class $$CustomersTableTableManager
                 id: id,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                isDeleted: isDeleted,
                 companyId: companyId,
                 name: name,
                 phone: phone,
@@ -5873,9 +6327,105 @@ class $$CustomersTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$CustomersTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback:
+              ({
+                companyId = false,
+                invoicesRefs = false,
+                paymentsRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (invoicesRefs) db.invoices,
+                    if (paymentsRefs) db.payments,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (companyId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.companyId,
+                                    referencedTable: $$CustomersTableReferences
+                                        ._companyIdTable(db),
+                                    referencedColumn: $$CustomersTableReferences
+                                        ._companyIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (invoicesRefs)
+                        await $_getPrefetchedData<
+                          Customer,
+                          $CustomersTable,
+                          Invoice
+                        >(
+                          currentTable: table,
+                          referencedTable: $$CustomersTableReferences
+                              ._invoicesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$CustomersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).invoicesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.customerId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (paymentsRefs)
+                        await $_getPrefetchedData<
+                          Customer,
+                          $CustomersTable,
+                          Payment
+                        >(
+                          currentTable: table,
+                          referencedTable: $$CustomersTableReferences
+                              ._paymentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$CustomersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).paymentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.customerId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
         ),
       );
 }
@@ -5890,17 +6440,19 @@ typedef $$CustomersTableProcessedTableManager =
       $$CustomersTableAnnotationComposer,
       $$CustomersTableCreateCompanionBuilder,
       $$CustomersTableUpdateCompanionBuilder,
-      (Customer, BaseReferences<_$AppDatabase, $CustomersTable, Customer>),
+      (Customer, $$CustomersTableReferences),
       Customer,
-      PrefetchHooks Function()
+      PrefetchHooks Function({
+        bool companyId,
+        bool invoicesRefs,
+        bool paymentsRefs,
+      })
     >;
-typedef $$ExpensesTableCreateCompanionBuilder =
-    ExpensesCompanion Function({
+typedef $$ExpensesTableTableCreateCompanionBuilder =
+    ExpensesTableCompanion Function({
       required String id,
       required DateTime createdAt,
       required DateTime updatedAt,
-      Value<DateTime?> deletedAt,
-      required bool isDeleted,
       required String companyId,
       required double fuelExpense,
       required double maintenanceExpenses,
@@ -5909,13 +6461,11 @@ typedef $$ExpensesTableCreateCompanionBuilder =
       Value<String?> notes,
       Value<int> rowid,
     });
-typedef $$ExpensesTableUpdateCompanionBuilder =
-    ExpensesCompanion Function({
+typedef $$ExpensesTableTableUpdateCompanionBuilder =
+    ExpensesTableCompanion Function({
       Value<String> id,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime?> deletedAt,
-      Value<bool> isDeleted,
       Value<String> companyId,
       Value<double> fuelExpense,
       Value<double> maintenanceExpenses,
@@ -5925,9 +6475,61 @@ typedef $$ExpensesTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$ExpensesTableFilterComposer
-    extends Composer<_$AppDatabase, $ExpensesTable> {
-  $$ExpensesTableFilterComposer({
+final class $$ExpensesTableTableReferences
+    extends BaseReferences<_$AppDatabase, $ExpensesTableTable, Expenses> {
+  $$ExpensesTableTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $AppUsersTable _companyIdTable(_$AppDatabase db) =>
+      db.appUsers.createAlias(
+        $_aliasNameGenerator(db.expensesTable.companyId, db.appUsers.id),
+      );
+
+  $$AppUsersTableProcessedTableManager get companyId {
+    final $_column = $_itemColumn<String>('company_id')!;
+
+    final manager = $$AppUsersTableTableManager(
+      $_db,
+      $_db.appUsers,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_companyIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$OtherExpensesTableTable, List<OtherExpenses>>
+  _otherExpensesTableRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.otherExpensesTable,
+        aliasName: $_aliasNameGenerator(
+          db.expensesTable.id,
+          db.otherExpensesTable.expenseId,
+        ),
+      );
+
+  $$OtherExpensesTableTableProcessedTableManager get otherExpensesTableRefs {
+    final manager = $$OtherExpensesTableTableTableManager(
+      $_db,
+      $_db.otherExpensesTable,
+    ).filter((f) => f.expenseId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _otherExpensesTableRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$ExpensesTableTableFilterComposer
+    extends Composer<_$AppDatabase, $ExpensesTableTable> {
+  $$ExpensesTableTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -5946,21 +6548,6 @@ class $$ExpensesTableFilterComposer
 
   ColumnFilters<DateTime> get updatedAt => $composableBuilder(
     column: $table.updatedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get isDeleted => $composableBuilder(
-    column: $table.isDeleted,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get companyId => $composableBuilder(
-    column: $table.companyId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5988,11 +6575,59 @@ class $$ExpensesTableFilterComposer
     column: $table.notes,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$AppUsersTableFilterComposer get companyId {
+    final $$AppUsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableFilterComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> otherExpensesTableRefs(
+    Expression<bool> Function($$OtherExpensesTableTableFilterComposer f) f,
+  ) {
+    final $$OtherExpensesTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.otherExpensesTable,
+      getReferencedColumn: (t) => t.expenseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$OtherExpensesTableTableFilterComposer(
+            $db: $db,
+            $table: $db.otherExpensesTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
-class $$ExpensesTableOrderingComposer
-    extends Composer<_$AppDatabase, $ExpensesTable> {
-  $$ExpensesTableOrderingComposer({
+class $$ExpensesTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $ExpensesTableTable> {
+  $$ExpensesTableTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -6011,21 +6646,6 @@ class $$ExpensesTableOrderingComposer
 
   ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
     column: $table.updatedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get isDeleted => $composableBuilder(
-    column: $table.isDeleted,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get companyId => $composableBuilder(
-    column: $table.companyId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -6053,11 +6673,34 @@ class $$ExpensesTableOrderingComposer
     column: $table.notes,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$AppUsersTableOrderingComposer get companyId {
+    final $$AppUsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
-class $$ExpensesTableAnnotationComposer
-    extends Composer<_$AppDatabase, $ExpensesTable> {
-  $$ExpensesTableAnnotationComposer({
+class $$ExpensesTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ExpensesTableTable> {
+  $$ExpensesTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -6072,15 +6715,6 @@ class $$ExpensesTableAnnotationComposer
 
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get deletedAt =>
-      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
-
-  GeneratedColumn<bool> get isDeleted =>
-      $composableBuilder(column: $table.isDeleted, builder: (column) => column);
-
-  GeneratedColumn<String> get companyId =>
-      $composableBuilder(column: $table.companyId, builder: (column) => column);
 
   GeneratedColumn<double> get fuelExpense => $composableBuilder(
     column: $table.fuelExpense,
@@ -6104,41 +6738,88 @@ class $$ExpensesTableAnnotationComposer
 
   GeneratedColumn<String> get notes =>
       $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  $$AppUsersTableAnnotationComposer get companyId {
+    final $$AppUsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> otherExpensesTableRefs<T extends Object>(
+    Expression<T> Function($$OtherExpensesTableTableAnnotationComposer a) f,
+  ) {
+    final $$OtherExpensesTableTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.otherExpensesTable,
+          getReferencedColumn: (t) => t.expenseId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$OtherExpensesTableTableAnnotationComposer(
+                $db: $db,
+                $table: $db.otherExpensesTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
-class $$ExpensesTableTableManager
+class $$ExpensesTableTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $ExpensesTable,
-          Expense,
-          $$ExpensesTableFilterComposer,
-          $$ExpensesTableOrderingComposer,
-          $$ExpensesTableAnnotationComposer,
-          $$ExpensesTableCreateCompanionBuilder,
-          $$ExpensesTableUpdateCompanionBuilder,
-          (Expense, BaseReferences<_$AppDatabase, $ExpensesTable, Expense>),
-          Expense,
-          PrefetchHooks Function()
+          $ExpensesTableTable,
+          Expenses,
+          $$ExpensesTableTableFilterComposer,
+          $$ExpensesTableTableOrderingComposer,
+          $$ExpensesTableTableAnnotationComposer,
+          $$ExpensesTableTableCreateCompanionBuilder,
+          $$ExpensesTableTableUpdateCompanionBuilder,
+          (Expenses, $$ExpensesTableTableReferences),
+          Expenses,
+          PrefetchHooks Function({bool companyId, bool otherExpensesTableRefs})
         > {
-  $$ExpensesTableTableManager(_$AppDatabase db, $ExpensesTable table)
+  $$ExpensesTableTableTableManager(_$AppDatabase db, $ExpensesTableTable table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$ExpensesTableFilterComposer($db: db, $table: table),
+              $$ExpensesTableTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$ExpensesTableOrderingComposer($db: db, $table: table),
+              $$ExpensesTableTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$ExpensesTableAnnotationComposer($db: db, $table: table),
+              $$ExpensesTableTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime?> deletedAt = const Value.absent(),
-                Value<bool> isDeleted = const Value.absent(),
                 Value<String> companyId = const Value.absent(),
                 Value<double> fuelExpense = const Value.absent(),
                 Value<double> maintenanceExpenses = const Value.absent(),
@@ -6146,12 +6827,10 @@ class $$ExpensesTableTableManager
                 Value<DateTime> expenseDate = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => ExpensesCompanion(
+              }) => ExpensesTableCompanion(
                 id: id,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                isDeleted: isDeleted,
                 companyId: companyId,
                 fuelExpense: fuelExpense,
                 maintenanceExpenses: maintenanceExpenses,
@@ -6165,8 +6844,6 @@ class $$ExpensesTableTableManager
                 required String id,
                 required DateTime createdAt,
                 required DateTime updatedAt,
-                Value<DateTime?> deletedAt = const Value.absent(),
-                required bool isDeleted,
                 required String companyId,
                 required double fuelExpense,
                 required double maintenanceExpenses,
@@ -6174,12 +6851,10 @@ class $$ExpensesTableTableManager
                 required DateTime expenseDate,
                 Value<String?> notes = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => ExpensesCompanion.insert(
+              }) => ExpensesTableCompanion.insert(
                 id: id,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                isDeleted: isDeleted,
                 companyId: companyId,
                 fuelExpense: fuelExpense,
                 maintenanceExpenses: maintenanceExpenses,
@@ -6189,34 +6864,104 @@ class $$ExpensesTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$ExpensesTableTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback:
+              ({companyId = false, otherExpensesTableRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (otherExpensesTableRefs) db.otherExpensesTable,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (companyId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.companyId,
+                                    referencedTable:
+                                        $$ExpensesTableTableReferences
+                                            ._companyIdTable(db),
+                                    referencedColumn:
+                                        $$ExpensesTableTableReferences
+                                            ._companyIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (otherExpensesTableRefs)
+                        await $_getPrefetchedData<
+                          Expenses,
+                          $ExpensesTableTable,
+                          OtherExpenses
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ExpensesTableTableReferences
+                              ._otherExpensesTableRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ExpensesTableTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).otherExpensesTableRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.expenseId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
         ),
       );
 }
 
-typedef $$ExpensesTableProcessedTableManager =
+typedef $$ExpensesTableTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $ExpensesTable,
-      Expense,
-      $$ExpensesTableFilterComposer,
-      $$ExpensesTableOrderingComposer,
-      $$ExpensesTableAnnotationComposer,
-      $$ExpensesTableCreateCompanionBuilder,
-      $$ExpensesTableUpdateCompanionBuilder,
-      (Expense, BaseReferences<_$AppDatabase, $ExpensesTable, Expense>),
-      Expense,
-      PrefetchHooks Function()
+      $ExpensesTableTable,
+      Expenses,
+      $$ExpensesTableTableFilterComposer,
+      $$ExpensesTableTableOrderingComposer,
+      $$ExpensesTableTableAnnotationComposer,
+      $$ExpensesTableTableCreateCompanionBuilder,
+      $$ExpensesTableTableUpdateCompanionBuilder,
+      (Expenses, $$ExpensesTableTableReferences),
+      Expenses,
+      PrefetchHooks Function({bool companyId, bool otherExpensesTableRefs})
     >;
 typedef $$InvoicesTableCreateCompanionBuilder =
     InvoicesCompanion Function({
       required String id,
       required DateTime createdAt,
       required DateTime updatedAt,
-      Value<DateTime?> deletedAt,
-      required bool isDeleted,
       required String companyId,
       required String customerId,
       required DateTime issueDate,
@@ -6226,7 +6971,7 @@ typedef $$InvoicesTableCreateCompanionBuilder =
       required double totalAmount,
       required double paidAmount,
       required double amountDue,
-      required String invoiceStatus,
+      Value<String> invoiceStatus,
       Value<int> rowid,
     });
 typedef $$InvoicesTableUpdateCompanionBuilder =
@@ -6234,8 +6979,6 @@ typedef $$InvoicesTableUpdateCompanionBuilder =
       Value<String> id,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime?> deletedAt,
-      Value<bool> isDeleted,
       Value<String> companyId,
       Value<String> customerId,
       Value<DateTime> issueDate,
@@ -6248,6 +6991,66 @@ typedef $$InvoicesTableUpdateCompanionBuilder =
       Value<String> invoiceStatus,
       Value<int> rowid,
     });
+
+final class $$InvoicesTableReferences
+    extends BaseReferences<_$AppDatabase, $InvoicesTable, Invoice> {
+  $$InvoicesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $AppUsersTable _companyIdTable(_$AppDatabase db) => db.appUsers
+      .createAlias($_aliasNameGenerator(db.invoices.companyId, db.appUsers.id));
+
+  $$AppUsersTableProcessedTableManager get companyId {
+    final $_column = $_itemColumn<String>('company_id')!;
+
+    final manager = $$AppUsersTableTableManager(
+      $_db,
+      $_db.appUsers,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_companyIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $CustomersTable _customerIdTable(_$AppDatabase db) =>
+      db.customers.createAlias(
+        $_aliasNameGenerator(db.invoices.customerId, db.customers.id),
+      );
+
+  $$CustomersTableProcessedTableManager get customerId {
+    final $_column = $_itemColumn<String>('customer_id')!;
+
+    final manager = $$CustomersTableTableManager(
+      $_db,
+      $_db.customers,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_customerIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$PaymentsTable, List<Payment>> _paymentsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.payments,
+    aliasName: $_aliasNameGenerator(db.invoices.id, db.payments.invoiceId),
+  );
+
+  $$PaymentsTableProcessedTableManager get paymentsRefs {
+    final manager = $$PaymentsTableTableManager(
+      $_db,
+      $_db.payments,
+    ).filter((f) => f.invoiceId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_paymentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
 
 class $$InvoicesTableFilterComposer
     extends Composer<_$AppDatabase, $InvoicesTable> {
@@ -6270,26 +7073,6 @@ class $$InvoicesTableFilterComposer
 
   ColumnFilters<DateTime> get updatedAt => $composableBuilder(
     column: $table.updatedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get isDeleted => $composableBuilder(
-    column: $table.isDeleted,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get companyId => $composableBuilder(
-    column: $table.companyId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get customerId => $composableBuilder(
-    column: $table.customerId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -6332,6 +7115,77 @@ class $$InvoicesTableFilterComposer
     column: $table.invoiceStatus,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$AppUsersTableFilterComposer get companyId {
+    final $$AppUsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableFilterComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$CustomersTableFilterComposer get customerId {
+    final $$CustomersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.customerId,
+      referencedTable: $db.customers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CustomersTableFilterComposer(
+            $db: $db,
+            $table: $db.customers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> paymentsRefs(
+    Expression<bool> Function($$PaymentsTableFilterComposer f) f,
+  ) {
+    final $$PaymentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payments,
+      getReferencedColumn: (t) => t.invoiceId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentsTableFilterComposer(
+            $db: $db,
+            $table: $db.payments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$InvoicesTableOrderingComposer
@@ -6355,26 +7209,6 @@ class $$InvoicesTableOrderingComposer
 
   ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
     column: $table.updatedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get isDeleted => $composableBuilder(
-    column: $table.isDeleted,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get companyId => $composableBuilder(
-    column: $table.companyId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get customerId => $composableBuilder(
-    column: $table.customerId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -6417,6 +7251,52 @@ class $$InvoicesTableOrderingComposer
     column: $table.invoiceStatus,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$AppUsersTableOrderingComposer get companyId {
+    final $$AppUsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$CustomersTableOrderingComposer get customerId {
+    final $$CustomersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.customerId,
+      referencedTable: $db.customers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CustomersTableOrderingComposer(
+            $db: $db,
+            $table: $db.customers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$InvoicesTableAnnotationComposer
@@ -6436,20 +7316,6 @@ class $$InvoicesTableAnnotationComposer
 
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get deletedAt =>
-      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
-
-  GeneratedColumn<bool> get isDeleted =>
-      $composableBuilder(column: $table.isDeleted, builder: (column) => column);
-
-  GeneratedColumn<String> get companyId =>
-      $composableBuilder(column: $table.companyId, builder: (column) => column);
-
-  GeneratedColumn<String> get customerId => $composableBuilder(
-    column: $table.customerId,
-    builder: (column) => column,
-  );
 
   GeneratedColumn<DateTime> get issueDate =>
       $composableBuilder(column: $table.issueDate, builder: (column) => column);
@@ -6482,6 +7348,77 @@ class $$InvoicesTableAnnotationComposer
     column: $table.invoiceStatus,
     builder: (column) => column,
   );
+
+  $$AppUsersTableAnnotationComposer get companyId {
+    final $$AppUsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$CustomersTableAnnotationComposer get customerId {
+    final $$CustomersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.customerId,
+      referencedTable: $db.customers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CustomersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.customers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> paymentsRefs<T extends Object>(
+    Expression<T> Function($$PaymentsTableAnnotationComposer a) f,
+  ) {
+    final $$PaymentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payments,
+      getReferencedColumn: (t) => t.invoiceId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.payments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$InvoicesTableTableManager
@@ -6495,9 +7432,13 @@ class $$InvoicesTableTableManager
           $$InvoicesTableAnnotationComposer,
           $$InvoicesTableCreateCompanionBuilder,
           $$InvoicesTableUpdateCompanionBuilder,
-          (Invoice, BaseReferences<_$AppDatabase, $InvoicesTable, Invoice>),
+          (Invoice, $$InvoicesTableReferences),
           Invoice,
-          PrefetchHooks Function()
+          PrefetchHooks Function({
+            bool companyId,
+            bool customerId,
+            bool paymentsRefs,
+          })
         > {
   $$InvoicesTableTableManager(_$AppDatabase db, $InvoicesTable table)
     : super(
@@ -6515,8 +7456,6 @@ class $$InvoicesTableTableManager
                 Value<String> id = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime?> deletedAt = const Value.absent(),
-                Value<bool> isDeleted = const Value.absent(),
                 Value<String> companyId = const Value.absent(),
                 Value<String> customerId = const Value.absent(),
                 Value<DateTime> issueDate = const Value.absent(),
@@ -6532,8 +7471,6 @@ class $$InvoicesTableTableManager
                 id: id,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                isDeleted: isDeleted,
                 companyId: companyId,
                 customerId: customerId,
                 issueDate: issueDate,
@@ -6551,8 +7488,6 @@ class $$InvoicesTableTableManager
                 required String id,
                 required DateTime createdAt,
                 required DateTime updatedAt,
-                Value<DateTime?> deletedAt = const Value.absent(),
-                required bool isDeleted,
                 required String companyId,
                 required String customerId,
                 required DateTime issueDate,
@@ -6562,14 +7497,12 @@ class $$InvoicesTableTableManager
                 required double totalAmount,
                 required double paidAmount,
                 required double amountDue,
-                required String invoiceStatus,
+                Value<String> invoiceStatus = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => InvoicesCompanion.insert(
                 id: id,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                isDeleted: isDeleted,
                 companyId: companyId,
                 customerId: customerId,
                 issueDate: issueDate,
@@ -6583,9 +7516,90 @@ class $$InvoicesTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$InvoicesTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback:
+              ({companyId = false, customerId = false, paymentsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [if (paymentsRefs) db.payments],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (companyId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.companyId,
+                                    referencedTable: $$InvoicesTableReferences
+                                        ._companyIdTable(db),
+                                    referencedColumn: $$InvoicesTableReferences
+                                        ._companyIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+                        if (customerId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.customerId,
+                                    referencedTable: $$InvoicesTableReferences
+                                        ._customerIdTable(db),
+                                    referencedColumn: $$InvoicesTableReferences
+                                        ._customerIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (paymentsRefs)
+                        await $_getPrefetchedData<
+                          Invoice,
+                          $InvoicesTable,
+                          Payment
+                        >(
+                          currentTable: table,
+                          referencedTable: $$InvoicesTableReferences
+                              ._paymentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$InvoicesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).paymentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.invoiceId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
         ),
       );
 }
@@ -6600,17 +7614,19 @@ typedef $$InvoicesTableProcessedTableManager =
       $$InvoicesTableAnnotationComposer,
       $$InvoicesTableCreateCompanionBuilder,
       $$InvoicesTableUpdateCompanionBuilder,
-      (Invoice, BaseReferences<_$AppDatabase, $InvoicesTable, Invoice>),
+      (Invoice, $$InvoicesTableReferences),
       Invoice,
-      PrefetchHooks Function()
+      PrefetchHooks Function({
+        bool companyId,
+        bool customerId,
+        bool paymentsRefs,
+      })
     >;
-typedef $$OtherExpensesTableCreateCompanionBuilder =
-    OtherExpensesCompanion Function({
+typedef $$OtherExpensesTableTableCreateCompanionBuilder =
+    OtherExpensesTableCompanion Function({
       required String id,
       required DateTime createdAt,
       required DateTime updatedAt,
-      Value<DateTime?> deletedAt,
-      required bool isDeleted,
       required String companyId,
       required String expenseId,
       required double amount,
@@ -6618,13 +7634,11 @@ typedef $$OtherExpensesTableCreateCompanionBuilder =
       Value<String?> description,
       Value<int> rowid,
     });
-typedef $$OtherExpensesTableUpdateCompanionBuilder =
-    OtherExpensesCompanion Function({
+typedef $$OtherExpensesTableTableUpdateCompanionBuilder =
+    OtherExpensesTableCompanion Function({
       Value<String> id,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime?> deletedAt,
-      Value<bool> isDeleted,
       Value<String> companyId,
       Value<String> expenseId,
       Value<double> amount,
@@ -6633,9 +7647,60 @@ typedef $$OtherExpensesTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$OtherExpensesTableFilterComposer
-    extends Composer<_$AppDatabase, $OtherExpensesTable> {
-  $$OtherExpensesTableFilterComposer({
+final class $$OtherExpensesTableTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $OtherExpensesTableTable, OtherExpenses> {
+  $$OtherExpensesTableTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $AppUsersTable _companyIdTable(_$AppDatabase db) =>
+      db.appUsers.createAlias(
+        $_aliasNameGenerator(db.otherExpensesTable.companyId, db.appUsers.id),
+      );
+
+  $$AppUsersTableProcessedTableManager get companyId {
+    final $_column = $_itemColumn<String>('company_id')!;
+
+    final manager = $$AppUsersTableTableManager(
+      $_db,
+      $_db.appUsers,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_companyIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $ExpensesTableTable _expenseIdTable(_$AppDatabase db) =>
+      db.expensesTable.createAlias(
+        $_aliasNameGenerator(
+          db.otherExpensesTable.expenseId,
+          db.expensesTable.id,
+        ),
+      );
+
+  $$ExpensesTableTableProcessedTableManager get expenseId {
+    final $_column = $_itemColumn<String>('expense_id')!;
+
+    final manager = $$ExpensesTableTableTableManager(
+      $_db,
+      $_db.expensesTable,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_expenseIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$OtherExpensesTableTableFilterComposer
+    extends Composer<_$AppDatabase, $OtherExpensesTableTable> {
+  $$OtherExpensesTableTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -6657,26 +7722,6 @@ class $$OtherExpensesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get isDeleted => $composableBuilder(
-    column: $table.isDeleted,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get companyId => $composableBuilder(
-    column: $table.companyId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get expenseId => $composableBuilder(
-    column: $table.expenseId,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<double> get amount => $composableBuilder(
     column: $table.amount,
     builder: (column) => ColumnFilters(column),
@@ -6691,11 +7736,57 @@ class $$OtherExpensesTableFilterComposer
     column: $table.description,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$AppUsersTableFilterComposer get companyId {
+    final $$AppUsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableFilterComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ExpensesTableTableFilterComposer get expenseId {
+    final $$ExpensesTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.expenseId,
+      referencedTable: $db.expensesTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExpensesTableTableFilterComposer(
+            $db: $db,
+            $table: $db.expensesTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
-class $$OtherExpensesTableOrderingComposer
-    extends Composer<_$AppDatabase, $OtherExpensesTable> {
-  $$OtherExpensesTableOrderingComposer({
+class $$OtherExpensesTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $OtherExpensesTableTable> {
+  $$OtherExpensesTableTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -6717,26 +7808,6 @@ class $$OtherExpensesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get isDeleted => $composableBuilder(
-    column: $table.isDeleted,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get companyId => $composableBuilder(
-    column: $table.companyId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get expenseId => $composableBuilder(
-    column: $table.expenseId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<double> get amount => $composableBuilder(
     column: $table.amount,
     builder: (column) => ColumnOrderings(column),
@@ -6751,11 +7822,57 @@ class $$OtherExpensesTableOrderingComposer
     column: $table.description,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$AppUsersTableOrderingComposer get companyId {
+    final $$AppUsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ExpensesTableTableOrderingComposer get expenseId {
+    final $$ExpensesTableTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.expenseId,
+      referencedTable: $db.expensesTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExpensesTableTableOrderingComposer(
+            $db: $db,
+            $table: $db.expensesTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
-class $$OtherExpensesTableAnnotationComposer
-    extends Composer<_$AppDatabase, $OtherExpensesTable> {
-  $$OtherExpensesTableAnnotationComposer({
+class $$OtherExpensesTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $OtherExpensesTableTable> {
+  $$OtherExpensesTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -6771,18 +7888,6 @@ class $$OtherExpensesTableAnnotationComposer
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get deletedAt =>
-      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
-
-  GeneratedColumn<bool> get isDeleted =>
-      $composableBuilder(column: $table.isDeleted, builder: (column) => column);
-
-  GeneratedColumn<String> get companyId =>
-      $composableBuilder(column: $table.companyId, builder: (column) => column);
-
-  GeneratedColumn<String> get expenseId =>
-      $composableBuilder(column: $table.expenseId, builder: (column) => column);
-
   GeneratedColumn<double> get amount =>
       $composableBuilder(column: $table.amount, builder: (column) => column);
 
@@ -6793,56 +7898,100 @@ class $$OtherExpensesTableAnnotationComposer
     column: $table.description,
     builder: (column) => column,
   );
+
+  $$AppUsersTableAnnotationComposer get companyId {
+    final $$AppUsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ExpensesTableTableAnnotationComposer get expenseId {
+    final $$ExpensesTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.expenseId,
+      referencedTable: $db.expensesTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExpensesTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.expensesTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
-class $$OtherExpensesTableTableManager
+class $$OtherExpensesTableTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $OtherExpensesTable,
-          OtherExpense,
-          $$OtherExpensesTableFilterComposer,
-          $$OtherExpensesTableOrderingComposer,
-          $$OtherExpensesTableAnnotationComposer,
-          $$OtherExpensesTableCreateCompanionBuilder,
-          $$OtherExpensesTableUpdateCompanionBuilder,
-          (
-            OtherExpense,
-            BaseReferences<_$AppDatabase, $OtherExpensesTable, OtherExpense>,
-          ),
-          OtherExpense,
-          PrefetchHooks Function()
+          $OtherExpensesTableTable,
+          OtherExpenses,
+          $$OtherExpensesTableTableFilterComposer,
+          $$OtherExpensesTableTableOrderingComposer,
+          $$OtherExpensesTableTableAnnotationComposer,
+          $$OtherExpensesTableTableCreateCompanionBuilder,
+          $$OtherExpensesTableTableUpdateCompanionBuilder,
+          (OtherExpenses, $$OtherExpensesTableTableReferences),
+          OtherExpenses,
+          PrefetchHooks Function({bool companyId, bool expenseId})
         > {
-  $$OtherExpensesTableTableManager(_$AppDatabase db, $OtherExpensesTable table)
-    : super(
+  $$OtherExpensesTableTableTableManager(
+    _$AppDatabase db,
+    $OtherExpensesTableTable table,
+  ) : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$OtherExpensesTableFilterComposer($db: db, $table: table),
+              $$OtherExpensesTableTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$OtherExpensesTableOrderingComposer($db: db, $table: table),
+              $$OtherExpensesTableTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$OtherExpensesTableAnnotationComposer($db: db, $table: table),
+              $$OtherExpensesTableTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime?> deletedAt = const Value.absent(),
-                Value<bool> isDeleted = const Value.absent(),
                 Value<String> companyId = const Value.absent(),
                 Value<String> expenseId = const Value.absent(),
                 Value<double> amount = const Value.absent(),
                 Value<String> type = const Value.absent(),
                 Value<String?> description = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => OtherExpensesCompanion(
+              }) => OtherExpensesTableCompanion(
                 id: id,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                isDeleted: isDeleted,
                 companyId: companyId,
                 expenseId: expenseId,
                 amount: amount,
@@ -6855,20 +8004,16 @@ class $$OtherExpensesTableTableManager
                 required String id,
                 required DateTime createdAt,
                 required DateTime updatedAt,
-                Value<DateTime?> deletedAt = const Value.absent(),
-                required bool isDeleted,
                 required String companyId,
                 required String expenseId,
                 required double amount,
                 required String type,
                 Value<String?> description = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => OtherExpensesCompanion.insert(
+              }) => OtherExpensesTableCompanion.insert(
                 id: id,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                isDeleted: isDeleted,
                 companyId: companyId,
                 expenseId: expenseId,
                 amount: amount,
@@ -6877,37 +8022,94 @@ class $$OtherExpensesTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$OtherExpensesTableTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({companyId = false, expenseId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (companyId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.companyId,
+                                referencedTable:
+                                    $$OtherExpensesTableTableReferences
+                                        ._companyIdTable(db),
+                                referencedColumn:
+                                    $$OtherExpensesTableTableReferences
+                                        ._companyIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (expenseId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.expenseId,
+                                referencedTable:
+                                    $$OtherExpensesTableTableReferences
+                                        ._expenseIdTable(db),
+                                referencedColumn:
+                                    $$OtherExpensesTableTableReferences
+                                        ._expenseIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
         ),
       );
 }
 
-typedef $$OtherExpensesTableProcessedTableManager =
+typedef $$OtherExpensesTableTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $OtherExpensesTable,
-      OtherExpense,
-      $$OtherExpensesTableFilterComposer,
-      $$OtherExpensesTableOrderingComposer,
-      $$OtherExpensesTableAnnotationComposer,
-      $$OtherExpensesTableCreateCompanionBuilder,
-      $$OtherExpensesTableUpdateCompanionBuilder,
-      (
-        OtherExpense,
-        BaseReferences<_$AppDatabase, $OtherExpensesTable, OtherExpense>,
-      ),
-      OtherExpense,
-      PrefetchHooks Function()
+      $OtherExpensesTableTable,
+      OtherExpenses,
+      $$OtherExpensesTableTableFilterComposer,
+      $$OtherExpensesTableTableOrderingComposer,
+      $$OtherExpensesTableTableAnnotationComposer,
+      $$OtherExpensesTableTableCreateCompanionBuilder,
+      $$OtherExpensesTableTableUpdateCompanionBuilder,
+      (OtherExpenses, $$OtherExpensesTableTableReferences),
+      OtherExpenses,
+      PrefetchHooks Function({bool companyId, bool expenseId})
     >;
 typedef $$PaymentsTableCreateCompanionBuilder =
     PaymentsCompanion Function({
       required String id,
       required DateTime createdAt,
       required DateTime updatedAt,
-      Value<DateTime?> deletedAt,
-      required bool isDeleted,
       required String companyId,
       required String customerId,
       required String invoiceId,
@@ -6922,8 +8124,6 @@ typedef $$PaymentsTableUpdateCompanionBuilder =
       Value<String> id,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime?> deletedAt,
-      Value<bool> isDeleted,
       Value<String> companyId,
       Value<String> customerId,
       Value<String> invoiceId,
@@ -6933,6 +8133,64 @@ typedef $$PaymentsTableUpdateCompanionBuilder =
       Value<String?> notes,
       Value<int> rowid,
     });
+
+final class $$PaymentsTableReferences
+    extends BaseReferences<_$AppDatabase, $PaymentsTable, Payment> {
+  $$PaymentsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $AppUsersTable _companyIdTable(_$AppDatabase db) => db.appUsers
+      .createAlias($_aliasNameGenerator(db.payments.companyId, db.appUsers.id));
+
+  $$AppUsersTableProcessedTableManager get companyId {
+    final $_column = $_itemColumn<String>('company_id')!;
+
+    final manager = $$AppUsersTableTableManager(
+      $_db,
+      $_db.appUsers,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_companyIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $CustomersTable _customerIdTable(_$AppDatabase db) =>
+      db.customers.createAlias(
+        $_aliasNameGenerator(db.payments.customerId, db.customers.id),
+      );
+
+  $$CustomersTableProcessedTableManager get customerId {
+    final $_column = $_itemColumn<String>('customer_id')!;
+
+    final manager = $$CustomersTableTableManager(
+      $_db,
+      $_db.customers,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_customerIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $InvoicesTable _invoiceIdTable(_$AppDatabase db) => db.invoices
+      .createAlias($_aliasNameGenerator(db.payments.invoiceId, db.invoices.id));
+
+  $$InvoicesTableProcessedTableManager get invoiceId {
+    final $_column = $_itemColumn<String>('invoice_id')!;
+
+    final manager = $$InvoicesTableTableManager(
+      $_db,
+      $_db.invoices,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_invoiceIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
 
 class $$PaymentsTableFilterComposer
     extends Composer<_$AppDatabase, $PaymentsTable> {
@@ -6958,31 +8216,6 @@ class $$PaymentsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get isDeleted => $composableBuilder(
-    column: $table.isDeleted,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get companyId => $composableBuilder(
-    column: $table.companyId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get customerId => $composableBuilder(
-    column: $table.customerId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get invoiceId => $composableBuilder(
-    column: $table.invoiceId,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<double> get amount => $composableBuilder(
     column: $table.amount,
     builder: (column) => ColumnFilters(column),
@@ -7002,6 +8235,75 @@ class $$PaymentsTableFilterComposer
     column: $table.notes,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$AppUsersTableFilterComposer get companyId {
+    final $$AppUsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableFilterComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$CustomersTableFilterComposer get customerId {
+    final $$CustomersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.customerId,
+      referencedTable: $db.customers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CustomersTableFilterComposer(
+            $db: $db,
+            $table: $db.customers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$InvoicesTableFilterComposer get invoiceId {
+    final $$InvoicesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.invoiceId,
+      referencedTable: $db.invoices,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$InvoicesTableFilterComposer(
+            $db: $db,
+            $table: $db.invoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$PaymentsTableOrderingComposer
@@ -7028,31 +8330,6 @@ class $$PaymentsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get isDeleted => $composableBuilder(
-    column: $table.isDeleted,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get companyId => $composableBuilder(
-    column: $table.companyId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get customerId => $composableBuilder(
-    column: $table.customerId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get invoiceId => $composableBuilder(
-    column: $table.invoiceId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<double> get amount => $composableBuilder(
     column: $table.amount,
     builder: (column) => ColumnOrderings(column),
@@ -7072,6 +8349,75 @@ class $$PaymentsTableOrderingComposer
     column: $table.notes,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$AppUsersTableOrderingComposer get companyId {
+    final $$AppUsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$CustomersTableOrderingComposer get customerId {
+    final $$CustomersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.customerId,
+      referencedTable: $db.customers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CustomersTableOrderingComposer(
+            $db: $db,
+            $table: $db.customers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$InvoicesTableOrderingComposer get invoiceId {
+    final $$InvoicesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.invoiceId,
+      referencedTable: $db.invoices,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$InvoicesTableOrderingComposer(
+            $db: $db,
+            $table: $db.invoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$PaymentsTableAnnotationComposer
@@ -7092,23 +8438,6 @@ class $$PaymentsTableAnnotationComposer
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get deletedAt =>
-      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
-
-  GeneratedColumn<bool> get isDeleted =>
-      $composableBuilder(column: $table.isDeleted, builder: (column) => column);
-
-  GeneratedColumn<String> get companyId =>
-      $composableBuilder(column: $table.companyId, builder: (column) => column);
-
-  GeneratedColumn<String> get customerId => $composableBuilder(
-    column: $table.customerId,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get invoiceId =>
-      $composableBuilder(column: $table.invoiceId, builder: (column) => column);
-
   GeneratedColumn<double> get amount =>
       $composableBuilder(column: $table.amount, builder: (column) => column);
 
@@ -7124,6 +8453,75 @@ class $$PaymentsTableAnnotationComposer
 
   GeneratedColumn<String> get notes =>
       $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  $$AppUsersTableAnnotationComposer get companyId {
+    final $$AppUsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.companyId,
+      referencedTable: $db.appUsers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AppUsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.appUsers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$CustomersTableAnnotationComposer get customerId {
+    final $$CustomersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.customerId,
+      referencedTable: $db.customers,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CustomersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.customers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$InvoicesTableAnnotationComposer get invoiceId {
+    final $$InvoicesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.invoiceId,
+      referencedTable: $db.invoices,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$InvoicesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.invoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$PaymentsTableTableManager
@@ -7137,9 +8535,13 @@ class $$PaymentsTableTableManager
           $$PaymentsTableAnnotationComposer,
           $$PaymentsTableCreateCompanionBuilder,
           $$PaymentsTableUpdateCompanionBuilder,
-          (Payment, BaseReferences<_$AppDatabase, $PaymentsTable, Payment>),
+          (Payment, $$PaymentsTableReferences),
           Payment,
-          PrefetchHooks Function()
+          PrefetchHooks Function({
+            bool companyId,
+            bool customerId,
+            bool invoiceId,
+          })
         > {
   $$PaymentsTableTableManager(_$AppDatabase db, $PaymentsTable table)
     : super(
@@ -7157,8 +8559,6 @@ class $$PaymentsTableTableManager
                 Value<String> id = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime?> deletedAt = const Value.absent(),
-                Value<bool> isDeleted = const Value.absent(),
                 Value<String> companyId = const Value.absent(),
                 Value<String> customerId = const Value.absent(),
                 Value<String> invoiceId = const Value.absent(),
@@ -7171,8 +8571,6 @@ class $$PaymentsTableTableManager
                 id: id,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                isDeleted: isDeleted,
                 companyId: companyId,
                 customerId: customerId,
                 invoiceId: invoiceId,
@@ -7187,8 +8585,6 @@ class $$PaymentsTableTableManager
                 required String id,
                 required DateTime createdAt,
                 required DateTime updatedAt,
-                Value<DateTime?> deletedAt = const Value.absent(),
-                required bool isDeleted,
                 required String companyId,
                 required String customerId,
                 required String invoiceId,
@@ -7201,8 +8597,6 @@ class $$PaymentsTableTableManager
                 id: id,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                isDeleted: isDeleted,
                 companyId: companyId,
                 customerId: customerId,
                 invoiceId: invoiceId,
@@ -7213,9 +8607,81 @@ class $$PaymentsTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$PaymentsTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback:
+              ({companyId = false, customerId = false, invoiceId = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (companyId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.companyId,
+                                    referencedTable: $$PaymentsTableReferences
+                                        ._companyIdTable(db),
+                                    referencedColumn: $$PaymentsTableReferences
+                                        ._companyIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+                        if (customerId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.customerId,
+                                    referencedTable: $$PaymentsTableReferences
+                                        ._customerIdTable(db),
+                                    referencedColumn: $$PaymentsTableReferences
+                                        ._customerIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+                        if (invoiceId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.invoiceId,
+                                    referencedTable: $$PaymentsTableReferences
+                                        ._invoiceIdTable(db),
+                                    referencedColumn: $$PaymentsTableReferences
+                                        ._invoiceIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [];
+                  },
+                );
+              },
         ),
       );
 }
@@ -7230,9 +8696,9 @@ typedef $$PaymentsTableProcessedTableManager =
       $$PaymentsTableAnnotationComposer,
       $$PaymentsTableCreateCompanionBuilder,
       $$PaymentsTableUpdateCompanionBuilder,
-      (Payment, BaseReferences<_$AppDatabase, $PaymentsTable, Payment>),
+      (Payment, $$PaymentsTableReferences),
       Payment,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool companyId, bool customerId, bool invoiceId})
     >;
 
 class $AppDatabaseManager {
@@ -7240,16 +8706,19 @@ class $AppDatabaseManager {
   $AppDatabaseManager(this._db);
   $$AppUsersTableTableManager get appUsers =>
       $$AppUsersTableTableManager(_db, _db.appUsers);
-  $$CompanyPreferencesTableTableManager get companyPreferences =>
-      $$CompanyPreferencesTableTableManager(_db, _db.companyPreferences);
+  $$CompanyPreferencesTableTableTableManager get companyPreferencesTable =>
+      $$CompanyPreferencesTableTableTableManager(
+        _db,
+        _db.companyPreferencesTable,
+      );
   $$CustomersTableTableManager get customers =>
       $$CustomersTableTableManager(_db, _db.customers);
-  $$ExpensesTableTableManager get expenses =>
-      $$ExpensesTableTableManager(_db, _db.expenses);
+  $$ExpensesTableTableTableManager get expensesTable =>
+      $$ExpensesTableTableTableManager(_db, _db.expensesTable);
   $$InvoicesTableTableManager get invoices =>
       $$InvoicesTableTableManager(_db, _db.invoices);
-  $$OtherExpensesTableTableManager get otherExpenses =>
-      $$OtherExpensesTableTableManager(_db, _db.otherExpenses);
+  $$OtherExpensesTableTableTableManager get otherExpensesTable =>
+      $$OtherExpensesTableTableTableManager(_db, _db.otherExpensesTable);
   $$PaymentsTableTableManager get payments =>
       $$PaymentsTableTableManager(_db, _db.payments);
 }

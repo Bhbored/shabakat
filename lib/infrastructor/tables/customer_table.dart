@@ -1,10 +1,17 @@
 import 'package:drift/drift.dart';
+import 'app_user_table.dart';
 
+@DataClassName('Customer')
 class Customers extends Table {
   TextColumn get id => text()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
-  TextColumn get companyId => text()();
+  TextColumn get companyId => text().references(
+    AppUsers,
+    #id,
+    onDelete: KeyAction.cascade,
+    onUpdate: KeyAction.cascade,
+  )();
   TextColumn get name => text()();
   TextColumn get phone => text().nullable()();
   TextColumn get address => text().nullable()();

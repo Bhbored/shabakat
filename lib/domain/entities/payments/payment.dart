@@ -10,8 +10,6 @@ sealed class Payment with _$Payment {
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    DateTime? deletedAt,
-    @Default(false) bool isDeleted,
     required String companyId,
     required String customerId,
     required String invoiceId,

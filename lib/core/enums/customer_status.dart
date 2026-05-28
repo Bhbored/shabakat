@@ -1,17 +1,9 @@
-enum CustomerStatus {
-  active(1, 'Active'),
-  suspended(2, 'Suspended'),
-  terminated(3, 'Terminated');
+enum CustomerStatus { active, suspended, terminated }
 
-  final int value;
-  final String label;
-
-  const CustomerStatus(this.value, this.label);
-
-  static CustomerStatus fromValue(int value) {
-    return CustomerStatus.values.firstWhere(
-      (e) => e.value == value,
-      orElse: () => CustomerStatus.active,
-    );
-  }
+extension CustomerStatusX on CustomerStatus {
+  String get label => switch (this) {
+    CustomerStatus.active => 'Active',
+    CustomerStatus.suspended => 'Suspended',
+    CustomerStatus.terminated => 'Terminated',
+  };
 }

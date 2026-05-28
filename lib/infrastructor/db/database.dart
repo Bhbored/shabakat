@@ -13,20 +13,32 @@ import 'package:shabakat/infrastructor/tables/payment_table.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [
-  AppUsers,
-  CompanyPreferences,
-  Customers,
-  Expenses,
-  Invoices,
-  OtherExpenses,
-  Payments,
-])
+@DriftDatabase(
+  tables: [
+    AppUsers,
+    CompanyPreferencesTable,
+    Customers,
+    ExpensesTable,
+    Invoices,
+    OtherExpensesTable,
+    Payments,
+  ],
+)
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
   int get schemaVersion => 1;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    beforeOpen: (details) async {
+      await customStatement('PRAGMA foreign_keys = ON;');
+    },
+    onCreate: (m) async {
+      await m.createAll();
+    },
+  );
 }
 
 LazyDatabase _openConnection() {

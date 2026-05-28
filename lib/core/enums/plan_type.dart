@@ -1,15 +1,8 @@
-enum PlanType {
-  ampere('Ampere'),
-  kilowatt('Kilowatt');
+enum PlanType { ampere, kilowatt }
 
-  final String label;
-
-  const PlanType(this.label);
-
-  static PlanType fromName(String name) {
-    return PlanType.values.firstWhere(
-      (e) => e.name == name.toLowerCase(),
-      orElse: () => PlanType.ampere,
-    );
-  }
+extension PlanTypeX on PlanType {
+  String get label => switch (this) {
+    PlanType.ampere => 'Ampere',
+    PlanType.kilowatt => 'Kilowatt',
+  };
 }
