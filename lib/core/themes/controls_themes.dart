@@ -85,6 +85,26 @@ class ControlsThemes {
     );
   }
 
+  static ChipThemeData chipTheme(ColorScheme colorScheme) {
+    return ChipThemeData(
+      backgroundColor: colorScheme.surface,
+      selectedColor: colorScheme.primary,
+      labelStyle: TextStyle(
+        color: colorScheme.onSurface.withValues(alpha: 0.6),
+        fontWeight: FontWeight.w500,
+      ),
+      secondaryLabelStyle: TextStyle(
+        color: colorScheme.onPrimary,
+        fontWeight: FontWeight.w500,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      side: BorderSide(color: colorScheme.outline),
+    );
+  }
+
   static BoxDecoration statCardDecoration(ColorScheme colorScheme, {bool isAccent = false}) {
     return BoxDecoration(
       color: isAccent ? colorScheme.primary : colorScheme.surface,

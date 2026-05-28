@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
-import 'status_filter/status_filter.dart';
 
 class SubscribersToolbar extends StatelessWidget {
   final TextEditingController searchController;
@@ -18,6 +17,8 @@ class SubscribersToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final filters = ['All', 'Paid', 'Unpaid', 'Overdue'];
+
     return Padding(
       padding: EdgeInsets.all(context.paddingMedium),
       child: Column(
@@ -32,9 +33,22 @@ class SubscribersToolbar extends StatelessWidget {
             ),
           ),
           SizedBox(height: context.spaceSmall),
-          StatusFilter(
-            currentFilter: currentFilter,
-            onFilterChanged: onFilterChanged,
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: filters.map((filter) {
+                final isActive = currentFilter == filter;
+                return Padding(
+                  padding: EdgeInsets.only(right: context.paddingSmall),
+                  child: ChoiceChip(
+                    label: Text(filter),
+                    selected: isActive,
+                    onSelected: (_) => onFilterChanged(filter),
+                    showCheckmark: false,
+                  ),
+                );
+              }).toList(),
+            ),
           ),
         ],
       ),

@@ -23,8 +23,8 @@ class InfoItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label.toUpperCase(),
-          style: theme.textTheme.labelSmall?.copyWith(
+          label,
+          style: theme.textTheme.labelMedium?.copyWith(
             fontWeight: FontWeight.w700,
             letterSpacing: 1.0,
             color: colorScheme.onSurface.withValues(alpha: 0.5),

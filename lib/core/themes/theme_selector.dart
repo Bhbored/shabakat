@@ -53,6 +53,7 @@ class ThemeSelector {
       inputDecorationTheme: ControlsThemes.inputDecorationTheme(colorScheme),
       appBarTheme: ControlsThemes.appBarTheme(colorScheme),
       bottomNavigationBarTheme: ControlsThemes.bottomNavigationBarTheme(colorScheme),
+      chipTheme: ControlsThemes.chipTheme(colorScheme),
       dividerTheme: DividerThemeData(
         color: colorScheme.outline,
         thickness: 1,

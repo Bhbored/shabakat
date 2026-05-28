@@ -8,10 +8,7 @@ import '../info_item/info_item.dart';
 class SubscriberCard extends StatelessWidget {
   final Subscriber subscriber;
 
-  const SubscriberCard({
-    super.key,
-    required this.subscriber,
-  });
+  const SubscriberCard({super.key, required this.subscriber});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +30,9 @@ class SubscriberCard extends StatelessWidget {
                     children: [
                       Text(
                         subscriber.name,
-                        style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       Text(
                         subscriber.phone,
@@ -54,9 +53,17 @@ class SubscriberCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InfoItem(label: 'Area', value: subscriber.area),
-                InfoItem(label: 'Ampere', value: subscriber.ampere, isBold: true),
-                InfoItem(label: 'Amount', value: '\$${subscriber.amount}', isMono: true),
+                InfoItem(label: 'Adress', value: subscriber.area),
+                InfoItem(
+                  label: 'Ampere',
+                  value: subscriber.ampere,
+                  isBold: true,
+                ),
+                InfoItem(
+                  label: 'Amount',
+                  value: '\$${subscriber.amount}',
+                  isMono: true,
+                ),
               ],
             ),
           ],
