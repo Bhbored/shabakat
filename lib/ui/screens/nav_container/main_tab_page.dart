@@ -4,10 +4,10 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/themes/app_colors.dart';
 import 'app_drawer.dart';
 import 'bottom_nav_container.dart';
-import '../screens/dashboard/dashboard_screen.dart';
-import '../screens/subscribers/subscribers_screen.dart';
-import '../screens/invoices/invoices_screen.dart';
-import '../screens/notifications/notifications_screen.dart';
+import '../dashboard/dashboard_screen.dart';
+import '../subscribers/subscribers_screen.dart';
+import '../invoices/invoices_screen.dart';
+import '../notifications/notifications_screen.dart';
 
 class MainTabPage extends StatefulWidget {
   const MainTabPage({super.key});
@@ -93,10 +93,7 @@ class _MainTabPageState extends State<MainTabPage> {
             ],
           ),
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(LucideIcons.search),
-            ),
+            IconButton(onPressed: () {}, icon: const Icon(LucideIcons.search)),
             IconButton(
               onPressed: () {},
               icon: Stack(

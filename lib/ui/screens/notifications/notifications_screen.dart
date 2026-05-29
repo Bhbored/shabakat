@@ -75,7 +75,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 padding: EdgeInsets.all(context.paddingSmall * 0.5),
                 decoration: BoxDecoration(
                   color: colorScheme.surface,
-                  borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+                  borderRadius: BorderRadius.circular(
+                    context.borderRadiusMedium,
+                  ),
                   border: Border.all(color: colorScheme.outline),
                 ),
                 child: Row(
@@ -126,7 +128,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       color: _isWhatsApp
                           ? const Color(0xFF10B981).withValues(alpha: 0.1)
                           : colorScheme.primary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+                      borderRadius: BorderRadius.circular(
+                        context.borderRadiusMedium,
+                      ),
                       border: Border.all(
                         color: _isWhatsApp
                             ? const Color(0xFF10B981).withValues(alpha: 0.2)
@@ -193,22 +197,28 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Wrap(
-                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
                                     children: [
                                       Text(
                                         s.name,
-                                        style: theme.textTheme.bodyMedium?.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: theme.textTheme.bodyMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                       ),
-                                      SizedBox(width: context.paddingSmall * 0.5),
+                                      SizedBox(
+                                        width: context.paddingSmall * 0.5,
+                                      ),
                                       StatusBadge(status: s.status),
                                     ],
                                   ),
                                   Text(
                                     '${s.phone} · ${s.area} · Due ${s.dueDate}',
                                     style: theme.textTheme.bodySmall?.copyWith(
-                                      color: colorScheme.onSurface.withValues(alpha: 0.6),
+                                      color: colorScheme.onSurface.withValues(
+                                        alpha: 0.6,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -237,7 +247,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               ],
             ),
           ),
-          SizedBox(height: context.scrollPaddingAboveMainNav),
         ],
       ),
     );

@@ -9,19 +9,19 @@ Duration? retry(int _, Object _) => null;
 
 @Riverpod(keepAlive: false, retry: retry)
 class AuthStateNotifier extends _$AuthStateNotifier {
-  AuthService get autherService => ref.read(authServiceProvider);
-  SecureStorageAndroid get secureStorage =>
+  AuthService get _autherService => ref.read(authServiceProvider);
+  SecureStorageAndroid get _secureStorage =>
       ref.read(secureStorageAndroidProvider);
   @override
   FutureOr<bool> build() async {
-    final token = await secureStorage.getValue('access_token');
+    final token = await _secureStorage.getValue('access_token');
     return token != null;
   }
 
   Future<void> login(LoginRequest request) async {
     state = const AsyncValue.loading();
     try {
-      await autherService.login(request);
+      await _autherService.login(request);
       state = AsyncValue.data(true);
     } catch (e, s) {
       state = AsyncValue.error(e, s);
@@ -31,7 +31,7 @@ class AuthStateNotifier extends _$AuthStateNotifier {
   Future<void> register(RegisterRequest request) async {
     state = const AsyncValue.loading();
     try {
-      await autherService.register(request);
+      await _autherService.register(request);
       state = AsyncValue.data(true);
     } catch (e, s) {
       state = AsyncValue.error(e, s);
@@ -41,7 +41,7 @@ class AuthStateNotifier extends _$AuthStateNotifier {
   Future<void> logout() async {
     state = const AsyncValue.loading();
     try {
-      await autherService.logout();
+      await _autherService.logout();
       state = const AsyncValue.data(false);
     } catch (e, s) {
       state = AsyncValue.error(e, s);

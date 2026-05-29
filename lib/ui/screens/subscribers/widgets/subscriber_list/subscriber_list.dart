@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/ui/data/app_data.dart';
-import 'subscriber_card/subscriber_card.dart';
+import '../subscriber_card/subscriber_card.dart';
 
 class SubscriberList extends StatelessWidget {
   final String searchQuery;

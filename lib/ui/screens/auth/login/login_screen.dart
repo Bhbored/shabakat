@@ -2,30 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
-import 'package:shabakat/core/network/dto/request/auth/register_request.dart';
+import 'package:shabakat/core/exceptions/api_exception.dart';
+import 'package:shabakat/core/network/dto/request/auth/login_request.dart';
 import 'package:shabakat/data/providers/auth/auth_provider.dart';
-import 'package:shabakat/ui/auth/login/login_screen.dart';
-import 'package:shabakat/ui/nav_container/main_tab_page.dart';
+import 'package:shabakat/ui/screens/auth/register/register_screen.dart';
+import 'package:shabakat/ui/screens/nav_container/main_tab_page.dart';
 
-class RegisterScreen extends ConsumerStatefulWidget {
-  const RegisterScreen({super.key});
+class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends ConsumerState<RegisterScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _companyNameController = TextEditingController();
-  final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
-    _companyNameController.dispose();
-    _fullNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -35,10 +32,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
 
-    ref.read(authStateProvider.notifier).register(
-          RegisterRequest(
-            companyName: _companyNameController.text.trim(),
-            fullName: _fullNameController.text.trim(),
+    ref
+        .read(authStateProvider.notifier)
+        .login(
+          LoginRequest(
             email: _emailController.text.trim(),
             password: _passwordController.text,
           ),
@@ -62,9 +59,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           }
         },
         error: (error, _) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(error.toString())),
-          );
+          if (error is ApiException) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(error.userMessage)));
+          }
         },
       );
     });
@@ -100,7 +99,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   SizedBox(height: context.spaceLarge),
                   Text(
-                    'Get Started',
+                    'Welcome Back',
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -108,7 +107,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   SizedBox(height: context.spaceSmall),
                   Text(
-                    'Create your Shabakat account',
+                    'Sign in to your Shabakat account',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
@@ -121,36 +120,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          TextFormField(
-                            controller: _companyNameController,
-                            textInputAction: TextInputAction.next,
-                            decoration: InputDecoration(
-                              hintText: 'Company Name',
-                              prefixIcon: Icon(LucideIcons.building2),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Company name is required';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: context.spaceMedium),
-                          TextFormField(
-                            controller: _fullNameController,
-                            textInputAction: TextInputAction.next,
-                            decoration: InputDecoration(
-                              hintText: 'Full Name',
-                              prefixIcon: Icon(LucideIcons.user),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Full name is required';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: context.spaceMedium),
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
@@ -211,7 +180,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                       color: colorScheme.onPrimary,
                                     ),
                                   )
-                                : const Text('Create Account'),
+                                : const Text('Sign In'),
                           ),
                         ],
                       ),
@@ -222,18 +191,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Already have an account?',
+                        "Don't have an account?",
                         style: theme.textTheme.bodyMedium,
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => const LoginScreen(),
+                              builder: (_) => const RegisterScreen(),
                             ),
                           );
                         },
-                        child: const Text('Sign In'),
+                        child: const Text('Register'),
                       ),
                     ],
                   ),

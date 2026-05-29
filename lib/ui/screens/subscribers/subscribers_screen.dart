@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/ui/data/app_data.dart';
-import 'widgets/subscribers_toolbar.dart';
-import 'widgets/subscriber_list.dart';
+import 'widgets/subscribers_toolbar/subscribers_toolbar.dart';
+import 'widgets/subscriber_list/subscriber_list.dart';
 
 class SubscribersScreen extends StatefulWidget {
   const SubscribersScreen({super.key});
@@ -14,6 +14,7 @@ class SubscribersScreen extends StatefulWidget {
 class _SubscribersScreenState extends State<SubscribersScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _statusFilter = 'All';
+  String _searchCriteria = 'name';
 
   @override
   void dispose() {
@@ -45,15 +46,10 @@ class _SubscribersScreenState extends State<SubscribersScreen> {
           onSearchChanged: (value) => setState(() {}),
           currentFilter: _statusFilter,
           onFilterChanged: (filter) => setState(() => _statusFilter = filter),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: context.paddingMedium),
-          child: Text(
-            '$_filteredCount of ${allSubscribers.length} subscribers',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-            ),
-          ),
+          searchCriteria: _searchCriteria,
+          onSearchCriteriaChanged: (criteria) => setState(() => _searchCriteria = criteria),
+          resultCount: _filteredCount,
+          totalCount: allSubscribers.length,
         ),
         SizedBox(height: context.spaceSmall),
         Expanded(

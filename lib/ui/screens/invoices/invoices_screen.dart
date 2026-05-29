@@ -95,7 +95,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                               padding: EdgeInsets.all(context.paddingSmall),
                               decoration: BoxDecoration(
                                 color: colorScheme.primary,
-                                borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+                                borderRadius: BorderRadius.circular(
+                                  context.borderRadiusMedium,
+                                ),
                               ),
                               child: Icon(
                                 LucideIcons.zap,
@@ -110,22 +112,25 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                                 children: [
                                   Text(
                                     'El-Nour Generators',
-                                    style: theme.textTheme.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(fontWeight: FontWeight.w700),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   Text(
                                     'Hamra Street, Beirut, Lebanon',
                                     style: theme.textTheme.bodySmall?.copyWith(
-                                      color: colorScheme.onSurface.withValues(alpha: 0.6),
+                                      color: colorScheme.onSurface.withValues(
+                                        alpha: 0.6,
+                                      ),
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   Text(
                                     '+961 71 000 000 · elnour@generators.lb',
                                     style: theme.textTheme.bodySmall?.copyWith(
-                                      color: colorScheme.onSurface.withValues(alpha: 0.6),
+                                      color: colorScheme.onSurface.withValues(
+                                        alpha: 0.6,
+                                      ),
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -151,7 +156,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                             _invoiceNumber,
                             style: theme.textTheme.bodySmall?.copyWith(
                               fontFamily: 'JetBrains Mono',
-                              color: colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: colorScheme.onSurface.withValues(
+                                alpha: 0.6,
+                              ),
                             ),
                           ),
                           SizedBox(height: context.spaceSmall),
@@ -165,7 +172,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                     padding: EdgeInsets.all(context.paddingMedium),
                     decoration: BoxDecoration(
                       color: colorScheme.secondary.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+                      borderRadius: BorderRadius.circular(
+                        context.borderRadiusMedium,
+                      ),
                       border: Border.all(color: colorScheme.outline),
                     ),
                     child: Row(
@@ -186,10 +195,7 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                           ),
                         ),
                         Expanded(
-                          child: MetaItem(
-                            label: 'Period',
-                            value: 'May 2025',
-                          ),
+                          child: MetaItem(label: 'Period', value: 'May 2025'),
                         ),
                       ],
                     ),
@@ -220,13 +226,17 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                           Text(
                             s.phone,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: colorScheme.onSurface.withValues(
+                                alpha: 0.6,
+                              ),
                             ),
                           ),
                           Text(
                             '${s.area}, Beirut, Lebanon',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: colorScheme.onSurface.withValues(
+                                alpha: 0.6,
+                              ),
                             ),
                           ),
                         ],
@@ -237,7 +247,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: colorScheme.outline),
-                      borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+                      borderRadius: BorderRadius.circular(
+                        context.borderRadiusMedium,
+                      ),
                     ),
                     child: Column(
                       children: [
@@ -261,7 +273,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     fontWeight: FontWeight.w700,
                                     letterSpacing: 1.0,
-                                    color: colorScheme.onSurface.withValues(alpha: 0.5),
+                                    color: colorScheme.onSurface.withValues(
+                                      alpha: 0.5,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -272,7 +286,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     fontWeight: FontWeight.w700,
                                     letterSpacing: 1.0,
-                                    color: colorScheme.onSurface.withValues(alpha: 0.5),
+                                    color: colorScheme.onSurface.withValues(
+                                      alpha: 0.5,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -283,7 +299,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     fontWeight: FontWeight.w700,
                                     letterSpacing: 1.0,
-                                    color: colorScheme.onSurface.withValues(alpha: 0.5),
+                                    color: colorScheme.onSurface.withValues(
+                                      alpha: 0.5,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -294,7 +312,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     fontWeight: FontWeight.w700,
                                     letterSpacing: 1.0,
-                                    color: colorScheme.onSurface.withValues(alpha: 0.5),
+                                    color: colorScheme.onSurface.withValues(
+                                      alpha: 0.5,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -312,15 +332,18 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                                   children: [
                                     Text(
                                       'Monthly Generator Subscription',
-                                      style: theme.textTheme.bodyMedium?.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                      style: theme.textTheme.bodyMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                     ),
                                     Text(
                                       '${s.ampere} capacity · May 2025 · Beirut Grid Zone',
-                                      style: theme.textTheme.bodySmall?.copyWith(
-                                        color: colorScheme.onSurface.withValues(alpha: 0.6),
-                                      ),
+                                      style: theme.textTheme.bodySmall
+                                          ?.copyWith(
+                                            color: colorScheme.onSurface
+                                                .withValues(alpha: 0.6),
+                                          ),
                                     ),
                                   ],
                                 ),
@@ -330,7 +353,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                                   '1',
                                   textAlign: TextAlign.center,
                                   style: theme.textTheme.bodyMedium?.copyWith(
-                                    color: colorScheme.onSurface.withValues(alpha: 0.6),
+                                    color: colorScheme.onSurface.withValues(
+                                      alpha: 0.6,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -366,7 +391,10 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                       constraints: const BoxConstraints(maxWidth: 220),
                       child: Column(
                         children: [
-                          TotalRow(label: 'Subtotal', value: '\$${s.amount}.00'),
+                          TotalRow(
+                            label: 'Subtotal',
+                            value: '\$${s.amount}.00',
+                          ),
                           SizedBox(height: context.spaceSmall * 0.5),
                           TotalRow(label: 'Tax (0%)', value: '\$0.00'),
                           Divider(color: colorScheme.outline),
@@ -406,7 +434,6 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
               ),
             ),
           ),
-          SizedBox(height: context.scrollPaddingAboveMainNav),
         ],
       ),
     );

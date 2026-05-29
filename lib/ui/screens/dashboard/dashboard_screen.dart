@@ -29,7 +29,6 @@ class DashboardScreen extends StatelessWidget {
           RecentPaymentsList(onViewAll: onViewAllPayments),
           SizedBox(height: context.spaceMedium),
           UpcomingDueList(onSendReminders: onSendReminders),
-          SizedBox(height: context.scrollPaddingAboveMainNav),
         ],
       ),
     );
