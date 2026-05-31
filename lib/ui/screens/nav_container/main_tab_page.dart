@@ -8,6 +8,8 @@ import '../dashboard/dashboard_screen.dart';
 import '../subscribers/subscribers_screen.dart';
 import '../invoices/invoices_screen.dart';
 import '../notifications/notifications_screen.dart';
+import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
+import '../subscribers/subscreens/subscriber_adding_screen.dart';
 
 class MainTabPage extends StatefulWidget {
   const MainTabPage({super.key});
@@ -162,5 +164,9 @@ class _MainTabPageState extends State<MainTabPage> {
     }
   }
 
-  void _onAddSubscriber() {}
+  void _onAddSubscriber() {
+    Navigator.of(context).push(
+      openInnerScreen(widget: const SubscriberAddingScreen()),
+    );
+  }
 }

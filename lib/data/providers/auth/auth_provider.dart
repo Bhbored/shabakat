@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shabakat/core/network/services/auth_service.dart';
+import 'package:shabakat/core/network/services/auth/auth_service.dart';
 import 'package:shabakat/core/storage/secure_storage/secure_storage_android.dart';
 
 import '../../../core/network/dto/request/auth/auth_requests.dart';

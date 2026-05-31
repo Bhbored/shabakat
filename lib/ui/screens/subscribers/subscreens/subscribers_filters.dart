@@ -35,7 +35,7 @@ class _SubscribersFiltersState extends State<SubscribersFilters> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Relation', style: theme.textTheme.bodySmall),
+            Text('Relation', style: theme.textTheme.titleMedium),
             SizedBox(height: context.spaceSmall),
             LayoutBuilder(
               builder: (context, constraints) {
@@ -72,10 +72,7 @@ class _SubscribersFiltersState extends State<SubscribersFilters> {
                       ),
                       value: _relation,
                       items: CustomerRelation.values.map((e) {
-                        return DropdownMenuItem(
-                          value: e,
-                          child: Text(e.label),
-                        );
+                        return DropdownMenuItem(value: e, child: Text(e.label));
                       }).toList(),
                       onChanged: (v) => setState(() => _relation = v),
                     ),
@@ -84,7 +81,7 @@ class _SubscribersFiltersState extends State<SubscribersFilters> {
               },
             ),
             SizedBox(height: context.spaceMedium),
-            Text('Status', style: theme.textTheme.bodySmall),
+            Text('Status', style: theme.textTheme.titleMedium),
             SizedBox(height: context.spaceSmall),
             LayoutBuilder(
               builder: (context, constraints) {
@@ -121,10 +118,7 @@ class _SubscribersFiltersState extends State<SubscribersFilters> {
                       ),
                       value: _status,
                       items: CustomerStatus.values.map((e) {
-                        return DropdownMenuItem(
-                          value: e,
-                          child: Text(e.label),
-                        );
+                        return DropdownMenuItem(value: e, child: Text(e.label));
                       }).toList(),
                       onChanged: (v) => setState(() => _status = v),
                     ),
@@ -133,7 +127,7 @@ class _SubscribersFiltersState extends State<SubscribersFilters> {
               },
             ),
             SizedBox(height: context.spaceMedium),
-            Text('Type', style: theme.textTheme.bodySmall),
+            Text('Type', style: theme.textTheme.titleMedium),
             SizedBox(height: context.spaceSmall),
             LayoutBuilder(
               builder: (context, constraints) {
@@ -170,10 +164,7 @@ class _SubscribersFiltersState extends State<SubscribersFilters> {
                       ),
                       value: _type,
                       items: CustomerType.values.map((e) {
-                        return DropdownMenuItem(
-                          value: e,
-                          child: Text(e.label),
-                        );
+                        return DropdownMenuItem(value: e, child: Text(e.label));
                       }).toList(),
                       onChanged: (v) => setState(() => _type = v),
                     ),
@@ -182,17 +173,17 @@ class _SubscribersFiltersState extends State<SubscribersFilters> {
               },
             ),
             SizedBox(height: context.spaceMedium),
-            Text('Created At', style: theme.textTheme.bodySmall),
+            Text('Subscribed At', style: theme.textTheme.titleMedium),
             SizedBox(height: context.spaceSmall),
             ListTile(
-              title: const Text('Latest'),
+              title: Text('Latest', style: theme.textTheme.bodyMedium),
               trailing: _sortOrder == 'latest'
                   ? Icon(Icons.check, color: scheme.primary)
                   : null,
               onTap: () => setState(() => _sortOrder = 'latest'),
             ),
             ListTile(
-              title: const Text('Oldest'),
+              title: Text('Oldest', style: theme.textTheme.bodyMedium),
               trailing: _sortOrder == 'oldest'
                   ? Icon(Icons.check, color: scheme.primary)
                   : null,
