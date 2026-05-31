@@ -19,9 +19,9 @@ final class AuthServiceProvider
     : super(
         from: null,
         argument: null,
-        retry: null,
+        retry: retry,
         name: r'authServiceProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -48,4 +48,4 @@ final class AuthServiceProvider
   }
 }
 
-String _$authServiceHash() => r'a80cc48192a79d8138a09f636dbc031b83d247d3';
+String _$authServiceHash() => r'0623ebd483c333416a5d0b441cd4c2a12dda9702';

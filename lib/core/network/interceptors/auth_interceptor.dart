@@ -1,20 +1,17 @@
 import 'package:dio/dio.dart';
-import 'package:shabakat/core/storage/secure_storage/secure_storage_android.dart';
+import 'package:shabakat/core/network/services/auth/token_store.dart';
 
 class AuthInterceptor extends Interceptor {
-  SecureStorageAndroid secureStorage = SecureStorageAndroid();
-  static String? accessToken;
-  AuthInterceptor() {
-    _loadAccessToken();
-  }
-
-  void _loadAccessToken() async {
-    accessToken = await secureStorage.getValue('access_token');
-  }
+  final TokenStore _tokenStore;
+  AuthInterceptor(this._tokenStore);
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    if (accessToken != null && accessToken!.isNotEmpty) {
+  Future<void> onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    final accessToken = await _tokenStore.getAccessToken();
+    if (accessToken != null && accessToken.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
     handler.next(options);

@@ -20,9 +20,9 @@ final class CustomerServiceProvider
     : super(
         from: null,
         argument: null,
-        retry: null,
+        retry: retry,
         name: r'customerServiceProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -49,4 +49,4 @@ final class CustomerServiceProvider
   }
 }
 
-String _$customerServiceHash() => r'212b79ca37f86474f991c2e1be1258e314bc502c';
+String _$customerServiceHash() => r'adb9b82682def1c6a1d1889e8bb72aaa36174ee9';

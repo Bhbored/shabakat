@@ -9,7 +9,9 @@ import 'package:shabakat/core/network/executor/api_executor.dart';
 import 'package:shabakat/core/network/request/api_request.dart';
 part 'customer_service.g.dart';
 
-@riverpod
+Duration? retry(int _, Object _) => null;
+
+@Riverpod(keepAlive: true, retry: retry)
 CustomerService customerService(Ref ref) {
   final DioClient dioClient = ref.read(dioClientProvider(null, endpoint: ''));
   final apiExecutor = ref.read(apiExecutorProvider(dioClient.dio));

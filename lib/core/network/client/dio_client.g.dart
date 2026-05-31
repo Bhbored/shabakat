@@ -19,9 +19,9 @@ final class DioClientProvider
     required DioClientFamily super.from,
     required (Map<String, String>?, {String endpoint}) super.argument,
   }) : super(
-         retry: null,
+         retry: retry,
          name: r'dioClientProvider',
-         isAutoDispose: true,
+         isAutoDispose: false,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
@@ -66,7 +66,7 @@ final class DioClientProvider
   }
 }
 
-String _$dioClientHash() => r'f76471e6d0e30f20a004336dbaecd999be722eab';
+String _$dioClientHash() => r'e703f60f596dbbaea755f3e8869dd3db573fd3b1';
 
 final class DioClientFamily extends $Family
     with
@@ -76,11 +76,11 @@ final class DioClientFamily extends $Family
         > {
   DioClientFamily._()
     : super(
-        retry: null,
+        retry: retry,
         name: r'dioClientProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
-        isAutoDispose: true,
+        isAutoDispose: false,
       );
 
   DioClientProvider call(

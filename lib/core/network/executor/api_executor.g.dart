@@ -19,9 +19,9 @@ final class ApiExecutorProvider
     required ApiExecutorFamily super.from,
     required Dio super.argument,
   }) : super(
-         retry: null,
+         retry: retry,
          name: r'apiExecutorProvider',
-         isAutoDispose: true,
+         isAutoDispose: false,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
@@ -66,17 +66,17 @@ final class ApiExecutorProvider
   }
 }
 
-String _$apiExecutorHash() => r'ffd2bc6d44c60be46fc5ea56d6184c1f02f9fd3c';
+String _$apiExecutorHash() => r'3f3f7d9767d206fa188c6902973d9767cd132d20';
 
 final class ApiExecutorFamily extends $Family
     with $FunctionalFamilyOverride<ApiExecutor, Dio> {
   ApiExecutorFamily._()
     : super(
-        retry: null,
+        retry: retry,
         name: r'apiExecutorProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
-        isAutoDispose: true,
+        isAutoDispose: false,
       );
 
   ApiExecutorProvider call(Dio dio) =>

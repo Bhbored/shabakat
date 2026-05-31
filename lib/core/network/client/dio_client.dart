@@ -5,17 +5,21 @@ import 'package:dio/io.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/interceptors/auth_interceptor.dart';
 import 'package:shabakat/core/network/interceptors/retry_interceptor.dart';
+import 'package:shabakat/core/network/services/auth/token_store.dart';
 part 'dio_client.g.dart';
 
-@riverpod
+Duration? retry(int _, Object _) => null;
+
+@Riverpod(keepAlive: true, retry: retry)
 DioClient dioClient(
   Ref ref,
   Map<String, String>? headers, {
   required String endpoint,
 }) {
   final header = <String, dynamic>{'X-Client-Version': '1.0.0'};
+  final tokenStore = ref.watch(authTokenStoreProvider);
   header.addAll(headers ?? {});
-  return DioClient(headers: header, endpoint: endpoint);
+  return DioClient(headers: header, endpoint: endpoint, tokenStore: tokenStore);
 }
 
 class DioClient {
@@ -23,10 +27,12 @@ class DioClient {
   final Map<String, dynamic> headers;
   bool enableLogging;
   String endpoint;
+  final TokenStore? tokenStore;
   DioClient({
     required this.headers,
     this.enableLogging = true,
     required this.endpoint,
+    this.tokenStore,
   }) {
     dio = Dio(
       BaseOptions(
@@ -47,16 +53,18 @@ class DioClient {
         return client;
       },
     );
-    dio.interceptors.add(AuthInterceptor());
-    dio.interceptors.add(RetryInterceptor(dio: dio, maxRetries: 2));
-    if (enableLogging) {
-      dio.interceptors.add(
-        AwesomeDioInterceptor(
-          logRequestHeaders: true,
-          logResponseHeaders: true,
-          logRequestTimeout: true,
-        ),
-      );
+    if (tokenStore != null) {
+      dio.interceptors.add(AuthInterceptor(tokenStore!));
+      dio.interceptors.add(RetryInterceptor(dio: dio, maxRetries: 2));
+      if (enableLogging) {
+        dio.interceptors.add(
+          AwesomeDioInterceptor(
+            logRequestHeaders: true,
+            logResponseHeaders: true,
+            logRequestTimeout: true,
+          ),
+        );
+      }
     }
   }
 }

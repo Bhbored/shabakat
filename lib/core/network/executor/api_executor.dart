@@ -8,7 +8,9 @@ import 'package:shabakat/core/network/response/api_response.dart';
 
 part 'api_executor.g.dart';
 
-@riverpod
+Duration? retry(int _, Object _) => null;
+
+@Riverpod(keepAlive: true, retry: retry)
 ApiExecutor apiExecutor(Ref ref, Dio dio) {
   return ApiExecutor(dio);
 }
