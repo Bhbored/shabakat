@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthResponse {
 
- String get token; String get email; String get fullName; String get role; DateTime get expiresAt;
+ String get token; String get email; String get fullName; String get role; DateTime get expiresAt; String get companyId; String get companyName; String? get logoUrl;
 /// Create a copy of AuthResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AuthResponseCopyWith<AuthResponse> get copyWith => _$AuthResponseCopyWithImpl<A
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthResponse&&(identical(other.token, token) || other.token == token)&&(identical(other.email, email) || other.email == email)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.role, role) || other.role == role)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthResponse&&(identical(other.token, token) || other.token == token)&&(identical(other.email, email) || other.email == email)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.role, role) || other.role == role)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.companyName, companyName) || other.companyName == companyName)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,token,email,fullName,role,expiresAt);
+int get hashCode => Object.hash(runtimeType,token,email,fullName,role,expiresAt,companyId,companyName,logoUrl);
 
 @override
 String toString() {
-  return 'AuthResponse(token: $token, email: $email, fullName: $fullName, role: $role, expiresAt: $expiresAt)';
+  return 'AuthResponse(token: $token, email: $email, fullName: $fullName, role: $role, expiresAt: $expiresAt, companyId: $companyId, companyName: $companyName, logoUrl: $logoUrl)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AuthResponseCopyWith<$Res>  {
   factory $AuthResponseCopyWith(AuthResponse value, $Res Function(AuthResponse) _then) = _$AuthResponseCopyWithImpl;
 @useResult
 $Res call({
- String token, String email, String fullName, String role, DateTime expiresAt
+ String token, String email, String fullName, String role, DateTime expiresAt, String companyId, String companyName, String? logoUrl
 });
 
 
@@ -65,14 +65,17 @@ class _$AuthResponseCopyWithImpl<$Res>
 
 /// Create a copy of AuthResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? token = null,Object? email = null,Object? fullName = null,Object? role = null,Object? expiresAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? token = null,Object? email = null,Object? fullName = null,Object? role = null,Object? expiresAt = null,Object? companyId = null,Object? companyName = null,Object? logoUrl = freezed,}) {
   return _then(_self.copyWith(
 token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as String,expiresAt: null == expiresAt ? _self.expiresAt : expiresAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as DateTime,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
+as String,companyName: null == companyName ? _self.companyName : companyName // ignore: cast_nullable_to_non_nullable
+as String,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -154,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String token,  String email,  String fullName,  String role,  DateTime expiresAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String token,  String email,  String fullName,  String role,  DateTime expiresAt,  String companyId,  String companyName,  String? logoUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthResponse() when $default != null:
-return $default(_that.token,_that.email,_that.fullName,_that.role,_that.expiresAt);case _:
+return $default(_that.token,_that.email,_that.fullName,_that.role,_that.expiresAt,_that.companyId,_that.companyName,_that.logoUrl);case _:
   return orElse();
 
 }
@@ -175,10 +178,10 @@ return $default(_that.token,_that.email,_that.fullName,_that.role,_that.expiresA
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String token,  String email,  String fullName,  String role,  DateTime expiresAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String token,  String email,  String fullName,  String role,  DateTime expiresAt,  String companyId,  String companyName,  String? logoUrl)  $default,) {final _that = this;
 switch (_that) {
 case _AuthResponse():
-return $default(_that.token,_that.email,_that.fullName,_that.role,_that.expiresAt);}
+return $default(_that.token,_that.email,_that.fullName,_that.role,_that.expiresAt,_that.companyId,_that.companyName,_that.logoUrl);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -192,10 +195,10 @@ return $default(_that.token,_that.email,_that.fullName,_that.role,_that.expiresA
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String token,  String email,  String fullName,  String role,  DateTime expiresAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String token,  String email,  String fullName,  String role,  DateTime expiresAt,  String companyId,  String companyName,  String? logoUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthResponse() when $default != null:
-return $default(_that.token,_that.email,_that.fullName,_that.role,_that.expiresAt);case _:
+return $default(_that.token,_that.email,_that.fullName,_that.role,_that.expiresAt,_that.companyId,_that.companyName,_that.logoUrl);case _:
   return null;
 
 }
@@ -207,7 +210,7 @@ return $default(_that.token,_that.email,_that.fullName,_that.role,_that.expiresA
 @JsonSerializable()
 
 class _AuthResponse implements AuthResponse {
-  const _AuthResponse({required this.token, required this.email, required this.fullName, required this.role, required this.expiresAt});
+  const _AuthResponse({required this.token, required this.email, required this.fullName, required this.role, required this.expiresAt, required this.companyId, required this.companyName, this.logoUrl});
   factory _AuthResponse.fromJson(Map<String, dynamic> json) => _$AuthResponseFromJson(json);
 
 @override final  String token;
@@ -215,6 +218,9 @@ class _AuthResponse implements AuthResponse {
 @override final  String fullName;
 @override final  String role;
 @override final  DateTime expiresAt;
+@override final  String companyId;
+@override final  String companyName;
+@override final  String? logoUrl;
 
 /// Create a copy of AuthResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthResponse&&(identical(other.token, token) || other.token == token)&&(identical(other.email, email) || other.email == email)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.role, role) || other.role == role)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthResponse&&(identical(other.token, token) || other.token == token)&&(identical(other.email, email) || other.email == email)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.role, role) || other.role == role)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.companyName, companyName) || other.companyName == companyName)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,token,email,fullName,role,expiresAt);
+int get hashCode => Object.hash(runtimeType,token,email,fullName,role,expiresAt,companyId,companyName,logoUrl);
 
 @override
 String toString() {
-  return 'AuthResponse(token: $token, email: $email, fullName: $fullName, role: $role, expiresAt: $expiresAt)';
+  return 'AuthResponse(token: $token, email: $email, fullName: $fullName, role: $role, expiresAt: $expiresAt, companyId: $companyId, companyName: $companyName, logoUrl: $logoUrl)';
 }
 
 
@@ -249,7 +255,7 @@ abstract mixin class _$AuthResponseCopyWith<$Res> implements $AuthResponseCopyWi
   factory _$AuthResponseCopyWith(_AuthResponse value, $Res Function(_AuthResponse) _then) = __$AuthResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String token, String email, String fullName, String role, DateTime expiresAt
+ String token, String email, String fullName, String role, DateTime expiresAt, String companyId, String companyName, String? logoUrl
 });
 
 
@@ -266,14 +272,17 @@ class __$AuthResponseCopyWithImpl<$Res>
 
 /// Create a copy of AuthResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? token = null,Object? email = null,Object? fullName = null,Object? role = null,Object? expiresAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? token = null,Object? email = null,Object? fullName = null,Object? role = null,Object? expiresAt = null,Object? companyId = null,Object? companyName = null,Object? logoUrl = freezed,}) {
   return _then(_AuthResponse(
 token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as String,expiresAt: null == expiresAt ? _self.expiresAt : expiresAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as DateTime,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
+as String,companyName: null == companyName ? _self.companyName : companyName // ignore: cast_nullable_to_non_nullable
+as String,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

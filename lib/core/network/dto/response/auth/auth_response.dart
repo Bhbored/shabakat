@@ -11,6 +11,9 @@ sealed class AuthResponse with _$AuthResponse {
     required String fullName,
     required String role,
     required DateTime expiresAt,
+    required String companyId,
+    required String companyName,
+    String? logoUrl,
   }) = _AuthResponse;
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) =>

@@ -14,6 +14,7 @@ sealed class Customer with _$Customer {
     required String name,
     String? phone,
     String? address,
+    String? areaId,
     required CustomerType customerType,
     CustomerRelation? customerRelation,
     required DateTime subscriptionDate,

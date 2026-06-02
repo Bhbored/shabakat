@@ -1,8 +1,4 @@
-enum CustomerRelation {
-  friend,
-  family,
-  owner;
-}
+enum CustomerRelation { friend, family, owner }
 
 extension CustomerRelationX on CustomerRelation {
   String get label => switch (this) {

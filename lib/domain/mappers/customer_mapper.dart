@@ -7,35 +7,42 @@ import 'package:shabakat/domain/entities/customers/customer.dart';
 
 extension CustomerResponseMapper on CustomerResponse {
   Customer toEntity() => Customer(
-        id: id,
-        createdAt: createdAt,
-        updatedAt: createdAt,
-        companyId: '',
-        name: name,
-        phone: phone,
-        address: address,
-        customerType: CustomerType.values.firstWhere(
-          (e) => e.name.toLowerCase() == customerType.toLowerCase(),
-          orElse: () => CustomerType.residential,
-        ),
-        customerRelation: customerRelation != null
-            ? CustomerRelation.values.firstWhere(
-                (e) => e.name.toLowerCase() == customerRelation!.toLowerCase(),
-                orElse: () => CustomerRelation.friend,
-              )
-            : null,
-        subscriptionDate: subscriptionDate,
-        priceOverride: pricingOverride?.price,
-        fixedChargeOverride: pricingOverride?.fixedCharge,
-        tvaOverride: pricingOverride?.tva,
-        customerStatus: CustomerStatus.values.firstWhere(
-          (e) => e.name.toLowerCase() == customerStatus.toLowerCase(),
-          orElse: () => CustomerStatus.active,
-        ),
-        plan: PlanType.values.firstWhere(
-          (e) => e.name.toLowerCase() == plan.toLowerCase(),
-          orElse: () => PlanType.ampere,
-        ),
-        planValue: planValue,
-      );
+    id: id,
+    createdAt: createdAt,
+    updatedAt: createdAt,
+    companyId: '',
+    name: name,
+    phone: phone,
+    address: address,
+    areaId: null,
+    customerType: toCustomerType(customerType),
+    customerRelation: toCustomerRelation(customerRelation),
+    subscriptionDate: subscriptionDate,
+    priceOverride: pricingOverride?.price,
+    fixedChargeOverride: pricingOverride?.fixedCharge,
+    tvaOverride: pricingOverride?.tva,
+    customerStatus: toCustomerStatus(customerStatus),
+    plan: plan.toPlanType(),
+    planValue: planValue,
+  );
 }
+
+CustomerRelation? toCustomerRelation(String? value) =>
+    switch (value?.toLowerCase()) {
+      'friend' => CustomerRelation.friend,
+      'family' => CustomerRelation.family,
+      'owner' => CustomerRelation.owner,
+      _ => null,
+    };
+CustomerStatus toCustomerStatus(String value) => switch (value.toLowerCase()) {
+  'active' => CustomerStatus.active,
+  'suspended' => CustomerStatus.suspended,
+  'terminated' => CustomerStatus.terminated,
+  _ => CustomerStatus.active,
+};
+CustomerType toCustomerType(String value) => switch (value.toLowerCase()) {
+  'residential' => CustomerType.residential,
+  'commercial' => CustomerType.commercial,
+  'industrial' => CustomerType.industrial,
+  _ => CustomerType.residential,
+};

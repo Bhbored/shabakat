@@ -360,11 +360,11 @@ class _SubscriberAddingScreenState
       address: _addressController.text.trim().isEmpty
           ? null
           : _addressController.text.trim(),
-      customerType: _customerType,
-      plan: _plan,
+      customerType: _customerType.label,
+      plan: _plan.label,
       planValue: double.parse(_planValueController.text.trim()),
       subscriptionDate: _subscriptionDate,
-      customerRelation: _customerRelation,
+      customerRelation: _customerRelation?.label,
       pricingOverride: _hasPricingOverride
           ? CustomerPricingOverrideDto(
               price: double.parse(_priceOverrideController.text.trim()),

@@ -12,20 +12,12 @@ _CustomerUpdateRequest _$CustomerUpdateRequestFromJson(
   name: json['name'] as String?,
   phone: json['phone'] as String?,
   address: json['address'] as String?,
-  customerType: $enumDecodeNullable(
-    _$CustomerTypeEnumMap,
-    json['customerType'],
-  ),
-  plan: $enumDecodeNullable(_$PlanTypeEnumMap, json['plan']),
+  areaId: json['areaId'] as String?,
+  customerType: json['customerType'] as String?,
+  plan: json['plan'] as String?,
   planValue: (json['planValue'] as num?)?.toDouble(),
-  customerStatus: $enumDecodeNullable(
-    _$CustomerStatusEnumMap,
-    json['customerStatus'],
-  ),
-  customerRelation: $enumDecodeNullable(
-    _$CustomerRelationEnumMap,
-    json['customerRelation'],
-  ),
+  customerStatus: json['customerStatus'] as String?,
+  customerRelation: json['customerRelation'] as String?,
   pricingOverride: json['pricingOverride'] == null
       ? null
       : CustomerPricingOverrideDto.fromJson(
@@ -40,34 +32,12 @@ Map<String, dynamic> _$CustomerUpdateRequestToJson(
   'name': instance.name,
   'phone': instance.phone,
   'address': instance.address,
-  'customerType': _$CustomerTypeEnumMap[instance.customerType],
-  'plan': _$PlanTypeEnumMap[instance.plan],
+  'areaId': instance.areaId,
+  'customerType': instance.customerType,
+  'plan': instance.plan,
   'planValue': instance.planValue,
-  'customerStatus': _$CustomerStatusEnumMap[instance.customerStatus],
-  'customerRelation': _$CustomerRelationEnumMap[instance.customerRelation],
+  'customerStatus': instance.customerStatus,
+  'customerRelation': instance.customerRelation,
   'pricingOverride': instance.pricingOverride,
   'clearPricingOverride': instance.clearPricingOverride,
-};
-
-const _$CustomerTypeEnumMap = {
-  CustomerType.residential: 'residential',
-  CustomerType.commercial: 'commercial',
-  CustomerType.industrial: 'industrial',
-};
-
-const _$PlanTypeEnumMap = {
-  PlanType.ampere: 'ampere',
-  PlanType.kilowatt: 'kilowatt',
-};
-
-const _$CustomerStatusEnumMap = {
-  CustomerStatus.active: 'active',
-  CustomerStatus.suspended: 'suspended',
-  CustomerStatus.terminated: 'terminated',
-};
-
-const _$CustomerRelationEnumMap = {
-  CustomerRelation.friend: 'friend',
-  CustomerRelation.family: 'family',
-  CustomerRelation.owner: 'owner',
 };

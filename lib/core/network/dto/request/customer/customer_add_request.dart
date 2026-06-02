@@ -1,7 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shabakat/core/enums/customer_relation.dart';
-import 'package:shabakat/core/enums/customer_type.dart';
-import 'package:shabakat/core/enums/plan_type.dart';
 
 import 'customer_pricing_override_dto.dart';
 
@@ -22,12 +19,13 @@ sealed class CustomerAddRequest with _$CustomerAddRequest {
     required String name,
     String? phone,
     String? address,
-    required CustomerType customerType,
-    required PlanType plan,
+    String? areaId,
+    required String customerType,
+    required String plan,
     required double planValue,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
     DateTime? subscriptionDate,
-    CustomerRelation? customerRelation,
+    String? customerRelation,
     CustomerPricingOverrideDto? pricingOverride,
   }) = _CustomerAddRequest;
 

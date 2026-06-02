@@ -30,9 +30,9 @@ class CustomerService {
     return response.when(
       success: (data, statusCode, meta) {
         _logger.i('Customers retrieved successfully: $data');
-        final datalist = data as List<dynamic>;
-        final customers = datalist
-            .map((item) => CustomerResponse.fromJson(item))
+        final datalist = data as Map<String, dynamic>;
+        final customers = (datalist['data'] as List)
+            .map((x) => CustomerResponse.fromJson(x))
             .toList();
         return customers;
       },

@@ -17,17 +17,18 @@ class RegisterScreen extends ConsumerStatefulWidget {
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _companyNameController = TextEditingController();
-  final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   void dispose() {
     _companyNameController.dispose();
-    _fullNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -40,9 +41,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         .register(
           RegisterRequest(
             companyName: _companyNameController.text.trim(),
-            fullName: _fullNameController.text.trim(),
             email: _emailController.text.trim(),
             password: _passwordController.text,
+            confirmPassword: _confirmPasswordController.text,
           ),
         );
   }
@@ -126,7 +127,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           TextFormField(
                             controller: _companyNameController,
                             textInputAction: TextInputAction.next,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'Company Name',
                               prefixIcon: Icon(LucideIcons.building2),
                             ),
@@ -139,25 +140,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           ),
                           SizedBox(height: context.spaceMedium),
                           TextFormField(
-                            controller: _fullNameController,
-                            textInputAction: TextInputAction.next,
-                            decoration: InputDecoration(
-                              hintText: 'Full Name',
-                              prefixIcon: Icon(LucideIcons.user),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Full name is required';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: context.spaceMedium),
-                          TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
                             textInputAction: TextInputAction.next,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'Email',
                               prefixIcon: Icon(LucideIcons.mail),
                             ),
@@ -175,11 +161,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           TextFormField(
                             controller: _passwordController,
                             obscureText: _obscurePassword,
-                            textInputAction: TextInputAction.done,
-                            onFieldSubmitted: (_) => _submit(),
+                            textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
                               hintText: 'Password',
-                              prefixIcon: Icon(LucideIcons.lock),
+                              prefixIcon: const Icon(LucideIcons.lock),
                               suffixIcon: IconButton(
                                 onPressed: () => setState(
                                   () => _obscurePassword = !_obscurePassword,
@@ -197,6 +182,36 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               }
                               if (value.length < 6) {
                                 return 'Password must be at least 6 characters';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: context.spaceMedium),
+                          TextFormField(
+                            controller: _confirmPasswordController,
+                            obscureText: _obscureConfirmPassword,
+                            textInputAction: TextInputAction.done,
+                            onFieldSubmitted: (_) => _submit(),
+                            decoration: InputDecoration(
+                              hintText: 'Confirm Password',
+                              prefixIcon: const Icon(LucideIcons.lock),
+                              suffixIcon: IconButton(
+                                onPressed: () => setState(
+                                  () => _obscureConfirmPassword = !_obscureConfirmPassword,
+                                ),
+                                icon: Icon(
+                                  _obscureConfirmPassword
+                                      ? LucideIcons.eyeOff
+                                      : LucideIcons.eye,
+                                ),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Confirm password is required';
+                              }
+                              if (value != _passwordController.text) {
+                                return 'Passwords do not match';
                               }
                               return null;
                             },

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CustomerPricingOverrideDto {
 
- double get price; double get fixedCharge; double get tva;
+ double? get price; double? get fixedCharge; double? get tva;
 /// Create a copy of CustomerPricingOverrideDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $CustomerPricingOverrideDtoCopyWith<$Res>  {
   factory $CustomerPricingOverrideDtoCopyWith(CustomerPricingOverrideDto value, $Res Function(CustomerPricingOverrideDto) _then) = _$CustomerPricingOverrideDtoCopyWithImpl;
 @useResult
 $Res call({
- double price, double fixedCharge, double tva
+ double? price, double? fixedCharge, double? tva
 });
 
 
@@ -65,12 +65,12 @@ class _$CustomerPricingOverrideDtoCopyWithImpl<$Res>
 
 /// Create a copy of CustomerPricingOverrideDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? price = null,Object? fixedCharge = null,Object? tva = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? price = freezed,Object? fixedCharge = freezed,Object? tva = freezed,}) {
   return _then(_self.copyWith(
-price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
-as double,fixedCharge: null == fixedCharge ? _self.fixedCharge : fixedCharge // ignore: cast_nullable_to_non_nullable
-as double,tva: null == tva ? _self.tva : tva // ignore: cast_nullable_to_non_nullable
-as double,
+price: freezed == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
+as double?,fixedCharge: freezed == fixedCharge ? _self.fixedCharge : fixedCharge // ignore: cast_nullable_to_non_nullable
+as double?,tva: freezed == tva ? _self.tva : tva // ignore: cast_nullable_to_non_nullable
+as double?,
   ));
 }
 
@@ -152,7 +152,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double price,  double fixedCharge,  double tva)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double? price,  double? fixedCharge,  double? tva)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CustomerPricingOverrideDto() when $default != null:
 return $default(_that.price,_that.fixedCharge,_that.tva);case _:
@@ -173,7 +173,7 @@ return $default(_that.price,_that.fixedCharge,_that.tva);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double price,  double fixedCharge,  double tva)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double? price,  double? fixedCharge,  double? tva)  $default,) {final _that = this;
 switch (_that) {
 case _CustomerPricingOverrideDto():
 return $default(_that.price,_that.fixedCharge,_that.tva);}
@@ -190,7 +190,7 @@ return $default(_that.price,_that.fixedCharge,_that.tva);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double price,  double fixedCharge,  double tva)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double? price,  double? fixedCharge,  double? tva)?  $default,) {final _that = this;
 switch (_that) {
 case _CustomerPricingOverrideDto() when $default != null:
 return $default(_that.price,_that.fixedCharge,_that.tva);case _:
@@ -205,12 +205,12 @@ return $default(_that.price,_that.fixedCharge,_that.tva);case _:
 @JsonSerializable()
 
 class _CustomerPricingOverrideDto implements CustomerPricingOverrideDto {
-  const _CustomerPricingOverrideDto({required this.price, required this.fixedCharge, required this.tva});
+  const _CustomerPricingOverrideDto({this.price, this.fixedCharge, this.tva});
   factory _CustomerPricingOverrideDto.fromJson(Map<String, dynamic> json) => _$CustomerPricingOverrideDtoFromJson(json);
 
-@override final  double price;
-@override final  double fixedCharge;
-@override final  double tva;
+@override final  double? price;
+@override final  double? fixedCharge;
+@override final  double? tva;
 
 /// Create a copy of CustomerPricingOverrideDto
 /// with the given fields replaced by the non-null parameter values.
@@ -245,7 +245,7 @@ abstract mixin class _$CustomerPricingOverrideDtoCopyWith<$Res> implements $Cust
   factory _$CustomerPricingOverrideDtoCopyWith(_CustomerPricingOverrideDto value, $Res Function(_CustomerPricingOverrideDto) _then) = __$CustomerPricingOverrideDtoCopyWithImpl;
 @override @useResult
 $Res call({
- double price, double fixedCharge, double tva
+ double? price, double? fixedCharge, double? tva
 });
 
 
@@ -262,12 +262,12 @@ class __$CustomerPricingOverrideDtoCopyWithImpl<$Res>
 
 /// Create a copy of CustomerPricingOverrideDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? price = null,Object? fixedCharge = null,Object? tva = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? price = freezed,Object? fixedCharge = freezed,Object? tva = freezed,}) {
   return _then(_CustomerPricingOverrideDto(
-price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
-as double,fixedCharge: null == fixedCharge ? _self.fixedCharge : fixedCharge // ignore: cast_nullable_to_non_nullable
-as double,tva: null == tva ? _self.tva : tva // ignore: cast_nullable_to_non_nullable
-as double,
+price: freezed == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
+as double?,fixedCharge: freezed == fixedCharge ? _self.fixedCharge : fixedCharge // ignore: cast_nullable_to_non_nullable
+as double?,tva: freezed == tva ? _self.tva : tva // ignore: cast_nullable_to_non_nullable
+as double?,
   ));
 }
 

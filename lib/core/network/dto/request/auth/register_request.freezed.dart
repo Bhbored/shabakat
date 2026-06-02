@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$RegisterRequest {
 
- String get companyName; String get fullName; String get email; String get password;
+ String get companyName; String get email; String get password; String get confirmPassword;
 /// Create a copy of RegisterRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $RegisterRequestCopyWith<RegisterRequest> get copyWith => _$RegisterRequestCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RegisterRequest&&(identical(other.companyName, companyName) || other.companyName == companyName)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RegisterRequest&&(identical(other.companyName, companyName) || other.companyName == companyName)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.confirmPassword, confirmPassword) || other.confirmPassword == confirmPassword));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,companyName,fullName,email,password);
+int get hashCode => Object.hash(runtimeType,companyName,email,password,confirmPassword);
 
 @override
 String toString() {
-  return 'RegisterRequest(companyName: $companyName, fullName: $fullName, email: $email, password: $password)';
+  return 'RegisterRequest(companyName: $companyName, email: $email, password: $password, confirmPassword: $confirmPassword)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $RegisterRequestCopyWith<$Res>  {
   factory $RegisterRequestCopyWith(RegisterRequest value, $Res Function(RegisterRequest) _then) = _$RegisterRequestCopyWithImpl;
 @useResult
 $Res call({
- String companyName, String fullName, String email, String password
+ String companyName, String email, String password, String confirmPassword
 });
 
 
@@ -65,12 +65,12 @@ class _$RegisterRequestCopyWithImpl<$Res>
 
 /// Create a copy of RegisterRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? companyName = null,Object? fullName = null,Object? email = null,Object? password = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? companyName = null,Object? email = null,Object? password = null,Object? confirmPassword = null,}) {
   return _then(_self.copyWith(
 companyName: null == companyName ? _self.companyName : companyName // ignore: cast_nullable_to_non_nullable
-as String,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
+as String,confirmPassword: null == confirmPassword ? _self.confirmPassword : confirmPassword // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -153,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String companyName,  String fullName,  String email,  String password)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String companyName,  String email,  String password,  String confirmPassword)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RegisterRequest() when $default != null:
-return $default(_that.companyName,_that.fullName,_that.email,_that.password);case _:
+return $default(_that.companyName,_that.email,_that.password,_that.confirmPassword);case _:
   return orElse();
 
 }
@@ -174,10 +174,10 @@ return $default(_that.companyName,_that.fullName,_that.email,_that.password);cas
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String companyName,  String fullName,  String email,  String password)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String companyName,  String email,  String password,  String confirmPassword)  $default,) {final _that = this;
 switch (_that) {
 case _RegisterRequest():
-return $default(_that.companyName,_that.fullName,_that.email,_that.password);}
+return $default(_that.companyName,_that.email,_that.password,_that.confirmPassword);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -191,10 +191,10 @@ return $default(_that.companyName,_that.fullName,_that.email,_that.password);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String companyName,  String fullName,  String email,  String password)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String companyName,  String email,  String password,  String confirmPassword)?  $default,) {final _that = this;
 switch (_that) {
 case _RegisterRequest() when $default != null:
-return $default(_that.companyName,_that.fullName,_that.email,_that.password);case _:
+return $default(_that.companyName,_that.email,_that.password,_that.confirmPassword);case _:
   return null;
 
 }
@@ -206,13 +206,13 @@ return $default(_that.companyName,_that.fullName,_that.email,_that.password);cas
 @JsonSerializable()
 
 class _RegisterRequest implements RegisterRequest {
-  const _RegisterRequest({required this.companyName, required this.fullName, required this.email, required this.password});
+  const _RegisterRequest({required this.companyName, required this.email, required this.password, required this.confirmPassword});
   factory _RegisterRequest.fromJson(Map<String, dynamic> json) => _$RegisterRequestFromJson(json);
 
 @override final  String companyName;
-@override final  String fullName;
 @override final  String email;
 @override final  String password;
+@override final  String confirmPassword;
 
 /// Create a copy of RegisterRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -227,16 +227,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RegisterRequest&&(identical(other.companyName, companyName) || other.companyName == companyName)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RegisterRequest&&(identical(other.companyName, companyName) || other.companyName == companyName)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.confirmPassword, confirmPassword) || other.confirmPassword == confirmPassword));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,companyName,fullName,email,password);
+int get hashCode => Object.hash(runtimeType,companyName,email,password,confirmPassword);
 
 @override
 String toString() {
-  return 'RegisterRequest(companyName: $companyName, fullName: $fullName, email: $email, password: $password)';
+  return 'RegisterRequest(companyName: $companyName, email: $email, password: $password, confirmPassword: $confirmPassword)';
 }
 
 
@@ -247,7 +247,7 @@ abstract mixin class _$RegisterRequestCopyWith<$Res> implements $RegisterRequest
   factory _$RegisterRequestCopyWith(_RegisterRequest value, $Res Function(_RegisterRequest) _then) = __$RegisterRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String companyName, String fullName, String email, String password
+ String companyName, String email, String password, String confirmPassword
 });
 
 
@@ -264,12 +264,12 @@ class __$RegisterRequestCopyWithImpl<$Res>
 
 /// Create a copy of RegisterRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? companyName = null,Object? fullName = null,Object? email = null,Object? password = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? companyName = null,Object? email = null,Object? password = null,Object? confirmPassword = null,}) {
   return _then(_RegisterRequest(
 companyName: null == companyName ? _self.companyName : companyName // ignore: cast_nullable_to_non_nullable
-as String,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
+as String,confirmPassword: null == confirmPassword ? _self.confirmPassword : confirmPassword // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

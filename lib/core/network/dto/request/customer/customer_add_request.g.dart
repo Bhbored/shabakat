@@ -11,14 +11,12 @@ _CustomerAddRequest _$CustomerAddRequestFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       phone: json['phone'] as String?,
       address: json['address'] as String?,
-      customerType: $enumDecode(_$CustomerTypeEnumMap, json['customerType']),
-      plan: $enumDecode(_$PlanTypeEnumMap, json['plan']),
+      areaId: json['areaId'] as String?,
+      customerType: json['customerType'] as String,
+      plan: json['plan'] as String,
       planValue: (json['planValue'] as num).toDouble(),
       subscriptionDate: _dateOnlyFromJson(json['subscriptionDate'] as String?),
-      customerRelation: $enumDecodeNullable(
-        _$CustomerRelationEnumMap,
-        json['customerRelation'],
-      ),
+      customerRelation: json['customerRelation'] as String?,
       pricingOverride: json['pricingOverride'] == null
           ? null
           : CustomerPricingOverrideDto.fromJson(
@@ -31,27 +29,11 @@ Map<String, dynamic> _$CustomerAddRequestToJson(_CustomerAddRequest instance) =>
       'name': instance.name,
       'phone': instance.phone,
       'address': instance.address,
-      'customerType': _$CustomerTypeEnumMap[instance.customerType]!,
-      'plan': _$PlanTypeEnumMap[instance.plan]!,
+      'areaId': instance.areaId,
+      'customerType': instance.customerType,
+      'plan': instance.plan,
       'planValue': instance.planValue,
       'subscriptionDate': _dateOnlyToJson(instance.subscriptionDate),
-      'customerRelation': _$CustomerRelationEnumMap[instance.customerRelation],
+      'customerRelation': instance.customerRelation,
       'pricingOverride': instance.pricingOverride,
     };
-
-const _$CustomerTypeEnumMap = {
-  CustomerType.residential: 'residential',
-  CustomerType.commercial: 'commercial',
-  CustomerType.industrial: 'industrial',
-};
-
-const _$PlanTypeEnumMap = {
-  PlanType.ampere: 'ampere',
-  PlanType.kilowatt: 'kilowatt',
-};
-
-const _$CustomerRelationEnumMap = {
-  CustomerRelation.friend: 'friend',
-  CustomerRelation.family: 'family',
-  CustomerRelation.owner: 'owner',
-};

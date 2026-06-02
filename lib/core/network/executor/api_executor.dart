@@ -60,24 +60,24 @@ class ApiExecutor {
     // Status code specific
     if (status == 401) {
       return ApiException(
-        userMessage: 'Session expired. Please log in again.',
-        error: ApiErrors.unauthorized,
+        error: 'Session expired. Please log in again.',
+        userMessage: ApiErrors.unauthorized,
         statusCode: status,
         originalError: e,
       );
     }
     if (status == 404) {
       return ApiException(
-        userMessage: 'Resource not found.',
-        error: ApiErrors.notFound,
+        error: 'Resource not found.',
+        userMessage: ApiErrors.notFound,
         statusCode: status,
         originalError: e,
       );
     }
     if (status != null && status >= 500) {
       return ApiException(
-        userMessage: 'Server error occurred. Please try again later.',
-        error: ApiErrors.serverError,
+        error: 'Server error occurred. Please try again later.',
+        userMessage: ApiErrors.serverError,
         statusCode: status,
         originalError: e,
       );
@@ -85,50 +85,50 @@ class ApiExecutor {
 
     return switch (e.type) {
       DioExceptionType.connectionTimeout => ApiException(
-        userMessage: 'Connection timed out. Please check your internet.',
-        error: ApiErrors.requestTimeout,
+        error: 'Connection timed out. Please check your internet.',
+        userMessage: ApiErrors.requestTimeout,
         statusCode: status,
         originalError: e,
       ),
       DioExceptionType.receiveTimeout => ApiException(
-        userMessage: 'Server took too long to respond.',
-        error: ApiErrors.requestTimeout,
+        error: 'Server took too long to respond.',
+        userMessage: ApiErrors.requestTimeout,
         statusCode: status,
         originalError: e,
       ),
       DioExceptionType.sendTimeout => ApiException(
-        userMessage: 'Request timed out while sending data.',
-        error: ApiErrors.sendTimeout,
+        error: 'Request timed out while sending data.',
+        userMessage: ApiErrors.sendTimeout,
         statusCode: status,
         originalError: e,
       ),
       DioExceptionType.cancel => ApiException(
-        userMessage: 'Request was cancelled.',
-        error: ApiErrors.cancelled,
+        error: 'Request was cancelled.',
+        userMessage: ApiErrors.cancelled,
         statusCode: status,
         originalError: e,
       ),
       DioExceptionType.badCertificate => ApiException(
-        userMessage: 'Secure connection failed.',
-        error: ApiErrors.certificateFailed,
+        error: 'Secure connection failed.',
+        userMessage: ApiErrors.certificateFailed,
         statusCode: status,
         originalError: e,
       ),
       DioExceptionType.connectionError => ApiException(
-        userMessage: 'No internet connection.',
-        error: ApiErrors.connectionFailed,
+        error: 'No internet connection.',
+        userMessage: ApiErrors.connectionFailed,
         statusCode: status,
         originalError: e,
       ),
       DioExceptionType.badResponse => ApiException(
-        userMessage: 'Invalid response from server.',
-        error: ApiErrors.badResponse,
+        error: 'Invalid response from server.',
+        userMessage: ApiErrors.badResponse,
         statusCode: status,
         originalError: e,
       ),
       DioExceptionType.unknown => ApiException(
-        userMessage: e.message ?? 'An unexpected error occurred.',
-        error: ApiErrors.unknown,
+        error: e.message ?? 'An unexpected error occurred.',
+        userMessage: ApiErrors.unknown,
         statusCode: status,
         originalError: e,
       ),

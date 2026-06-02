@@ -9,9 +9,9 @@ part of 'customer_pricing_override_dto.dart';
 _CustomerPricingOverrideDto _$CustomerPricingOverrideDtoFromJson(
   Map<String, dynamic> json,
 ) => _CustomerPricingOverrideDto(
-  price: (json['price'] as num).toDouble(),
-  fixedCharge: (json['fixedCharge'] as num).toDouble(),
-  tva: (json['tva'] as num).toDouble(),
+  price: (json['price'] as num?)?.toDouble(),
+  fixedCharge: (json['fixedCharge'] as num?)?.toDouble(),
+  tva: (json['tva'] as num?)?.toDouble(),
 );
 
 Map<String, dynamic> _$CustomerPricingOverrideDtoToJson(

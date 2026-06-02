@@ -20,6 +20,7 @@ sealed class CustomerResponse with _$CustomerResponse {
     required String customerType,
     required String plan,
     required double planValue,
+    String? areaName,
     required String customerStatus,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
     required DateTime subscriptionDate,
