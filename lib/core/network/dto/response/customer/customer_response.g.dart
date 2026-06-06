@@ -26,10 +26,10 @@ _CustomerResponse _$CustomerResponseFromJson(Map<String, dynamic> json) =>
           : CustomerPricingOverrideDto.fromJson(
               json['pricingOverride'] as Map<String, dynamic>,
             ),
-      totalBilled: (json['totalBilled'] as num).toDouble(),
-      totalPaid: (json['totalPaid'] as num).toDouble(),
-      totalOutstanding: (json['totalOutstanding'] as num).toDouble(),
-      paidThisMonth: json['paidThisMonth'] as bool,
+      totalBilled: (json['totalBilled'] as num?)?.toDouble() ?? 0.0,
+      totalPaid: (json['totalPaid'] as num?)?.toDouble() ?? 0.0,
+      totalOutstanding: (json['totalOutstanding'] as num?)?.toDouble() ?? 0.0,
+      paidThisMonth: json['paidThisMonth'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$CustomerResponseToJson(_CustomerResponse instance) =>

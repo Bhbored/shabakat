@@ -4,7 +4,7 @@ import 'package:shabakat/core/network/client/dio_client.dart';
 import 'package:shabakat/core/network/configs/http_methods.dart';
 import 'package:shabakat/core/network/contracts/i_auth_service.dart';
 import 'package:shabakat/core/network/dto/request/auth/login_request.dart';
-import 'package:shabakat/core/network/dto/request/auth/register_request.dart';
+import 'package:shabakat/core/network/dto/request/auth/register_company_request.dart';
 import 'package:shabakat/core/network/dto/response/auth/auth_response.dart';
 import 'package:shabakat/core/network/executor/api_executor.dart';
 import 'package:shabakat/core/network/request/api_request.dart';
@@ -29,7 +29,7 @@ class AuthService implements IAuthService {
   final TokenStore _tokenStore;
   AuthService(this._apiExecutor, this._tokenStore);
   @override
-  Future<AuthResponse?> register(RegisterRequest request) async {
+  Future<AuthResponse?> register(RegisterCompanyRequest request) async {
     final response = await _apiExecutor.execute(
       ApiRequest(
         path: 'register',

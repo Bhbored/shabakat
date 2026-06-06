@@ -16,6 +16,9 @@ _Expenses _$ExpensesFromJson(Map<String, dynamic> json) => _Expenses(
   employeesExpenses: (json['employeesExpenses'] as num).toDouble(),
   expenseDate: DateTime.parse(json['expenseDate'] as String),
   notes: json['notes'] as String?,
+  otherExpenses: (json['otherExpenses'] as List<dynamic>?)
+      ?.map((e) => OtherExpenses.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$ExpensesToJson(_Expenses instance) => <String, dynamic>{
@@ -28,4 +31,5 @@ Map<String, dynamic> _$ExpensesToJson(_Expenses instance) => <String, dynamic>{
   'employeesExpenses': instance.employeesExpenses,
   'expenseDate': instance.expenseDate.toIso8601String(),
   'notes': instance.notes,
+  'otherExpenses': instance.otherExpenses,
 };

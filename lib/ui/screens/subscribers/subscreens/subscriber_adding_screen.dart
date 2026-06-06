@@ -4,7 +4,7 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/customer_relation.dart';
 import 'package:shabakat/core/enums/customer_type.dart';
 import 'package:shabakat/core/enums/plan_type.dart';
-import 'package:shabakat/core/network/dto/request/customer/customer_add_request.dart';
+import 'package:shabakat/core/network/dto/request/customer/create_customer_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/customer_pricing_override_dto.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
 
@@ -352,7 +352,7 @@ class _SubscriberAddingScreenState
 
     setState(() => _isLoading = true);
 
-    final request = CustomerAddRequest(
+    final request = CreateCustomerRequest(
       name: _nameController.text.trim(),
       phone: _phoneController.text.trim().isEmpty
           ? null

@@ -26,7 +26,7 @@ class AuthStateNotifier extends _$AuthStateNotifier {
     }
   }
 
-  Future<void> register(RegisterRequest request) async {
+  Future<void> register(RegisterCompanyRequest request) async {
     state = const AsyncValue.loading();
     try {
       await _autherService.register(request);

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Company {
 
- String get id; String? get email; String? get phoneNumber; bool get isBanned; String get companyName; String? get logoUrl;
+ String get id; DateTime get createdAt; DateTime get updatedAt; String get name; String? get logoUrl; bool get isBanned;
 /// Create a copy of Company
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CompanyCopyWith<Company> get copyWith => _$CompanyCopyWithImpl<Company>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Company&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned)&&(identical(other.companyName, companyName) || other.companyName == companyName)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Company&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.name, name) || other.name == name)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,email,phoneNumber,isBanned,companyName,logoUrl);
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,name,logoUrl,isBanned);
 
 @override
 String toString() {
-  return 'Company(id: $id, email: $email, phoneNumber: $phoneNumber, isBanned: $isBanned, companyName: $companyName, logoUrl: $logoUrl)';
+  return 'Company(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, name: $name, logoUrl: $logoUrl, isBanned: $isBanned)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CompanyCopyWith<$Res>  {
   factory $CompanyCopyWith(Company value, $Res Function(Company) _then) = _$CompanyCopyWithImpl;
 @useResult
 $Res call({
- String id, String? email, String? phoneNumber, bool isBanned, String companyName, String? logoUrl
+ String id, DateTime createdAt, DateTime updatedAt, String name, String? logoUrl, bool isBanned
 });
 
 
@@ -65,15 +65,15 @@ class _$CompanyCopyWithImpl<$Res>
 
 /// Create a copy of Company
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? email = freezed,Object? phoneNumber = freezed,Object? isBanned = null,Object? companyName = null,Object? logoUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? name = null,Object? logoUrl = freezed,Object? isBanned = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String?,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String?,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
-as bool,companyName: null == companyName ? _self.companyName : companyName // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -155,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? email,  String? phoneNumber,  bool isBanned,  String companyName,  String? logoUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String name,  String? logoUrl,  bool isBanned)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Company() when $default != null:
-return $default(_that.id,_that.email,_that.phoneNumber,_that.isBanned,_that.companyName,_that.logoUrl);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.name,_that.logoUrl,_that.isBanned);case _:
   return orElse();
 
 }
@@ -176,10 +176,10 @@ return $default(_that.id,_that.email,_that.phoneNumber,_that.isBanned,_that.comp
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? email,  String? phoneNumber,  bool isBanned,  String companyName,  String? logoUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String name,  String? logoUrl,  bool isBanned)  $default,) {final _that = this;
 switch (_that) {
 case _Company():
-return $default(_that.id,_that.email,_that.phoneNumber,_that.isBanned,_that.companyName,_that.logoUrl);}
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.name,_that.logoUrl,_that.isBanned);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -193,10 +193,10 @@ return $default(_that.id,_that.email,_that.phoneNumber,_that.isBanned,_that.comp
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? email,  String? phoneNumber,  bool isBanned,  String companyName,  String? logoUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String name,  String? logoUrl,  bool isBanned)?  $default,) {final _that = this;
 switch (_that) {
 case _Company() when $default != null:
-return $default(_that.id,_that.email,_that.phoneNumber,_that.isBanned,_that.companyName,_that.logoUrl);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.name,_that.logoUrl,_that.isBanned);case _:
   return null;
 
 }
@@ -208,15 +208,15 @@ return $default(_that.id,_that.email,_that.phoneNumber,_that.isBanned,_that.comp
 @JsonSerializable()
 
 class _Company implements Company {
-  const _Company({required this.id, this.email, this.phoneNumber, this.isBanned = false, required this.companyName, this.logoUrl});
+  const _Company({required this.id, required this.createdAt, required this.updatedAt, required this.name, this.logoUrl, this.isBanned = false});
   factory _Company.fromJson(Map<String, dynamic> json) => _$CompanyFromJson(json);
 
 @override final  String id;
-@override final  String? email;
-@override final  String? phoneNumber;
-@override@JsonKey() final  bool isBanned;
-@override final  String companyName;
+@override final  DateTime createdAt;
+@override final  DateTime updatedAt;
+@override final  String name;
 @override final  String? logoUrl;
+@override@JsonKey() final  bool isBanned;
 
 /// Create a copy of Company
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Company&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned)&&(identical(other.companyName, companyName) || other.companyName == companyName)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Company&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.name, name) || other.name == name)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,email,phoneNumber,isBanned,companyName,logoUrl);
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,name,logoUrl,isBanned);
 
 @override
 String toString() {
-  return 'Company(id: $id, email: $email, phoneNumber: $phoneNumber, isBanned: $isBanned, companyName: $companyName, logoUrl: $logoUrl)';
+  return 'Company(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, name: $name, logoUrl: $logoUrl, isBanned: $isBanned)';
 }
 
 
@@ -251,7 +251,7 @@ abstract mixin class _$CompanyCopyWith<$Res> implements $CompanyCopyWith<$Res> {
   factory _$CompanyCopyWith(_Company value, $Res Function(_Company) _then) = __$CompanyCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? email, String? phoneNumber, bool isBanned, String companyName, String? logoUrl
+ String id, DateTime createdAt, DateTime updatedAt, String name, String? logoUrl, bool isBanned
 });
 
 
@@ -268,15 +268,15 @@ class __$CompanyCopyWithImpl<$Res>
 
 /// Create a copy of Company
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? email = freezed,Object? phoneNumber = freezed,Object? isBanned = null,Object? companyName = null,Object? logoUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? name = null,Object? logoUrl = freezed,Object? isBanned = null,}) {
   return _then(_Company(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String?,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String?,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
-as bool,companyName: null == companyName ? _self.companyName : companyName // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

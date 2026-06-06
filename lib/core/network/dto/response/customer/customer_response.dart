@@ -28,10 +28,10 @@ sealed class CustomerResponse with _$CustomerResponse {
     String? customerRelation,
     required bool hasPricingOverride,
     CustomerPricingOverrideDto? pricingOverride,
-    required double totalBilled,
-    required double totalPaid,
-    required double totalOutstanding,
-    required bool paidThisMonth,
+    @Default(0.0) double totalBilled,
+    @Default(0.0) double totalPaid,
+    @Default(0.0) double totalOutstanding,
+    @Default(false) bool paidThisMonth,
   }) = _CustomerResponse;
 
   factory CustomerResponse.fromJson(Map<String, dynamic> json) =>

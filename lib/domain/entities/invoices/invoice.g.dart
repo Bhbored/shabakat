@@ -23,6 +23,9 @@ _Invoice _$InvoiceFromJson(Map<String, dynamic> json) => _Invoice(
   invoiceStatus:
       $enumDecodeNullable(_$InvoiceStatusEnumMap, json['invoiceStatus']) ??
       InvoiceStatus.unpaid,
+  payments: (json['payments'] as List<dynamic>?)
+      ?.map((e) => Payment.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$InvoiceToJson(_Invoice instance) => <String, dynamic>{
@@ -40,6 +43,7 @@ Map<String, dynamic> _$InvoiceToJson(_Invoice instance) => <String, dynamic>{
   'paidAmount': instance.paidAmount,
   'amountDue': instance.amountDue,
   'invoiceStatus': _$InvoiceStatusEnumMap[instance.invoiceStatus]!,
+  'payments': instance.payments,
 };
 
 const _$InvoiceStatusEnumMap = {

@@ -232,7 +232,7 @@ return $default(_that.id,_that.name,_that.phone,_that.address,_that.customerType
 @JsonSerializable()
 
 class _CustomerResponse implements CustomerResponse {
-  const _CustomerResponse({required this.id, required this.name, this.phone, this.address, required this.customerType, required this.plan, required this.planValue, this.areaName, required this.customerStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) required this.subscriptionDate, required this.createdAt, this.customerRelation, required this.hasPricingOverride, this.pricingOverride, required this.totalBilled, required this.totalPaid, required this.totalOutstanding, required this.paidThisMonth});
+  const _CustomerResponse({required this.id, required this.name, this.phone, this.address, required this.customerType, required this.plan, required this.planValue, this.areaName, required this.customerStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) required this.subscriptionDate, required this.createdAt, this.customerRelation, required this.hasPricingOverride, this.pricingOverride, this.totalBilled = 0.0, this.totalPaid = 0.0, this.totalOutstanding = 0.0, this.paidThisMonth = false});
   factory _CustomerResponse.fromJson(Map<String, dynamic> json) => _$CustomerResponseFromJson(json);
 
 @override final  String id;
@@ -249,10 +249,10 @@ class _CustomerResponse implements CustomerResponse {
 @override final  String? customerRelation;
 @override final  bool hasPricingOverride;
 @override final  CustomerPricingOverrideDto? pricingOverride;
-@override final  double totalBilled;
-@override final  double totalPaid;
-@override final  double totalOutstanding;
-@override final  bool paidThisMonth;
+@override@JsonKey() final  double totalBilled;
+@override@JsonKey() final  double totalPaid;
+@override@JsonKey() final  double totalOutstanding;
+@override@JsonKey() final  bool paidThisMonth;
 
 /// Create a copy of CustomerResponse
 /// with the given fields replaced by the non-null parameter values.

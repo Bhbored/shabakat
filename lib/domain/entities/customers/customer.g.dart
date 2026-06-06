@@ -29,6 +29,9 @@ _Customer _$CustomerFromJson(Map<String, dynamic> json) => _Customer(
       CustomerStatus.active,
   plan: $enumDecode(_$PlanTypeEnumMap, json['plan']),
   planValue: (json['planValue'] as num).toDouble(),
+  invoices: (json['invoices'] as List<dynamic>?)
+      ?.map((e) => Invoice.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$CustomerToJson(_Customer instance) => <String, dynamic>{
@@ -49,27 +52,28 @@ Map<String, dynamic> _$CustomerToJson(_Customer instance) => <String, dynamic>{
   'customerStatus': _$CustomerStatusEnumMap[instance.customerStatus]!,
   'plan': _$PlanTypeEnumMap[instance.plan]!,
   'planValue': instance.planValue,
+  'invoices': instance.invoices,
 };
 
 const _$CustomerTypeEnumMap = {
-  CustomerType.residential: 'Residential',
-  CustomerType.commercial: 'Commercial',
-  CustomerType.industrial: 'Industrial',
+  CustomerType.residential: 'residential',
+  CustomerType.commercial: 'commercial',
+  CustomerType.industrial: 'industrial',
 };
 
 const _$CustomerRelationEnumMap = {
-  CustomerRelation.friend: 'Friend',
-  CustomerRelation.family: 'Family',
-  CustomerRelation.owner: 'Owner',
+  CustomerRelation.friend: 'friend',
+  CustomerRelation.family: 'family',
+  CustomerRelation.owner: 'owner',
 };
 
 const _$CustomerStatusEnumMap = {
-  CustomerStatus.active: 'Active',
-  CustomerStatus.suspended: 'Suspended',
-  CustomerStatus.terminated: 'Terminated',
+  CustomerStatus.active: 'active',
+  CustomerStatus.suspended: 'suspended',
+  CustomerStatus.terminated: 'terminated',
 };
 
 const _$PlanTypeEnumMap = {
-  PlanType.ampere: 'Ampere',
-  PlanType.kilowatt: 'Kilowatt',
+  PlanType.ampere: 'ampere',
+  PlanType.kilowatt: 'kilowatt',
 };

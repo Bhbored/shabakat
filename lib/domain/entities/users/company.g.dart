@@ -8,18 +8,18 @@ part of 'company.dart';
 
 _Company _$CompanyFromJson(Map<String, dynamic> json) => _Company(
   id: json['id'] as String,
-  email: json['email'] as String?,
-  phoneNumber: json['phoneNumber'] as String?,
-  isBanned: json['isBanned'] as bool? ?? false,
-  companyName: json['companyName'] as String,
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
+  name: json['name'] as String,
   logoUrl: json['logoUrl'] as String?,
+  isBanned: json['isBanned'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$CompanyToJson(_Company instance) => <String, dynamic>{
   'id': instance.id,
-  'email': instance.email,
-  'phoneNumber': instance.phoneNumber,
-  'isBanned': instance.isBanned,
-  'companyName': instance.companyName,
+  'createdAt': instance.createdAt.toIso8601String(),
+  'updatedAt': instance.updatedAt.toIso8601String(),
+  'name': instance.name,
   'logoUrl': instance.logoUrl,
+  'isBanned': instance.isBanned,
 };

@@ -1,3 +1,4 @@
+export 'area/area.dart';
 export 'customers/customer.dart';
 export 'expenses/expenses.dart';
 export 'expenses/other_expenses.dart';

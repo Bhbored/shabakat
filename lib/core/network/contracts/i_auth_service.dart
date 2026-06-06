@@ -5,6 +5,6 @@ import '../dto/response/auth/auth_response.dart';
 abstract class IAuthService {
   Future<String> getAccessToken();
   Future<AuthResponse?> login(LoginRequest request);
-  Future<AuthResponse?> register(RegisterRequest request);
+  Future<AuthResponse?> register(RegisterCompanyRequest request);
   Future<void> logout();
 }

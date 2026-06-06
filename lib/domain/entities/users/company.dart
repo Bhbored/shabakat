@@ -7,11 +7,11 @@ part 'company.g.dart';
 sealed class Company with _$Company {
   const factory Company({
     required String id,
-    String? email,
-    String? phoneNumber,
-    @Default(false) bool isBanned,
-    required String companyName,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String name,
     String? logoUrl,
+    @Default(false) bool isBanned,
   }) = _Company;
 
   factory Company.fromJson(Map<String, dynamic> json) =>

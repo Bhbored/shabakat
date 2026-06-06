@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shabakat/core/enums/enums.dart';
+import 'package:shabakat/domain/entities/payments/payment.dart';
 
 part 'invoice.freezed.dart';
 part 'invoice.g.dart';
@@ -21,6 +22,7 @@ sealed class Invoice with _$Invoice {
     required double paidAmount,
     required double amountDue,
     @Default(InvoiceStatus.unpaid) InvoiceStatus invoiceStatus,
+    List<Payment>? payments,
   }) = _Invoice;
 
   factory Invoice.fromJson(Map<String, dynamic> json) =>

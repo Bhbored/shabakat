@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shabakat/domain/entities/expenses/other_expenses.dart';
 
 part 'expenses.freezed.dart';
 part 'expenses.g.dart';
@@ -15,6 +16,7 @@ sealed class Expenses with _$Expenses {
     required double employeesExpenses,
     required DateTime expenseDate,
     String? notes,
+    List<OtherExpenses>? otherExpenses,
   }) = _Expenses;
 
   factory Expenses.fromJson(Map<String, dynamic> json) =>

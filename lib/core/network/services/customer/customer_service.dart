@@ -2,8 +2,8 @@ import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/client/dio_client.dart';
 import 'package:shabakat/core/network/configs/http_methods.dart';
-import 'package:shabakat/core/network/dto/request/customer/customer_add_request.dart';
-import 'package:shabakat/core/network/dto/request/customer/customer_update_request.dart';
+import 'package:shabakat/core/network/dto/request/customer/create_customer_request.dart';
+import 'package:shabakat/core/network/dto/request/customer/update_customer_request.dart';
 import 'package:shabakat/core/network/dto/response/customer/customer_response.dart';
 import 'package:shabakat/core/network/executor/api_executor.dart';
 import 'package:shabakat/core/network/request/api_request.dart';
@@ -59,7 +59,7 @@ class CustomerService {
     );
   }
 
-  Future<void> addCustomer(CustomerAddRequest request) async {
+  Future<void> addCustomer(CreateCustomerRequest request) async {
     final response = await _apiExecutor.execute(
       ApiRequest(
         path: 'customers',
@@ -81,7 +81,7 @@ class CustomerService {
 
   Future<void> updateCustomer(
     String customerId,
-    CustomerUpdateRequest request,
+    UpdateCustomerRequest request,
   ) async {
     final response = await _apiExecutor.execute(
       ApiRequest(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
-import 'package:shabakat/core/network/dto/request/auth/register_request.dart';
+import 'package:shabakat/core/network/dto/request/auth/register_company_request.dart';
 import 'package:shabakat/data/providers/auth/auth_provider.dart';
 import 'package:shabakat/ui/screens/auth/login/login_screen.dart';
 import 'package:shabakat/ui/screens/nav_container/main_tab_page.dart';
@@ -39,7 +39,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     ref
         .read(authStateProvider.notifier)
         .register(
-          RegisterRequest(
+          RegisterCompanyRequest(
             companyName: _companyNameController.text.trim(),
             email: _emailController.text.trim(),
             password: _passwordController.text,
