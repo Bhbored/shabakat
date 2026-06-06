@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
 import 'package:shabakat/ui/screens/dashboard/widgets/common/dashboard_avatar.dart';
+import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
+
+import '../../subscreens/area_details_screen.dart';
+import '../customer_count_badge/customer_count_badge.dart';
 
 class AreaCard extends StatelessWidget {
   final Area area;
@@ -14,9 +18,16 @@ class AreaCard extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Card(
-      child: Padding(
-        padding: EdgeInsets.all(context.paddingMedium),
-        child: Row(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+            openInnerScreen(widget: AreaDetailsScreen(area: area)),
+          );
+        },
+        child: Padding(
+          padding: EdgeInsets.all(context.paddingLarge),
+          child: Row(
           children: [
             DashboardAvatar(name: area.name),
             SizedBox(width: context.paddingSmall),
@@ -26,6 +37,8 @@ class AreaCard extends StatelessWidget {
                 children: [
                   Text(
                     area.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
@@ -39,12 +52,9 @@ class AreaCard extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
-              Icons.location_on_outlined,
-              color: colorScheme.primary.withValues(alpha: 0.7),
-              size: 20,
-            ),
+            CustomerCountBadge(count: area.customerCount),
           ],
+        ),
         ),
       ),
     );

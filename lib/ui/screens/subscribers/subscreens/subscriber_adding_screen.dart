@@ -7,6 +7,11 @@ import 'package:shabakat/core/enums/plan_type.dart';
 import 'package:shabakat/core/network/dto/request/customer/create_customer_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/customer_pricing_override_dto.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
+import 'package:shabakat/domain/entities/area/area.dart';
+import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
+
+import '../widgets/area_select_field/area_select_field.dart';
+import 'area_selecting_screen.dart';
 
 class SubscriberAddingScreen extends ConsumerStatefulWidget {
   const SubscriberAddingScreen({super.key});
@@ -31,6 +36,7 @@ class _SubscriberAddingScreenState
   PlanType _plan = PlanType.ampere;
   DateTime? _subscriptionDate;
   CustomerRelation? _customerRelation;
+  Area? _selectedArea;
   bool _hasPricingOverride = false;
   bool _isLoading = false;
 
@@ -85,6 +91,11 @@ class _SubscriberAddingScreenState
                   if (v != null && v.trim().length > 30) return 'Max 30 characters';
                   return null;
                 },
+              ),
+              SizedBox(height: context.spaceMedium),
+              AreaSelectField(
+                areaName: _selectedArea?.name,
+                onTap: _openAreaSelecting,
               ),
               SizedBox(height: context.spaceMedium),
               _buildTextField(
@@ -347,6 +358,13 @@ class _SubscriberAddingScreenState
     );
   }
 
+  Future<void> _openAreaSelecting() async {
+    final result = await Navigator.of(context).push(
+      openInnerScreen(widget: const AreaSelectingScreen()),
+    );
+    if (result is Area) setState(() => _selectedArea = result);
+  }
+
   Future<void> _onSubmit() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -360,6 +378,7 @@ class _SubscriberAddingScreenState
       address: _addressController.text.trim().isEmpty
           ? null
           : _addressController.text.trim(),
+      areaId: _selectedArea?.id,
       customerType: _customerType.label,
       plan: _plan.label,
       planValue: double.parse(_planValueController.text.trim()),

@@ -28,6 +28,15 @@ class CustomerFilterNotifier extends _$CustomerFilterNotifier {
     );
   }
 
+  void updateAreaFilter(String areaId) {
+    final q = areaId.trim().isEmpty ? null : areaId.trim();
+    state = CustomerFilterRequest(
+      areaId: q,
+      pageNumber: 1,
+      pageSize: state.pageSize,
+    );
+  }
+
   void updateAdvancedFilters({
     String? customerRelation,
     String? planType,

@@ -8,5 +8,6 @@ extension AreaResponseMapper on AreaResponse {
     updatedAt: createdAt,
     companyId: '',
     name: name,
+    customerCount: customerCount,
   );
 }

@@ -12,6 +12,7 @@ _Area _$AreaFromJson(Map<String, dynamic> json) => _Area(
   updatedAt: DateTime.parse(json['updatedAt'] as String),
   companyId: json['companyId'] as String,
   name: json['name'] as String,
+  customerCount: (json['customerCount'] as num?)?.toInt() ?? 0,
 );
 
 Map<String, dynamic> _$AreaToJson(_Area instance) => <String, dynamic>{
@@ -20,4 +21,5 @@ Map<String, dynamic> _$AreaToJson(_Area instance) => <String, dynamic>{
   'updatedAt': instance.updatedAt.toIso8601String(),
   'companyId': instance.companyId,
   'name': instance.name,
+  'customerCount': instance.customerCount,
 };

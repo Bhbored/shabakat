@@ -128,4 +128,12 @@ class ControlsThemes {
       border: Border.all(color: color.withValues(alpha: 0.2)),
     );
   }
+
+  static BoxDecoration statChipDecoration(ColorScheme colorScheme) {
+    return BoxDecoration(
+      color: colorScheme.secondary,
+      borderRadius: BorderRadius.circular(borderRadius),
+      border: Border.all(color: colorScheme.outline),
+    );
+  }
 }

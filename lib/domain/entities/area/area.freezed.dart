@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Area {
 
- String get id; DateTime get createdAt; DateTime get updatedAt; String get companyId; String get name;
+ String get id; DateTime get createdAt; DateTime get updatedAt; String get companyId; String get name; int get customerCount;
 /// Create a copy of Area
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AreaCopyWith<Area> get copyWith => _$AreaCopyWithImpl<Area>(this as Area, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Area&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Area&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.customerCount, customerCount) || other.customerCount == customerCount));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,companyId,name);
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,companyId,name,customerCount);
 
 @override
 String toString() {
-  return 'Area(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, companyId: $companyId, name: $name)';
+  return 'Area(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, companyId: $companyId, name: $name, customerCount: $customerCount)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AreaCopyWith<$Res>  {
   factory $AreaCopyWith(Area value, $Res Function(Area) _then) = _$AreaCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String companyId, String name
+ String id, DateTime createdAt, DateTime updatedAt, String companyId, String name, int customerCount
 });
 
 
@@ -65,14 +65,15 @@ class _$AreaCopyWithImpl<$Res>
 
 /// Create a copy of Area
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? companyId = null,Object? name = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? companyId = null,Object? name = null,Object? customerCount = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,
+as String,customerCount: null == customerCount ? _self.customerCount : customerCount // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  String name)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  String name,  int customerCount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Area() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.name);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.name,_that.customerCount);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.n
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  String name)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  String name,  int customerCount)  $default,) {final _that = this;
 switch (_that) {
 case _Area():
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.name);}
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.name,_that.customerCount);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -192,10 +193,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.n
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  String name)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  String name,  int customerCount)?  $default,) {final _that = this;
 switch (_that) {
 case _Area() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.name);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.name,_that.customerCount);case _:
   return null;
 
 }
@@ -207,7 +208,7 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.n
 @JsonSerializable()
 
 class _Area implements Area {
-  const _Area({required this.id, required this.createdAt, required this.updatedAt, required this.companyId, required this.name});
+  const _Area({required this.id, required this.createdAt, required this.updatedAt, required this.companyId, required this.name, this.customerCount = 0});
   factory _Area.fromJson(Map<String, dynamic> json) => _$AreaFromJson(json);
 
 @override final  String id;
@@ -215,6 +216,7 @@ class _Area implements Area {
 @override final  DateTime updatedAt;
 @override final  String companyId;
 @override final  String name;
+@override@JsonKey() final  int customerCount;
 
 /// Create a copy of Area
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Area&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Area&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.customerCount, customerCount) || other.customerCount == customerCount));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,companyId,name);
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,companyId,name,customerCount);
 
 @override
 String toString() {
-  return 'Area(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, companyId: $companyId, name: $name)';
+  return 'Area(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, companyId: $companyId, name: $name, customerCount: $customerCount)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$AreaCopyWith<$Res> implements $AreaCopyWith<$Res> {
   factory _$AreaCopyWith(_Area value, $Res Function(_Area) _then) = __$AreaCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String companyId, String name
+ String id, DateTime createdAt, DateTime updatedAt, String companyId, String name, int customerCount
 });
 
 
@@ -266,14 +268,15 @@ class __$AreaCopyWithImpl<$Res>
 
 /// Create a copy of Area
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? companyId = null,Object? name = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? companyId = null,Object? name = null,Object? customerCount = null,}) {
   return _then(_Area(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,
+as String,customerCount: null == customerCount ? _self.customerCount : customerCount // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

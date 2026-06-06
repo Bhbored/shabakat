@@ -11,6 +11,7 @@ sealed class Area with _$Area {
     required DateTime updatedAt,
     required String companyId,
     required String name,
+    @Default(0) int customerCount,
   }) = _Area;
 
   factory Area.fromJson(Map<String, dynamic> json) => _$AreaFromJson(json);
