@@ -1,27 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/customer_relation.dart';
 import 'package:shabakat/core/enums/customer_status.dart';
 import 'package:shabakat/core/enums/customer_type.dart';
+import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
+import 'package:shabakat/data/providers/customer/customer_provider.dart';
 
-class SubscribersFilters extends StatefulWidget {
+import '../widgets/filter_section/filter_section.dart';
+
+class SubscribersFilters extends ConsumerStatefulWidget {
   const SubscribersFilters({super.key});
 
   @override
-  State<SubscribersFilters> createState() => _SubscribersFiltersState();
+  ConsumerState<SubscribersFilters> createState() => _SubscribersFiltersState();
 }
 
-class _SubscribersFiltersState extends State<SubscribersFilters> {
+class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
   CustomerRelation? _relation;
   CustomerStatus? _status;
   CustomerType? _type;
-  String _sortOrder = 'latest';
+  bool _initialized = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_initialized) return;
+
+    final filter = ref.read(customerFilterProvider);
+    _relation = _relationFromFilter(filter.customerRelation);
+    _type = _typeFromFilter(filter.planType);
+    _initialized = true;
+  }
+
+  CustomerRelation? _relationFromFilter(String? value) {
+    if (value == null) return null;
+    for (final relation in CustomerRelation.values) {
+      if (relation.name == value) return relation;
+    }
+    return null;
+  }
+
+  CustomerType? _typeFromFilter(String? value) {
+    if (value == null) return null;
+    for (final type in CustomerType.values) {
+      if (type.name == value) return type;
+    }
+    return null;
+  }
+
+  Future<void> _applyFilters() async {
+    ref.read(customerFilterProvider.notifier).updateAdvancedFilters(
+          customerRelation: _relation?.name,
+          planType: _type?.name,
+        );
+    await ref.read(customerProvider.notifier).refresh();
+    if (!mounted) return;
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -35,159 +74,36 @@ class _SubscribersFiltersState extends State<SubscribersFilters> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Relation', style: theme.textTheme.titleMedium),
-            SizedBox(height: context.spaceSmall),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                return Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: context.paddingMedium,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      context.borderRadiusMedium,
-                    ),
-                    border: Border.all(color: scheme.outline),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<CustomerRelation?>(
-                      padding: EdgeInsets.zero,
-                      isExpanded: true,
-                      menuWidth: constraints.maxWidth,
-                      borderRadius: BorderRadius.circular(
-                        context.borderRadiusMedium,
-                      ),
-                      dropdownColor: scheme.surfaceContainerHigh,
-                      elevation: 4,
-                      alignment: AlignmentDirectional.centerStart,
-                      style: theme.textTheme.bodyMedium,
-                      icon: Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        color: scheme.onSurfaceVariant,
-                        size: 22,
-                      ),
-                      hint: const Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: Text('All'),
-                      ),
-                      value: _relation,
-                      items: CustomerRelation.values.map((e) {
-                        return DropdownMenuItem(value: e, child: Text(e.label));
-                      }).toList(),
-                      onChanged: (v) => setState(() => _relation = v),
-                    ),
-                  ),
-                );
-              },
+            FilterSection<CustomerRelation>(
+              title: 'Relation',
+              value: _relation,
+              items: CustomerRelation.values,
+              labelBuilder: (e) => e.label,
+              onChanged: (value) => setState(() => _relation = value),
             ),
             SizedBox(height: context.spaceMedium),
-            Text('Status', style: theme.textTheme.titleMedium),
-            SizedBox(height: context.spaceSmall),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                return Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: context.paddingMedium,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      context.borderRadiusMedium,
-                    ),
-                    border: Border.all(color: scheme.outline),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<CustomerStatus?>(
-                      padding: EdgeInsets.zero,
-                      isExpanded: true,
-                      menuWidth: constraints.maxWidth,
-                      borderRadius: BorderRadius.circular(
-                        context.borderRadiusMedium,
-                      ),
-                      dropdownColor: scheme.surfaceContainerHigh,
-                      elevation: 4,
-                      alignment: AlignmentDirectional.centerStart,
-                      style: theme.textTheme.bodyMedium,
-                      icon: Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        color: scheme.onSurfaceVariant,
-                        size: 22,
-                      ),
-                      hint: const Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: Text('All'),
-                      ),
-                      value: _status,
-                      items: CustomerStatus.values.map((e) {
-                        return DropdownMenuItem(value: e, child: Text(e.label));
-                      }).toList(),
-                      onChanged: (v) => setState(() => _status = v),
-                    ),
-                  ),
-                );
-              },
+            FilterSection<CustomerStatus>(
+              title: 'Status',
+              value: _status,
+              items: CustomerStatus.values,
+              labelBuilder: (e) => e.label,
+              onChanged: (value) => setState(() => _status = value),
             ),
             SizedBox(height: context.spaceMedium),
-            Text('Type', style: theme.textTheme.titleMedium),
-            SizedBox(height: context.spaceSmall),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                return Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: context.paddingMedium,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      context.borderRadiusMedium,
-                    ),
-                    border: Border.all(color: scheme.outline),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<CustomerType?>(
-                      padding: EdgeInsets.zero,
-                      isExpanded: true,
-                      menuWidth: constraints.maxWidth,
-                      borderRadius: BorderRadius.circular(
-                        context.borderRadiusMedium,
-                      ),
-                      dropdownColor: scheme.surfaceContainerHigh,
-                      elevation: 4,
-                      alignment: AlignmentDirectional.centerStart,
-                      style: theme.textTheme.bodyMedium,
-                      icon: Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        color: scheme.onSurfaceVariant,
-                        size: 22,
-                      ),
-                      hint: const Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: Text('All'),
-                      ),
-                      value: _type,
-                      items: CustomerType.values.map((e) {
-                        return DropdownMenuItem(value: e, child: Text(e.label));
-                      }).toList(),
-                      onChanged: (v) => setState(() => _type = v),
-                    ),
-                  ),
-                );
-              },
+            FilterSection<CustomerType>(
+              title: 'Type',
+              value: _type,
+              items: CustomerType.values,
+              labelBuilder: (e) => e.label,
+              onChanged: (value) => setState(() => _type = value),
             ),
             SizedBox(height: context.spaceMedium),
-            Text('Subscribed At', style: theme.textTheme.titleMedium),
-            SizedBox(height: context.spaceSmall),
-            ListTile(
-              title: Text('Latest', style: theme.textTheme.bodyMedium),
-              trailing: _sortOrder == 'latest'
-                  ? Icon(Icons.check, color: scheme.primary)
-                  : null,
-              onTap: () => setState(() => _sortOrder = 'latest'),
-            ),
-            ListTile(
-              title: Text('Oldest', style: theme.textTheme.bodyMedium),
-              trailing: _sortOrder == 'oldest'
-                  ? Icon(Icons.check, color: scheme.primary)
-                  : null,
-              onTap: () => setState(() => _sortOrder = 'oldest'),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _applyFilters,
+                child: const Text('Apply Filter'),
+              ),
             ),
           ],
         ),

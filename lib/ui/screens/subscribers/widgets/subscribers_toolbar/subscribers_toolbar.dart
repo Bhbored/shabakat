@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/data/providers/customer/customer_provider.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 import '../../subscreens/subscribers_filters.dart';
 
-class SubscribersToolbar extends StatelessWidget {
+class SubscribersToolbar extends ConsumerWidget {
   final TextEditingController searchController;
   final ValueChanged<String> onSearchChanged;
-  final String currentFilter;
-  final ValueChanged<String> onFilterChanged;
   final String searchCriteria;
   final ValueChanged<String> onSearchCriteriaChanged;
-  final int resultCount;
-  final int totalCount;
 
   const SubscribersToolbar({
     super.key,
     required this.searchController,
     required this.onSearchChanged,
-    required this.currentFilter,
-    required this.onFilterChanged,
     required this.searchCriteria,
     required this.onSearchCriteriaChanged,
-    required this.resultCount,
-    required this.totalCount,
   });
 
   String _hintForCriteria(String criteria) {
@@ -35,8 +29,8 @@ class SubscribersToolbar extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final filters = ['All', 'Paid', 'Unpaid', 'Overdue'];
+  Widget build(BuildContext context, WidgetRef ref) {
+    final customers = ref.watch(customerProvider).asData?.value ?? [];
     final theme = Theme.of(context);
 
     return Padding(
@@ -75,31 +69,6 @@ class SubscribersToolbar extends StatelessWidget {
                   },
                 ),
               ),
-            ],
-          ),
-          SizedBox(height: context.spaceSmall),
-          Row(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: filters.map((filter) {
-                      final isActive = currentFilter == filter;
-                      return Padding(
-                        padding: EdgeInsets.only(right: context.paddingSmall),
-                        child: ChoiceChip(
-                          label: Text(filter),
-                          selected: isActive,
-                          onSelected: (_) => onFilterChanged(filter),
-                          showCheckmark: false,
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-              SizedBox(width: context.paddingSmall),
               IconButton(
                 icon: const Icon(Icons.filter_list),
                 onPressed: () {
@@ -112,7 +81,7 @@ class SubscribersToolbar extends StatelessWidget {
           ),
           SizedBox(height: context.spaceSmall),
           Text(
-            '$resultCount of $totalCount subscribers',
+            '${customers.length} subscribers',
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),
