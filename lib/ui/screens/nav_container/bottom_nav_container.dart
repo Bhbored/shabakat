@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:shabakat/core/constants/app_sizes.dart';
 import 'bottom_nav_item.dart';
 
 class BottomNavContainer extends StatelessWidget {
@@ -17,6 +18,7 @@ class BottomNavContainer extends StatelessWidget {
     final theme = Theme.of(context);
     
     return Container(
+      padding: EdgeInsets.only(bottom: context.viewInsets.bottom),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         border: Border(
@@ -45,8 +47,8 @@ class BottomNavContainer extends StatelessWidget {
               onTap: () => onTabChanged(2),
             ),
             BottomNavItem(
-              icon: LucideIcons.bell,
-              label: 'Notifications',
+              icon: LucideIcons.mapPin,
+              label: 'Areas',
               isActive: currentIndex == 3,
               onTap: () => onTabChanged(3),
             ),

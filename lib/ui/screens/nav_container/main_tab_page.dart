@@ -7,7 +7,7 @@ import 'bottom_nav_container.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../subscribers/subscribers_screen.dart';
 import '../invoices/invoices_screen.dart';
-import '../notifications/notifications_screen.dart';
+import '../areas/areas_page.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 import '../subscribers/subscreens/subscriber_adding_screen.dart';
 
@@ -61,7 +61,7 @@ class _MainTabPageState extends State<MainTabPage> {
           ),
           const SubscribersScreen(),
           const InvoicesScreen(),
-          const NotificationsScreen(),
+          const AreasPage(),
         ],
       ),
       bottomNavigationBar: BottomNavContainer(
@@ -152,7 +152,7 @@ class _MainTabPageState extends State<MainTabPage> {
       case 3:
         return AppBar(
           title: Text(
-            'Notifications',
+            'Areas',
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: colorScheme.onSecondary,

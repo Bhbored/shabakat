@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/request/auth/login_request.dart';
 import 'package:shabakat/data/providers/auth/auth_provider.dart';
 import 'package:shabakat/ui/screens/auth/register/register_screen.dart';
 import 'package:shabakat/ui/screens/nav_container/main_tab_page.dart';
+import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -60,9 +62,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         },
         error: (error, _) {
           if (error is ApiException) {
-            ScaffoldMessenger.of(
+            AppSnackBar.show(
               context,
-            ).showSnackBar(SnackBar(content: Text(error.userMessage)));
+              message: error.userMessage,
+              variant: AppSnackBarVariant.error,
+            );
           }
         },
       );
