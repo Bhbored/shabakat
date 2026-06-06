@@ -8,6 +8,7 @@ import '../dashboard/dashboard_screen.dart';
 import '../subscribers/subscribers_screen.dart';
 import '../invoices/invoices_screen.dart';
 import '../areas/areas_page.dart';
+import '../areas/subscreens/area_adding_screen.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 import '../subscribers/subscreens/subscriber_adding_screen.dart';
 
@@ -158,6 +159,13 @@ class _MainTabPageState extends State<MainTabPage> {
               color: colorScheme.onSecondary,
             ),
           ),
+          actions: [
+            IconButton(
+              onPressed: _onAddArea,
+              icon: const Icon(LucideIcons.plus),
+            ),
+            SizedBox(width: context.paddingSmall),
+          ],
         );
       default:
         return null;
@@ -167,6 +175,12 @@ class _MainTabPageState extends State<MainTabPage> {
   void _onAddSubscriber() {
     Navigator.of(context).push(
       openInnerScreen(widget: const SubscriberAddingScreen()),
+    );
+  }
+
+  void _onAddArea() {
+    Navigator.of(context).push(
+      openInnerScreen(widget: const AreaAddingScreen()),
     );
   }
 }

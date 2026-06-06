@@ -30,10 +30,8 @@ class AreaService {
     return response.when(
       success: (data, statusCode, meta) {
         _logger.i('Areas retrieved successfully: $data');
-        final datalist = data as Map<String, dynamic>;
-        final areas = (datalist['data'] as List)
-            .map((x) => AreaResponse.fromJson(x))
-            .toList();
+        final datalist = data as List<dynamic>;
+        final areas = datalist.map((x) => AreaResponse.fromJson(x)).toList();
         return areas;
       },
       failure: (error, statusCode) {
@@ -63,10 +61,7 @@ class AreaService {
     );
   }
 
-  Future<void> updateArea(
-    String areaId,
-    UpdateAreaRequest request,
-  ) async {
+  Future<void> updateArea(String areaId, UpdateAreaRequest request) async {
     final response = await _apiExecutor.execute(
       ApiRequest(
         path: 'areas/$areaId',
@@ -88,10 +83,7 @@ class AreaService {
 
   Future<void> deleteArea(String areaId) async {
     final response = await _apiExecutor.execute(
-      ApiRequest(
-        path: 'areas/$areaId',
-        method: HttpMethod.delete,
-      ),
+      ApiRequest(path: 'areas/$areaId', method: HttpMethod.delete),
     );
     return response.when(
       success: (data, statusCode, meta) {
