@@ -3,8 +3,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/client/dio_client.dart';
 import 'package:shabakat/core/network/configs/http_methods.dart';
 import 'package:shabakat/core/network/dto/request/customer/create_customer_request.dart';
+import 'package:shabakat/core/network/dto/request/customer/customer_filter_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/update_customer_request.dart';
 import 'package:shabakat/core/network/dto/response/customer/customer_response.dart';
+import 'package:shabakat/core/network/dto/response/customer/customer_summary_response.dart';
 import 'package:shabakat/core/network/executor/api_executor.dart';
 import 'package:shabakat/core/network/request/api_request.dart';
 part 'customer_service.g.dart';
@@ -23,16 +25,33 @@ class CustomerService {
   final _logger = Logger();
   CustomerService(this._apiExecutor);
 
-  Future<List<CustomerResponse>> getCustomers() async {
+  Future<List<CustomerSummaryResponse>> getCustomers(
+    CustomerFilterRequest filter,
+  ) async {
     final response = await _apiExecutor.execute(
-      ApiRequest(path: 'customers', method: HttpMethod.get),
+      ApiRequest(
+        path: 'customers',
+        method: HttpMethod.get,
+        queryParams: {
+          if (filter.name != null) 'name': filter.name,
+          if (filter.phone != null) 'phone': filter.phone,
+          if (filter.areaId != null) 'areaId': filter.areaId,
+          if (filter.planType != null) 'planType': filter.planType,
+          if (filter.customerRelation != null)
+            'customerRelation': filter.customerRelation,
+          if (filter.paymentFilter != null)
+            'paymentFilter': filter.paymentFilter,
+          'pageNumber': filter.pageNumber,
+          'pageSize': filter.pageSize,
+        },
+      ),
     );
     return response.when(
       success: (data, statusCode, meta) {
         _logger.i('Customers retrieved successfully: $data');
         final datalist = data as Map<String, dynamic>;
         final customers = (datalist['data'] as List)
-            .map((x) => CustomerResponse.fromJson(x))
+            .map((x) => CustomerSummaryResponse.fromJson(x))
             .toList();
         return customers;
       },
@@ -59,7 +78,7 @@ class CustomerService {
     );
   }
 
-  Future<void> addCustomer(CreateCustomerRequest request) async {
+  Future<CustomerResponse> addCustomer(CreateCustomerRequest request) async {
     final response = await _apiExecutor.execute(
       ApiRequest(
         path: 'customers',
@@ -70,7 +89,7 @@ class CustomerService {
     return response.when(
       success: (data, statusCode, meta) {
         _logger.i('Customer added successfully: $data');
-        return;
+        return CustomerResponse.fromJson(data);
       },
       failure: (error, statusCode) {
         _logger.e('Failed to add customer: ${error.toString()}');
@@ -79,24 +98,43 @@ class CustomerService {
     );
   }
 
-  Future<void> updateCustomer(
+  Future<CustomerResponse> updateCustomer(
     String customerId,
     UpdateCustomerRequest request,
   ) async {
     final response = await _apiExecutor.execute(
       ApiRequest(
         path: 'customers/$customerId',
-        method: HttpMethod.put,
+        method: HttpMethod.patch,
         data: request.toJson(),
       ),
     );
     return response.when(
       success: (data, statusCode, meta) {
         _logger.i('Customer updated successfully: $data');
-        return;
+        return CustomerResponse.fromJson(data);
       },
       failure: (error, statusCode) {
         _logger.e('Failed to update customer: ${error.toString()}');
+        throw error;
+      },
+    );
+  }
+
+  Future<void> deleteCustomer(String customerId) async {
+    final response = await _apiExecutor.execute(
+      ApiRequest(
+        path: 'customers/$customerId',
+        method: HttpMethod.delete,
+      ),
+    );
+    return response.when(
+      success: (data, statusCode, meta) {
+        _logger.i('Customer deleted successfully');
+        return;
+      },
+      failure: (error, statusCode) {
+        _logger.e('Failed to delete customer: ${error.toString()}');
         throw error;
       },
     );

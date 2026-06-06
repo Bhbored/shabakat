@@ -42,4 +42,9 @@ class AppColors {
   static const Color error = Color(0xFFEF4444);
   static const Color destructive = Color(0xFFEF4444);
   static const Color destructiveForeground = Color(0xFFFFFFFF);
+
+  static const Color warningContainerDark = Color(0xFF3D3000);
+  static const Color onWarningContainerDark = Color(0xFFFDE047);
+  static const Color warningContainerLight = Color(0xFFFEF9C3);
+  static const Color onWarningContainerLight = Color(0xFF713F12);
 }

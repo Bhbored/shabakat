@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/dto/request/customer/create_customer_request.dart';
+import 'package:shabakat/core/network/dto/request/customer/customer_filter_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/update_customer_request.dart';
 import 'package:shabakat/core/network/services/customer/customer_service.dart';
 import 'package:shabakat/domain/entities/customers/customer.dart';
@@ -16,7 +17,9 @@ class CustomerNotifier extends _$CustomerNotifier {
   FutureOr<List<Customer>> build() async => await _loadCustomers();
 
   Future<List<Customer>> _loadCustomers() async {
-    final customers = await _customerService.getCustomers();
+    final customers = await _customerService.getCustomers(
+      CustomerFilterRequest(),
+    );
     return customers.map((x) => x.toEntity()).toList();
   }
 
@@ -35,6 +38,11 @@ class CustomerNotifier extends _$CustomerNotifier {
     String customerId,
   ) async {
     await _customerService.updateCustomer(customerId, customer);
+    await refresh();
+  }
+
+  Future<void> deleteCustomer(String customerId) async {
+    await _customerService.deleteCustomer(customerId);
     await refresh();
   }
 }
