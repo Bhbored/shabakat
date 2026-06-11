@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
-import 'package:shabakat/ui/settings/widgets/preference_tile.dart';
+import 'package:shabakat/ui/settings/widgets/company_preferences_section/company_preferences_section.dart';
 import 'package:shabakat/ui/settings/widgets/settings_section_title.dart';
 import 'package:shabakat/ui/settings/widgets/switch_tile.dart';
 import 'package:shabakat/ui/settings/widgets/theme_selector.dart';
@@ -52,77 +52,7 @@ class SettingsScreen extends StatelessWidget {
             SizedBox(height: context.spaceMedium),
             const SettingsSectionTitle(title: 'Company Preferences'),
             SizedBox(height: context.spaceSmall),
-            Card(
-              child: Column(
-                children: [
-                  const PreferenceTile(
-                    label: 'Price per Kilowatt',
-                    value: '\$0.15',
-                    icon: LucideIcons.zap,
-                  ),
-                  Divider(
-                    height: 1,
-                    indent: context.paddingMedium + 40,
-                    color: colorScheme.outline,
-                  ),
-                  const PreferenceTile(
-                    label: 'Price per Amp',
-                    value: '\$17.00',
-                    icon: LucideIcons.zap,
-                  ),
-                  Divider(
-                    height: 1,
-                    indent: context.paddingMedium + 40,
-                    color: colorScheme.outline,
-                  ),
-                  const PreferenceTile(
-                    label: 'Fixed Charge',
-                    value: '\$10.00',
-                    icon: LucideIcons.receipt,
-                  ),
-                  Divider(
-                    height: 1,
-                    indent: context.paddingMedium + 40,
-                    color: colorScheme.outline,
-                  ),
-                  const PreferenceTile(
-                    label: 'TVA (%)',
-                    value: '11%',
-                    icon: LucideIcons.percent,
-                  ),
-                  Divider(
-                    height: 1,
-                    indent: context.paddingMedium + 40,
-                    color: colorScheme.outline,
-                  ),
-                  const PreferenceTile(
-                    label: 'Language',
-                    value: 'English',
-                    icon: LucideIcons.globe,
-                  ),
-                  Divider(
-                    height: 1,
-                    indent: context.paddingMedium + 40,
-                    color: colorScheme.outline,
-                  ),
-                  const PreferenceTile(
-                    label: 'Trigger Date',
-                    value: '1st of month',
-                    icon: LucideIcons.calendar,
-                  ),
-                  Divider(
-                    height: 1,
-                    indent: context.paddingMedium + 40,
-                    color: colorScheme.outline,
-                  ),
-                  const PreferenceTile(
-                    label: 'Trigger Message',
-                    value: 'Your invoice is due',
-                    icon: LucideIcons.messageSquare,
-                  ),
-                ],
-              ),
-            ),
+            const CompanyPreferencesSection(),
             SizedBox(height: context.spaceMedium),
             const SettingsSectionTitle(title: 'Notifications'),
             SizedBox(height: context.spaceSmall),

@@ -6,8 +6,10 @@ import 'package:shabakat/core/enums/customer_type.dart';
 import 'package:shabakat/core/enums/plan_type.dart';
 import 'package:shabakat/core/network/dto/request/customer/create_customer_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/customer_pricing_override_dto.dart';
+import 'package:shabakat/data/providers/company/company_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
+import 'package:shabakat/domain/entities/settings/company_preferences.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
 import '../widgets/area_select_field/area_select_field.dart';
@@ -27,14 +29,14 @@ class _SubscriberAddingScreenState
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
-  final _planValueController = TextEditingController();
   final _priceOverrideController = TextEditingController();
   final _fixedChargeOverrideController = TextEditingController();
   final _tvaOverrideController = TextEditingController();
 
   CustomerType _customerType = CustomerType.residential;
   PlanType _plan = PlanType.ampere;
-  DateTime? _subscriptionDate;
+  DateTime _subscriptionDate = DateTime.now();
+  String? _dateError;
   CustomerRelation? _customerRelation;
   Area? _selectedArea;
   bool _hasPricingOverride = false;
@@ -45,7 +47,6 @@ class _SubscriberAddingScreenState
     _nameController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
-    _planValueController.dispose();
     _priceOverrideController.dispose();
     _fixedChargeOverrideController.dispose();
     _tvaOverrideController.dispose();
@@ -55,6 +56,7 @@ class _SubscriberAddingScreenState
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final preferencesAsync = ref.watch(companyProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -124,19 +126,7 @@ class _SubscriberAddingScreenState
                 onChanged: (v) => setState(() => _plan = v!),
               ),
               SizedBox(height: context.spaceMedium),
-              _buildTextField(
-                label: 'Plan Value',
-                controller: _planValueController,
-                hint: '0.00',
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                validator: (v) {
-                  if (v == null || v.trim().isEmpty) return 'Required';
-                  final n = double.tryParse(v.trim());
-                  if (n == null) return 'Invalid number';
-                  if (n < 0.01 || n > 9999999) return 'Must be between 0.01 and 9,999,999';
-                  return null;
-                },
-              ),
+              _buildPlanValue(preferencesAsync),
               SizedBox(height: context.spaceMedium),
               _buildDatePicker(context),
               SizedBox(height: context.spaceMedium),
@@ -248,6 +238,40 @@ class _SubscriberAddingScreenState
     );
   }
 
+  Widget _buildPlanValue(AsyncValue<CompanyPreferences> asyncValue) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Plan Value', style: theme.textTheme.titleMedium),
+        SizedBox(height: context.spaceSmall),
+        InputDecorator(
+          decoration: const InputDecoration(),
+          child: asyncValue.when(
+            loading: () => const LinearProgressIndicator(minHeight: 16),
+            error: (err, stack) => Text(
+              'Failed to load pricing',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colorScheme.error,
+              ),
+            ),
+            data: (prefs) {
+              final value = _plan == PlanType.ampere
+                  ? prefs.pricePerAmp
+                  : prefs.pricePerKilowat;
+              return Text(
+                '\$${value.toStringAsFixed(2)}',
+                style: theme.textTheme.bodyMedium,
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildDropdown<T>({
     required String label,
     required T? value,
@@ -320,7 +344,12 @@ class _SubscriberAddingScreenState
               firstDate: DateTime(2000),
               lastDate: DateTime(2100),
             );
-            if (picked != null) setState(() => _subscriptionDate = picked);
+            if (picked != null) {
+              setState(() {
+                _subscriptionDate = picked;
+                _dateError = null;
+              });
+            }
           },
           child: Container(
             padding: EdgeInsets.symmetric(
@@ -335,13 +364,11 @@ class _SubscriberAddingScreenState
               children: [
                 Expanded(
                   child: Text(
-                    _subscriptionDate != null
-                        ? '${_subscriptionDate!.year.toString().padLeft(4, '0')}-${_subscriptionDate!.month.toString().padLeft(2, '0')}-${_subscriptionDate!.day.toString().padLeft(2, '0')}'
-                        : 'Select date',
+                    '${_subscriptionDate.year.toString().padLeft(4, '0')}-${_subscriptionDate.month.toString().padLeft(2, '0')}-${_subscriptionDate.day.toString().padLeft(2, '0')}',
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: _subscriptionDate != null
-                          ? null
-                          : scheme.onSurface.withValues(alpha: 0.5),
+                      color: _dateError != null
+                          ? scheme.error
+                          : null,
                     ),
                   ),
                 ),
@@ -354,6 +381,15 @@ class _SubscriberAddingScreenState
             ),
           ),
         ),
+        if (_dateError != null) ...[
+          SizedBox(height: context.spaceSmall),
+          Text(
+            _dateError!,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: scheme.error,
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -368,6 +404,22 @@ class _SubscriberAddingScreenState
   Future<void> _onSubmit() async {
     if (!_formKey.currentState!.validate()) return;
 
+    final today = DateTime.now();
+    final isFutureDate = _subscriptionDate.isAfter(
+      DateTime(today.year, today.month, today.day),
+    );
+    if (isFutureDate) {
+      setState(() => _dateError = 'Subscription date cannot be in the future');
+      return;
+    }
+
+    final prefs = ref.read(companyProvider).asData?.value;
+    if (prefs == null) return;
+
+    final planValue = _plan == PlanType.ampere
+        ? prefs.pricePerAmp
+        : prefs.pricePerKilowat;
+
     setState(() => _isLoading = true);
 
     final request = CreateCustomerRequest(
@@ -381,7 +433,7 @@ class _SubscriberAddingScreenState
       areaId: _selectedArea?.id,
       customerType: _customerType.label,
       plan: _plan.label,
-      planValue: double.parse(_planValueController.text.trim()),
+      planValue: planValue,
       subscriptionDate: _subscriptionDate,
       customerRelation: _customerRelation?.label,
       pricingOverride: _hasPricingOverride

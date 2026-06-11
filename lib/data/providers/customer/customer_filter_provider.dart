@@ -37,10 +37,7 @@ class CustomerFilterNotifier extends _$CustomerFilterNotifier {
     );
   }
 
-  void updateAdvancedFilters({
-    String? customerRelation,
-    String? planType,
-  }) {
+  void updateAdvancedFilters({String? customerRelation, String? planType}) {
     state = CustomerFilterRequest(
       name: state.name,
       phone: state.phone,

@@ -4,7 +4,7 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 
 class PreferenceTile extends StatelessWidget {
   final String label;
-  final String value;
+  final String? value;
   final IconData icon;
   final VoidCallback? onTap;
 
@@ -41,7 +41,9 @@ class PreferenceTile extends StatelessWidget {
         ),
       ),
       subtitle: Text(
-        value,
+        value ?? 'Not set',
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
         style: theme.textTheme.bodySmall?.copyWith(
           color: colorScheme.onSurface.withValues(alpha: 0.6),
         ),
