@@ -14,6 +14,16 @@ class SubscriberCard extends StatelessWidget {
 
   const SubscriberCard({super.key, required this.customer});
 
+  String _addressDisplay() {
+    final area = customer.areaName?.trim();
+    final address = customer.address?.trim();
+    final parts = [
+      if (area != null && area.isNotEmpty) area,
+      if (address != null && address.isNotEmpty) address,
+    ];
+    return parts.isEmpty ? '-' : parts.join('\n');
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -57,7 +67,7 @@ class SubscriberCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InfoItem(label: 'Address', value: customer.address ?? '-'),
+                InfoItem(label: 'Address', value: _addressDisplay()),
                 InfoItem(
                   label: customer.plan.label,
                   value: customer.planValue.toStringAsFixed(2),

@@ -1,37 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/network/dto/request/customer/customer_filter_request.dart';
+import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
+
 import '../../subscreens/subscribers_filters.dart';
+import '../../subscreens/subscribers_search_screen.dart';
 
 class SubscribersToolbar extends ConsumerWidget {
-  final TextEditingController searchController;
-  final ValueChanged<String> onSearchChanged;
-  final String searchCriteria;
-  final ValueChanged<String> onSearchCriteriaChanged;
+  const SubscribersToolbar({super.key});
 
-  const SubscribersToolbar({
-    super.key,
-    required this.searchController,
-    required this.onSearchChanged,
-    required this.searchCriteria,
-    required this.onSearchCriteriaChanged,
-  });
-
-  String _hintForCriteria(String criteria) {
-    return switch (criteria) {
-      'name' => 'Search by name...',
-      'area' => 'Search by area...',
-      'phone' => 'Search by phone...',
-      _ => 'Search...',
-    };
+  String? _activeQuery(CustomerFilterRequest filter) {
+    return filter.name ?? filter.areaId ?? filter.phone;
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final customers = ref.watch(customerProvider).asData?.value ?? [];
+    final filter = ref.watch(customerFilterProvider);
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final inputTheme = theme.inputDecorationTheme;
+    final enabledBorder = inputTheme.enabledBorder;
+    final borderRadius = enabledBorder is OutlineInputBorder
+        ? enabledBorder.borderRadius
+        : BorderRadius.circular(context.borderRadiusMedium);
+    final borderSide = enabledBorder is OutlineInputBorder
+        ? enabledBorder.borderSide
+        : BorderSide(color: colorScheme.outline);
+    final activeQuery = _activeQuery(filter);
 
     return Padding(
       padding: EdgeInsets.all(context.paddingMedium),
@@ -41,32 +40,38 @@ class SubscribersToolbar extends ConsumerWidget {
           Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: searchController,
-                  onChanged: onSearchChanged,
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                    hintText: _hintForCriteria(searchCriteria),
-                    prefixIcon: const Icon(Icons.search, size: 20),
-                  ),
-                ),
-              ),
-              SizedBox(width: context.paddingSmall),
-              DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: searchCriteria,
-                  items: ['name', 'area', 'phone'].map((criteria) {
-                    return DropdownMenuItem<String>(
-                      value: criteria,
-                      child: Text(
-                        criteria[0].toUpperCase() + criteria.substring(1),
-                        style: theme.textTheme.bodyMedium,
-                      ),
+                child: ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      openInnerScreen(widget: const SubscribersSearchScreen()),
                     );
-                  }).toList(),
-                  onChanged: (value) {
-                    if (value != null) onSearchCriteriaChanged(value);
                   },
+                  dense: true,
+                  visualDensity: VisualDensity.compact,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: context.paddingSmall,
+                  ),
+                  minLeadingWidth: 28,
+                  tileColor: inputTheme.fillColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: borderRadius,
+                    side: borderSide,
+                  ),
+                  leading: Icon(
+                    Icons.search,
+                    size: 20,
+                    color: colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
+                  title: Text(
+                    activeQuery ?? 'Search customer',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: activeQuery != null
+                          ? null
+                          : colorScheme.onSurface.withValues(alpha: 0.5),
+                    ),
+                  ),
                 ),
               ),
               IconButton(
@@ -83,7 +88,7 @@ class SubscribersToolbar extends ConsumerWidget {
           Text(
             '${customers.length} subscribers',
             style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              color: colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
         ],

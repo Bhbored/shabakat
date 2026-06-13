@@ -20,12 +20,17 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(customerFilterProvider.notifier).updateAreaFilter(widget.area.id);
+      ref.read(customerFilterProvider.notifier).updateFilter(
+            ref.read(customerFilterProvider).copyWith(
+              areaId: widget.area.id,
+              pageNumber: 1,
+            ),
+          );
     });
   }
 
   void _resetFilterAndPop() {
-    ref.read(customerFilterProvider.notifier).reset();
+    ref.read(customerFilterProvider.notifier).clearFilter();
     Navigator.of(context).pop();
   }
 
@@ -36,7 +41,7 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
     return PopScope(
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) {
-          ref.read(customerFilterProvider.notifier).reset();
+          ref.read(customerFilterProvider.notifier).clearFilter();
         }
       },
       child: Scaffold(

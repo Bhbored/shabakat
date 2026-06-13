@@ -33,7 +33,7 @@ final class CompanyNotifierProvider
   CompanyNotifier create() => CompanyNotifier();
 }
 
-String _$companyNotifierHash() => r'bf19a57fc694c82d34216289ad3f3e2438b89b96';
+String _$companyNotifierHash() => r'68253ccc7070b57bc01317763f49035bc68aabf4';
 
 abstract class _$CompanyNotifier extends $AsyncNotifier<CompanyPreferences> {
   FutureOr<CompanyPreferences> build();

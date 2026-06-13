@@ -56,6 +56,29 @@ class ControlsThemes {
     );
   }
 
+  static DropdownMenuThemeData dropdownMenuTheme(ColorScheme colorScheme) {
+    return DropdownMenuThemeData(
+      menuStyle: MenuStyle(
+        backgroundColor: WidgetStatePropertyAll(colorScheme.surface),
+        elevation: const WidgetStatePropertyAll(6),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            side: BorderSide(color: colorScheme.outline),
+          ),
+        ),
+        padding: const WidgetStatePropertyAll(
+          EdgeInsets.symmetric(vertical: 8),
+        ),
+      ),
+      textStyle: TextStyle(
+        color: colorScheme.onSurface,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+
   static AppBarTheme appBarTheme(ColorScheme colorScheme) {
     return AppBarTheme(
       backgroundColor: colorScheme.brightness == Brightness.dark 

@@ -7,53 +7,65 @@ class PreferenceTile extends StatelessWidget {
   final String? value;
   final IconData icon;
   final VoidCallback? onTap;
+  final bool labelOnly;
 
   const PreferenceTile({
     super.key,
     required this.label,
-    required this.value,
+    this.value,
     required this.icon,
     this.onTap,
+    this.labelOnly = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final tileHeight = context.screenHeight * 0.08;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final titleStyle = theme.textTheme.titleMedium?.copyWith(
+      fontWeight: FontWeight.w500,
+    );
+    final subtitleStyle = theme.textTheme.bodySmall?.copyWith(
+      color: colorScheme.onSurface.withValues(alpha: 0.6),
+    );
 
-    return ListTile(
-      leading: Container(
-        padding: EdgeInsets.all(context.paddingSmall),
-        decoration: BoxDecoration(
-          color: colorScheme.primary.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+    return SizedBox(
+      height: tileHeight,
+      child: ListTile(
+        titleAlignment: ListTileTitleAlignment.center,
+        leading: Container(
+          padding: EdgeInsets.all(context.paddingSmall),
+          decoration: BoxDecoration(
+            color: colorScheme.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+          ),
+          child: Icon(icon, size: 16, color: colorScheme.primary),
         ),
-        child: Icon(
-          icon,
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(label, style: titleStyle),
+            if (!labelOnly) ...[
+              const SizedBox(height: 2),
+              Text(
+                value ?? 'Not set',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: subtitleStyle,
+              ),
+            ],
+          ],
+        ),
+        trailing: Icon(
+          LucideIcons.chevronRight,
           size: 16,
-          color: colorScheme.primary,
+          color: colorScheme.onSurface.withValues(alpha: 0.4),
         ),
+        onTap: onTap,
       ),
-      title: Text(
-        label,
-        style: theme.textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      subtitle: Text(
-        value ?? 'Not set',
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: colorScheme.onSurface.withValues(alpha: 0.6),
-        ),
-      ),
-      trailing: Icon(
-        LucideIcons.chevronRight,
-        size: 16,
-        color: colorScheme.onSurface.withValues(alpha: 0.4),
-      ),
-      onTap: onTap,
     );
   }
 }

@@ -10,7 +10,7 @@ part 'customer_provider.g.dart';
 
 Duration? retry(int _, Object _) => null;
 
-@Riverpod(keepAlive: true, retry: retry)
+@Riverpod(keepAlive: false, retry: retry)
 class CustomerNotifier extends _$CustomerNotifier {
   CustomerService get _customerService => ref.read(customerServiceProvider);
 

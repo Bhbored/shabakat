@@ -14,6 +14,7 @@ _Customer _$CustomerFromJson(Map<String, dynamic> json) => _Customer(
   name: json['name'] as String,
   phone: json['phone'] as String?,
   address: json['address'] as String?,
+  areaName: json['areaName'] as String?,
   areaId: json['areaId'] as String?,
   customerType: $enumDecode(_$CustomerTypeEnumMap, json['customerType']),
   customerRelation: $enumDecodeNullable(
@@ -42,6 +43,7 @@ Map<String, dynamic> _$CustomerToJson(_Customer instance) => <String, dynamic>{
   'name': instance.name,
   'phone': instance.phone,
   'address': instance.address,
+  'areaName': instance.areaName,
   'areaId': instance.areaId,
   'customerType': _$CustomerTypeEnumMap[instance.customerType]!,
   'customerRelation': _$CustomerRelationEnumMap[instance.customerRelation],

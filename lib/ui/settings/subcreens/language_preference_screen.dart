@@ -11,10 +11,7 @@ import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 class LanguagePreferenceScreen extends ConsumerStatefulWidget {
   final CompanyPreferences preferences;
 
-  const LanguagePreferenceScreen({
-    super.key,
-    required this.preferences,
-  });
+  const LanguagePreferenceScreen({super.key, required this.preferences});
 
   @override
   ConsumerState<LanguagePreferenceScreen> createState() =>
@@ -146,10 +143,7 @@ class _LanguageOptionTile extends StatelessWidget {
         ),
       ),
       trailing: isSelected
-          ? Icon(
-              Icons.check_circle,
-              color: colorScheme.primary,
-            )
+          ? Icon(Icons.check_circle, color: colorScheme.primary)
           : Icon(
               Icons.circle_outlined,
               color: colorScheme.onSurface.withValues(alpha: 0.3),

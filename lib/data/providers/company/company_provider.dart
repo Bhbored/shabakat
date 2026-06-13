@@ -21,12 +21,13 @@ class CompanyNotifier extends _$CompanyNotifier {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async => await _loadPreferences());
+    ref.invalidateSelf();
+    await future;
   }
 
   Future<void> updateProfile(UpdateProfileRequest request) async {
     await _companyService.updateProfile(request);
+    await refresh();
   }
 
   Future<void> upsertPreferences(UpdatePreferencesRequest request) async {

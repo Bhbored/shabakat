@@ -7,6 +7,7 @@ Future<void> showPreferenceEditDialog({
   required BuildContext context,
   required String title,
   String? initialValue,
+  String? description,
   TextInputType keyboardType = TextInputType.text,
   int maxLines = 1,
   String? hintText,
@@ -19,6 +20,7 @@ Future<void> showPreferenceEditDialog({
       return PreferenceEditDialog(
         title: title,
         initialValue: initialValue,
+        description: description,
         keyboardType: keyboardType,
         maxLines: maxLines,
         hintText: hintText,
@@ -32,6 +34,7 @@ Future<void> showPreferenceEditDialog({
 class PreferenceEditDialog extends StatefulWidget {
   final String title;
   final String? initialValue;
+  final String? description;
   final TextInputType keyboardType;
   final int maxLines;
   final String? hintText;
@@ -42,6 +45,7 @@ class PreferenceEditDialog extends StatefulWidget {
     super.key,
     required this.title,
     required this.initialValue,
+    this.description,
     required this.keyboardType,
     required this.maxLines,
     required this.hintText,
@@ -101,18 +105,35 @@ class _PreferenceEditDialogState extends State<PreferenceEditDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return AlertDialog(
       title: Text(widget.title),
       content: Form(
         key: _formKey,
-        child: TextFormField(
-          controller: _controller,
-          enabled: !_isLoading,
-          autofocus: true,
-          keyboardType: widget.keyboardType,
-          maxLines: widget.maxLines,
-          validator: widget.validator,
-          decoration: InputDecoration(hintText: widget.hintText),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (widget.description != null) ...[
+              Text(
+                widget.description!,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+            TextFormField(
+              controller: _controller,
+              enabled: !_isLoading,
+              autofocus: true,
+              keyboardType: widget.keyboardType,
+              maxLines: widget.maxLines,
+              validator: widget.validator,
+              decoration: InputDecoration(hintText: widget.hintText),
+            ),
+          ],
         ),
       ),
       actions: [

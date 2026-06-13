@@ -4,13 +4,12 @@ import 'app_colors.dart';
 import 'controls_themes.dart';
 
 class ThemeSelector {
-  static ThemeData light() {
-    return _buildTheme(Brightness.light);
-  }
+  static final ThemeData lightTheme = _buildTheme(Brightness.light);
+  static final ThemeData darkTheme = _buildTheme(Brightness.dark);
 
-  static ThemeData dark() {
-    return _buildTheme(Brightness.dark);
-  }
+  static ThemeData light() => lightTheme;
+
+  static ThemeData dark() => darkTheme;
 
   static ThemeData _buildTheme(Brightness brightness) {
     final bool isDark = brightness == Brightness.dark;
@@ -51,6 +50,7 @@ class ThemeSelector {
       cardTheme: ControlsThemes.cardTheme(colorScheme),
       elevatedButtonTheme: ControlsThemes.elevatedButtonTheme(colorScheme),
       inputDecorationTheme: ControlsThemes.inputDecorationTheme(colorScheme),
+      dropdownMenuTheme: ControlsThemes.dropdownMenuTheme(colorScheme),
       appBarTheme: ControlsThemes.appBarTheme(colorScheme),
       bottomNavigationBarTheme: ControlsThemes.bottomNavigationBarTheme(colorScheme),
       chipTheme: ControlsThemes.chipTheme(colorScheme),

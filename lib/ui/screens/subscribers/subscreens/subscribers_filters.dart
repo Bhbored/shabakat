@@ -50,9 +50,12 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
   }
 
   Future<void> _applyFilters() async {
-    ref.read(customerFilterProvider.notifier).updateAdvancedFilters(
-          customerRelation: _relation?.name,
-          planType: _type?.name,
+    ref.read(customerFilterProvider.notifier).updateFilter(
+          ref.read(customerFilterProvider).copyWith(
+            customerRelation: _relation?.name,
+            planType: _type?.name,
+            pageNumber: 1,
+          ),
         );
     await ref.read(customerProvider.notifier).refresh();
     if (!mounted) return;

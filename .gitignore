@@ -44,3 +44,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 GEMINI.md
+shabakat_endpoints_documentation.md
+.cursor/rules/simple-logic.mdc
