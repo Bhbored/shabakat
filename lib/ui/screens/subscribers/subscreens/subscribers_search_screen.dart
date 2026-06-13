@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/request/customer/customer_filter_request.dart';
+import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
-import 'package:shabakat/data/providers/customer/customer_provider.dart';
+import 'package:shabakat/domain/entities/area/area.dart';
+
+import '../widgets/area_select/area_select_list.dart';
+
+enum _SearchCriteria { name, area, phone }
 
 class SubscribersSearchScreen extends ConsumerStatefulWidget {
   const SubscribersSearchScreen({super.key});
@@ -16,13 +22,39 @@ class SubscribersSearchScreen extends ConsumerStatefulWidget {
 class _SubscribersSearchScreenState
     extends ConsumerState<SubscribersSearchScreen> {
   final _searchController = TextEditingController();
-  late String _searchCriteria;
+  _SearchCriteria _criteria = _SearchCriteria.name;
   bool _initialized = false;
+  String? _lastSyncedAreaId;
 
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  String? _areaNameForId(List<Area>? areas, String? areaId) {
+    if (areaId == null || areas == null) return null;
+    for (final area in areas) {
+      if (area.id == areaId) return area.name;
+    }
+    return null;
+  }
+
+  void _syncAreaFieldText() {
+    if (_criteria != _SearchCriteria.area) return;
+
+    final areaId = ref.read(customerFilterProvider).areaId;
+    if (areaId == null) {
+      _lastSyncedAreaId = null;
+      return;
+    }
+    if (areaId == _lastSyncedAreaId) return;
+
+    final name = _areaNameForId(ref.read(areaProvider).asData?.value, areaId);
+    if (name == null) return;
+
+    _searchController.text = name;
+    _lastSyncedAreaId = areaId;
   }
 
   @override
@@ -31,52 +63,101 @@ class _SubscribersSearchScreenState
     if (_initialized) return;
 
     final filter = ref.read(customerFilterProvider);
-    _searchCriteria = _criteriaFromFilter(filter);
-    _searchController.text = _queryFromFilter(filter, _searchCriteria);
+    _criteria = _criteriaFromFilter(filter);
+    if (_criteria == _SearchCriteria.area) {
+      _syncAreaFieldText();
+    } else {
+      _searchController.text = _queryFromFilter(filter, _criteria);
+    }
     _initialized = true;
   }
 
-  String _criteriaFromFilter(CustomerFilterRequest filter) {
-    if (filter.name != null) return 'name';
-    if (filter.areaId != null) return 'area';
-    if (filter.phone != null) return 'phone';
-    return 'name';
+  _SearchCriteria _criteriaFromFilter(CustomerFilterRequest filter) {
+    if (filter.name != null) return _SearchCriteria.name;
+    if (filter.areaId != null) return _SearchCriteria.area;
+    if (filter.phone != null) return _SearchCriteria.phone;
+    return _SearchCriteria.name;
   }
 
-  String _queryFromFilter(CustomerFilterRequest filter, String criteria) {
+  String _queryFromFilter(CustomerFilterRequest filter, _SearchCriteria criteria) {
     return switch (criteria) {
-      'name' => filter.name ?? '',
-      'area' => filter.areaId ?? '',
-      'phone' => filter.phone ?? '',
-      _ => '',
+      _SearchCriteria.name => filter.name ?? '',
+      _SearchCriteria.phone => filter.phone ?? '',
+      _SearchCriteria.area => '',
     };
   }
 
-  Future<void> _applySearch() async {
-    final q = _searchController.text.trim().isEmpty
-        ? null
-        : _searchController.text.trim();
+  CustomerFilterRequest _currentFilter() => ref.read(customerFilterProvider);
 
-    ref.read(customerFilterProvider.notifier).updateFilter(
-          ref.read(customerFilterProvider).copyWith(
-            name: _searchCriteria == 'name' ? q : null,
-            phone: _searchCriteria == 'phone' ? q : null,
-            areaId: _searchCriteria == 'area' ? q : null,
-            pageNumber: 1,
-          ),
-        );
-    await ref.read(customerProvider.notifier).refresh();
-    if (!mounted) return;
+  void _updateFilter(CustomerFilterRequest filter) {
+    ref.read(customerFilterProvider.notifier).updateFilter(filter);
+  }
+
+  void _applySearch() {
+    if (_criteria == _SearchCriteria.area) return;
+
+    final q = _searchController.text.trim();
+    final value = q.isEmpty ? null : q;
+    final current = _currentFilter();
+
+    _updateFilter(
+      current.copyWith(
+        name: _criteria == _SearchCriteria.name ? value : null,
+        phone: _criteria == _SearchCriteria.phone ? value : null,
+        areaId: null,
+        pageNumber: 1,
+      ),
+    );
+    Navigator.of(context).pop();
+  }
+
+  void _selectArea(Area area) {
+    _searchController.text = area.name;
+    _lastSyncedAreaId = area.id;
+    _updateFilter(
+      _currentFilter().copyWith(
+        name: null,
+        phone: null,
+        areaId: area.id,
+        pageNumber: 1,
+      ),
+    );
     Navigator.of(context).pop();
   }
 
   void _clearSearch() {
     _searchController.clear();
+    _lastSyncedAreaId = null;
+    final current = _currentFilter();
+
+    _updateFilter(
+      current.copyWith(
+        name: _criteria == _SearchCriteria.name ? null : current.name,
+        phone: _criteria == _SearchCriteria.phone ? null : current.phone,
+        areaId: _criteria == _SearchCriteria.area ? null : current.areaId,
+        pageNumber: 1,
+      ),
+    );
     setState(() {});
+  }
+
+  List<Area> _filterAreas(List<Area> areas) {
+    final q = _searchController.text.trim().toLowerCase();
+    if (q.isEmpty) return areas;
+    return areas.where((a) => a.name.toLowerCase().contains(q)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
+    final isArea = _criteria == _SearchCriteria.area;
+
+    if (isArea) {
+      ref.listen(areaProvider, (_, _) {
+        _syncAreaFieldText();
+        if (mounted) setState(() {});
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -96,12 +177,17 @@ class _SubscribersSearchScreenState
                   child: TextField(
                     controller: _searchController,
                     autofocus: true,
-                    textInputAction: TextInputAction.search,
-                    onSubmitted: (_) => _applySearch(),
+                    textInputAction: isArea
+                        ? TextInputAction.done
+                        : TextInputAction.search,
+                    onSubmitted: isArea ? null : (_) => _applySearch(),
                     onChanged: (_) => setState(() {}),
-                    decoration: const InputDecoration(
-                      hintText: 'Search customer',
-                      prefixIcon: Icon(Icons.search, size: 20),
+                    decoration: InputDecoration(
+                      hintText: isArea ? 'Search areas...' : 'Search customer',
+                      prefixIcon: IconButton(
+                        icon: const Icon(Icons.search, size: 20),
+                        onPressed: isArea ? null : _applySearch,
+                      ),
                     ),
                   ),
                 ),
@@ -117,17 +203,53 @@ class _SubscribersSearchScreenState
             Wrap(
               spacing: context.paddingSmall,
               runSpacing: context.paddingSmall,
-              children: ['name', 'area', 'phone'].map((criteria) {
-                final label =
-                    criteria[0].toUpperCase() + criteria.substring(1);
+              children: _SearchCriteria.values.map((criteria) {
+                final label = switch (criteria) {
+                  _SearchCriteria.name => 'Name',
+                  _SearchCriteria.area => 'Area',
+                  _SearchCriteria.phone => 'Phone',
+                };
                 return FilterChip(
                   label: Text(label),
-                  selected: _searchCriteria == criteria,
-                  onSelected: (_) =>
-                      setState(() => _searchCriteria = criteria),
+                  selected: _criteria == criteria,
+                  onSelected: (_) {
+                    setState(() {
+                      _criteria = criteria;
+                      _lastSyncedAreaId = null;
+                      if (criteria == _SearchCriteria.area) {
+                        _syncAreaFieldText();
+                      } else {
+                        _searchController.text = _queryFromFilter(
+                          ref.read(customerFilterProvider),
+                          criteria,
+                        );
+                      }
+                    });
+                  },
                 );
               }).toList(),
             ),
+            if (isArea) ...[
+              SizedBox(height: context.spaceMedium),
+              Expanded(
+                child: ref.watch(areaProvider).when(
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (err, _) {
+                    final message = err is ApiException
+                        ? err.userMessage
+                        : 'Failed to load areas.';
+                    return Center(
+                      child: Text(message, textAlign: TextAlign.center),
+                    );
+                  },
+                  data: (areas) => AreaSelectList(
+                    areas: _filterAreas(areas),
+                    onAreaSelected: _selectArea,
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),

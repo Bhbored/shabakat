@@ -5,7 +5,7 @@ part 'customer_filter_provider.g.dart';
 
 Duration? retry(int _, Object _) => null;
 
-@Riverpod(keepAlive: false, retry: retry)
+@Riverpod(keepAlive: true, retry: retry)
 class CustomerFilterNotifier extends _$CustomerFilterNotifier {
   @override
   CustomerFilterRequest build() => const CustomerFilterRequest();

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/area/area_provider.dart';
+import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
 
 import 'widgets/area_list/area_list.dart';
@@ -30,6 +31,17 @@ class _AreasPageState extends ConsumerState<AreasPage> {
     return areas
         .where((area) => area.name.toLowerCase().contains(query))
         .toList();
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(milliseconds: 100));
+      if (mounted) {
+        ref.read(customerFilterProvider.notifier).clearFilter();
+      }
+    });
+    super.initState();
   }
 
   @override

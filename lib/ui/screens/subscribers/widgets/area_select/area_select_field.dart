@@ -3,11 +3,13 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 
 class AreaSelectField extends StatelessWidget {
   final String? areaName;
+  final String? errorText;
   final VoidCallback onTap;
 
   const AreaSelectField({
     super.key,
     required this.areaName,
+    this.errorText,
     required this.onTap,
   });
 
@@ -16,6 +18,7 @@ class AreaSelectField extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final hasSelection = areaName != null && areaName!.isNotEmpty;
+    final hasError = errorText != null && errorText!.isNotEmpty;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,16 +30,25 @@ class AreaSelectField extends StatelessWidget {
           contentPadding: EdgeInsets.symmetric(horizontal: context.paddingMedium),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(context.borderRadiusMedium),
-            side: BorderSide(color: colorScheme.outline),
+            side: BorderSide(
+              color: hasError ? colorScheme.error : colorScheme.outline,
+            ),
           ),
           title: Text(
-            hasSelection ? areaName! : 'Select area',
+            hasError && !hasSelection
+                ? errorText!
+                : hasSelection
+                ? areaName!
+                : 'Select area',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: hasSelection
+              color: hasError
+                  ? colorScheme.error
+                  : hasSelection
                   ? null
                   : colorScheme.onSurface.withValues(alpha: 0.5),
+              fontSize: hasError ? 13 : null,
             ),
           ),
           trailing: Icon(

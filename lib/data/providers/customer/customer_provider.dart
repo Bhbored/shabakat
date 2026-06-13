@@ -10,7 +10,7 @@ part 'customer_provider.g.dart';
 
 Duration? retry(int _, Object _) => null;
 
-@Riverpod(keepAlive: false, retry: retry)
+@Riverpod(keepAlive: true, retry: retry)
 class CustomerNotifier extends _$CustomerNotifier {
   CustomerService get _customerService => ref.read(customerServiceProvider);
 
@@ -26,12 +26,8 @@ class CustomerNotifier extends _$CustomerNotifier {
   }
 
   Future<void> refresh() async {
-    if (!ref.mounted) {
-      return;
-    }
-    state = const AsyncValue.loading();
-    final filter = ref.read(customerFilterProvider);
-    state = await AsyncValue.guard(() async => await _loadCustomers(filter));
+    ref.invalidateSelf();
+    await future;
   }
 
   Future<void> addCustomer(CreateCustomerRequest request) async {

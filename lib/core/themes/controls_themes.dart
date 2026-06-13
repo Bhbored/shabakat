@@ -25,10 +25,7 @@ class ControlsThemes {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
-        textStyle: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-        ),
+        textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
       ),
     );
   }
@@ -36,8 +33,8 @@ class ControlsThemes {
   static InputDecorationTheme inputDecorationTheme(ColorScheme colorScheme) {
     return InputDecorationTheme(
       filled: true,
-      fillColor: colorScheme.brightness == Brightness.dark 
-          ? const Color(0x0DFFFFFF) 
+      fillColor: colorScheme.brightness == Brightness.dark
+          ? const Color(0x0DFFFFFF)
           : const Color(0xFFF4F4F5),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius),
@@ -53,6 +50,7 @@ class ControlsThemes {
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       hintStyle: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.5)),
+      errorStyle: TextStyle(color: colorScheme.error, fontSize: 13),
     );
   }
 
@@ -81,8 +79,8 @@ class ControlsThemes {
 
   static AppBarTheme appBarTheme(ColorScheme colorScheme) {
     return AppBarTheme(
-      backgroundColor: colorScheme.brightness == Brightness.dark 
-          ? const Color.fromRGBO(11, 11, 21, 0.85) 
+      backgroundColor: colorScheme.brightness == Brightness.dark
+          ? const Color.fromRGBO(11, 11, 21, 0.85)
           : const Color.fromRGBO(255, 255, 255, 0.85),
       elevation: 0,
       centerTitle: false,
@@ -92,19 +90,29 @@ class ControlsThemes {
         fontSize: 18,
         fontWeight: FontWeight.w600,
       ),
-      iconTheme: IconThemeData(color: colorScheme.onSurface.withValues(alpha: 0.6)),
+      iconTheme: IconThemeData(
+        color: colorScheme.onSurface.withValues(alpha: 0.6),
+      ),
     );
   }
 
-  static BottomNavigationBarThemeData bottomNavigationBarTheme(ColorScheme colorScheme) {
+  static BottomNavigationBarThemeData bottomNavigationBarTheme(
+    ColorScheme colorScheme,
+  ) {
     return BottomNavigationBarThemeData(
       backgroundColor: colorScheme.surface,
       selectedItemColor: colorScheme.primary,
       unselectedItemColor: colorScheme.onSurface.withValues(alpha: 0.6),
       type: BottomNavigationBarType.fixed,
       elevation: 0,
-      selectedLabelStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
-      unselectedLabelStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+      selectedLabelStyle: const TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w500,
+      ),
+      unselectedLabelStyle: const TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 
@@ -128,26 +136,31 @@ class ControlsThemes {
     );
   }
 
-  static BoxDecoration statCardDecoration(ColorScheme colorScheme, {bool isAccent = false}) {
+  static BoxDecoration statCardDecoration(
+    ColorScheme colorScheme, {
+    bool isAccent = false,
+  }) {
     return BoxDecoration(
       color: isAccent ? colorScheme.primary : colorScheme.surface,
       borderRadius: BorderRadius.circular(borderRadius),
-      border: isAccent 
+      border: isAccent
           ? Border.all(color: colorScheme.primary.withValues(alpha: 0.4))
           : Border.all(color: colorScheme.outline),
-      boxShadow: isAccent ? [
-        BoxShadow(
-          color: colorScheme.primary.withValues(alpha: 0.18),
-          blurRadius: 30,
-        ),
-      ] : null,
+      boxShadow: isAccent
+          ? [
+              BoxShadow(
+                color: colorScheme.primary.withValues(alpha: 0.18),
+                blurRadius: 30,
+              ),
+            ]
+          : null,
     );
   }
 
   static BoxDecoration statusBadgeDecoration(Color color) {
     return BoxDecoration(
       color: color.withValues(alpha: 0.1),
-      borderRadius: BorderRadius.circular(100),
+      borderRadius: BorderRadius.circular(borderRadius),
       border: Border.all(color: color.withValues(alpha: 0.2)),
     );
   }

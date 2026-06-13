@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/customer_relation.dart';
-import 'package:shabakat/core/enums/customer_status.dart';
-import 'package:shabakat/core/enums/customer_type.dart';
+import 'package:shabakat/core/enums/plan_type.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
 
@@ -17,9 +16,11 @@ class SubscribersFilters extends ConsumerStatefulWidget {
 }
 
 class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
+  static const _lastInvoiceFilters = {'Paid', 'Unpaid'};
+
   CustomerRelation? _relation;
-  CustomerStatus? _status;
-  CustomerType? _type;
+  String? _paymentFilter;
+  PlanType? _planType;
   bool _initialized = false;
 
   @override
@@ -29,7 +30,8 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
 
     final filter = ref.read(customerFilterProvider);
     _relation = _relationFromFilter(filter.customerRelation);
-    _type = _typeFromFilter(filter.planType);
+    _paymentFilter = _paymentFilterFromFilter(filter.paymentFilter);
+    _planType = _planTypeFromFilter(filter.planType);
     _initialized = true;
   }
 
@@ -41,29 +43,43 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
     return null;
   }
 
-  CustomerType? _typeFromFilter(String? value) {
+  String? _paymentFilterFromFilter(String? value) {
+    if (value == null || !_lastInvoiceFilters.contains(value)) return null;
+    return value;
+  }
+
+  PlanType? _planTypeFromFilter(String? value) {
     if (value == null) return null;
-    for (final type in CustomerType.values) {
-      if (type.name == value) return type;
+    for (final plan in PlanType.values) {
+      if (plan.name == value.toLowerCase() || plan.label == value) {
+        return plan;
+      }
     }
     return null;
   }
 
-  Future<void> _applyFilters() async {
-    ref.read(customerFilterProvider.notifier).updateFilter(
-          ref.read(customerFilterProvider).copyWith(
-            customerRelation: _relation?.name,
-            planType: _type?.name,
-            pageNumber: 1,
-          ),
+  void _applyFilters() {
+    ref
+        .read(customerFilterProvider.notifier)
+        .updateFilter(
+          ref
+              .read(customerFilterProvider)
+              .copyWith(
+                customerRelation: _relation?.name,
+                paymentFilter: _paymentFilter,
+                planType: _planType?.label,
+                pageNumber: 1,
+              ),
         );
-    await ref.read(customerProvider.notifier).refresh();
-    if (!mounted) return;
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isLoading = ref.watch(customerProvider).isLoading;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -85,27 +101,41 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
               onChanged: (value) => setState(() => _relation = value),
             ),
             SizedBox(height: context.spaceMedium),
-            FilterSection<CustomerStatus>(
-              title: 'Status',
-              value: _status,
-              items: CustomerStatus.values,
-              labelBuilder: (e) => e.label,
-              onChanged: (value) => setState(() => _status = value),
+            FilterSection<String>(
+              title: 'Last Invoice',
+              value: _paymentFilter,
+              items: _lastInvoiceFilters.toList(),
+              labelBuilder: (e) => e,
+              onChanged: (value) => setState(() => _paymentFilter = value),
             ),
             SizedBox(height: context.spaceMedium),
-            FilterSection<CustomerType>(
-              title: 'Type',
-              value: _type,
-              items: CustomerType.values,
+            FilterSection<PlanType>(
+              title: 'Plan',
+              value: _planType,
+              items: PlanType.values,
               labelBuilder: (e) => e.label,
-              onChanged: (value) => setState(() => _type = value),
+              onChanged: (value) => setState(() => _planType = value),
             ),
             SizedBox(height: context.spaceMedium),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _applyFilters,
-                child: const Text('Apply Filter'),
+                onPressed: isLoading ? null : _applyFilters,
+                child: isLoading
+                    ? SizedBox(
+                        height: 18,
+                        width: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: colorScheme.onPrimary,
+                        ),
+                      )
+                    : Text(
+                        'Apply Filter',
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ),
             ),
           ],

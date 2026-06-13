@@ -25,8 +25,8 @@ class ExpenseNotifier extends _$ExpenseNotifier {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async => await _loadExpenses());
+    ref.invalidateSelf();
+    await future;
   }
 
   Future<void> createExpense(CreateExpenseRequest request) async {

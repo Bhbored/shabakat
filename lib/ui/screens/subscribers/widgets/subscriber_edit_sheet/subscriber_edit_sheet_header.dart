@@ -1,0 +1,48 @@
+import 'package:flutter/material.dart';
+import 'package:shabakat/core/constants/app_sizes.dart';
+
+class SubscriberEditSheetHeader extends StatelessWidget {
+  final bool isSaving;
+  final VoidCallback onClose;
+
+  const SubscriberEditSheetHeader({
+    super.key,
+    required this.isSaving,
+    required this.onClose,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+            context.paddingMedium,
+            context.paddingSmall,
+            context.paddingMedium,
+            context.paddingSmall,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Edit Subscriber',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              IconButton(
+                onPressed: isSaving ? null : onClose,
+                icon: const Icon(Icons.close),
+              ),
+            ],
+          ),
+        ),
+        const Divider(height: 1),
+      ],
+    );
+  }
+}

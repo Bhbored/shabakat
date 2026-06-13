@@ -113,37 +113,36 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     _controller.forward().whenComplete(() {
       if (mounted) {
         setState(() => _animationComplete = true);
-        _tryNavigate();
+        if (context.mounted) {
+          _tryNavigate(ref.read(authStateProvider));
+        }
       }
     });
   }
 
-  void _tryNavigate() {
-    if (_hasNavigated) return;
+  void _tryNavigate(AsyncValue<bool> authState) {
+    if (_hasNavigated || !context.mounted) return;
 
-    final authState = ref.read(authStateProvider);
     authState.whenOrNull(
       data: (isAuthenticated) {
         _hasNavigated = true;
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (_) =>
-                    isAuthenticated ? const MainTabPage() : const LoginScreen(),
-              ),
-            );
-          }
+          if (!context.mounted) return;
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) =>
+                  isAuthenticated ? const MainTabPage() : const LoginScreen(),
+            ),
+          );
         });
       },
       error: (_, _) {
         _hasNavigated = true;
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const LoginScreen()),
-            );
-          }
+          if (!context.mounted) return;
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const LoginScreen()),
+          );
         });
       },
     );
@@ -160,11 +159,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    ref.listen(authStateProvider, (_, next) {
-      if (_animationComplete) {
-        _tryNavigate();
-      }
-    });
+    final authState = ref.watch(authStateProvider);
+
+    if (_animationComplete && !authState.isLoading && context.mounted) {
+      _tryNavigate(authState);
+    }
 
     return Scaffold(
       body: Center(

@@ -6,13 +6,11 @@ import 'package:shabakat/core/enums/customer_type.dart';
 import 'package:shabakat/core/enums/plan_type.dart';
 import 'package:shabakat/core/network/dto/request/customer/create_customer_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/customer_pricing_override_dto.dart';
-import 'package:shabakat/data/providers/company/company_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
-import 'package:shabakat/domain/entities/settings/company_preferences.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
-import '../widgets/area_select_field/area_select_field.dart';
+import '../widgets/area_select/area_select_field.dart';
 import 'area_selecting_screen.dart';
 
 class SubscriberAddingScreen extends ConsumerStatefulWidget {
@@ -26,9 +24,11 @@ class SubscriberAddingScreen extends ConsumerStatefulWidget {
 class _SubscriberAddingScreenState
     extends ConsumerState<SubscriberAddingScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _areaFieldKey = GlobalKey<FormFieldState<Area>>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
+  final _planValueController = TextEditingController();
   final _priceOverrideController = TextEditingController();
   final _fixedChargeOverrideController = TextEditingController();
   final _tvaOverrideController = TextEditingController();
@@ -38,7 +38,6 @@ class _SubscriberAddingScreenState
   DateTime _subscriptionDate = DateTime.now();
   String? _dateError;
   CustomerRelation? _customerRelation;
-  Area? _selectedArea;
   bool _hasPricingOverride = false;
   bool _isLoading = false;
 
@@ -47,6 +46,7 @@ class _SubscriberAddingScreenState
     _nameController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
+    _planValueController.dispose();
     _priceOverrideController.dispose();
     _fixedChargeOverrideController.dispose();
     _tvaOverrideController.dispose();
@@ -56,7 +56,6 @@ class _SubscriberAddingScreenState
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final preferencesAsync = ref.watch(companyProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -78,7 +77,9 @@ class _SubscriberAddingScreenState
                 controller: _nameController,
                 hint: 'Enter full name',
                 validator: (v) {
-                  if (v == null || v.trim().isEmpty) return 'Required';
+                  if (v == null || v.trim().isEmpty) {
+                    return 'Enter subscriber name';
+                  }
                   if (v.trim().length > 200) return 'Max 200 characters';
                   return null;
                 },
@@ -90,22 +91,25 @@ class _SubscriberAddingScreenState
                 hint: 'Enter phone number',
                 keyboardType: TextInputType.phone,
                 validator: (v) {
-                  if (v != null && v.trim().length > 30) return 'Max 30 characters';
+                  if (v == null || v.trim().isEmpty) {
+                    return 'Enter phone number';
+                  }
+                  if (v.trim().length > 30) return 'Max 30 characters';
                   return null;
                 },
               ),
               SizedBox(height: context.spaceMedium),
-              AreaSelectField(
-                areaName: _selectedArea?.name,
-                onTap: _openAreaSelecting,
-              ),
+              _buildAreaField(),
               SizedBox(height: context.spaceMedium),
               _buildTextField(
                 label: 'Address',
                 controller: _addressController,
                 hint: 'Enter address',
                 validator: (v) {
-                  if (v != null && v.trim().length > 500) return 'Max 500 characters';
+                  if (v == null || v.trim().isEmpty) {
+                    return 'Enter address';
+                  }
+                  if (v.trim().length > 500) return 'Max 500 characters';
                   return null;
                 },
               ),
@@ -126,7 +130,13 @@ class _SubscriberAddingScreenState
                 onChanged: (v) => setState(() => _plan = v!),
               ),
               SizedBox(height: context.spaceMedium),
-              _buildPlanValue(preferencesAsync),
+              _buildTextField(
+                label: 'Plan Value',
+                controller: _planValueController,
+                hint: '1-100',
+                keyboardType: TextInputType.number,
+                validator: _validatePlanValue,
+              ),
               SizedBox(height: context.spaceMedium),
               _buildDatePicker(context),
               SizedBox(height: context.spaceMedium),
@@ -140,10 +150,7 @@ class _SubscriberAddingScreenState
               SizedBox(height: context.spaceMedium),
               Row(
                 children: [
-                  Text(
-                    'Pricing Override',
-                    style: theme.textTheme.titleMedium,
-                  ),
+                  Text('Pricing Override', style: theme.textTheme.titleMedium),
                   const Spacer(),
                   Switch(
                     value: _hasPricingOverride,
@@ -157,7 +164,9 @@ class _SubscriberAddingScreenState
                   label: 'Price Override',
                   controller: _priceOverrideController,
                   hint: '0.00',
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   validator: (v) {
                     if (!_hasPricingOverride) return null;
                     if (v == null || v.trim().isEmpty) return 'Required';
@@ -171,7 +180,9 @@ class _SubscriberAddingScreenState
                   label: 'Fixed Charge Override',
                   controller: _fixedChargeOverrideController,
                   hint: '0.00',
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   validator: (v) {
                     if (!_hasPricingOverride) return null;
                     if (v == null || v.trim().isEmpty) return 'Required';
@@ -185,7 +196,9 @@ class _SubscriberAddingScreenState
                   label: 'TVA Override',
                   controller: _tvaOverrideController,
                   hint: '0.00',
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   validator: (v) {
                     if (!_hasPricingOverride) return null;
                     if (v == null || v.trim().isEmpty) return 'Required';
@@ -206,7 +219,12 @@ class _SubscriberAddingScreenState
                           width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('Add Subscriber'),
+                      : Text(
+                          'Add Subscriber',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ),
             ],
@@ -238,38 +256,26 @@ class _SubscriberAddingScreenState
     );
   }
 
-  Widget _buildPlanValue(AsyncValue<CompanyPreferences> asyncValue) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Plan Value', style: theme.textTheme.titleMedium),
-        SizedBox(height: context.spaceSmall),
-        InputDecorator(
-          decoration: const InputDecoration(),
-          child: asyncValue.when(
-            loading: () => const LinearProgressIndicator(minHeight: 16),
-            error: (err, stack) => Text(
-              'Failed to load pricing',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: colorScheme.error,
-              ),
-            ),
-            data: (prefs) {
-              final value = _plan == PlanType.ampere
-                  ? prefs.pricePerAmp
-                  : prefs.pricePerKilowat;
-              return Text(
-                '\$${value.toStringAsFixed(2)}',
-                style: theme.textTheme.bodyMedium,
-              );
-            },
-          ),
-        ),
-      ],
+  Widget _buildAreaField() {
+    return FormField<Area>(
+      key: _areaFieldKey,
+      validator: (value) => value == null ? 'Select an area' : null,
+      builder: (field) {
+        return AreaSelectField(
+          areaName: field.value?.name,
+          errorText: field.errorText,
+          onTap: _openAreaSelecting,
+        );
+      },
     );
+  }
+
+  String? _validatePlanValue(String? value) {
+    if (value == null || value.trim().isEmpty) return 'Enter plan value';
+    final parsed = int.tryParse(value.trim());
+    if (parsed == null) return 'Enter a valid number';
+    if (parsed < 1 || parsed > 100) return 'Must be between 1 and 100';
+    return null;
   }
 
   Widget _buildDropdown<T>({
@@ -300,7 +306,9 @@ class _SubscriberAddingScreenState
                   padding: EdgeInsets.zero,
                   isExpanded: true,
                   menuWidth: constraints.maxWidth,
-                  borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+                  borderRadius: BorderRadius.circular(
+                    context.borderRadiusMedium,
+                  ),
                   dropdownColor: scheme.surfaceContainerHigh,
                   elevation: 4,
                   alignment: AlignmentDirectional.centerStart,
@@ -366,9 +374,7 @@ class _SubscriberAddingScreenState
                   child: Text(
                     '${_subscriptionDate.year.toString().padLeft(4, '0')}-${_subscriptionDate.month.toString().padLeft(2, '0')}-${_subscriptionDate.day.toString().padLeft(2, '0')}',
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: _dateError != null
-                          ? scheme.error
-                          : null,
+                      color: _dateError != null ? scheme.error : null,
                     ),
                   ),
                 ),
@@ -385,8 +391,9 @@ class _SubscriberAddingScreenState
           SizedBox(height: context.spaceSmall),
           Text(
             _dateError!,
-            style: theme.textTheme.bodySmall?.copyWith(
+            style: theme.textTheme.bodyMedium?.copyWith(
               color: scheme.error,
+              fontSize: 13,
             ),
           ),
         ],
@@ -395,14 +402,17 @@ class _SubscriberAddingScreenState
   }
 
   Future<void> _openAreaSelecting() async {
-    final result = await Navigator.of(context).push(
-      openInnerScreen(widget: const AreaSelectingScreen()),
-    );
-    if (result is Area) setState(() => _selectedArea = result);
+    final result = await Navigator.of(
+      context,
+    ).push(openInnerScreen(widget: const AreaSelectingScreen()));
+    if (result is Area) _areaFieldKey.currentState?.didChange(result);
   }
 
   Future<void> _onSubmit() async {
     if (!_formKey.currentState!.validate()) return;
+
+    final selectedArea = _areaFieldKey.currentState?.value;
+    if (selectedArea == null) return;
 
     final today = DateTime.now();
     final isFutureDate = _subscriptionDate.isAfter(
@@ -413,24 +423,15 @@ class _SubscriberAddingScreenState
       return;
     }
 
-    final prefs = ref.read(companyProvider).asData?.value;
-    if (prefs == null) return;
-
-    final planValue = _plan == PlanType.ampere
-        ? prefs.pricePerAmp
-        : prefs.pricePerKilowat;
+    final planValue = double.parse(_planValueController.text.trim());
 
     setState(() => _isLoading = true);
 
     final request = CreateCustomerRequest(
       name: _nameController.text.trim(),
-      phone: _phoneController.text.trim().isEmpty
-          ? null
-          : _phoneController.text.trim(),
-      address: _addressController.text.trim().isEmpty
-          ? null
-          : _addressController.text.trim(),
-      areaId: _selectedArea?.id,
+      phone: _phoneController.text.trim(),
+      address: _addressController.text.trim(),
+      areaId: selectedArea.id,
       customerType: _customerType.label,
       plan: _plan.label,
       planValue: planValue,
@@ -439,7 +440,9 @@ class _SubscriberAddingScreenState
       pricingOverride: _hasPricingOverride
           ? CustomerPricingOverrideDto(
               price: double.parse(_priceOverrideController.text.trim()),
-              fixedCharge: double.parse(_fixedChargeOverrideController.text.trim()),
+              fixedCharge: double.parse(
+                _fixedChargeOverrideController.text.trim(),
+              ),
               tva: double.parse(_tvaOverrideController.text.trim()),
             )
           : null,
@@ -450,9 +453,9 @@ class _SubscriberAddingScreenState
       if (mounted) Navigator.of(context).pop();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add subscriber: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to add subscriber: $e')));
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);

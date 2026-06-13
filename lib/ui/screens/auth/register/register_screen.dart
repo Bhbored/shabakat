@@ -26,6 +26,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  bool _hasNavigated = false;
+  Object? _shownError;
 
   @override
   void dispose() {
@@ -39,6 +41,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
+    _shownError = null;
 
     ref
         .read(authStateProvider.notifier)
@@ -58,27 +61,35 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     final colorScheme = theme.colorScheme;
     final authState = ref.watch(authStateProvider);
 
-    ref.listen(authStateProvider, (_, next) {
-      next.whenOrNull(
+    if (!authState.isLoading && context.mounted) {
+      authState.whenOrNull(
         data: (isAuthenticated) {
-          if (isAuthenticated) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (_) => const MainTabPage()),
-              (route) => false,
-            );
+          if (isAuthenticated && !_hasNavigated) {
+            _hasNavigated = true;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!context.mounted) return;
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const MainTabPage()),
+                (route) => false,
+              );
+            });
           }
         },
         error: (error, _) {
-          if (error is ApiException) {
-            AppSnackBar.show(
-              context,
-              message: error.userMessage,
-              variant: AppSnackBarVariant.error,
-            );
+          if (error is ApiException && error != _shownError) {
+            _shownError = error;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!context.mounted) return;
+              AppSnackBar.show(
+                context,
+                message: error.userMessage,
+                variant: AppSnackBarVariant.error,
+              );
+            });
           }
         },
       );
-    });
+    }
 
     return Scaffold(
       body: SafeArea(

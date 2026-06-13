@@ -4,8 +4,8 @@ import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
 
-import '../widgets/area_select_list/area_select_list.dart';
-import '../widgets/area_select_search_bar/area_select_search_bar.dart';
+import '../widgets/area_select/area_select_list.dart';
+import '../widgets/area_select/area_select_search_bar.dart';
 
 class AreaSelectingScreen extends ConsumerStatefulWidget {
   const AreaSelectingScreen({super.key});

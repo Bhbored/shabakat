@@ -12,6 +12,7 @@ class SubscriberList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: context.paddingMedium),
       itemCount: customers.length,
       itemBuilder: (context, index) {

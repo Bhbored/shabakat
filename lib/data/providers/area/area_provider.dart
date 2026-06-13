@@ -21,8 +21,8 @@ class AreaNotifier extends _$AreaNotifier {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async => await _loadAreas());
+    ref.invalidateSelf();
+    await future;
   }
 
   Future<void> createArea(CreateAreaRequest request) async {

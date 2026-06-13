@@ -20,7 +20,7 @@ final class CustomerFilterNotifierProvider
         argument: null,
         retry: retry,
         name: r'customerFilterProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -42,7 +42,7 @@ final class CustomerFilterNotifierProvider
 }
 
 String _$customerFilterNotifierHash() =>
-    r'c9a180d1161f584fdec73c3ca623d9ce94d0d235';
+    r'0d6bc7eb6a4a496028eccafaa677dca0de6aac7d';
 
 abstract class _$CustomerFilterNotifier
     extends $Notifier<CustomerFilterRequest> {

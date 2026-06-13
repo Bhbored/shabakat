@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/network/dto/request/customer/customer_filter_request.dart';
+import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
+import 'package:shabakat/domain/entities/area/area.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
 import '../../subscreens/subscribers_filters.dart';
@@ -12,14 +14,23 @@ import '../../subscreens/subscribers_search_screen.dart';
 class SubscribersToolbar extends ConsumerWidget {
   const SubscribersToolbar({super.key});
 
-  String? _activeQuery(CustomerFilterRequest filter) {
-    return filter.name ?? filter.areaId ?? filter.phone;
+  String? _activeQuery(CustomerFilterRequest filter, List<Area>? areas) {
+    if (filter.name != null) return filter.name;
+    if (filter.phone != null) return filter.phone;
+    if (filter.areaId != null) {
+      for (final area in areas ?? const <Area>[]) {
+        if (area.id == filter.areaId) return area.name;
+      }
+      return filter.areaId;
+    }
+    return null;
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final customers = ref.watch(customerProvider).asData?.value ?? [];
     final filter = ref.watch(customerFilterProvider);
+    final areas = ref.watch(areaProvider).asData?.value;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final inputTheme = theme.inputDecorationTheme;
@@ -30,7 +41,7 @@ class SubscribersToolbar extends ConsumerWidget {
     final borderSide = enabledBorder is OutlineInputBorder
         ? enabledBorder.borderSide
         : BorderSide(color: colorScheme.outline);
-    final activeQuery = _activeQuery(filter);
+    final activeQuery = _activeQuery(filter, areas);
 
     return Padding(
       padding: EdgeInsets.all(context.paddingMedium),
