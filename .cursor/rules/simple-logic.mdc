@@ -1,0 +1,121 @@
+---
+description: Shabakat project conventions — architecture, theming, simple logic
+alwaysApply: true
+---
+
+# Shabakat
+
+Flutter ISP/management app. Clean Architecture. Dart ^3.11.5, Riverpod (`riverpod_generator`), Dio, Freezed, Json Serializable.
+
+## Architecture
+
+| Layer | Path | Responsibility |
+|---|---|---|
+| Domain | `lib/domain/` | Entities, repository contracts. No implementation deps. |
+| Data | `lib/data/` | Repository implementations, providers, remote/local sources. |
+| Core | `lib/core/` | Network, enums, themes, utilities. |
+| UI | `lib/ui/` | Presentation. Riverpod for state. |
+| Infrastructor | `lib/infrastructor/` | DB, migrations, seed data. |
+
+Work step by step (DTO → entity → mapper → UI) only when told. Smallest correct diff. Do not run codegen unless asked.
+
+## Commands
+
+```bash
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
+flutter run
+flutter test
+```
+
+Use `freezed` for models, `riverpod_generator` for providers. No `print()` — use `logger` or `debugPrint()`. Generated `*.g.dart` / `*.freezed.dart` are excluded from analysis.
+
+## Simple Logic — No Overengineering
+
+### Providers
+
+State holders only. No screen-specific or field-specific methods.
+
+- `build()` → empty/default instance
+- One generic update that merges state (`copyWith` or assign)
+- One clear/reset method
+- UI reads current state, runs its own logic, passes the result to update
+
+```dart
+// ❌ BAD
+void updateSearch(...) { ... }
+void updateArea(...) { ... }
+
+// ✅ GOOD
+void update(StateModel next) {
+  state = state.copyWith(/* fields from next */);
+}
+void clear() => state = const StateModel();
+```
+
+```dart
+final current = ref.read(provider);
+ref.read(provider.notifier).update(
+  current.copyWith(/* only what this screen changed */),
+);
+```
+
+### Riverpod docs (Context7)
+
+When the user says `use context7` for Riverpod — or asks about `riverpod`, `flutter_riverpod`, or `riverpod_generator` APIs — fetch current docs via CLI before answering:
+
+```bash
+npx ctx7@latest library riverpod "<specific question>"
+npx ctx7@latest docs <libraryId> "<specific question>"
+```
+
+If `riverpod` is ambiguous, also try `flutter_riverpod` or `riverpod_generator`. Use the library ID from step 1 (format `/org/project`). Do not use Context7 for Shabakat business logic or project-specific provider code unless the user asks.
+
+
+One file, one screen widget. Private helpers/widgets stay in that file.
+
+- No external callbacks to wire behavior
+- Watch provider for data and loading
+- Local draft vs original — submit disabled until they differ
+- Loading: dim content + centered spinner from provider `isLoading`
+- Submit: `try/catch` → user feedback → `pop()` on success
+- Change only what was asked; do not touch unrelated files
+
+## Theming
+
+Single source of truth under `lib/core/themes/`:
+
+- Colors → `AppColors`. Gradients → `AppGradients` (from `AppColors` only).
+- Component themes → `ControlsThemes` static factories.
+- `ThemeSelector` is the only place that assembles `ThemeData`.
+
+In widgets:
+
+- Colors/styles from `Theme.of(context)` / `ColorScheme` — never `Colors.xxx`, never `isDarkMode` booleans.
+- Text from `textTheme`; one-off tweaks via `.copyWith()`.
+- Material widgets inherit theme by default — do not set `style`, `decoration`, `shape`, `backgroundColor`, or `foregroundColor` on instances unless overriding from theme.
+- One-off overrides: `theme.<property>.copyWith(...)` — never a standalone style from scratch.
+- New widget types: add theme to `ControlsThemes` first, register in `ThemeSelector`.
+
+```dart
+final theme = Theme.of(context);
+TextField(
+  decoration: theme.inputDecorationTheme.copyWith(
+    hintText: 'Search...',
+    prefixIcon: Icon(Icons.search, color: theme.colorScheme.outline),
+  ),
+);
+```
+
+## Layout
+
+- Spacing, padding, breakpoints → `AppSizes` on `BuildContext` (`context.paddingMedium`, `context.borderRadiusLarge`, etc.). No magic numbers in widgets.
+- Split large widgets into private classes (`_Header`, `_ActionButton`) instead of deep nesting.
+- `const` constructors where possible. No comments unless logic is non-obvious.
+
+## New UI checklist
+
+1. Theme exists in `ControlsThemes`? → use via `ThemeSelector`.
+2. Missing? → add to `ControlsThemes`, register in `ThemeSelector`.
+3. Instance tweak? → `Theme.of(context).<property>.copyWith(...)`.
+4. Never hardcode colors, shapes, or padding in build methods.
