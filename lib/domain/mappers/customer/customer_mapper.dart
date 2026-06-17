@@ -28,6 +28,10 @@ extension CustomerResponseMapper on CustomerResponse {
     customerStatus: toCustomerStatus(customerStatus),
     plan: plan.toPlanType(),
     planValue: planValue,
+    paidThisMonth: paidThisMonth,
+    totalBilled: totalBilled,
+    totalPaid: totalPaid,
+    totalOutstanding: totalOutstanding,
   );
 }
 

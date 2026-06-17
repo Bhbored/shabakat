@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/customer_status.dart';
 import 'package:shabakat/core/themes/app_colors.dart';
@@ -28,9 +29,9 @@ class CustomerStatusBadge extends StatelessWidget {
         children: [
           Icon(
             switch (status) {
-              CustomerStatus.active => Icons.check_circle_outline,
-              CustomerStatus.suspended => Icons.pause_circle_outline,
-              CustomerStatus.terminated => Icons.cancel_outlined,
+              CustomerStatus.active => LucideIcons.checkCircle,
+              CustomerStatus.suspended => LucideIcons.pauseCircle,
+              CustomerStatus.terminated => LucideIcons.xCircle,
             },
             size: 12,
             color: color,

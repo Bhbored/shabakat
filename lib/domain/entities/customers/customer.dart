@@ -13,6 +13,9 @@ sealed class Customer with _$Customer {
     required DateTime updatedAt,
     required String companyId,
     required String name,
+    double? totalBilled,
+    double? totalPaid,
+    double? totalOutstanding,
     String? phone,
     String? address,
     String? areaName,
@@ -27,6 +30,7 @@ sealed class Customer with _$Customer {
     required PlanType plan,
     required double planValue,
     List<Invoice>? invoices,
+    @Default(false) bool paidThisMonth,
   }) = _Customer;
 
   factory Customer.fromJson(Map<String, dynamic> json) =>

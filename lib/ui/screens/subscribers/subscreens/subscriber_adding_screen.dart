@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
-import 'package:shabakat/core/enums/customer_relation.dart';
-import 'package:shabakat/core/enums/customer_type.dart';
-import 'package:shabakat/core/enums/plan_type.dart';
+import 'package:shabakat/core/enums/enums.dart';
+import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/request/customer/create_customer_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/customer_pricing_override_dto.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
+import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import '../widgets/area_select/area_select_field.dart';
 import 'area_selecting_screen.dart';
@@ -35,11 +35,18 @@ class _SubscriberAddingScreenState
 
   CustomerType _customerType = CustomerType.residential;
   PlanType _plan = PlanType.ampere;
-  DateTime _subscriptionDate = DateTime.now();
+  DateTime _subscriptionDate = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
   String? _dateError;
   CustomerRelation? _customerRelation;
   bool _hasPricingOverride = false;
   bool _isLoading = false;
+
+  DateTime _toDateOnly(DateTime date) =>
+      DateTime(date.year, date.month, date.day);
 
   @override
   void dispose() {
@@ -354,7 +361,7 @@ class _SubscriberAddingScreenState
             );
             if (picked != null) {
               setState(() {
-                _subscriptionDate = picked;
+                _subscriptionDate = _toDateOnly(picked);
                 _dateError = null;
               });
             }
@@ -414,11 +421,7 @@ class _SubscriberAddingScreenState
     final selectedArea = _areaFieldKey.currentState?.value;
     if (selectedArea == null) return;
 
-    final today = DateTime.now();
-    final isFutureDate = _subscriptionDate.isAfter(
-      DateTime(today.year, today.month, today.day),
-    );
-    if (isFutureDate) {
+    if (_toDateOnly(_subscriptionDate).isAfter(_toDateOnly(DateTime.now()))) {
       setState(() => _dateError = 'Subscription date cannot be in the future');
       return;
     }
@@ -450,13 +453,23 @@ class _SubscriberAddingScreenState
 
     try {
       await ref.read(customerProvider.notifier).addCustomer(request);
-      if (mounted) Navigator.of(context).pop();
+      if (!mounted) return;
+      AppSnackBar.show(
+        context,
+        message: 'Subscriber added',
+        variant: AppSnackBarVariant.success,
+      );
+      Navigator.of(context).pop();
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Failed to add subscriber: $e')));
-      }
+      if (!mounted) return;
+      final message = e is ApiException
+          ? e.userMessage
+          : 'Failed to add subscriber. Please try again.';
+      AppSnackBar.show(
+        context,
+        message: message,
+        variant: AppSnackBarVariant.error,
+      );
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }

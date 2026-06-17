@@ -12,6 +12,9 @@ _Customer _$CustomerFromJson(Map<String, dynamic> json) => _Customer(
   updatedAt: DateTime.parse(json['updatedAt'] as String),
   companyId: json['companyId'] as String,
   name: json['name'] as String,
+  totalBilled: (json['totalBilled'] as num?)?.toDouble(),
+  totalPaid: (json['totalPaid'] as num?)?.toDouble(),
+  totalOutstanding: (json['totalOutstanding'] as num?)?.toDouble(),
   phone: json['phone'] as String?,
   address: json['address'] as String?,
   areaName: json['areaName'] as String?,
@@ -33,6 +36,7 @@ _Customer _$CustomerFromJson(Map<String, dynamic> json) => _Customer(
   invoices: (json['invoices'] as List<dynamic>?)
       ?.map((e) => Invoice.fromJson(e as Map<String, dynamic>))
       .toList(),
+  paidThisMonth: json['paidThisMonth'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$CustomerToJson(_Customer instance) => <String, dynamic>{
@@ -41,6 +45,9 @@ Map<String, dynamic> _$CustomerToJson(_Customer instance) => <String, dynamic>{
   'updatedAt': instance.updatedAt.toIso8601String(),
   'companyId': instance.companyId,
   'name': instance.name,
+  'totalBilled': instance.totalBilled,
+  'totalPaid': instance.totalPaid,
+  'totalOutstanding': instance.totalOutstanding,
   'phone': instance.phone,
   'address': instance.address,
   'areaName': instance.areaName,
@@ -55,6 +62,7 @@ Map<String, dynamic> _$CustomerToJson(_Customer instance) => <String, dynamic>{
   'plan': _$PlanTypeEnumMap[instance.plan]!,
   'planValue': instance.planValue,
   'invoices': instance.invoices,
+  'paidThisMonth': instance.paidThisMonth,
 };
 
 const _$CustomerTypeEnumMap = {
