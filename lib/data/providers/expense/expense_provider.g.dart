@@ -13,7 +13,7 @@ part of 'expense_provider.dart';
 final expenseProvider = ExpenseNotifierProvider._();
 
 final class ExpenseNotifierProvider
-    extends $AsyncNotifierProvider<ExpenseNotifier, List<Expenses>> {
+    extends $AsyncNotifierProvider<ExpenseNotifier, List<Expense>> {
   ExpenseNotifierProvider._()
     : super(
         from: null,
@@ -33,19 +33,19 @@ final class ExpenseNotifierProvider
   ExpenseNotifier create() => ExpenseNotifier();
 }
 
-String _$expenseNotifierHash() => r'5c20e546a7a424d473ab588a54c5d879623e67b3';
+String _$expenseNotifierHash() => r'35f45f07da894c1e25868fc3dfa24e38b0a669b2';
 
-abstract class _$ExpenseNotifier extends $AsyncNotifier<List<Expenses>> {
-  FutureOr<List<Expenses>> build();
+abstract class _$ExpenseNotifier extends $AsyncNotifier<List<Expense>> {
+  FutureOr<List<Expense>> build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<AsyncValue<List<Expenses>>, List<Expenses>>;
+    final ref = this.ref as $Ref<AsyncValue<List<Expense>>, List<Expense>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<Expenses>>, List<Expenses>>,
-              AsyncValue<List<Expenses>>,
+              AnyNotifier<AsyncValue<List<Expense>>, List<Expense>>,
+              AsyncValue<List<Expense>>,
               Object?,
               Object?
             >;

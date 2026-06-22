@@ -147,10 +147,15 @@ class SubscriberEditForm extends StatelessWidget {
               tvaOverrideController: tvaOverrideController,
               onToggle: onPricingOverrideChanged,
             ),
-            SizedBox(height: context.spaceExtraLarge),
-            SubscriberEditSaveButton(
-              isSaving: isSaving,
-              onPressed: onSave,
+            SizedBox(height: context.spaceMedium),
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: context.spaceMedium + context.viewInsets.bottom,
+              ),
+              child: SubscriberEditSaveButton(
+                isSaving: isSaving,
+                onPressed: onSave,
+              ),
             ),
           ],
         ),

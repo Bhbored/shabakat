@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shabakat/core/enums/enums.dart';
+import 'package:shabakat/core/exceptions/api_exception.dart';
+import 'package:shabakat/core/network/dto/request/area/update_area_request.dart';
+import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
+import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import '../widgets/area_customers_section/area_customers_section.dart';
+import '../widgets/area_delete_dialog/area_delete_dialog.dart';
 import '../widgets/area_details_header/area_details_header.dart';
+import '../widgets/area_edit_dialog/area_edit_dialog.dart';
 
 class AreaDetailsScreen extends ConsumerStatefulWidget {
   final Area area;
@@ -16,6 +23,8 @@ class AreaDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
+  static const _nameMaxLength = 200;
+
   @override
   void initState() {
     super.initState();
@@ -29,14 +38,121 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
     });
   }
 
+  Area _currentArea(List<Area>? areas) {
+    if (areas == null) return widget.area;
+    for (final area in areas) {
+      if (area.id == widget.area.id) return area;
+    }
+    return widget.area;
+  }
+
   void _resetFilterAndPop() {
     ref.read(customerFilterProvider.notifier).clearFilter();
     Navigator.of(context).pop();
   }
 
+  String? _validateAreaName(String? value) {
+    final trimmed = value?.trim() ?? '';
+    if (trimmed.isEmpty) return 'Enter area name';
+    if (trimmed.length > _nameMaxLength) {
+      return 'Max $_nameMaxLength characters';
+    }
+    return null;
+  }
+
+  Future<void> _showAreaEditDialog(Area area) {
+    return showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AreaEditDialog(
+        initialName: area.name,
+        maxLength: _nameMaxLength,
+        validator: _validateAreaName,
+        onSave: (name) => _onUpdateArea(
+          dialogContext: dialogContext,
+          areaId: area.id,
+          name: name,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onUpdateArea({
+    required BuildContext dialogContext,
+    required String areaId,
+    required String name,
+  }) async {
+    try {
+      await ref.read(areaProvider.notifier).updateArea(
+            UpdateAreaRequest(name: name),
+            areaId,
+          );
+      if (!dialogContext.mounted) return;
+      Navigator.of(dialogContext).pop();
+      if (!mounted) return;
+      AppSnackBar.show(
+        context,
+        message: 'Area updated',
+        variant: AppSnackBarVariant.success,
+      );
+    } catch (e) {
+      if (!dialogContext.mounted) return;
+      final message = e is ApiException
+          ? e.userMessage
+          : 'Failed to update area. Please try again.';
+      AppSnackBar.show(
+        dialogContext,
+        message: message,
+        variant: AppSnackBarVariant.error,
+      );
+    }
+  }
+
+  Future<void> _showAreaDeleteDialog(Area area) {
+    return showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AreaDeleteDialog(
+        areaName: area.name,
+        onConfirm: () => _onDeleteArea(
+          dialogContext: dialogContext,
+          areaId: area.id,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onDeleteArea({
+    required BuildContext dialogContext,
+    required String areaId,
+  }) async {
+    try {
+      await ref.read(areaProvider.notifier).deleteArea(areaId);
+      if (!dialogContext.mounted) return;
+      Navigator.of(dialogContext).pop();
+      if (!mounted) return;
+      AppSnackBar.show(
+        context,
+        message: 'Area deleted',
+        variant: AppSnackBarVariant.success,
+      );
+      _resetFilterAndPop();
+    } catch (e) {
+      if (!dialogContext.mounted) return;
+      final message = e is ApiException
+          ? e.userMessage
+          : 'Failed to delete area. Please try again.';
+      AppSnackBar.show(
+        dialogContext,
+        message: message,
+        variant: AppSnackBarVariant.error,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final areasAsync = ref.watch(areaProvider);
+    final currentArea = _currentArea(areasAsync.asData?.value);
 
     return PopScope(
       onPopInvokedWithResult: (didPop, _) {
@@ -56,11 +172,21 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.delete_outline),
+              onPressed: () => _showAreaDeleteDialog(currentArea),
+            ),
+            IconButton(
+              icon: const Icon(Icons.edit_outlined),
+              onPressed: () => _showAreaEditDialog(currentArea),
+            ),
+          ],
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AreaDetailsHeader(area: widget.area),
+            AreaDetailsHeader(area: currentArea),
             const AreaCustomersSection(),
           ],
         ),

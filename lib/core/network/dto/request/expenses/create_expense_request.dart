@@ -14,11 +14,11 @@ DateTime? _dateOnlyFromJson(String? date) =>
 @freezed
 sealed class CreateExpenseRequest with _$CreateExpenseRequest {
   const factory CreateExpenseRequest({
-    required double fuelExpense,
-    required double maintenanceExpenses,
-    required double employeesExpenses,
+    required String expenseType,
+    required double amount,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
     DateTime? expenseDate,
+    String? label,
     String? notes,
   }) = _CreateExpenseRequest;
 

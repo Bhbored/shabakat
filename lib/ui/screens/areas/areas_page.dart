@@ -62,6 +62,7 @@ class _AreasPageState extends ConsumerState<AreasPage> {
         SizedBox(height: context.spaceSmall),
         Expanded(
           child: areasAsync.when(
+            skipLoadingOnRefresh: true,
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (err, stack) {
               if (err is ApiException) {
@@ -71,7 +72,12 @@ class _AreasPageState extends ConsumerState<AreasPage> {
               }
               return Center(child: Text('Error loading areas: $err'));
             },
-            data: (_) => AreaList(areas: filtered),
+            data: (_) => RefreshIndicator(
+              onRefresh: () async {
+                await ref.read(areaProvider.notifier).refresh();
+              },
+              child: AreaList(areas: filtered),
+            ),
           ),
         ),
       ],

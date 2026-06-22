@@ -14,11 +14,11 @@ DateTime? _dateOnlyFromJson(String? date) =>
 @freezed
 sealed class UpdateExpenseRequest with _$UpdateExpenseRequest {
   const factory UpdateExpenseRequest({
-    double? fuelExpense,
-    double? maintenanceExpenses,
-    double? employeesExpenses,
+    String? expenseType,
+    double? amount,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
     DateTime? expenseDate,
+    String? label,
     String? notes,
   }) = _UpdateExpenseRequest;
 

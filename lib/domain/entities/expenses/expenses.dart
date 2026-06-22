@@ -1,24 +1,22 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shabakat/domain/entities/expenses/other_expenses.dart';
+import 'package:shabakat/core/enums/expense_type.dart';
 
 part 'expenses.freezed.dart';
 part 'expenses.g.dart';
 
 @freezed
-sealed class Expenses with _$Expenses {
-  const factory Expenses({
+sealed class Expense with _$Expense {
+  const factory Expense({
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    required String companyId,
-    required double fuelExpense,
-    required double maintenanceExpenses,
-    required double employeesExpenses,
+    required ExpenseType expenseType,
     required DateTime expenseDate,
+    required double amount,
+    String? label,
     String? notes,
-    List<OtherExpenses>? otherExpenses,
-  }) = _Expenses;
+  }) = _Expense;
 
-  factory Expenses.fromJson(Map<String, dynamic> json) =>
-      _$ExpensesFromJson(json);
+  factory Expense.fromJson(Map<String, dynamic> json) =>
+      _$ExpenseFromJson(json);
 }

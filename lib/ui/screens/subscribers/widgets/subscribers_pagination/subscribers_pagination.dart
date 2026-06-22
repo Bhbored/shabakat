@@ -4,25 +4,22 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 class SubscribersPagination extends StatelessWidget {
   final int currentPage;
   final int totalPages;
-  final int pageSize;
-  final int itemCount;
   final ValueChanged<int> onPageChanged;
+  final VoidCallback? onFirstPage;
+  final VoidCallback? onLastPage;
 
   const SubscribersPagination({
     super.key,
     required this.currentPage,
     required this.totalPages,
-    required this.pageSize,
-    required this.itemCount,
     required this.onPageChanged,
+    this.onFirstPage,
+    this.onLastPage,
   });
 
   List<_PageItem> _pageItems() {
     if (totalPages <= 5) {
-      return List.generate(
-        totalPages,
-        (index) => _PageItem.page(index + 1),
-      );
+      return List.generate(totalPages, (index) => _PageItem.page(index + 1));
     }
 
     final items = <_PageItem>[_PageItem.page(1)];
@@ -57,10 +54,6 @@ class SubscribersPagination extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final startItem = ((currentPage - 1) * pageSize) + 1;
-    final endItem = currentPage * pageSize > itemCount
-        ? itemCount
-        : currentPage * pageSize;
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -70,57 +63,61 @@ class SubscribersPagination extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.fromLTRB(
           context.paddingMedium,
-          context.paddingSmall,
+          context.paddingSmall * 0.5,
           context.paddingMedium,
-          context.paddingSmall + context.bottomPadding,
+          context.paddingSmall * 0.5 + context.bottomPadding,
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Showing $startItem–$endItem of $itemCount',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: colorScheme.onSurface.withValues(alpha: 0.6),
+            if (onFirstPage != null) ...[
+              _NavButton(
+                icon: Icons.first_page,
+                enabled: currentPage > 1,
+                onPressed: onFirstPage!,
               ),
+              SizedBox(width: context.paddingSmall * 0.5),
+            ],
+            _NavButton(
+              icon: Icons.chevron_left,
+              enabled: currentPage > 1,
+              onPressed: () => onPageChanged(currentPage - 1),
             ),
-            SizedBox(height: context.spaceSmall),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _NavButton(
-                  icon: Icons.chevron_left,
-                  enabled: currentPage > 1,
-                  onPressed: () => onPageChanged(currentPage - 1),
+            SizedBox(width: context.paddingSmall * 0.5),
+            ..._pageItems().map((item) {
+              return switch (item) {
+                _PageNumber(:final page) => _PageButton(
+                  page: page,
+                  isSelected: page == currentPage,
+                  onPressed: () => onPageChanged(page),
                 ),
-                SizedBox(width: context.paddingSmall),
-                ..._pageItems().map((item) {
-                  return switch (item) {
-                    _PageNumber(:final page) => _PageButton(
-                      page: page,
-                      isSelected: page == currentPage,
-                      onPressed: () => onPageChanged(page),
+                _PageEllipsis() => Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: context.paddingSmall * 0.5,
+                  ),
+                  child: Text(
+                    '…',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurface.withValues(alpha: 0.5),
                     ),
-                    _PageEllipsis() => Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: context.paddingSmall * 0.5,
-                      ),
-                      child: Text(
-                        '…',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.onSurface.withValues(alpha: 0.5),
-                        ),
-                      ),
-                    ),
-                  };
-                }),
-                SizedBox(width: context.paddingSmall),
-                _NavButton(
-                  icon: Icons.chevron_right,
-                  enabled: currentPage < totalPages,
-                  onPressed: () => onPageChanged(currentPage + 1),
+                  ),
                 ),
-              ],
+              };
+            }),
+            SizedBox(width: context.paddingSmall * 0.5),
+            _NavButton(
+              icon: Icons.chevron_right,
+              enabled: currentPage < totalPages,
+              onPressed: () => onPageChanged(currentPage + 1),
             ),
+            if (onLastPage != null) ...[
+              SizedBox(width: context.paddingSmall * 0.5),
+              _NavButton(
+                icon: Icons.last_page,
+                enabled: currentPage < totalPages,
+                onPressed: onLastPage!,
+              ),
+            ],
           ],
         ),
       ),
@@ -162,12 +159,16 @@ class _NavButton extends StatelessWidget {
 
     return IconButton(
       onPressed: enabled ? onPressed : null,
-      icon: Icon(icon, size: 20),
+      icon: Icon(icon, size: 18),
+      visualDensity: VisualDensity.compact,
+      constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+      padding: EdgeInsets.zero,
       style: IconButton.styleFrom(
         backgroundColor: colorScheme.surfaceContainerHighest,
         foregroundColor: colorScheme.onSurface,
-        disabledBackgroundColor:
-            colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        disabledBackgroundColor: colorScheme.surfaceContainerHighest.withValues(
+          alpha: 0.5,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(context.borderRadiusMedium),
         ),
@@ -205,8 +206,8 @@ class _PageButton extends StatelessWidget {
           onTap: isSelected ? null : onPressed,
           borderRadius: BorderRadius.circular(context.borderRadiusMedium),
           child: SizedBox(
-            width: 36,
-            height: 36,
+            width: 32,
+            height: 32,
             child: Center(
               child: Text(
                 '$page',

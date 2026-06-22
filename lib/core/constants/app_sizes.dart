@@ -31,15 +31,4 @@ extension AppSizes on BuildContext {
   double get mainBottomNavHeight => screenHeight * 0.14;
 
   double get scrollPaddingAboveMainNav => mainBottomNavHeight + spaceMedium;
-
-  double carsForSaleDropdownMenuMaxHeight({
-    required int itemCount,
-    double itemHeight = kMinInteractiveDimension,
-  }) {
-    if (itemCount <= 0) return itemHeight;
-    final maxByScreen = screenHeight * 0.38;
-    final visibleRows = itemCount <= 6 ? itemCount : 7;
-    final preferredHeight = visibleRows * itemHeight;
-    return preferredHeight < maxByScreen ? preferredHeight : maxByScreen;
-  }
 }

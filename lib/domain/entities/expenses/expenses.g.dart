@@ -6,30 +6,31 @@ part of 'expenses.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_Expenses _$ExpensesFromJson(Map<String, dynamic> json) => _Expenses(
+_Expense _$ExpenseFromJson(Map<String, dynamic> json) => _Expense(
   id: json['id'] as String,
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt: DateTime.parse(json['updatedAt'] as String),
-  companyId: json['companyId'] as String,
-  fuelExpense: (json['fuelExpense'] as num).toDouble(),
-  maintenanceExpenses: (json['maintenanceExpenses'] as num).toDouble(),
-  employeesExpenses: (json['employeesExpenses'] as num).toDouble(),
+  expenseType: $enumDecode(_$ExpenseTypeEnumMap, json['expenseType']),
   expenseDate: DateTime.parse(json['expenseDate'] as String),
+  amount: (json['amount'] as num).toDouble(),
+  label: json['label'] as String?,
   notes: json['notes'] as String?,
-  otherExpenses: (json['otherExpenses'] as List<dynamic>?)
-      ?.map((e) => OtherExpenses.fromJson(e as Map<String, dynamic>))
-      .toList(),
 );
 
-Map<String, dynamic> _$ExpensesToJson(_Expenses instance) => <String, dynamic>{
+Map<String, dynamic> _$ExpenseToJson(_Expense instance) => <String, dynamic>{
   'id': instance.id,
   'createdAt': instance.createdAt.toIso8601String(),
   'updatedAt': instance.updatedAt.toIso8601String(),
-  'companyId': instance.companyId,
-  'fuelExpense': instance.fuelExpense,
-  'maintenanceExpenses': instance.maintenanceExpenses,
-  'employeesExpenses': instance.employeesExpenses,
+  'expenseType': _$ExpenseTypeEnumMap[instance.expenseType]!,
   'expenseDate': instance.expenseDate.toIso8601String(),
+  'amount': instance.amount,
+  'label': instance.label,
   'notes': instance.notes,
-  'otherExpenses': instance.otherExpenses,
+};
+
+const _$ExpenseTypeEnumMap = {
+  ExpenseType.fuel: 'fuel',
+  ExpenseType.maintenance: 'maintenance',
+  ExpenseType.employees: 'employees',
+  ExpenseType.other: 'other',
 };

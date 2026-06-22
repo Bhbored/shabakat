@@ -3,11 +3,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/client/dio_client.dart';
 import 'package:shabakat/core/network/configs/http_methods.dart';
 import 'package:shabakat/core/network/dto/request/expenses/create_expense_request.dart';
-import 'package:shabakat/core/network/dto/request/expenses/create_other_expense_request.dart';
 import 'package:shabakat/core/network/dto/request/expenses/expense_filter_request.dart';
 import 'package:shabakat/core/network/dto/request/expenses/update_expense_request.dart';
+import 'package:shabakat/core/network/dto/response/expenses/expense_list_response.dart';
 import 'package:shabakat/core/network/dto/response/expenses/expense_response.dart';
-import 'package:shabakat/core/network/dto/response/expenses/expense_summary_response.dart';
 import 'package:shabakat/core/network/executor/api_executor.dart';
 import 'package:shabakat/core/network/request/api_request.dart';
 part 'expense_service.g.dart';
@@ -26,29 +25,22 @@ class ExpenseService {
   final _logger = Logger();
   ExpenseService(this._apiExecutor);
 
-  Future<List<ExpenseSummaryResponse>> getExpenses(
-    ExpenseFilterRequest filter,
-  ) async {
+  Future<ExpenseListResponse> getExpenses(ExpenseFilterRequest filter) async {
+    final queryParams = Map<String, dynamic>.from(filter.toJson())
+      ..removeWhere((_, value) => value == null);
+
     final response = await _apiExecutor.execute(
       ApiRequest(
         path: 'expenses',
         method: HttpMethod.get,
-        queryParams: {
-          if (filter.dateFrom != null) 'dateFrom': filter.dateFrom,
-          if (filter.dateTo != null) 'dateTo': filter.dateTo,
-          'pageNumber': filter.pageNumber,
-          'pageSize': filter.pageSize,
-        },
+        queryParams: queryParams,
       ),
     );
     return response.when(
       success: (data, statusCode, meta) {
         _logger.i('Expenses retrieved successfully: $data');
         final datalist = data as Map<String, dynamic>;
-        final expenses = (datalist['data'] as List)
-            .map((x) => ExpenseSummaryResponse.fromJson(x))
-            .toList();
-        return expenses;
+        return ExpenseListResponse.fromJson(datalist);
       },
       failure: (error, statusCode) {
         _logger.e('Failed to retrieve expenses: ${error.toString()}');
@@ -118,10 +110,7 @@ class ExpenseService {
 
   Future<void> deleteExpense(String expenseId) async {
     final response = await _apiExecutor.execute(
-      ApiRequest(
-        path: 'expenses/$expenseId',
-        method: HttpMethod.delete,
-      ),
+      ApiRequest(path: 'expenses/$expenseId', method: HttpMethod.delete),
     );
     return response.when(
       success: (data, statusCode, meta) {
@@ -130,48 +119,6 @@ class ExpenseService {
       },
       failure: (error, statusCode) {
         _logger.e('Failed to delete expense: ${error.toString()}');
-        throw error;
-      },
-    );
-  }
-
-  Future<ExpenseResponse> addOtherExpense(
-    String expenseId,
-    CreateOtherExpenseRequest request,
-  ) async {
-    final response = await _apiExecutor.execute(
-      ApiRequest(
-        path: 'expenses/$expenseId/other',
-        method: HttpMethod.post,
-        data: request.toJson(),
-      ),
-    );
-    return response.when(
-      success: (data, statusCode, meta) {
-        _logger.i('Other expense added successfully: $data');
-        return ExpenseResponse.fromJson(data);
-      },
-      failure: (error, statusCode) {
-        _logger.e('Failed to add other expense: ${error.toString()}');
-        throw error;
-      },
-    );
-  }
-
-  Future<void> deleteOtherExpense(String otherExpenseId) async {
-    final response = await _apiExecutor.execute(
-      ApiRequest(
-        path: 'otherExpenses/$otherExpenseId',
-        method: HttpMethod.delete,
-      ),
-    );
-    return response.when(
-      success: (data, statusCode, meta) {
-        _logger.i('Other expense deleted successfully');
-        return;
-      },
-      failure: (error, statusCode) {
-        _logger.e('Failed to delete other expense: ${error.toString()}');
         throw error;
       },
     );

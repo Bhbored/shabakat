@@ -47,10 +47,16 @@ class BottomNavContainer extends StatelessWidget {
               onTap: () => onTabChanged(2),
             ),
             BottomNavItem(
-              icon: LucideIcons.mapPin,
-              label: 'Areas',
+              icon: LucideIcons.wallet,
+              label: 'Expenses',
               isActive: currentIndex == 3,
               onTap: () => onTabChanged(3),
+            ),
+            BottomNavItem(
+              icon: LucideIcons.mapPin,
+              label: 'Areas',
+              isActive: currentIndex == 4,
+              onTap: () => onTabChanged(4),
             ),
           ],
         ),

@@ -13,42 +13,42 @@ part of 'expenses.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$Expenses {
+mixin _$Expense {
 
- String get id; DateTime get createdAt; DateTime get updatedAt; String get companyId; double get fuelExpense; double get maintenanceExpenses; double get employeesExpenses; DateTime get expenseDate; String? get notes; List<OtherExpenses>? get otherExpenses;
-/// Create a copy of Expenses
+ String get id; DateTime get createdAt; DateTime get updatedAt; ExpenseType get expenseType; DateTime get expenseDate; double get amount; String? get label; String? get notes;
+/// Create a copy of Expense
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ExpensesCopyWith<Expenses> get copyWith => _$ExpensesCopyWithImpl<Expenses>(this as Expenses, _$identity);
+$ExpenseCopyWith<Expense> get copyWith => _$ExpenseCopyWithImpl<Expense>(this as Expense, _$identity);
 
-  /// Serializes this Expenses to a JSON map.
+  /// Serializes this Expense to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Expenses&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.fuelExpense, fuelExpense) || other.fuelExpense == fuelExpense)&&(identical(other.maintenanceExpenses, maintenanceExpenses) || other.maintenanceExpenses == maintenanceExpenses)&&(identical(other.employeesExpenses, employeesExpenses) || other.employeesExpenses == employeesExpenses)&&(identical(other.expenseDate, expenseDate) || other.expenseDate == expenseDate)&&(identical(other.notes, notes) || other.notes == notes)&&const DeepCollectionEquality().equals(other.otherExpenses, otherExpenses));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Expense&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.expenseType, expenseType) || other.expenseType == expenseType)&&(identical(other.expenseDate, expenseDate) || other.expenseDate == expenseDate)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.label, label) || other.label == label)&&(identical(other.notes, notes) || other.notes == notes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,companyId,fuelExpense,maintenanceExpenses,employeesExpenses,expenseDate,notes,const DeepCollectionEquality().hash(otherExpenses));
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,expenseType,expenseDate,amount,label,notes);
 
 @override
 String toString() {
-  return 'Expenses(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, companyId: $companyId, fuelExpense: $fuelExpense, maintenanceExpenses: $maintenanceExpenses, employeesExpenses: $employeesExpenses, expenseDate: $expenseDate, notes: $notes, otherExpenses: $otherExpenses)';
+  return 'Expense(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, expenseType: $expenseType, expenseDate: $expenseDate, amount: $amount, label: $label, notes: $notes)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ExpensesCopyWith<$Res>  {
-  factory $ExpensesCopyWith(Expenses value, $Res Function(Expenses) _then) = _$ExpensesCopyWithImpl;
+abstract mixin class $ExpenseCopyWith<$Res>  {
+  factory $ExpenseCopyWith(Expense value, $Res Function(Expense) _then) = _$ExpenseCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String companyId, double fuelExpense, double maintenanceExpenses, double employeesExpenses, DateTime expenseDate, String? notes, List<OtherExpenses>? otherExpenses
+ String id, DateTime createdAt, DateTime updatedAt, ExpenseType expenseType, DateTime expenseDate, double amount, String? label, String? notes
 });
 
 
@@ -56,36 +56,34 @@ $Res call({
 
 }
 /// @nodoc
-class _$ExpensesCopyWithImpl<$Res>
-    implements $ExpensesCopyWith<$Res> {
-  _$ExpensesCopyWithImpl(this._self, this._then);
+class _$ExpenseCopyWithImpl<$Res>
+    implements $ExpenseCopyWith<$Res> {
+  _$ExpenseCopyWithImpl(this._self, this._then);
 
-  final Expenses _self;
-  final $Res Function(Expenses) _then;
+  final Expense _self;
+  final $Res Function(Expense) _then;
 
-/// Create a copy of Expenses
+/// Create a copy of Expense
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? companyId = null,Object? fuelExpense = null,Object? maintenanceExpenses = null,Object? employeesExpenses = null,Object? expenseDate = null,Object? notes = freezed,Object? otherExpenses = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? expenseType = null,Object? expenseDate = null,Object? amount = null,Object? label = freezed,Object? notes = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
-as String,fuelExpense: null == fuelExpense ? _self.fuelExpense : fuelExpense // ignore: cast_nullable_to_non_nullable
-as double,maintenanceExpenses: null == maintenanceExpenses ? _self.maintenanceExpenses : maintenanceExpenses // ignore: cast_nullable_to_non_nullable
-as double,employeesExpenses: null == employeesExpenses ? _self.employeesExpenses : employeesExpenses // ignore: cast_nullable_to_non_nullable
-as double,expenseDate: null == expenseDate ? _self.expenseDate : expenseDate // ignore: cast_nullable_to_non_nullable
-as DateTime,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
-as String?,otherExpenses: freezed == otherExpenses ? _self.otherExpenses : otherExpenses // ignore: cast_nullable_to_non_nullable
-as List<OtherExpenses>?,
+as DateTime,expenseType: null == expenseType ? _self.expenseType : expenseType // ignore: cast_nullable_to_non_nullable
+as ExpenseType,expenseDate: null == expenseDate ? _self.expenseDate : expenseDate // ignore: cast_nullable_to_non_nullable
+as DateTime,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as double,label: freezed == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
+as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
 }
 
 
-/// Adds pattern-matching-related methods to [Expenses].
-extension ExpensesPatterns on Expenses {
+/// Adds pattern-matching-related methods to [Expense].
+extension ExpensePatterns on Expense {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -98,10 +96,10 @@ extension ExpensesPatterns on Expenses {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Expenses value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Expense value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Expenses() when $default != null:
+case _Expense() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -120,10 +118,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Expenses value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Expense value)  $default,){
 final _that = this;
 switch (_that) {
-case _Expenses():
+case _Expense():
 return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
@@ -138,10 +136,10 @@ return $default(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Expenses value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Expense value)?  $default,){
 final _that = this;
 switch (_that) {
-case _Expenses() when $default != null:
+case _Expense() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -159,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  double fuelExpense,  double maintenanceExpenses,  double employeesExpenses,  DateTime expenseDate,  String? notes,  List<OtherExpenses>? otherExpenses)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  ExpenseType expenseType,  DateTime expenseDate,  double amount,  String? label,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Expenses() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.fuelExpense,_that.maintenanceExpenses,_that.employeesExpenses,_that.expenseDate,_that.notes,_that.otherExpenses);case _:
+case _Expense() when $default != null:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.expenseType,_that.expenseDate,_that.amount,_that.label,_that.notes);case _:
   return orElse();
 
 }
@@ -180,10 +178,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.f
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  double fuelExpense,  double maintenanceExpenses,  double employeesExpenses,  DateTime expenseDate,  String? notes,  List<OtherExpenses>? otherExpenses)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  ExpenseType expenseType,  DateTime expenseDate,  double amount,  String? label,  String? notes)  $default,) {final _that = this;
 switch (_that) {
-case _Expenses():
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.fuelExpense,_that.maintenanceExpenses,_that.employeesExpenses,_that.expenseDate,_that.notes,_that.otherExpenses);}
+case _Expense():
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.expenseType,_that.expenseDate,_that.amount,_that.label,_that.notes);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -197,10 +195,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.f
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  double fuelExpense,  double maintenanceExpenses,  double employeesExpenses,  DateTime expenseDate,  String? notes,  List<OtherExpenses>? otherExpenses)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  ExpenseType expenseType,  DateTime expenseDate,  double amount,  String? label,  String? notes)?  $default,) {final _that = this;
 switch (_that) {
-case _Expenses() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.fuelExpense,_that.maintenanceExpenses,_that.employeesExpenses,_that.expenseDate,_that.notes,_that.otherExpenses);case _:
+case _Expense() when $default != null:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.expenseType,_that.expenseDate,_that.amount,_that.label,_that.notes);case _:
   return null;
 
 }
@@ -211,63 +209,53 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.f
 /// @nodoc
 @JsonSerializable()
 
-class _Expenses implements Expenses {
-  const _Expenses({required this.id, required this.createdAt, required this.updatedAt, required this.companyId, required this.fuelExpense, required this.maintenanceExpenses, required this.employeesExpenses, required this.expenseDate, this.notes, final  List<OtherExpenses>? otherExpenses}): _otherExpenses = otherExpenses;
-  factory _Expenses.fromJson(Map<String, dynamic> json) => _$ExpensesFromJson(json);
+class _Expense implements Expense {
+  const _Expense({required this.id, required this.createdAt, required this.updatedAt, required this.expenseType, required this.expenseDate, required this.amount, this.label, this.notes});
+  factory _Expense.fromJson(Map<String, dynamic> json) => _$ExpenseFromJson(json);
 
 @override final  String id;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
-@override final  String companyId;
-@override final  double fuelExpense;
-@override final  double maintenanceExpenses;
-@override final  double employeesExpenses;
+@override final  ExpenseType expenseType;
 @override final  DateTime expenseDate;
+@override final  double amount;
+@override final  String? label;
 @override final  String? notes;
- final  List<OtherExpenses>? _otherExpenses;
-@override List<OtherExpenses>? get otherExpenses {
-  final value = _otherExpenses;
-  if (value == null) return null;
-  if (_otherExpenses is EqualUnmodifiableListView) return _otherExpenses;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(value);
-}
 
-
-/// Create a copy of Expenses
+/// Create a copy of Expense
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$ExpensesCopyWith<_Expenses> get copyWith => __$ExpensesCopyWithImpl<_Expenses>(this, _$identity);
+_$ExpenseCopyWith<_Expense> get copyWith => __$ExpenseCopyWithImpl<_Expense>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$ExpensesToJson(this, );
+  return _$ExpenseToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Expenses&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.fuelExpense, fuelExpense) || other.fuelExpense == fuelExpense)&&(identical(other.maintenanceExpenses, maintenanceExpenses) || other.maintenanceExpenses == maintenanceExpenses)&&(identical(other.employeesExpenses, employeesExpenses) || other.employeesExpenses == employeesExpenses)&&(identical(other.expenseDate, expenseDate) || other.expenseDate == expenseDate)&&(identical(other.notes, notes) || other.notes == notes)&&const DeepCollectionEquality().equals(other._otherExpenses, _otherExpenses));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Expense&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.expenseType, expenseType) || other.expenseType == expenseType)&&(identical(other.expenseDate, expenseDate) || other.expenseDate == expenseDate)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.label, label) || other.label == label)&&(identical(other.notes, notes) || other.notes == notes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,companyId,fuelExpense,maintenanceExpenses,employeesExpenses,expenseDate,notes,const DeepCollectionEquality().hash(_otherExpenses));
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,expenseType,expenseDate,amount,label,notes);
 
 @override
 String toString() {
-  return 'Expenses(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, companyId: $companyId, fuelExpense: $fuelExpense, maintenanceExpenses: $maintenanceExpenses, employeesExpenses: $employeesExpenses, expenseDate: $expenseDate, notes: $notes, otherExpenses: $otherExpenses)';
+  return 'Expense(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, expenseType: $expenseType, expenseDate: $expenseDate, amount: $amount, label: $label, notes: $notes)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$ExpensesCopyWith<$Res> implements $ExpensesCopyWith<$Res> {
-  factory _$ExpensesCopyWith(_Expenses value, $Res Function(_Expenses) _then) = __$ExpensesCopyWithImpl;
+abstract mixin class _$ExpenseCopyWith<$Res> implements $ExpenseCopyWith<$Res> {
+  factory _$ExpenseCopyWith(_Expense value, $Res Function(_Expense) _then) = __$ExpenseCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String companyId, double fuelExpense, double maintenanceExpenses, double employeesExpenses, DateTime expenseDate, String? notes, List<OtherExpenses>? otherExpenses
+ String id, DateTime createdAt, DateTime updatedAt, ExpenseType expenseType, DateTime expenseDate, double amount, String? label, String? notes
 });
 
 
@@ -275,28 +263,26 @@ $Res call({
 
 }
 /// @nodoc
-class __$ExpensesCopyWithImpl<$Res>
-    implements _$ExpensesCopyWith<$Res> {
-  __$ExpensesCopyWithImpl(this._self, this._then);
+class __$ExpenseCopyWithImpl<$Res>
+    implements _$ExpenseCopyWith<$Res> {
+  __$ExpenseCopyWithImpl(this._self, this._then);
 
-  final _Expenses _self;
-  final $Res Function(_Expenses) _then;
+  final _Expense _self;
+  final $Res Function(_Expense) _then;
 
-/// Create a copy of Expenses
+/// Create a copy of Expense
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? companyId = null,Object? fuelExpense = null,Object? maintenanceExpenses = null,Object? employeesExpenses = null,Object? expenseDate = null,Object? notes = freezed,Object? otherExpenses = freezed,}) {
-  return _then(_Expenses(
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? expenseType = null,Object? expenseDate = null,Object? amount = null,Object? label = freezed,Object? notes = freezed,}) {
+  return _then(_Expense(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
-as String,fuelExpense: null == fuelExpense ? _self.fuelExpense : fuelExpense // ignore: cast_nullable_to_non_nullable
-as double,maintenanceExpenses: null == maintenanceExpenses ? _self.maintenanceExpenses : maintenanceExpenses // ignore: cast_nullable_to_non_nullable
-as double,employeesExpenses: null == employeesExpenses ? _self.employeesExpenses : employeesExpenses // ignore: cast_nullable_to_non_nullable
-as double,expenseDate: null == expenseDate ? _self.expenseDate : expenseDate // ignore: cast_nullable_to_non_nullable
-as DateTime,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
-as String?,otherExpenses: freezed == otherExpenses ? _self._otherExpenses : otherExpenses // ignore: cast_nullable_to_non_nullable
-as List<OtherExpenses>?,
+as DateTime,expenseType: null == expenseType ? _self.expenseType : expenseType // ignore: cast_nullable_to_non_nullable
+as ExpenseType,expenseDate: null == expenseDate ? _self.expenseDate : expenseDate // ignore: cast_nullable_to_non_nullable
+as DateTime,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as double,label: freezed == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
+as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

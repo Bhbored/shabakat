@@ -7,6 +7,8 @@ import 'bottom_nav_container.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../subscribers/subscribers_screen.dart';
 import '../invoices/invoices_screen.dart';
+import '../expenses/expenses_screen.dart';
+import '../expenses/subscreens/expense_adding_screen.dart';
 import '../areas/areas_page.dart';
 import '../areas/subscreens/area_adding_screen.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
@@ -58,10 +60,11 @@ class _MainTabPageState extends State<MainTabPage> {
         children: [
           DashboardScreen(
             onViewAllPayments: () => _onTabChanged(1),
-            onSendReminders: () => _onTabChanged(3),
+            onSendReminders: () => _onTabChanged(4),
           ),
           const SubscribersScreen(),
           const InvoicesScreen(),
+          const ExpensesScreen(),
           const AreasPage(),
         ],
       ),
@@ -153,6 +156,23 @@ class _MainTabPageState extends State<MainTabPage> {
       case 3:
         return AppBar(
           title: Text(
+            'Expenses',
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: colorScheme.onSecondary,
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: _onAddExpense,
+              icon: const Icon(LucideIcons.plus),
+            ),
+            SizedBox(width: context.paddingSmall),
+          ],
+        );
+      case 4:
+        return AppBar(
+          title: Text(
             'Areas',
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
@@ -175,6 +195,12 @@ class _MainTabPageState extends State<MainTabPage> {
   void _onAddSubscriber() {
     Navigator.of(context).push(
       openInnerScreen(widget: const SubscriberAddingScreen()),
+    );
+  }
+
+  void _onAddExpense() {
+    Navigator.of(context).push(
+      openInnerScreen(widget: const ExpenseAddingScreen()),
     );
   }
 

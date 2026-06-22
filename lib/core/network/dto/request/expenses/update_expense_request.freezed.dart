@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UpdateExpenseRequest {
 
- double? get fuelExpense; double? get maintenanceExpenses; double? get employeesExpenses;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? get expenseDate; String? get notes;
+ String? get expenseType; double? get amount;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? get expenseDate; String? get label; String? get notes;
 /// Create a copy of UpdateExpenseRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UpdateExpenseRequestCopyWith<UpdateExpenseRequest> get copyWith => _$UpdateExpe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateExpenseRequest&&(identical(other.fuelExpense, fuelExpense) || other.fuelExpense == fuelExpense)&&(identical(other.maintenanceExpenses, maintenanceExpenses) || other.maintenanceExpenses == maintenanceExpenses)&&(identical(other.employeesExpenses, employeesExpenses) || other.employeesExpenses == employeesExpenses)&&(identical(other.expenseDate, expenseDate) || other.expenseDate == expenseDate)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateExpenseRequest&&(identical(other.expenseType, expenseType) || other.expenseType == expenseType)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.expenseDate, expenseDate) || other.expenseDate == expenseDate)&&(identical(other.label, label) || other.label == label)&&(identical(other.notes, notes) || other.notes == notes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,fuelExpense,maintenanceExpenses,employeesExpenses,expenseDate,notes);
+int get hashCode => Object.hash(runtimeType,expenseType,amount,expenseDate,label,notes);
 
 @override
 String toString() {
-  return 'UpdateExpenseRequest(fuelExpense: $fuelExpense, maintenanceExpenses: $maintenanceExpenses, employeesExpenses: $employeesExpenses, expenseDate: $expenseDate, notes: $notes)';
+  return 'UpdateExpenseRequest(expenseType: $expenseType, amount: $amount, expenseDate: $expenseDate, label: $label, notes: $notes)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UpdateExpenseRequestCopyWith<$Res>  {
   factory $UpdateExpenseRequestCopyWith(UpdateExpenseRequest value, $Res Function(UpdateExpenseRequest) _then) = _$UpdateExpenseRequestCopyWithImpl;
 @useResult
 $Res call({
- double? fuelExpense, double? maintenanceExpenses, double? employeesExpenses,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? expenseDate, String? notes
+ String? expenseType, double? amount,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? expenseDate, String? label, String? notes
 });
 
 
@@ -65,13 +65,13 @@ class _$UpdateExpenseRequestCopyWithImpl<$Res>
 
 /// Create a copy of UpdateExpenseRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? fuelExpense = freezed,Object? maintenanceExpenses = freezed,Object? employeesExpenses = freezed,Object? expenseDate = freezed,Object? notes = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? expenseType = freezed,Object? amount = freezed,Object? expenseDate = freezed,Object? label = freezed,Object? notes = freezed,}) {
   return _then(_self.copyWith(
-fuelExpense: freezed == fuelExpense ? _self.fuelExpense : fuelExpense // ignore: cast_nullable_to_non_nullable
-as double?,maintenanceExpenses: freezed == maintenanceExpenses ? _self.maintenanceExpenses : maintenanceExpenses // ignore: cast_nullable_to_non_nullable
-as double?,employeesExpenses: freezed == employeesExpenses ? _self.employeesExpenses : employeesExpenses // ignore: cast_nullable_to_non_nullable
+expenseType: freezed == expenseType ? _self.expenseType : expenseType // ignore: cast_nullable_to_non_nullable
+as String?,amount: freezed == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as double?,expenseDate: freezed == expenseDate ? _self.expenseDate : expenseDate // ignore: cast_nullable_to_non_nullable
-as DateTime?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as DateTime?,label: freezed == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
+as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -154,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double? fuelExpense,  double? maintenanceExpenses,  double? employeesExpenses, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? expenseDate,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? expenseType,  double? amount, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? expenseDate,  String? label,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UpdateExpenseRequest() when $default != null:
-return $default(_that.fuelExpense,_that.maintenanceExpenses,_that.employeesExpenses,_that.expenseDate,_that.notes);case _:
+return $default(_that.expenseType,_that.amount,_that.expenseDate,_that.label,_that.notes);case _:
   return orElse();
 
 }
@@ -175,10 +175,10 @@ return $default(_that.fuelExpense,_that.maintenanceExpenses,_that.employeesExpen
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double? fuelExpense,  double? maintenanceExpenses,  double? employeesExpenses, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? expenseDate,  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? expenseType,  double? amount, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? expenseDate,  String? label,  String? notes)  $default,) {final _that = this;
 switch (_that) {
 case _UpdateExpenseRequest():
-return $default(_that.fuelExpense,_that.maintenanceExpenses,_that.employeesExpenses,_that.expenseDate,_that.notes);}
+return $default(_that.expenseType,_that.amount,_that.expenseDate,_that.label,_that.notes);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -192,10 +192,10 @@ return $default(_that.fuelExpense,_that.maintenanceExpenses,_that.employeesExpen
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double? fuelExpense,  double? maintenanceExpenses,  double? employeesExpenses, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? expenseDate,  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? expenseType,  double? amount, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? expenseDate,  String? label,  String? notes)?  $default,) {final _that = this;
 switch (_that) {
 case _UpdateExpenseRequest() when $default != null:
-return $default(_that.fuelExpense,_that.maintenanceExpenses,_that.employeesExpenses,_that.expenseDate,_that.notes);case _:
+return $default(_that.expenseType,_that.amount,_that.expenseDate,_that.label,_that.notes);case _:
   return null;
 
 }
@@ -207,13 +207,13 @@ return $default(_that.fuelExpense,_that.maintenanceExpenses,_that.employeesExpen
 @JsonSerializable()
 
 class _UpdateExpenseRequest implements UpdateExpenseRequest {
-  const _UpdateExpenseRequest({this.fuelExpense, this.maintenanceExpenses, this.employeesExpenses, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.expenseDate, this.notes});
+  const _UpdateExpenseRequest({this.expenseType, this.amount, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.expenseDate, this.label, this.notes});
   factory _UpdateExpenseRequest.fromJson(Map<String, dynamic> json) => _$UpdateExpenseRequestFromJson(json);
 
-@override final  double? fuelExpense;
-@override final  double? maintenanceExpenses;
-@override final  double? employeesExpenses;
+@override final  String? expenseType;
+@override final  double? amount;
 @override@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) final  DateTime? expenseDate;
+@override final  String? label;
 @override final  String? notes;
 
 /// Create a copy of UpdateExpenseRequest
@@ -229,16 +229,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateExpenseRequest&&(identical(other.fuelExpense, fuelExpense) || other.fuelExpense == fuelExpense)&&(identical(other.maintenanceExpenses, maintenanceExpenses) || other.maintenanceExpenses == maintenanceExpenses)&&(identical(other.employeesExpenses, employeesExpenses) || other.employeesExpenses == employeesExpenses)&&(identical(other.expenseDate, expenseDate) || other.expenseDate == expenseDate)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateExpenseRequest&&(identical(other.expenseType, expenseType) || other.expenseType == expenseType)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.expenseDate, expenseDate) || other.expenseDate == expenseDate)&&(identical(other.label, label) || other.label == label)&&(identical(other.notes, notes) || other.notes == notes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,fuelExpense,maintenanceExpenses,employeesExpenses,expenseDate,notes);
+int get hashCode => Object.hash(runtimeType,expenseType,amount,expenseDate,label,notes);
 
 @override
 String toString() {
-  return 'UpdateExpenseRequest(fuelExpense: $fuelExpense, maintenanceExpenses: $maintenanceExpenses, employeesExpenses: $employeesExpenses, expenseDate: $expenseDate, notes: $notes)';
+  return 'UpdateExpenseRequest(expenseType: $expenseType, amount: $amount, expenseDate: $expenseDate, label: $label, notes: $notes)';
 }
 
 
@@ -249,7 +249,7 @@ abstract mixin class _$UpdateExpenseRequestCopyWith<$Res> implements $UpdateExpe
   factory _$UpdateExpenseRequestCopyWith(_UpdateExpenseRequest value, $Res Function(_UpdateExpenseRequest) _then) = __$UpdateExpenseRequestCopyWithImpl;
 @override @useResult
 $Res call({
- double? fuelExpense, double? maintenanceExpenses, double? employeesExpenses,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? expenseDate, String? notes
+ String? expenseType, double? amount,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? expenseDate, String? label, String? notes
 });
 
 
@@ -266,13 +266,13 @@ class __$UpdateExpenseRequestCopyWithImpl<$Res>
 
 /// Create a copy of UpdateExpenseRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? fuelExpense = freezed,Object? maintenanceExpenses = freezed,Object? employeesExpenses = freezed,Object? expenseDate = freezed,Object? notes = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? expenseType = freezed,Object? amount = freezed,Object? expenseDate = freezed,Object? label = freezed,Object? notes = freezed,}) {
   return _then(_UpdateExpenseRequest(
-fuelExpense: freezed == fuelExpense ? _self.fuelExpense : fuelExpense // ignore: cast_nullable_to_non_nullable
-as double?,maintenanceExpenses: freezed == maintenanceExpenses ? _self.maintenanceExpenses : maintenanceExpenses // ignore: cast_nullable_to_non_nullable
-as double?,employeesExpenses: freezed == employeesExpenses ? _self.employeesExpenses : employeesExpenses // ignore: cast_nullable_to_non_nullable
+expenseType: freezed == expenseType ? _self.expenseType : expenseType // ignore: cast_nullable_to_non_nullable
+as String?,amount: freezed == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as double?,expenseDate: freezed == expenseDate ? _self.expenseDate : expenseDate // ignore: cast_nullable_to_non_nullable
-as DateTime?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as DateTime?,label: freezed == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
+as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

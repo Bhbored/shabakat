@@ -1,7 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'other_expense_response.dart';
-
 part 'expense_response.freezed.dart';
 part 'expense_response.g.dart';
 
@@ -14,17 +12,14 @@ DateTime _dateOnlyFromJson(String date) => DateTime.parse(date);
 sealed class ExpenseResponse with _$ExpenseResponse {
   const factory ExpenseResponse({
     required String id,
-    required double fuelExpense,
-    required double maintenanceExpenses,
-    required double employeesExpenses,
-    required double otherExpensesTotal,
-    required double totalExpense,
+    required String expenseType,
+    required double amount,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
     required DateTime expenseDate,
+    String? label,
     String? notes,
     required DateTime createdAt,
     required DateTime updatedAt,
-    required List<OtherExpenseResponse> otherExpenses,
   }) = _ExpenseResponse;
 
   factory ExpenseResponse.fromJson(Map<String, dynamic> json) =>

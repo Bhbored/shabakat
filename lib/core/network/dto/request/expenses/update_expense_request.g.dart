@@ -9,19 +9,19 @@ part of 'update_expense_request.dart';
 _UpdateExpenseRequest _$UpdateExpenseRequestFromJson(
   Map<String, dynamic> json,
 ) => _UpdateExpenseRequest(
-  fuelExpense: (json['fuelExpense'] as num?)?.toDouble(),
-  maintenanceExpenses: (json['maintenanceExpenses'] as num?)?.toDouble(),
-  employeesExpenses: (json['employeesExpenses'] as num?)?.toDouble(),
+  expenseType: json['expenseType'] as String?,
+  amount: (json['amount'] as num?)?.toDouble(),
   expenseDate: _dateOnlyFromJson(json['expenseDate'] as String?),
+  label: json['label'] as String?,
   notes: json['notes'] as String?,
 );
 
 Map<String, dynamic> _$UpdateExpenseRequestToJson(
   _UpdateExpenseRequest instance,
 ) => <String, dynamic>{
-  'fuelExpense': instance.fuelExpense,
-  'maintenanceExpenses': instance.maintenanceExpenses,
-  'employeesExpenses': instance.employeesExpenses,
+  'expenseType': instance.expenseType,
+  'amount': instance.amount,
   'expenseDate': _dateOnlyToJson(instance.expenseDate),
+  'label': instance.label,
   'notes': instance.notes,
 };

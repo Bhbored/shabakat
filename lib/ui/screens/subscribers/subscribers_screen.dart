@@ -55,15 +55,14 @@ class _SubscribersScreenState extends ConsumerState<SubscribersScreen> {
           data: (customers) {
             if (customers.length <= 10) return const SizedBox.shrink();
 
-            final totalPages =
-                (customers.length / filter.pageSize).ceil().clamp(1, 999);
+            final totalPages = (customers.length / filter.pageSize)
+                .ceil()
+                .clamp(1, 999);
             final currentPage = _currentPage.clamp(1, totalPages);
 
             return SubscribersPagination(
               currentPage: currentPage,
               totalPages: totalPages,
-              pageSize: filter.pageSize,
-              itemCount: customers.length,
               onPageChanged: (page) => setState(() => _currentPage = page),
             );
           },
