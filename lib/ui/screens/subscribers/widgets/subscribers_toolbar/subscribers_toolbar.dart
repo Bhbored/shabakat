@@ -4,7 +4,7 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/network/dto/request/customer/customer_filter_request.dart';
 import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
-import 'package:shabakat/data/providers/customer/customer_provider.dart';
+import 'package:shabakat/data/providers/customer/customer_pagination_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
@@ -28,7 +28,7 @@ class SubscribersToolbar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final customers = ref.watch(customerProvider).asData?.value ?? [];
+    final pagination = ref.watch(customerPaginationProvider);
     final filter = ref.watch(customerFilterProvider);
     final areas = ref.watch(areaProvider).asData?.value;
     final theme = Theme.of(context);
@@ -97,7 +97,7 @@ class SubscribersToolbar extends ConsumerWidget {
           ),
           SizedBox(height: context.spaceSmall),
           Text(
-            '${customers.length} subscribers',
+            '${pagination.totalCount} subscribers',
             style: theme.textTheme.bodySmall?.copyWith(
               color: colorScheme.onSurface.withValues(alpha: 0.6),
             ),

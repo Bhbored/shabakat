@@ -5,8 +5,8 @@ import 'package:shabakat/core/network/configs/http_methods.dart';
 import 'package:shabakat/core/network/dto/request/customer/create_customer_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/customer_filter_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/update_customer_request.dart';
+import 'package:shabakat/core/network/dto/response/customer/customer_list_summery_response.dart';
 import 'package:shabakat/core/network/dto/response/customer/customer_response.dart';
-import 'package:shabakat/core/network/dto/response/customer/customer_summary_response.dart';
 import 'package:shabakat/core/network/executor/api_executor.dart';
 import 'package:shabakat/core/network/request/api_request.dart';
 part 'customer_service.g.dart';
@@ -25,7 +25,7 @@ class CustomerService {
   final _logger = Logger();
   CustomerService(this._apiExecutor);
 
-  Future<List<CustomerSummaryResponse>> getCustomers(
+  Future<CustomerListSummeryResponse> getCustomers(
     CustomerFilterRequest filter,
   ) async {
     final response = await _apiExecutor.execute(
@@ -49,11 +49,7 @@ class CustomerService {
     return response.when(
       success: (data, statusCode, meta) {
         _logger.i('Customers retrieved successfully: $data');
-        final datalist = data as Map<String, dynamic>;
-        final customers = (datalist['data'] as List)
-            .map((x) => CustomerSummaryResponse.fromJson(x))
-            .toList();
-        return customers;
+        return CustomerListSummeryResponse.fromJson(data);
       },
       failure: (error, statusCode) {
         _logger.e('Failed to retrieve customers: ${error.toString()}');
@@ -123,10 +119,7 @@ class CustomerService {
 
   Future<void> deleteCustomer(String customerId) async {
     final response = await _apiExecutor.execute(
-      ApiRequest(
-        path: 'customers/$customerId',
-        method: HttpMethod.delete,
-      ),
+      ApiRequest(path: 'customers/$customerId', method: HttpMethod.delete),
     );
     return response.when(
       success: (data, statusCode, meta) {

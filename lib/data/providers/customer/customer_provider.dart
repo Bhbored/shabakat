@@ -4,6 +4,7 @@ import 'package:shabakat/core/network/dto/request/customer/customer_filter_reque
 import 'package:shabakat/core/network/dto/request/customer/update_customer_request.dart';
 import 'package:shabakat/core/network/services/customer/customer_service.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
+import 'package:shabakat/data/providers/customer/customer_pagination_provider.dart';
 import 'package:shabakat/domain/entities/customers/customer.dart';
 import 'package:shabakat/domain/mappers/customer/customer_mapper.dart';
 part 'customer_provider.g.dart';
@@ -21,8 +22,19 @@ class CustomerNotifier extends _$CustomerNotifier {
   }
 
   Future<List<Customer>> _loadCustomers(CustomerFilterRequest filter) async {
-    final customers = await _customerService.getCustomers(filter);
-    return customers.map((x) => x.toEntity()).toList();
+    final response = await _customerService.getCustomers(filter);
+    final pagination = ref.read(customerPaginationProvider.notifier);
+    pagination.updatePagination(
+      CustomerPagination(
+        totalCount: response.totalCount,
+        pageNumber: response.pageNumber,
+        pageSize: response.pageSize,
+        totalPages: response.totalPages,
+        hasPreviousPage: response.hasPreviousPage,
+        hasNextPage: response.hasNextPage,
+      ),
+    );
+    return response.data.map((x) => x.toEntity()).toList();
   }
 
   Future<void> refresh() async {

@@ -3,71 +3,83 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
+import 'package:shabakat/data/providers/customer/customer_pagination_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
 
 import 'widgets/subscriber_list/subscriber_list.dart';
 import 'widgets/subscribers_pagination/subscribers_pagination.dart';
 import 'widgets/subscribers_toolbar/subscribers_toolbar.dart';
 
-class SubscribersScreen extends ConsumerStatefulWidget {
+class SubscribersScreen extends ConsumerWidget {
   const SubscribersScreen({super.key});
 
   @override
-  ConsumerState<SubscribersScreen> createState() => _SubscribersScreenState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final customersAsync = ref.watch(customerProvider);
+    final pagination = ref.watch(customerPaginationProvider);
+
+    void goToPage(int page) {
+      ref
+          .read(customerFilterProvider.notifier)
+          .updateFilter(
+            ref.read(customerFilterProvider).copyWith(pageNumber: page),
+          );
+    }
+
+    return customersAsync.when(
+      skipLoadingOnRefresh: true,
+      loading: () => const _SubscribersLayout(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (err, _) {
+        final message = err is ApiException
+            ? err.userMessage
+            : 'Error loading customers: $err';
+        return _SubscribersLayout(
+          body: Center(child: Text(message, textAlign: TextAlign.center)),
+        );
+      },
+      data: (customers) {
+        final filterNotifier = ref.read(customerFilterProvider.notifier);
+
+        return _SubscribersLayout(
+          body: RefreshIndicator(
+            onRefresh: () async {
+              ref.read(customerFilterProvider.notifier).clearFilter();
+              await ref.read(customerProvider.notifier).refresh();
+            },
+            child: SubscriberList(customers: customers),
+          ),
+          pagination: pagination.totalPages > 1
+              ? SubscribersPagination(
+                  currentPage: pagination.pageNumber,
+                  totalPages: pagination.totalPages,
+                  onPageChanged: goToPage,
+                  onFirstPage: filterNotifier.firstPage,
+                  onLastPage: filterNotifier.lastPage,
+                )
+              : null,
+        );
+      },
+    );
+  }
 }
 
-class _SubscribersScreenState extends ConsumerState<SubscribersScreen> {
-  int _currentPage = 1;
+class _SubscribersLayout extends StatelessWidget {
+  final Widget body;
+  final Widget? pagination;
+
+  const _SubscribersLayout({required this.body, this.pagination});
 
   @override
   Widget build(BuildContext context) {
-    final customersAsync = ref.watch(customerProvider);
-    final filter = ref.watch(customerFilterProvider);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SubscribersToolbar(),
         SizedBox(height: context.spaceSmall),
-        Expanded(
-          child: customersAsync.when(
-            skipLoadingOnRefresh: true,
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (err, stack) {
-              if (err is ApiException) {
-                return Center(
-                  child: Text(err.userMessage, textAlign: TextAlign.center),
-                );
-              }
-              return Center(child: Text('Error loading customers: $err'));
-            },
-            data: (customers) => RefreshIndicator(
-              onRefresh: () async {
-                ref.read(customerFilterProvider.notifier).clearFilter();
-                setState(() => _currentPage = 1);
-                await ref.read(customerProvider.notifier).refresh();
-              },
-              child: SubscriberList(customers: customers),
-            ),
-          ),
-        ),
-        customersAsync.maybeWhen(
-          data: (customers) {
-            if (customers.length <= 10) return const SizedBox.shrink();
-
-            final totalPages = (customers.length / filter.pageSize)
-                .ceil()
-                .clamp(1, 999);
-            final currentPage = _currentPage.clamp(1, totalPages);
-
-            return SubscribersPagination(
-              currentPage: currentPage,
-              totalPages: totalPages,
-              onPageChanged: (page) => setState(() => _currentPage = page),
-            );
-          },
-          orElse: () => const SizedBox.shrink(),
-        ),
+        Expanded(child: body),
+        ?pagination,
       ],
     );
   }
