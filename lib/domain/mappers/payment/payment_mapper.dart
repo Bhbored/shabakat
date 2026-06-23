@@ -19,5 +19,6 @@ extension PaymentResponseMapper on PaymentResponse {
 
 PaymentMethod toPaymentMethod(String value) => switch (value.toLowerCase()) {
   'cash' => PaymentMethod.cash,
+  'wish' => PaymentMethod.wish,
   _ => PaymentMethod.wish,
 };

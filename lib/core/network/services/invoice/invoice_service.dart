@@ -3,13 +3,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/client/dio_client.dart';
 import 'package:shabakat/core/network/configs/http_methods.dart';
 import 'package:shabakat/core/network/dto/request/invoice/add_payment_request.dart';
-import 'package:shabakat/core/network/dto/request/invoice/bulk_create_invoice_request.dart';
 import 'package:shabakat/core/network/dto/request/invoice/create_invoice_request.dart';
 import 'package:shabakat/core/network/dto/request/invoice/invoice_filter_request.dart';
 import 'package:shabakat/core/network/dto/request/invoice/update_invoice_request.dart';
 import 'package:shabakat/core/network/dto/response/invoice/bulk_create_invoice_response.dart';
 import 'package:shabakat/core/network/dto/response/invoice/invoice_response.dart';
-import 'package:shabakat/core/network/dto/response/invoice/invoice_summary_response.dart';
+import 'package:shabakat/core/network/dto/response/invoice/list_invoice_summery_response.dart';
 import 'package:shabakat/core/network/dto/response/payment/payment_response.dart';
 import 'package:shabakat/core/network/executor/api_executor.dart';
 import 'package:shabakat/core/network/request/api_request.dart';
@@ -29,31 +28,23 @@ class InvoiceService {
   final _logger = Logger();
   InvoiceService(this._apiExecutor);
 
-  Future<List<InvoiceSummaryResponse>> getInvoices(
+  Future<ListInvoiceSummeryResponse> getInvoices(
     InvoiceFilterRequest filter,
   ) async {
+    final queryParams = Map<String, dynamic>.from(filter.toJson())
+      ..removeWhere((_, value) => value == null);
+
     final response = await _apiExecutor.execute(
       ApiRequest(
         path: 'invoices',
         method: HttpMethod.get,
-        queryParams: {
-          if (filter.customerId != null) 'customerId': filter.customerId,
-          if (filter.invoiceStatus != null) 'invoiceStatus': filter.invoiceStatus,
-          if (filter.issueDateFrom != null) 'issueDateFrom': filter.issueDateFrom,
-          if (filter.issueDateTo != null) 'issueDateTo': filter.issueDateTo,
-          'pageNumber': filter.pageNumber,
-          'pageSize': filter.pageSize,
-        },
+        queryParams: queryParams,
       ),
     );
     return response.when(
       success: (data, statusCode, meta) {
         _logger.i('Invoices retrieved successfully: $data');
-        final datalist = data as Map<String, dynamic>;
-        final invoices = (datalist['data'] as List)
-            .map((x) => InvoiceSummaryResponse.fromJson(x))
-            .toList();
-        return invoices;
+        return ListInvoiceSummeryResponse.fromJson(data);
       },
       failure: (error, statusCode) {
         _logger.e('Failed to retrieve invoices: ${error.toString()}');
@@ -117,15 +108,9 @@ class InvoiceService {
     );
   }
 
-  Future<BulkCreateInvoiceResponse> bulkCreate(
-    BulkCreateInvoiceRequest request,
-  ) async {
+  Future<BulkCreateInvoiceResponse> bulkCreate() async {
     final response = await _apiExecutor.execute(
-      ApiRequest(
-        path: 'invoices/bulk',
-        method: HttpMethod.post,
-        data: request.toJson(),
-      ),
+      ApiRequest(path: 'invoices/bulk', method: HttpMethod.post),
     );
     return response.when(
       success: (data, statusCode, meta) {
@@ -139,10 +124,7 @@ class InvoiceService {
     );
   }
 
-  Future<void> payInvoice(
-    String invoiceId,
-    AddPaymentRequest request,
-  ) async {
+  Future<void> payInvoice(String invoiceId, AddPaymentRequest request) async {
     final response = await _apiExecutor.execute(
       ApiRequest(
         path: 'invoices/$invoiceId/pay',
@@ -187,10 +169,7 @@ class InvoiceService {
 
   Future<void> deleteInvoice(String invoiceId) async {
     final response = await _apiExecutor.execute(
-      ApiRequest(
-        path: 'invoices/$invoiceId',
-        method: HttpMethod.delete,
-      ),
+      ApiRequest(path: 'invoices/$invoiceId', method: HttpMethod.delete),
     );
     return response.when(
       success: (data, statusCode, meta) {

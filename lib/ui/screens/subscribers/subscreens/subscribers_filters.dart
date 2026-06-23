@@ -16,10 +16,7 @@ class SubscribersFilters extends ConsumerStatefulWidget {
 }
 
 class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
-  static const _lastInvoiceFilters = {'Paid', 'Unpaid'};
-
   CustomerRelation? _relation;
-  String? _paymentFilter;
   PlanType? _planType;
   bool _initialized = false;
 
@@ -30,7 +27,6 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
 
     final filter = ref.read(customerFilterProvider);
     _relation = _relationFromFilter(filter.customerRelation);
-    _paymentFilter = _paymentFilterFromFilter(filter.paymentFilter);
     _planType = _planTypeFromFilter(filter.planType);
     _initialized = true;
   }
@@ -41,11 +37,6 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
       if (relation.name == value) return relation;
     }
     return null;
-  }
-
-  String? _paymentFilterFromFilter(String? value) {
-    if (value == null || !_lastInvoiceFilters.contains(value)) return null;
-    return value;
   }
 
   PlanType? _planTypeFromFilter(String? value) {
@@ -66,7 +57,6 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
               .read(customerFilterProvider)
               .copyWith(
                 customerRelation: _relation?.name,
-                paymentFilter: _paymentFilter,
                 planType: _planType?.label,
                 pageNumber: 1,
               ),
@@ -99,14 +89,6 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
               items: CustomerRelation.values,
               labelBuilder: (e) => e.label,
               onChanged: (value) => setState(() => _relation = value),
-            ),
-            SizedBox(height: context.spaceMedium),
-            FilterSection<String>(
-              title: 'Last Invoice',
-              value: _paymentFilter,
-              items: _lastInvoiceFilters.toList(),
-              labelBuilder: (e) => e,
-              onChanged: (value) => setState(() => _paymentFilter = value),
             ),
             SizedBox(height: context.spaceMedium),
             FilterSection<PlanType>(

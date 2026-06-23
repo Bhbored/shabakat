@@ -12,6 +12,7 @@ extension InvoiceResponseMapper on InvoiceResponse {
     companyId: '',
     customerId: '',
     invoiceNumber: invoiceNumber,
+    customerName: customerName,
     issueDate: issueDate,
     dueDate: dueDate,
     fixedCharge: fixedCharge,
@@ -31,6 +32,7 @@ extension InvoiceSummaryResponseMapper on InvoiceSummaryResponse {
     updatedAt: createdAt,
     companyId: '',
     customerId: '',
+    customerName: customerName,
     invoiceNumber: invoiceNumber,
     issueDate: issueDate,
     dueDate: dueDate,
@@ -46,5 +48,6 @@ extension InvoiceSummaryResponseMapper on InvoiceSummaryResponse {
 InvoiceStatus toInvoiceStatus(String value) => switch (value.toLowerCase()) {
   'paid' => InvoiceStatus.paid,
   'partiallypaid' => InvoiceStatus.partiallypaid,
+  'unpaid' => InvoiceStatus.unpaid,
   _ => InvoiceStatus.unpaid,
 };

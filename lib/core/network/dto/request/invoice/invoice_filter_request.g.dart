@@ -10,7 +10,10 @@ _InvoiceFilterRequest _$InvoiceFilterRequestFromJson(
   Map<String, dynamic> json,
 ) => _InvoiceFilterRequest(
   customerId: json['customerId'] as String?,
-  invoiceStatus: json['invoiceStatus'] as String?,
+  invoiceStatus: $enumDecodeNullable(
+    _$InvoiceStatusEnumMap,
+    json['invoiceStatus'],
+  ),
   issueDateFrom: _dateOnlyFromJson(json['issueDateFrom'] as String?),
   issueDateTo: _dateOnlyFromJson(json['issueDateTo'] as String?),
   pageNumber: (json['pageNumber'] as num?)?.toInt() ?? 1,
@@ -21,9 +24,15 @@ Map<String, dynamic> _$InvoiceFilterRequestToJson(
   _InvoiceFilterRequest instance,
 ) => <String, dynamic>{
   'customerId': instance.customerId,
-  'invoiceStatus': instance.invoiceStatus,
+  'invoiceStatus': _$InvoiceStatusEnumMap[instance.invoiceStatus],
   'issueDateFrom': _dateOnlyToJson(instance.issueDateFrom),
   'issueDateTo': _dateOnlyToJson(instance.issueDateTo),
   'pageNumber': instance.pageNumber,
   'pageSize': instance.pageSize,
+};
+
+const _$InvoiceStatusEnumMap = {
+  InvoiceStatus.unpaid: 'unpaid',
+  InvoiceStatus.partiallypaid: 'partiallypaid',
+  InvoiceStatus.paid: 'paid',
 };

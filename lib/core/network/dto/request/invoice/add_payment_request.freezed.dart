@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AddPaymentRequest {
 
- double get amount; String get paymentMethod; String? get notes;
+ double get amount; PaymentMethod get paymentMethod; String? get notes;
 /// Create a copy of AddPaymentRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $AddPaymentRequestCopyWith<$Res>  {
   factory $AddPaymentRequestCopyWith(AddPaymentRequest value, $Res Function(AddPaymentRequest) _then) = _$AddPaymentRequestCopyWithImpl;
 @useResult
 $Res call({
- double amount, String paymentMethod, String? notes
+ double amount, PaymentMethod paymentMethod, String? notes
 });
 
 
@@ -69,7 +69,7 @@ class _$AddPaymentRequestCopyWithImpl<$Res>
   return _then(_self.copyWith(
 amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as double,paymentMethod: null == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
-as String,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as PaymentMethod,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -152,7 +152,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double amount,  String paymentMethod,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double amount,  PaymentMethod paymentMethod,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AddPaymentRequest() when $default != null:
 return $default(_that.amount,_that.paymentMethod,_that.notes);case _:
@@ -173,7 +173,7 @@ return $default(_that.amount,_that.paymentMethod,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double amount,  String paymentMethod,  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double amount,  PaymentMethod paymentMethod,  String? notes)  $default,) {final _that = this;
 switch (_that) {
 case _AddPaymentRequest():
 return $default(_that.amount,_that.paymentMethod,_that.notes);}
@@ -190,7 +190,7 @@ return $default(_that.amount,_that.paymentMethod,_that.notes);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double amount,  String paymentMethod,  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double amount,  PaymentMethod paymentMethod,  String? notes)?  $default,) {final _that = this;
 switch (_that) {
 case _AddPaymentRequest() when $default != null:
 return $default(_that.amount,_that.paymentMethod,_that.notes);case _:
@@ -209,7 +209,7 @@ class _AddPaymentRequest implements AddPaymentRequest {
   factory _AddPaymentRequest.fromJson(Map<String, dynamic> json) => _$AddPaymentRequestFromJson(json);
 
 @override final  double amount;
-@override final  String paymentMethod;
+@override final  PaymentMethod paymentMethod;
 @override final  String? notes;
 
 /// Create a copy of AddPaymentRequest
@@ -245,7 +245,7 @@ abstract mixin class _$AddPaymentRequestCopyWith<$Res> implements $AddPaymentReq
   factory _$AddPaymentRequestCopyWith(_AddPaymentRequest value, $Res Function(_AddPaymentRequest) _then) = __$AddPaymentRequestCopyWithImpl;
 @override @useResult
 $Res call({
- double amount, String paymentMethod, String? notes
+ double amount, PaymentMethod paymentMethod, String? notes
 });
 
 
@@ -266,7 +266,7 @@ class __$AddPaymentRequestCopyWithImpl<$Res>
   return _then(_AddPaymentRequest(
 amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as double,paymentMethod: null == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
-as String,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as PaymentMethod,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

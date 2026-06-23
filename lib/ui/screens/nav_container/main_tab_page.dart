@@ -7,6 +7,7 @@ import 'bottom_nav_container.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../subscribers/subscribers_screen.dart';
 import '../invoices/invoices_screen.dart';
+import '../invoices/widgets/bulk_create/bulk_create_action.dart';
 import '../expenses/expenses_screen.dart';
 import '../expenses/subscreens/expense_adding_screen.dart';
 import '../areas/areas_page.dart';
@@ -152,6 +153,9 @@ class _MainTabPageState extends State<MainTabPage> {
               color: colorScheme.onSecondary,
             ),
           ),
+          actions: const [
+            BulkCreateInvoicesAction(),
+          ],
         );
       case 3:
         return AppBar(

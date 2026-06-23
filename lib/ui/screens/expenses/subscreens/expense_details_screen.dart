@@ -39,13 +39,6 @@ class ExpenseDetailsScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete_outline),
-            onPressed: () => _showExpenseDeleteDialog(
-              context: context,
-              expense: currentExpense,
-            ),
-          ),
-          IconButton(
             icon: const Icon(Icons.edit_outlined),
             onPressed: () => ExpenseEditSheet.show(
               context,
@@ -53,24 +46,27 @@ class ExpenseDetailsScreen extends ConsumerWidget {
               expense: currentExpense,
             ),
           ),
+          IconButton(
+            icon: const Icon(Icons.delete_outline),
+            onPressed: () => _showExpenseDeleteDialog(
+              context: context,
+              expense: currentExpense,
+            ),
+          ),
         ],
       ),
       body: detailAsync.when(
         skipLoadingOnRefresh: true,
-        loading: () => ExpenseDetailsBody(
-          expense: expense,
-          onRefresh: onRefresh,
-        ),
+        loading: () =>
+            ExpenseDetailsBody(expense: expense, onRefresh: onRefresh),
         error: (err, _) {
           final message = err is ApiException
               ? err.userMessage
               : 'Failed to load expense details.';
           return Center(child: Text(message, textAlign: TextAlign.center));
         },
-        data: (fresh) => ExpenseDetailsBody(
-          expense: fresh,
-          onRefresh: onRefresh,
-        ),
+        data: (fresh) =>
+            ExpenseDetailsBody(expense: fresh, onRefresh: onRefresh),
       ),
     );
   }
