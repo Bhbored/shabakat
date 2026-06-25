@@ -9,30 +9,58 @@ import 'subscriber_card_header.dart';
 
 class SubscriberCard extends StatelessWidget {
   final Customer customer;
+  final bool selectionMode;
+  final bool isSelected;
+  final VoidCallback onLongPress;
+  final ValueChanged<bool> onSelectionChanged;
 
-  const SubscriberCard({super.key, required this.customer});
+  const SubscriberCard({
+    super.key,
+    required this.customer,
+    required this.selectionMode,
+    required this.isSelected,
+    required this.onLongPress,
+    required this.onSelectionChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(
-            openInnerScreen(
-              widget: SubscriberDetailsScreen(customerId: customer.id),
-            ),
-          );
-        },
+        onTap: selectionMode
+            ? () => onSelectionChanged(!isSelected)
+            : () {
+                Navigator.of(context).push(
+                  openInnerScreen(
+                    widget: SubscriberDetailsScreen(customerId: customer.id),
+                  ),
+                );
+              },
+        onLongPress: selectionMode ? null : onLongPress,
         child: Padding(
           padding: EdgeInsets.all(context.paddingSmall),
-          child: Column(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SubscriberCardHeader(customer: customer),
-              SizedBox(height: context.spaceSmall),
-              const Divider(),
-              SizedBox(height: context.spaceSmall),
-              SubscriberCardDetails(customer: customer),
+              if (selectionMode) ...[
+                Checkbox(
+                  value: isSelected,
+                  onChanged: (value) => onSelectionChanged(value ?? false),
+                ),
+              ],
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SubscriberCardHeader(customer: customer),
+                    SizedBox(height: context.spaceSmall),
+                    const Divider(),
+                    SizedBox(height: context.spaceSmall),
+                    SubscriberCardDetails(customer: customer),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

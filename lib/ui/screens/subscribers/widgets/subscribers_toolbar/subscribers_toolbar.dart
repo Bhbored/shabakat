@@ -5,11 +5,13 @@ import 'package:shabakat/core/network/dto/request/customer/customer_filter_reque
 import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_pagination_provider.dart';
+import 'package:shabakat/data/providers/customer/customer_selection_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
 import '../../subscreens/subscribers_filters.dart';
 import '../../subscreens/subscribers_search_screen.dart';
+import '../subscriber_selection_actions/subscriber_selection_actions.dart';
 
 class SubscribersToolbar extends ConsumerWidget {
   const SubscribersToolbar({super.key});
@@ -30,6 +32,7 @@ class SubscribersToolbar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pagination = ref.watch(customerPaginationProvider);
     final filter = ref.watch(customerFilterProvider);
+    final selection = ref.watch(customerSelectionProvider);
     final areas = ref.watch(areaProvider).asData?.value;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
@@ -96,11 +99,20 @@ class SubscribersToolbar extends ConsumerWidget {
             ],
           ),
           SizedBox(height: context.spaceSmall),
-          Text(
-            '${pagination.totalCount} subscribers',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurface.withValues(alpha: 0.6),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  selection.isSelectionMode
+                      ? '${selection.selectedCustomerIds.length} selected'
+                      : '${pagination.totalCount} subscribers',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
+                ),
+              ),
+              const SubscriberSelectionActions(),
+            ],
           ),
         ],
       ),

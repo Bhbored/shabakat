@@ -1,7 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/dto/request/customer/create_customer_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/customer_filter_request.dart';
+import 'package:shabakat/core/network/dto/request/customer/suspend_customers_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/update_customer_request.dart';
+import 'package:shabakat/core/network/dto/response/customer/suspend_customers_response.dart';
 import 'package:shabakat/core/network/services/customer/customer_service.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_pagination_provider.dart';
@@ -58,5 +60,20 @@ class CustomerNotifier extends _$CustomerNotifier {
   Future<void> deleteCustomer(String customerId) async {
     await _customerService.deleteCustomer(customerId);
     await refresh();
+  }
+
+  Future<SuspendCustomersResponse> suspendCustomers(
+    SuspendCustomersRequest request,
+  ) async {
+    final previous = state;
+    state = const AsyncValue.loading();
+    try {
+      final response = await _customerService.suspendCustomers(request);
+      await refresh();
+      return response;
+    } catch (e, st) {
+      state = previous;
+      Error.throwWithStackTrace(e, st);
+    }
   }
 }

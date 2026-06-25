@@ -150,6 +150,7 @@ class SubscriberDetailsBody extends StatelessWidget {
                 SubscriberInvoicesSection(
                   customerId: customer.id,
                   customerName: customer.name,
+                  customerStatus: customer.customerStatus,
                 ),
               ],
             ),

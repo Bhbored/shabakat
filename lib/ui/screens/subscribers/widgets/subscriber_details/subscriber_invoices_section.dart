@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/enums/customer_status.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/invoice/invoice_filter_provider.dart';
 import 'package:shabakat/data/providers/invoice/invoice_pagination_provider.dart';
@@ -12,10 +13,12 @@ import 'subscriber_create_invoice_dialog.dart';
 class SubscriberInvoicesSection extends ConsumerWidget {
   final String customerId;
   final String? customerName;
+  final CustomerStatus customerStatus;
 
   const SubscriberInvoicesSection({
     super.key,
     required this.customerId,
+    required this.customerStatus,
     this.customerName,
   });
 
@@ -43,14 +46,15 @@ class SubscriberInvoicesSection extends ConsumerWidget {
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: () => showSubscriberCreateInvoiceDialog(
-                    context: context,
-                    customerId: customerId,
-                    customerName: customerName,
+                if (customerStatus == CustomerStatus.active)
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () => showSubscriberCreateInvoiceDialog(
+                      context: context,
+                      customerId: customerId,
+                      customerName: customerName,
+                    ),
                   ),
-                ),
                 IconButton(
                   icon: const Icon(Icons.chevron_left),
                   onPressed: pagination.hasPreviousPage

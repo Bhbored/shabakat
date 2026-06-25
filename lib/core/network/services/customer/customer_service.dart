@@ -4,9 +4,11 @@ import 'package:shabakat/core/network/client/dio_client.dart';
 import 'package:shabakat/core/network/configs/http_methods.dart';
 import 'package:shabakat/core/network/dto/request/customer/create_customer_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/customer_filter_request.dart';
+import 'package:shabakat/core/network/dto/request/customer/suspend_customers_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/update_customer_request.dart';
 import 'package:shabakat/core/network/dto/response/customer/customer_list_summery_response.dart';
 import 'package:shabakat/core/network/dto/response/customer/customer_response.dart';
+import 'package:shabakat/core/network/dto/response/customer/suspend_customers_response.dart';
 import 'package:shabakat/core/network/executor/api_executor.dart';
 import 'package:shabakat/core/network/request/api_request.dart';
 part 'customer_service.g.dart';
@@ -128,6 +130,28 @@ class CustomerService {
       },
       failure: (error, statusCode) {
         _logger.e('Failed to delete customer: ${error.toString()}');
+        throw error;
+      },
+    );
+  }
+
+  Future<SuspendCustomersResponse> suspendCustomers(
+    SuspendCustomersRequest request,
+  ) async {
+    final response = await _apiExecutor.execute(
+      ApiRequest(
+        path: 'customers/suspend',
+        method: HttpMethod.post,
+        data: request.toJson(),
+      ),
+    );
+    return response.when(
+      success: (data, statusCode, meta) {
+        _logger.i('Customers suspended successfully: $data');
+        return SuspendCustomersResponse.fromJson(data);
+      },
+      failure: (error, statusCode) {
+        _logger.e('Failed to suspend customers: ${error.toString()}');
         throw error;
       },
     );
