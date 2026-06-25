@@ -34,9 +34,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
             icon: LucideIcons.zap,
             labelOnly: true,
             onTap: () => Navigator.of(context).push(
-              openInnerScreen(
-                widget: const PricePerKilowattPreferenceScreen(),
-              ),
+              openInnerScreen(widget: const PricePerKilowattPreferenceScreen()),
             ),
           ),
           _divider(context, colorScheme),
@@ -45,9 +43,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
             icon: LucideIcons.zap,
             labelOnly: true,
             onTap: () => Navigator.of(context).push(
-              openInnerScreen(
-                widget: const PricePerAmpPreferenceScreen(),
-              ),
+              openInnerScreen(widget: const PricePerAmpPreferenceScreen()),
             ),
           ),
           _divider(context, colorScheme),
@@ -56,9 +52,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
             icon: LucideIcons.receipt,
             labelOnly: true,
             onTap: () => Navigator.of(context).push(
-              openInnerScreen(
-                widget: const FixedChargePreferenceScreen(),
-              ),
+              openInnerScreen(widget: const FixedChargePreferenceScreen()),
             ),
           ),
           _divider(context, colorScheme),
@@ -66,11 +60,9 @@ class CompanyPreferencesSection extends ConsumerWidget {
             label: 'TVA (%)',
             icon: LucideIcons.percent,
             labelOnly: true,
-            onTap: () => Navigator.of(context).push(
-              openInnerScreen(
-                widget: const TvaPreferenceScreen(),
-              ),
-            ),
+            onTap: () => Navigator.of(
+              context,
+            ).push(openInnerScreen(widget: const TvaPreferenceScreen())),
           ),
           _divider(context, colorScheme),
           PreferenceTile(
@@ -85,9 +77,20 @@ class CompanyPreferencesSection extends ConsumerWidget {
           ),
           _divider(context, colorScheme),
           PreferenceTile(
+            label: 'Due Date',
+            value: preferencesAsync.when(
+              data: (preferences) => _formatDayOfMonth(preferences.dueDate),
+              loading: () => null,
+              error: (_, _) => null,
+            ),
+            icon: LucideIcons.calendarClock,
+            onTap: () => _openDueDateDialog(context, ref),
+          ),
+          _divider(context, colorScheme),
+          PreferenceTile(
             label: 'Trigger Date',
             value: preferencesAsync.when(
-              data: (preferences) => _formatTriggerDate(preferences.triggerDate),
+              data: (preferences) => _formatDayOfMonth(preferences.triggerDate),
               loading: () => null,
               error: (_, _) => null,
             ),
@@ -104,9 +107,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
             ),
             icon: LucideIcons.messageSquare,
             onTap: () => Navigator.of(context).push(
-              openInnerScreen(
-                widget: const TriggerMessagePreferenceScreen(),
-              ),
+              openInnerScreen(widget: const TriggerMessagePreferenceScreen()),
             ),
           ),
         ],
@@ -130,7 +131,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
     };
   }
 
-  String _formatTriggerDate(int day) {
+  String _formatDayOfMonth(int day) {
     final suffix = switch (day % 10) {
       1 when day != 11 => 'st',
       2 when day != 12 => 'nd',
@@ -151,6 +152,36 @@ class CompanyPreferencesSection extends ConsumerWidget {
     );
   }
 
+  void _openDueDateDialog(BuildContext context, WidgetRef ref) {
+    final current = ref.read(companyProvider).asData?.value;
+    if (current == null) return;
+
+    showPreferenceEditDialog(
+      context: context,
+      title: 'Due Date',
+      initialValue: current.dueDate.toString(),
+      hintText: '1-31',
+      description: 'Day of the month when invoices are due.',
+      keyboardType: TextInputType.number,
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) return 'Required';
+        final day = int.tryParse(value.trim());
+        if (day == null) return 'Enter a valid number';
+        if (day < 1 || day > 31) return 'Must be between 1 and 31';
+
+        return null;
+      },
+      onSave: (value) async {
+        final parsed = int.parse(value.trim());
+        final latest = ref.read(companyProvider).asData?.value ?? current;
+        final updated = latest.copyWith(dueDate: parsed);
+        await ref
+            .read(companyProvider.notifier)
+            .upsertPreferences(updated.toUpdateRequest());
+      },
+    );
+  }
+
   void _openTriggerDateDialog(BuildContext context, WidgetRef ref) {
     final current = ref.read(companyProvider).asData?.value;
     if (current == null) return;
@@ -168,6 +199,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
         final day = int.tryParse(value.trim());
         if (day == null) return 'Enter a valid number';
         if (day < 1 || day > 31) return 'Must be between 1 and 31';
+
         return null;
       },
       onSave: (value) async {

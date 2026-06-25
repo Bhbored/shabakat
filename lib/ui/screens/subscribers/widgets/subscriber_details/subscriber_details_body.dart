@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:shabakat/core/constants/app_sizes.dart';import 'package:shabakat/core/enums/customer_relation.dart';
+import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/enums/customer_relation.dart';
 import 'package:shabakat/core/enums/plan_type.dart';
 import 'package:shabakat/domain/entities/customers/customer.dart';
 
 import 'subscriber_detail_row.dart';
 import 'subscriber_detail_section.dart';
 import 'subscriber_details_header.dart';
+import 'subscriber_invoices_section.dart';
 
 class SubscriberDetailsBody extends StatelessWidget {
   final Customer customer;
@@ -144,6 +146,11 @@ class SubscriberDetailsBody extends StatelessWidget {
                     ],
                   ),
                 ],
+                SizedBox(height: context.spaceMedium),
+                SubscriberInvoicesSection(
+                  customerId: customer.id,
+                  customerName: customer.name,
+                ),
               ],
             ),
           ),

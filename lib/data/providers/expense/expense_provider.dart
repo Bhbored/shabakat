@@ -42,22 +42,41 @@ class ExpenseNotifier extends _$ExpenseNotifier {
   }
 
   Future<void> createExpense(CreateExpenseRequest request) async {
-    await _expenseService.createExpense(request);
-    await refresh();
+    final previous = state;
+    state = const AsyncValue.loading();
+    try {
+      await _expenseService.createExpense(request);
+      await refresh();
+    } catch (e, st) {
+      state = previous;
+      Error.throwWithStackTrace(e, st);
+    }
   }
 
   Future<void> updateExpense(
     UpdateExpenseRequest request,
     String expenseId,
   ) async {
-    state = AsyncValue.loading();
-    await _expenseService.updateExpense(expenseId, request);
-    await refresh();
+    final previous = state;
+    state = const AsyncValue.loading();
+    try {
+      await _expenseService.updateExpense(expenseId, request);
+      await refresh();
+    } catch (e, st) {
+      state = previous;
+      Error.throwWithStackTrace(e, st);
+    }
   }
 
   Future<void> deleteExpense(String expenseId) async {
-    state = AsyncValue.loading();
-    await _expenseService.deleteExpense(expenseId);
-    await refresh();
+    final previous = state;
+    state = const AsyncValue.loading();
+    try {
+      await _expenseService.deleteExpense(expenseId);
+      await refresh();
+    } catch (e, st) {
+      state = previous;
+      Error.throwWithStackTrace(e, st);
+    }
   }
 }

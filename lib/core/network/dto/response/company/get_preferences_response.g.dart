@@ -35,6 +35,7 @@ _GetPreferencesResponse _$GetPreferencesResponseFromJson(
       (json['industrialFixedCharge'] as num?)?.toDouble() ?? 0,
   industrialTVA: (json['industrialTVA'] as num?)?.toDouble() ?? 11,
   language: json['language'] as String? ?? 'en',
+  dueDate: (json['dueDate'] as num?)?.toInt() ?? 1,
   triggerDate: (json['triggerDate'] as num?)?.toInt() ?? 1,
   triggerMessage: json['triggerMessage'] as String?,
 );
@@ -59,6 +60,7 @@ Map<String, dynamic> _$GetPreferencesResponseToJson(
   'industrialFixedCharge': instance.industrialFixedCharge,
   'industrialTVA': instance.industrialTVA,
   'language': instance.language,
+  'dueDate': instance.dueDate,
   'triggerDate': instance.triggerDate,
   'triggerMessage': instance.triggerMessage,
 };

@@ -23,6 +23,7 @@ sealed class CompanyPreferences with _$CompanyPreferences {
     @Default(0) double industrialFixedCharge,
     @Default(11) double industrialTVA,
     @Default('en') String language,
+    @Default(1) int dueDate,
     @Default(1) int triggerDate,
     String? triggerMessage,
   }) = _CompanyPreferences;

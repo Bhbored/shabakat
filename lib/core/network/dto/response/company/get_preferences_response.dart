@@ -23,6 +23,7 @@ sealed class GetPreferencesResponse with _$GetPreferencesResponse {
     @Default(0) double industrialFixedCharge,
     @Default(11) double industrialTVA,
     @Default('en') String language,
+    @Default(1) int dueDate,
     @Default(1) int triggerDate,
     String? triggerMessage,
   }) = _GetPreferencesResponse;

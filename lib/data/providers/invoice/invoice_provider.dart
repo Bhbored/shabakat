@@ -42,36 +42,66 @@ class InvoiceNotifier extends _$InvoiceNotifier {
   }
 
   Future<void> createInvoice(CreateInvoiceRequest request) async {
-    state = AsyncValue.loading();
-    await _invoiceService.createInvoice(request);
-    await refresh();
+    final previous = state;
+    state = const AsyncValue.loading();
+    try {
+      await _invoiceService.createInvoice(request);
+      await refresh();
+    } catch (e, st) {
+      state = previous;
+      Error.throwWithStackTrace(e, st);
+    }
   }
 
   Future<BulkCreateInvoiceResponse> bulkCreate() async {
-    state = AsyncValue.loading();
-    final response = await _invoiceService.bulkCreate();
-    await refresh();
-    return response;
+    final previous = state;
+    state = const AsyncValue.loading();
+    try {
+      final response = await _invoiceService.bulkCreate();
+      await refresh();
+      return response;
+    } catch (e, st) {
+      state = previous;
+      Error.throwWithStackTrace(e, st);
+    }
   }
 
   Future<void> updateInvoice(
     UpdateInvoiceRequest request,
     String invoiceId,
   ) async {
-    state = AsyncValue.loading();
-    await _invoiceService.updateInvoice(invoiceId, request);
-    await refresh();
+    final previous = state;
+    state = const AsyncValue.loading();
+    try {
+      await _invoiceService.updateInvoice(invoiceId, request);
+      await refresh();
+    } catch (e, st) {
+      state = previous;
+      Error.throwWithStackTrace(e, st);
+    }
   }
 
   Future<void> deleteInvoice(String invoiceId) async {
-    state = AsyncValue.loading();
-    await _invoiceService.deleteInvoice(invoiceId);
-    await refresh();
+    final previous = state;
+    state = const AsyncValue.loading();
+    try {
+      await _invoiceService.deleteInvoice(invoiceId);
+      await refresh();
+    } catch (e, st) {
+      state = previous;
+      Error.throwWithStackTrace(e, st);
+    }
   }
 
   Future<void> payInvoice(String invoiceId, AddPaymentRequest request) async {
-    state = AsyncValue.loading();
-    await _invoiceService.payInvoice(invoiceId, request);
-    await refresh();
+    final previous = state;
+    state = const AsyncValue.loading();
+    try {
+      await _invoiceService.payInvoice(invoiceId, request);
+      await refresh();
+    } catch (e, st) {
+      state = previous;
+      Error.throwWithStackTrace(e, st);
+    }
   }
 }

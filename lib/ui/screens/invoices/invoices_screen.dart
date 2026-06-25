@@ -10,11 +10,27 @@ import 'widgets/invoice_filter_chips/invoice_filter_chips_row.dart';
 import 'widgets/invoice_list/invoice_list.dart';
 import 'widgets/invoice_list/invoices_toolbar.dart';
 
-class InvoicesScreen extends ConsumerWidget {
+class InvoicesScreen extends ConsumerStatefulWidget {
   const InvoicesScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<InvoicesScreen> createState() => _InvoicesScreenState();
+}
+
+class _InvoicesScreenState extends ConsumerState<InvoicesScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(milliseconds: 100));
+      if (mounted) {
+        ref.read(invoiceFilterProvider.notifier).clearFilter();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final invoicesAsync = ref.watch(invoiceProvider);
     final pagination = ref.watch(invoicePaginationProvider);
 

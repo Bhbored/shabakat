@@ -21,6 +21,7 @@ extension GetPreferencesResponseMapper on GetPreferencesResponse {
     industrialFixedCharge: industrialFixedCharge,
     industrialTVA: industrialTVA,
     language: language,
+    dueDate: dueDate,
     triggerDate: triggerDate,
     triggerMessage: triggerMessage,
   );
@@ -45,6 +46,7 @@ extension CompanyPreferencesMapper on CompanyPreferences {
     industrialFixedCharge: industrialFixedCharge,
     industrialTVA: industrialTVA,
     language: language,
+    dueDate: dueDate,
     triggerDate: triggerDate,
     triggerMessage: triggerMessage,
   );
