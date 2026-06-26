@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shabakat/core/enums/enums.dart';
 
 part 'customer_filter_request.freezed.dart';
 part 'customer_filter_request.g.dart';
@@ -9,8 +10,9 @@ sealed class CustomerFilterRequest with _$CustomerFilterRequest {
     String? name,
     String? phone,
     String? areaId,
-    String? planType,
-    String? customerRelation,
+    PlanType? planType,
+    CustomerRelation? customerRelation,
+    CustomerStatus? customerStatus,
     String? paymentFilter,
     @Default(1) int pageNumber,
     @Default(10) int pageSize,

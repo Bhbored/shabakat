@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CustomerFilterRequest {
 
- String? get name; String? get phone; String? get areaId; String? get planType; String? get customerRelation; String? get paymentFilter; int get pageNumber; int get pageSize;
+ String? get name; String? get phone; String? get areaId; PlanType? get planType; CustomerRelation? get customerRelation; CustomerStatus? get customerStatus; String? get paymentFilter; int get pageNumber; int get pageSize;
 /// Create a copy of CustomerFilterRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CustomerFilterRequestCopyWith<CustomerFilterRequest> get copyWith => _$Customer
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CustomerFilterRequest&&(identical(other.name, name) || other.name == name)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.planType, planType) || other.planType == planType)&&(identical(other.customerRelation, customerRelation) || other.customerRelation == customerRelation)&&(identical(other.paymentFilter, paymentFilter) || other.paymentFilter == paymentFilter)&&(identical(other.pageNumber, pageNumber) || other.pageNumber == pageNumber)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CustomerFilterRequest&&(identical(other.name, name) || other.name == name)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.planType, planType) || other.planType == planType)&&(identical(other.customerRelation, customerRelation) || other.customerRelation == customerRelation)&&(identical(other.customerStatus, customerStatus) || other.customerStatus == customerStatus)&&(identical(other.paymentFilter, paymentFilter) || other.paymentFilter == paymentFilter)&&(identical(other.pageNumber, pageNumber) || other.pageNumber == pageNumber)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,phone,areaId,planType,customerRelation,paymentFilter,pageNumber,pageSize);
+int get hashCode => Object.hash(runtimeType,name,phone,areaId,planType,customerRelation,customerStatus,paymentFilter,pageNumber,pageSize);
 
 @override
 String toString() {
-  return 'CustomerFilterRequest(name: $name, phone: $phone, areaId: $areaId, planType: $planType, customerRelation: $customerRelation, paymentFilter: $paymentFilter, pageNumber: $pageNumber, pageSize: $pageSize)';
+  return 'CustomerFilterRequest(name: $name, phone: $phone, areaId: $areaId, planType: $planType, customerRelation: $customerRelation, customerStatus: $customerStatus, paymentFilter: $paymentFilter, pageNumber: $pageNumber, pageSize: $pageSize)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CustomerFilterRequestCopyWith<$Res>  {
   factory $CustomerFilterRequestCopyWith(CustomerFilterRequest value, $Res Function(CustomerFilterRequest) _then) = _$CustomerFilterRequestCopyWithImpl;
 @useResult
 $Res call({
- String? name, String? phone, String? areaId, String? planType, String? customerRelation, String? paymentFilter, int pageNumber, int pageSize
+ String? name, String? phone, String? areaId, PlanType? planType, CustomerRelation? customerRelation, CustomerStatus? customerStatus, String? paymentFilter, int pageNumber, int pageSize
 });
 
 
@@ -65,14 +65,15 @@ class _$CustomerFilterRequestCopyWithImpl<$Res>
 
 /// Create a copy of CustomerFilterRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? phone = freezed,Object? areaId = freezed,Object? planType = freezed,Object? customerRelation = freezed,Object? paymentFilter = freezed,Object? pageNumber = null,Object? pageSize = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? phone = freezed,Object? areaId = freezed,Object? planType = freezed,Object? customerRelation = freezed,Object? customerStatus = freezed,Object? paymentFilter = freezed,Object? pageNumber = null,Object? pageSize = null,}) {
   return _then(_self.copyWith(
 name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,areaId: freezed == areaId ? _self.areaId : areaId // ignore: cast_nullable_to_non_nullable
 as String?,planType: freezed == planType ? _self.planType : planType // ignore: cast_nullable_to_non_nullable
-as String?,customerRelation: freezed == customerRelation ? _self.customerRelation : customerRelation // ignore: cast_nullable_to_non_nullable
-as String?,paymentFilter: freezed == paymentFilter ? _self.paymentFilter : paymentFilter // ignore: cast_nullable_to_non_nullable
+as PlanType?,customerRelation: freezed == customerRelation ? _self.customerRelation : customerRelation // ignore: cast_nullable_to_non_nullable
+as CustomerRelation?,customerStatus: freezed == customerStatus ? _self.customerStatus : customerStatus // ignore: cast_nullable_to_non_nullable
+as CustomerStatus?,paymentFilter: freezed == paymentFilter ? _self.paymentFilter : paymentFilter // ignore: cast_nullable_to_non_nullable
 as String?,pageNumber: null == pageNumber ? _self.pageNumber : pageNumber // ignore: cast_nullable_to_non_nullable
 as int,pageSize: null == pageSize ? _self.pageSize : pageSize // ignore: cast_nullable_to_non_nullable
 as int,
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? name,  String? phone,  String? areaId,  String? planType,  String? customerRelation,  String? paymentFilter,  int pageNumber,  int pageSize)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? name,  String? phone,  String? areaId,  PlanType? planType,  CustomerRelation? customerRelation,  CustomerStatus? customerStatus,  String? paymentFilter,  int pageNumber,  int pageSize)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CustomerFilterRequest() when $default != null:
-return $default(_that.name,_that.phone,_that.areaId,_that.planType,_that.customerRelation,_that.paymentFilter,_that.pageNumber,_that.pageSize);case _:
+return $default(_that.name,_that.phone,_that.areaId,_that.planType,_that.customerRelation,_that.customerStatus,_that.paymentFilter,_that.pageNumber,_that.pageSize);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.name,_that.phone,_that.areaId,_that.planType,_that.custome
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? name,  String? phone,  String? areaId,  String? planType,  String? customerRelation,  String? paymentFilter,  int pageNumber,  int pageSize)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? name,  String? phone,  String? areaId,  PlanType? planType,  CustomerRelation? customerRelation,  CustomerStatus? customerStatus,  String? paymentFilter,  int pageNumber,  int pageSize)  $default,) {final _that = this;
 switch (_that) {
 case _CustomerFilterRequest():
-return $default(_that.name,_that.phone,_that.areaId,_that.planType,_that.customerRelation,_that.paymentFilter,_that.pageNumber,_that.pageSize);}
+return $default(_that.name,_that.phone,_that.areaId,_that.planType,_that.customerRelation,_that.customerStatus,_that.paymentFilter,_that.pageNumber,_that.pageSize);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -195,10 +196,10 @@ return $default(_that.name,_that.phone,_that.areaId,_that.planType,_that.custome
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? name,  String? phone,  String? areaId,  String? planType,  String? customerRelation,  String? paymentFilter,  int pageNumber,  int pageSize)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? name,  String? phone,  String? areaId,  PlanType? planType,  CustomerRelation? customerRelation,  CustomerStatus? customerStatus,  String? paymentFilter,  int pageNumber,  int pageSize)?  $default,) {final _that = this;
 switch (_that) {
 case _CustomerFilterRequest() when $default != null:
-return $default(_that.name,_that.phone,_that.areaId,_that.planType,_that.customerRelation,_that.paymentFilter,_that.pageNumber,_that.pageSize);case _:
+return $default(_that.name,_that.phone,_that.areaId,_that.planType,_that.customerRelation,_that.customerStatus,_that.paymentFilter,_that.pageNumber,_that.pageSize);case _:
   return null;
 
 }
@@ -210,14 +211,15 @@ return $default(_that.name,_that.phone,_that.areaId,_that.planType,_that.custome
 @JsonSerializable()
 
 class _CustomerFilterRequest implements CustomerFilterRequest {
-  const _CustomerFilterRequest({this.name, this.phone, this.areaId, this.planType, this.customerRelation, this.paymentFilter, this.pageNumber = 1, this.pageSize = 10});
+  const _CustomerFilterRequest({this.name, this.phone, this.areaId, this.planType, this.customerRelation, this.customerStatus, this.paymentFilter, this.pageNumber = 1, this.pageSize = 10});
   factory _CustomerFilterRequest.fromJson(Map<String, dynamic> json) => _$CustomerFilterRequestFromJson(json);
 
 @override final  String? name;
 @override final  String? phone;
 @override final  String? areaId;
-@override final  String? planType;
-@override final  String? customerRelation;
+@override final  PlanType? planType;
+@override final  CustomerRelation? customerRelation;
+@override final  CustomerStatus? customerStatus;
 @override final  String? paymentFilter;
 @override@JsonKey() final  int pageNumber;
 @override@JsonKey() final  int pageSize;
@@ -235,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CustomerFilterRequest&&(identical(other.name, name) || other.name == name)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.planType, planType) || other.planType == planType)&&(identical(other.customerRelation, customerRelation) || other.customerRelation == customerRelation)&&(identical(other.paymentFilter, paymentFilter) || other.paymentFilter == paymentFilter)&&(identical(other.pageNumber, pageNumber) || other.pageNumber == pageNumber)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CustomerFilterRequest&&(identical(other.name, name) || other.name == name)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.planType, planType) || other.planType == planType)&&(identical(other.customerRelation, customerRelation) || other.customerRelation == customerRelation)&&(identical(other.customerStatus, customerStatus) || other.customerStatus == customerStatus)&&(identical(other.paymentFilter, paymentFilter) || other.paymentFilter == paymentFilter)&&(identical(other.pageNumber, pageNumber) || other.pageNumber == pageNumber)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,phone,areaId,planType,customerRelation,paymentFilter,pageNumber,pageSize);
+int get hashCode => Object.hash(runtimeType,name,phone,areaId,planType,customerRelation,customerStatus,paymentFilter,pageNumber,pageSize);
 
 @override
 String toString() {
-  return 'CustomerFilterRequest(name: $name, phone: $phone, areaId: $areaId, planType: $planType, customerRelation: $customerRelation, paymentFilter: $paymentFilter, pageNumber: $pageNumber, pageSize: $pageSize)';
+  return 'CustomerFilterRequest(name: $name, phone: $phone, areaId: $areaId, planType: $planType, customerRelation: $customerRelation, customerStatus: $customerStatus, paymentFilter: $paymentFilter, pageNumber: $pageNumber, pageSize: $pageSize)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$CustomerFilterRequestCopyWith<$Res> implements $CustomerF
   factory _$CustomerFilterRequestCopyWith(_CustomerFilterRequest value, $Res Function(_CustomerFilterRequest) _then) = __$CustomerFilterRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String? name, String? phone, String? areaId, String? planType, String? customerRelation, String? paymentFilter, int pageNumber, int pageSize
+ String? name, String? phone, String? areaId, PlanType? planType, CustomerRelation? customerRelation, CustomerStatus? customerStatus, String? paymentFilter, int pageNumber, int pageSize
 });
 
 
@@ -272,14 +274,15 @@ class __$CustomerFilterRequestCopyWithImpl<$Res>
 
 /// Create a copy of CustomerFilterRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? phone = freezed,Object? areaId = freezed,Object? planType = freezed,Object? customerRelation = freezed,Object? paymentFilter = freezed,Object? pageNumber = null,Object? pageSize = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? phone = freezed,Object? areaId = freezed,Object? planType = freezed,Object? customerRelation = freezed,Object? customerStatus = freezed,Object? paymentFilter = freezed,Object? pageNumber = null,Object? pageSize = null,}) {
   return _then(_CustomerFilterRequest(
 name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,areaId: freezed == areaId ? _self.areaId : areaId // ignore: cast_nullable_to_non_nullable
 as String?,planType: freezed == planType ? _self.planType : planType // ignore: cast_nullable_to_non_nullable
-as String?,customerRelation: freezed == customerRelation ? _self.customerRelation : customerRelation // ignore: cast_nullable_to_non_nullable
-as String?,paymentFilter: freezed == paymentFilter ? _self.paymentFilter : paymentFilter // ignore: cast_nullable_to_non_nullable
+as PlanType?,customerRelation: freezed == customerRelation ? _self.customerRelation : customerRelation // ignore: cast_nullable_to_non_nullable
+as CustomerRelation?,customerStatus: freezed == customerStatus ? _self.customerStatus : customerStatus // ignore: cast_nullable_to_non_nullable
+as CustomerStatus?,paymentFilter: freezed == paymentFilter ? _self.paymentFilter : paymentFilter // ignore: cast_nullable_to_non_nullable
 as String?,pageNumber: null == pageNumber ? _self.pageNumber : pageNumber // ignore: cast_nullable_to_non_nullable
 as int,pageSize: null == pageSize ? _self.pageSize : pageSize // ignore: cast_nullable_to_non_nullable
 as int,

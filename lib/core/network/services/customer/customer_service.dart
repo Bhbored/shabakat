@@ -34,18 +34,8 @@ class CustomerService {
       ApiRequest(
         path: 'customers',
         method: HttpMethod.get,
-        queryParams: {
-          if (filter.name != null) 'name': filter.name,
-          if (filter.phone != null) 'phone': filter.phone,
-          if (filter.areaId != null) 'areaId': filter.areaId,
-          if (filter.planType != null) 'planType': filter.planType,
-          if (filter.customerRelation != null)
-            'customerRelation': filter.customerRelation,
-          if (filter.paymentFilter != null)
-            'paymentFilter': filter.paymentFilter,
-          'pageNumber': filter.pageNumber,
-          'pageSize': filter.pageSize,
-        },
+        queryParams: Map<String, dynamic>.from(filter.toJson())
+          ..removeWhere((_, value) => value == null),
       ),
     );
     return response.when(

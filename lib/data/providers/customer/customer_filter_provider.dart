@@ -18,6 +18,7 @@ class CustomerFilterNotifier extends _$CustomerFilterNotifier {
       areaId: filter.areaId,
       planType: filter.planType,
       customerRelation: filter.customerRelation,
+      customerStatus: filter.customerStatus,
       paymentFilter: filter.paymentFilter,
       pageNumber: filter.pageNumber,
       pageSize: filter.pageSize,

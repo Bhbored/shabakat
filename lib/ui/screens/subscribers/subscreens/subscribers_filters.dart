@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/customer_relation.dart';
+import 'package:shabakat/core/enums/customer_status.dart';
 import 'package:shabakat/core/enums/plan_type.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
@@ -18,6 +19,7 @@ class SubscribersFilters extends ConsumerStatefulWidget {
 class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
   CustomerRelation? _relation;
   PlanType? _planType;
+  CustomerStatus? _customerStatus;
   bool _initialized = false;
 
   @override
@@ -26,27 +28,10 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
     if (_initialized) return;
 
     final filter = ref.read(customerFilterProvider);
-    _relation = _relationFromFilter(filter.customerRelation);
-    _planType = _planTypeFromFilter(filter.planType);
+    _relation = filter.customerRelation;
+    _planType = filter.planType;
+    _customerStatus = filter.customerStatus;
     _initialized = true;
-  }
-
-  CustomerRelation? _relationFromFilter(String? value) {
-    if (value == null) return null;
-    for (final relation in CustomerRelation.values) {
-      if (relation.name == value) return relation;
-    }
-    return null;
-  }
-
-  PlanType? _planTypeFromFilter(String? value) {
-    if (value == null) return null;
-    for (final plan in PlanType.values) {
-      if (plan.name == value.toLowerCase() || plan.label == value) {
-        return plan;
-      }
-    }
-    return null;
   }
 
   void _applyFilters() {
@@ -56,8 +41,9 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
           ref
               .read(customerFilterProvider)
               .copyWith(
-                customerRelation: _relation?.name,
-                planType: _planType?.label,
+                customerRelation: _relation,
+                planType: _planType,
+                customerStatus: _customerStatus,
                 pageNumber: 1,
               ),
         );
@@ -97,6 +83,14 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
               items: PlanType.values,
               labelBuilder: (e) => e.label,
               onChanged: (value) => setState(() => _planType = value),
+            ),
+            SizedBox(height: context.spaceMedium),
+            FilterSection<CustomerStatus>(
+              title: 'Status',
+              value: _customerStatus,
+              items: CustomerStatus.values,
+              labelBuilder: (e) => e.label,
+              onChanged: (value) => setState(() => _customerStatus = value),
             ),
             SizedBox(height: context.spaceMedium),
             SizedBox(
