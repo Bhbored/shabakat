@@ -18,6 +18,7 @@ class ExpensesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final expensesAsync = ref.watch(expenseProvider);
     final pagination = ref.watch(expensePaginationProvider);
+    final filterNotifier = ref.read(expenseFilterProvider.notifier);
 
     void goToPage(int page) {
       ref
@@ -27,41 +28,33 @@ class ExpensesScreen extends ConsumerWidget {
           );
     }
 
-    return expensesAsync.when(
-      skipLoadingOnRefresh: true,
-      loading: () => _ExpensesLayout(
-        body: const Center(child: CircularProgressIndicator()),
+    return _ExpensesLayout(
+      body: expensesAsync.when(
+        skipLoadingOnRefresh: true,
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, _) {
+          final message = err is ApiException
+              ? err.userMessage
+              : 'Failed to load expenses.';
+          return Center(child: Text(message, textAlign: TextAlign.center));
+        },
+        data: (expenses) => RefreshIndicator(
+          onRefresh: () async {
+            ref.read(expenseFilterProvider.notifier).clearFilter();
+            await ref.read(expenseProvider.notifier).refresh();
+          },
+          child: ExpenseList(expenses: expenses),
+        ),
       ),
-      error: (err, _) {
-        final message = err is ApiException
-            ? err.userMessage
-            : 'Failed to load expenses.';
-        return _ExpensesLayout(
-          body: Center(child: Text(message, textAlign: TextAlign.center)),
-        );
-      },
-      data: (expenses) {
-        final filterNotifier = ref.read(expenseFilterProvider.notifier);
-
-        return _ExpensesLayout(
-          body: RefreshIndicator(
-            onRefresh: () async {
-              ref.read(expenseFilterProvider.notifier).clearFilter();
-              await ref.read(expenseProvider.notifier).refresh();
-            },
-            child: ExpenseList(expenses: expenses),
-          ),
-          pagination: pagination.totalPages > 1
-              ? SubscribersPagination(
-                  currentPage: pagination.pageNumber,
-                  totalPages: pagination.totalPages,
-                  onPageChanged: goToPage,
-                  onFirstPage: filterNotifier.firstPage,
-                  onLastPage: filterNotifier.lastPage,
-                )
-              : null,
-        );
-      },
+      pagination: pagination.totalPages > 1
+          ? SubscribersPagination(
+              currentPage: pagination.pageNumber,
+              totalPages: pagination.totalPages,
+              onPageChanged: goToPage,
+              onFirstPage: filterNotifier.firstPage,
+              onLastPage: filterNotifier.lastPage,
+            )
+          : null,
     );
   }
 }

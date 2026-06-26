@@ -9,6 +9,7 @@ import 'subscriber_detail_row.dart';
 import 'subscriber_detail_section.dart';
 import 'subscriber_details_header.dart';
 import 'subscriber_invoices_section.dart';
+import 'subscriber_meter_readings_section.dart';
 
 class SubscriberDetailsBody extends StatelessWidget {
   final Customer customer;
@@ -21,8 +22,7 @@ class SubscriberDetailsBody extends StatelessWidget {
     return '$day/$month/${date.year}';
   }
 
-  String _formatAmount(double? amount) =>
-      (amount ?? 0).toStringAsFixed(2);
+  String _formatAmount(double? amount) => (amount ?? 0).toStringAsFixed(2);
 
   bool get _hasPricingOverrides =>
       customer.priceOverride != null ||
@@ -134,8 +134,9 @@ class SubscriberDetailsBody extends StatelessWidget {
                         SubscriberDetailRow(
                           icon: LucideIcons.receipt,
                           label: 'Fixed Charge',
-                          value:
-                              customer.fixedChargeOverride!.toStringAsFixed(2),
+                          value: customer.fixedChargeOverride!.toStringAsFixed(
+                            2,
+                          ),
                         ),
                       if (customer.tvaOverride != null)
                         SubscriberDetailRow(
@@ -144,6 +145,14 @@ class SubscriberDetailsBody extends StatelessWidget {
                           value: customer.tvaOverride!.toStringAsFixed(2),
                         ),
                     ],
+                  ),
+                ],
+                if (customer.plan == PlanType.kilowatt) ...[
+                  SizedBox(height: context.spaceMedium),
+                  SubscriberMeterReadingsSection(
+                    customerId: customer.id,
+                    customerName: customer.name,
+                    customerStatus: customer.customerStatus,
                   ),
                 ],
                 SizedBox(height: context.spaceMedium),

@@ -17,6 +17,7 @@ class SubscribersScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final customersAsync = ref.watch(customerProvider);
     final pagination = ref.watch(customerPaginationProvider);
+    final filterNotifier = ref.read(customerFilterProvider.notifier);
 
     void goToPage(int page) {
       ref
@@ -26,41 +27,33 @@ class SubscribersScreen extends ConsumerWidget {
           );
     }
 
-    return customersAsync.when(
-      skipLoadingOnRefresh: true,
-      loading: () => const _SubscribersLayout(
-        body: Center(child: CircularProgressIndicator()),
+    return _SubscribersLayout(
+      body: customersAsync.when(
+        skipLoadingOnRefresh: true,
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, _) {
+          final message = err is ApiException
+              ? err.userMessage
+              : 'Error loading customers: $err';
+          return Center(child: Text(message, textAlign: TextAlign.center));
+        },
+        data: (customers) => RefreshIndicator(
+          onRefresh: () async {
+            ref.read(customerFilterProvider.notifier).clearFilter();
+            await ref.read(customerProvider.notifier).refresh();
+          },
+          child: SubscriberList(customers: customers),
+        ),
       ),
-      error: (err, _) {
-        final message = err is ApiException
-            ? err.userMessage
-            : 'Error loading customers: $err';
-        return _SubscribersLayout(
-          body: Center(child: Text(message, textAlign: TextAlign.center)),
-        );
-      },
-      data: (customers) {
-        final filterNotifier = ref.read(customerFilterProvider.notifier);
-
-        return _SubscribersLayout(
-          body: RefreshIndicator(
-            onRefresh: () async {
-              ref.read(customerFilterProvider.notifier).clearFilter();
-              await ref.read(customerProvider.notifier).refresh();
-            },
-            child: SubscriberList(customers: customers),
-          ),
-          pagination: pagination.totalPages > 1
-              ? SubscribersPagination(
-                  currentPage: pagination.pageNumber,
-                  totalPages: pagination.totalPages,
-                  onPageChanged: goToPage,
-                  onFirstPage: filterNotifier.firstPage,
-                  onLastPage: filterNotifier.lastPage,
-                )
-              : null,
-        );
-      },
+      pagination: pagination.totalPages > 1
+          ? SubscribersPagination(
+              currentPage: pagination.pageNumber,
+              totalPages: pagination.totalPages,
+              onPageChanged: goToPage,
+              onFirstPage: filterNotifier.firstPage,
+              onLastPage: filterNotifier.lastPage,
+            )
+          : null,
     );
   }
 }

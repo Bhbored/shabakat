@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:shabakat/core/enums/plan_type.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
-
 import 'package:shabakat/core/network/dto/request/invoice/invoice_filter_request.dart';
-
 import 'package:shabakat/data/providers/customer/single_customer_provider.dart';
-
 import 'package:shabakat/data/providers/invoice/invoice_filter_provider.dart';
+import 'package:shabakat/data/providers/meter/meter_reading_provider.dart';
 
 import '../widgets/subscriber_delete_dialog/subscriber_delete_dialog.dart';
 
@@ -157,9 +156,18 @@ class _SubscriberDetailsScreenState
           ),
 
           body: RefreshIndicator(
-            onRefresh: () => ref
-                .read(singleCustomerProvider(widget.customerId).notifier)
-                .refresh(),
+            onRefresh: () async {
+              await ref
+                  .read(singleCustomerProvider(widget.customerId).notifier)
+                  .refresh();
+              final customer =
+                  ref.read(singleCustomerProvider(widget.customerId)).value;
+              if (customer?.plan == PlanType.kilowatt) {
+                await ref
+                    .read(meterReadingProvider(widget.customerId).notifier)
+                    .refresh();
+              }
+            },
 
             child: SubscriberDetailsBody(customer: customer),
           ),

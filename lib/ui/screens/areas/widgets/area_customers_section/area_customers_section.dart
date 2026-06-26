@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
+import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
+import 'package:shabakat/data/providers/customer/customer_pagination_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
 import 'package:shabakat/ui/screens/subscribers/widgets/subscriber_list/subscriber_list.dart';
+import 'package:shabakat/ui/screens/subscribers/widgets/subscribers_pagination/subscribers_pagination.dart';
 
 class AreaCustomersSection extends ConsumerWidget {
   const AreaCustomersSection({super.key});
@@ -13,6 +16,14 @@ class AreaCustomersSection extends ConsumerWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final customersAsync = ref.watch(customerProvider);
+    final pagination = ref.watch(customerPaginationProvider);
+    final filterNotifier = ref.read(customerFilterProvider.notifier);
+
+    void goToPage(int page) {
+      ref.read(customerFilterProvider.notifier).updateFilter(
+            ref.read(customerFilterProvider).copyWith(pageNumber: page),
+          );
+    }
 
     return Expanded(
       child: Column(
@@ -34,6 +45,7 @@ class AreaCustomersSection extends ConsumerWidget {
           ),
           Expanded(
             child: customersAsync.when(
+              skipLoadingOnRefresh: true,
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (err, stack) {
                 if (err is ApiException) {
@@ -60,6 +72,14 @@ class AreaCustomersSection extends ConsumerWidget {
               },
             ),
           ),
+          if (pagination.totalPages > 1)
+            SubscribersPagination(
+              currentPage: pagination.pageNumber,
+              totalPages: pagination.totalPages,
+              onPageChanged: goToPage,
+              onFirstPage: filterNotifier.firstPage,
+              onLastPage: filterNotifier.lastPage,
+            ),
         ],
       ),
     );
