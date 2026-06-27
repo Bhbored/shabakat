@@ -91,7 +91,7 @@ class SubscriberDetailsBody extends StatelessWidget {
                     ),
                     SubscriberDetailRow(
                       icon: LucideIcons.gauge,
-                      label: customer.plan.label,
+                      label: PlanType.ampere.label,
                       value: customer.planValue.toStringAsFixed(2),
                       isHighlighted: true,
                     ),
