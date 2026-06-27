@@ -30,7 +30,6 @@ sealed class Customer with _$Customer {
     required PlanType plan,
     required double planValue,
     List<Invoice>? invoices,
-    @Default(false) bool paidThisMonth,
   }) = _Customer;
 
   factory Customer.fromJson(Map<String, dynamic> json) =>

@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/network/dto/response/dashboard/dashboard_summary_response.dart';
 import 'package:shabakat/core/themes/app_colors.dart';
-import 'package:shabakat/ui/data/app_data.dart';
 import 'package:shabakat/ui/screens/dashboard/widgets/stat_card.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+String _formatMoney(double value) => '\$${value.toStringAsFixed(2)}';
+
 class StatGrid extends StatelessWidget {
-  const StatGrid({super.key});
+  final DashboardSummaryResponse summary;
+
+  const StatGrid({super.key, required this.summary});
 
   @override
   Widget build(BuildContext context) {
-    final paid = allSubscribers.where((s) => s.status == SubscriberStatus.paid).length;
-    final unpaid = allSubscribers.where((s) => s.status != SubscriberStatus.paid).length;
-    final overdue = allSubscribers.where((s) => s.status == SubscriberStatus.overdue).length;
-    final totalRev = allSubscribers.fold(0, (sum, s) => sum + s.amount);
-    final outstanding = allSubscribers.where((s) => s.status != SubscriberStatus.paid).fold(0, (sum, s) => sum + s.amount);
-    final rate = allSubscribers.isEmpty ? 0 : ((paid / allSubscribers.length) * 100).round();
+    final customers = summary.customers;
+    final invoices = summary.invoices;
+    final unpaidCount = invoices.unpaidCount + invoices.partiallyPaidCount;
+    final unpaidTotal = invoices.unpaidTotal + invoices.partiallyPaidTotal;
 
     return Column(
       children: [
@@ -24,8 +26,8 @@ class StatGrid extends StatelessWidget {
             Expanded(
               child: StatCard(
                 label: 'TOTAL SUBSCRIBERS',
-                value: allSubscribers.length.toString(),
-                trend: '+12 this month',
+                value: customers.total.toString(),
+                trend: '${customers.active} active',
                 icon: LucideIcons.users,
                 iconColor: AppColors.primary,
               ),
@@ -33,23 +35,23 @@ class StatGrid extends StatelessWidget {
             SizedBox(width: context.paddingSmall),
             Expanded(
               child: StatCard(
-                label: 'PAID THIS MONTH',
-                value: paid.toString(),
-                trend: '$rate% collection rate',
+                label: 'COLLECTED THIS MONTH',
+                value: _formatMoney(summary.totalCollectedThisMonth),
+                trend: '${summary.collectionRate.toStringAsFixed(1)}% collection rate',
                 icon: LucideIcons.userCheck,
-                iconColor: const Color(0xFF10B981),
+                iconColor: AppColors.success,
               ),
             ),
           ],
         ),
-        SizedBox(height: context.spaceSmall),
+        SizedBox(height: context.paddingSmall),
         Row(
           children: [
             Expanded(
               child: StatCard(
                 label: 'UNPAID INVOICES',
-                value: unpaid.toString(),
-                trend: '$overdue overdue',
+                value: unpaidCount.toString(),
+                trend: '${_formatMoney(unpaidTotal)} outstanding',
                 trendColor: AppColors.error,
                 icon: LucideIcons.alertCircle,
                 iconColor: AppColors.error,
@@ -58,9 +60,10 @@ class StatGrid extends StatelessWidget {
             SizedBox(width: context.paddingSmall),
             Expanded(
               child: StatCard(
-                label: 'MONTHLY REVENUE',
-                value: '\$$totalRev',
-                trend: '\$$outstanding outstanding',
+                label: 'BILLED THIS MONTH',
+                value: _formatMoney(summary.totalBilledThisMonth),
+                trend:
+                    '${_formatMoney(summary.totalOutstandingAllTime)} all-time due',
                 icon: LucideIcons.dollarSign,
                 isAccent: true,
               ),

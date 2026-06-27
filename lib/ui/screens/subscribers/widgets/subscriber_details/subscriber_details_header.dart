@@ -6,7 +6,6 @@ import 'package:shabakat/ui/screens/dashboard/widgets/common/dashboard_avatar.da
 
 import '../subscriber_card/customer_status_badge.dart';
 import '../subscriber_card/customer_type_icon.dart';
-import 'last_invoice_badge.dart';
 
 class SubscriberDetailsHeader extends StatelessWidget {
   final Customer customer;
@@ -75,7 +74,6 @@ class SubscriberDetailsHeader extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    LastInvoiceBadge(paidThisMonth: customer.paidThisMonth),
                   ],
                 ),
               ],

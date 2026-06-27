@@ -31,7 +31,6 @@ sealed class CustomerResponse with _$CustomerResponse {
     @Default(0.0) double totalBilled,
     @Default(0.0) double totalPaid,
     @Default(0.0) double totalOutstanding,
-    @Default(false) bool paidThisMonth,
   }) = _CustomerResponse;
 
   factory CustomerResponse.fromJson(Map<String, dynamic> json) =>

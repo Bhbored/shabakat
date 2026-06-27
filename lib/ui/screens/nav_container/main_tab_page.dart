@@ -60,7 +60,7 @@ class _MainTabPageState extends State<MainTabPage> {
         onPageChanged: (index) => setState(() => _currentIndex = index),
         children: [
           DashboardScreen(
-            onViewAllPayments: () => _onTabChanged(1),
+            onViewInvoices: () => _onTabChanged(2),
             onSendReminders: () => _onTabChanged(4),
           ),
           const SubscribersScreen(),
