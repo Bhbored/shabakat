@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -56,11 +57,11 @@ class ExpenseDetailsBody extends StatelessWidget {
                 children: [
                   if (hasLabel)
                     ExpenseDetailSection(
-                      title: 'Details',
+                      title: 'expenses.details.details_section'.tr(),
                       children: [
                         ExpenseDetailTile(
                           icon: LucideIcons.tag,
-                          label: 'Label',
+                          label: 'expenses.details.label'.tr(),
                           value: label,
                           accentColor: typeColor,
                         ),
@@ -69,7 +70,7 @@ class ExpenseDetailsBody extends StatelessWidget {
                   if (hasNotes) ...[
                     if (hasLabel) SizedBox(height: context.spaceMedium),
                     ExpenseDetailSection(
-                      title: 'Notes',
+                      title: 'expenses.details.notes_section'.tr(),
                       children: [
                         Container(
                           width: double.infinity,
@@ -96,7 +97,7 @@ class ExpenseDetailsBody extends StatelessWidget {
                   ],
                   SizedBox(height: context.spaceMedium),
                   Text(
-                    'RECORD',
+                    'expenses.details.record'.tr(),
                     style: theme.textTheme.labelSmall?.copyWith(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.0,
@@ -108,7 +109,7 @@ class ExpenseDetailsBody extends StatelessWidget {
                     children: [
                       Expanded(
                         child: ExpenseDetailMetaTile(
-                          label: 'Created',
+                          label: 'expenses.details.created'.tr(),
                           value: _formatDate(expense.createdAt),
                           icon: LucideIcons.clock,
                         ),
@@ -116,7 +117,7 @@ class ExpenseDetailsBody extends StatelessWidget {
                       SizedBox(width: context.paddingSmall),
                       Expanded(
                         child: ExpenseDetailMetaTile(
-                          label: 'Updated',
+                          label: 'expenses.details.updated'.tr(),
                           value: _formatDate(expense.updatedAt),
                           icon: LucideIcons.refreshCw,
                         ),

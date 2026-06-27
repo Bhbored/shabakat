@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 
@@ -43,17 +44,17 @@ class FilterDropdown<T> extends StatelessWidget {
                 color: scheme.onSurfaceVariant,
                 size: 22,
               ),
-              hint: const Align(
+              hint: Align(
                 alignment: AlignmentDirectional.centerStart,
-                child: Text('All'),
+                child: Text('common.all'.tr()),
               ),
               value: value,
               items: [
                 DropdownMenuItem<T?>(
                   value: null,
-                  child: const Align(
+                  child: Align(
                     alignment: AlignmentDirectional.centerStart,
-                    child: Text('All'),
+                    child: Text('common.all'.tr()),
                   ),
                 ),
                 ...items.map((e) {

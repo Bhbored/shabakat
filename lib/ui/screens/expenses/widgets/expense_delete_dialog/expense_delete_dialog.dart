@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseDeleteDialog extends StatelessWidget {
@@ -19,15 +20,15 @@ class ExpenseDeleteDialog extends StatelessWidget {
     final theme = Theme.of(context);
 
     return AlertDialog(
-      title: const Text('Delete Expense'),
+      title: Text('expenses.delete.title'.tr()),
       content: Text(
-        'Are you sure you want to delete "$targetLabel"? This action cannot be undone.',
+        'expenses.delete.message'.tr(args: [targetLabel]),
         style: theme.textTheme.bodyMedium,
       ),
       actions: [
         TextButton(
           onPressed: isDeleting ? null : onCancel,
-          child: const Text('Cancel'),
+          child: Text('settings.cancel'.tr()),
         ),
         ElevatedButton(
           onPressed: isDeleting ? null : onConfirm,
@@ -37,7 +38,7 @@ class ExpenseDeleteDialog extends StatelessWidget {
                   width: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Delete'),
+              : Text('expenses.delete.confirm'.tr()),
         ),
       ],
     );

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -13,6 +14,7 @@ import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 import '../expense_adding/expense_add_date_field.dart';
 import '../expense_adding/expense_add_dropdown.dart';
 import '../expense_adding/expense_add_form_field.dart';
+import '../expense_card/expense_type_badge.dart';
 
 class ExpenseEditSheet extends ConsumerStatefulWidget {
   final String expenseId;
@@ -119,14 +121,14 @@ class _ExpenseEditSheetState extends ConsumerState<ExpenseEditSheet> {
       Navigator.of(context).pop();
       AppSnackBar.show(
         context,
-        message: 'Expense updated',
+        message: 'expenses.edit.success'.tr(),
         variant: AppSnackBarVariant.success,
       );
     } catch (e) {
       if (!mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to update expense. Please try again.';
+          : 'expenses.edit.failed'.tr();
       AppSnackBar.show(
         context,
         message: message,
@@ -161,7 +163,7 @@ class _ExpenseEditSheetState extends ConsumerState<ExpenseEditSheet> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Edit Expense',
+                      'expenses.edit.title'.tr(),
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -185,16 +187,16 @@ class _ExpenseEditSheetState extends ConsumerState<ExpenseEditSheet> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ExpenseAddDropdown<ExpenseType>(
-                        label: 'Expense Type',
+                        label: 'expenses.form.expense_type'.tr(),
                         value: _expenseType,
                         items: ExpenseType.values,
-                        itemLabel: (e) => e.label,
+                        itemLabel: ExpenseTypeBadge.labelFor,
                         enabled: !isSaving,
                         onChanged: (v) => setState(() => _expenseType = v!),
                       ),
                       SizedBox(height: context.spaceMedium),
                       ExpenseAddFormField(
-                        label: 'Amount',
+                        label: 'expenses.form.amount'.tr(),
                         controller: _amountController,
                         hint: '0.00',
                         enabled: !isSaving,
@@ -212,11 +214,11 @@ class _ExpenseEditSheetState extends ConsumerState<ExpenseEditSheet> {
                       ),
                       SizedBox(height: context.spaceMedium),
                       ExpenseAddFormField(
-                        label: 'Label',
+                        label: 'expenses.form.label'.tr(),
                         controller: _labelController,
                         hint: _expenseType == ExpenseType.other
-                            ? 'Required for Other'
-                            : 'Optional label',
+                            ? 'expenses.form.label_required_other'.tr()
+                            : 'expenses.form.label_optional'.tr(),
                         enabled: !isSaving,
                         maxLength: ExpenseFormValidators.labelMaxLength,
                         validator: (value) => ExpenseFormValidators.label(
@@ -226,9 +228,9 @@ class _ExpenseEditSheetState extends ConsumerState<ExpenseEditSheet> {
                       ),
                       SizedBox(height: context.spaceMedium),
                       ExpenseAddFormField(
-                        label: 'Notes',
+                        label: 'expenses.form.notes'.tr(),
                         controller: _notesController,
-                        hint: 'Optional notes',
+                        hint: 'expenses.form.notes_optional'.tr(),
                         enabled: !isSaving,
                         maxLines: 3,
                         maxLength: ExpenseFormValidators.notesMaxLength,
@@ -248,7 +250,7 @@ class _ExpenseEditSheetState extends ConsumerState<ExpenseEditSheet> {
                                   ),
                                 )
                               : Text(
-                                  'Save Changes',
+                                  'expenses.edit.save_changes'.tr(),
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),

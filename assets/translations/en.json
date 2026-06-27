@@ -50,6 +50,9 @@
     "help_support": "Help & Support",
     "logout": "Logout"
   },
+  "common": {
+    "all": "All"
+  },
   "tabs": {
     "dashboard": "Dashboard",
     "subscribers": "Subscribers",
@@ -118,6 +121,78 @@
       "description": "Message sent to unpaid customers via WhatsApp on the trigger date.",
       "label": "Message",
       "hint": "Enter trigger message..."
+    }
+  },
+  "expenses": {
+    "load_failed": "Failed to load expenses.",
+    "load_details_failed": "Failed to load expense details.",
+    "empty_list": "No expenses found",
+    "summary": {
+      "entries": "Entries",
+      "total": "Total"
+    },
+    "filter": {
+      "title": "Filters",
+      "from": "From",
+      "to": "To",
+      "all": "All",
+      "date_from": "Date From",
+      "date_to": "Date To",
+      "expense_type": "Expense Type",
+      "apply": "Apply Filter",
+      "future_date": "Date cannot be in the future"
+    },
+    "types": {
+      "fuel": "Fuel",
+      "maintenance": "Maintenance",
+      "employees": "Employees",
+      "other": "Other"
+    },
+    "add": {
+      "title": "Add Expense",
+      "submit": "Add Expense",
+      "success": "Expense added",
+      "failed": "Failed to add expense. Please try again."
+    },
+    "edit": {
+      "title": "Edit Expense",
+      "save_changes": "Save Changes",
+      "success": "Expense updated",
+      "failed": "Failed to update expense. Please try again."
+    },
+    "details": {
+      "title": "Expense Details",
+      "details_section": "Details",
+      "notes_section": "Notes",
+      "record": "RECORD",
+      "label": "Label",
+      "created": "Created",
+      "updated": "Updated"
+    },
+    "delete": {
+      "title": "Delete Expense",
+      "message": "Are you sure you want to delete \"{}\"? This action cannot be undone.",
+      "confirm": "Delete",
+      "success": "Expense deleted",
+      "failed": "Failed to delete expense. Please try again."
+    },
+    "form": {
+      "expense_type": "Expense Type",
+      "amount": "Amount",
+      "expense_date": "Expense Date",
+      "label": "Label",
+      "notes": "Notes",
+      "label_required_other": "Required for Other",
+      "label_optional": "Optional label",
+      "notes_optional": "Optional notes"
+    },
+    "validation": {
+      "amount_required": "Enter amount",
+      "invalid_number": "Enter a valid number",
+      "amount_positive": "Amount must be greater than 0",
+      "label_required": "Enter a label",
+      "max_characters": "Max {} characters",
+      "future_date": "Expense date cannot be in the future"
     }
   }
 }

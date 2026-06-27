@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/enums/enums.dart';
@@ -7,6 +8,7 @@ import 'package:shabakat/data/providers/expense/single_expense_provider.dart';
 import 'package:shabakat/domain/entities/expenses/expenses.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
+import '../widgets/expense_card/expense_type_badge.dart';
 import '../widgets/expense_delete_dialog/expense_delete_dialog.dart';
 import '../widgets/expense_details/expense_details_body.dart';
 import '../widgets/expense_edit_sheet/expense_edit_sheet.dart';
@@ -32,7 +34,7 @@ class ExpenseDetailsScreen extends ConsumerWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Expense Details',
+          'expenses.details.title'.tr(),
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -62,7 +64,7 @@ class ExpenseDetailsScreen extends ConsumerWidget {
         error: (err, _) {
           final message = err is ApiException
               ? err.userMessage
-              : 'Failed to load expense details.';
+              : 'expenses.load_details_failed'.tr();
           return Center(child: Text(message, textAlign: TextAlign.center));
         },
         data: (fresh) =>
@@ -75,7 +77,7 @@ class ExpenseDetailsScreen extends ConsumerWidget {
 String _expenseDeleteLabel(Expense expense) {
   final label = expense.label?.trim();
   if (label != null && label.isNotEmpty) return label;
-  return '${expense.expenseType.label} · ${expense.amount.toStringAsFixed(2)}';
+  return '${ExpenseTypeBadge.labelFor(expense.expenseType)} · ${expense.amount.toStringAsFixed(2)}';
 }
 
 Future<void> _showExpenseDeleteDialog({
@@ -115,7 +117,7 @@ Future<void> _onDeleteExpense({
     if (!dialogContext.mounted) return;
     AppSnackBar.show(
       scaffoldContext,
-      message: 'Expense deleted',
+      message: 'expenses.delete.success'.tr(),
       variant: AppSnackBarVariant.success,
     );
     Navigator.of(dialogContext).pop();
@@ -126,7 +128,7 @@ Future<void> _onDeleteExpense({
     if (!dialogContext.mounted) return;
     final message = e is ApiException
         ? e.userMessage
-        : 'Failed to delete expense. Please try again.';
+        : 'expenses.delete.failed'.tr();
     AppSnackBar.show(
       dialogContext,
       message: message,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -37,14 +38,14 @@ class ExpenseFilterChipsRow extends ConsumerWidget {
     if (filter.dateFrom != null) {
       chips.add(
         _FilterDateChip(
-          label: 'From',
+          label: 'expenses.filter.from'.tr(),
           date: _formatDate(_toDateOnly(filter.dateFrom!)),
         ),
       );
     }
     if (effectiveTo != null) {
       chips.add(
-        _FilterDateChip(label: 'To', date: _formatDate(effectiveTo)),
+        _FilterDateChip(label: 'expenses.filter.to'.tr(), date: _formatDate(effectiveTo)),
       );
     }
     if (filter.expenseType != null) {

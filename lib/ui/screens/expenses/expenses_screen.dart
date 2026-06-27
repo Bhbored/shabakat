@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -35,7 +36,7 @@ class ExpensesScreen extends ConsumerWidget {
         error: (err, _) {
           final message = err is ApiException
               ? err.userMessage
-              : 'Failed to load expenses.';
+              : 'expenses.load_failed'.tr();
           return Center(child: Text(message, textAlign: TextAlign.center));
         },
         data: (expenses) => RefreshIndicator(

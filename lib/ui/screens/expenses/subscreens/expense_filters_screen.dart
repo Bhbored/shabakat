@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -5,6 +6,8 @@ import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/data/providers/expense/expense_filter_provider.dart';
 import 'package:shabakat/data/providers/expense/expense_provider.dart';
 import 'package:shabakat/ui/screens/subscribers/widgets/filter_section/filter_section.dart';
+
+import '../widgets/expense_card/expense_type_badge.dart';
 
 class ExpenseFiltersScreen extends ConsumerStatefulWidget {
   const ExpenseFiltersScreen({super.key});
@@ -28,7 +31,7 @@ class _ExpenseFiltersScreenState extends ConsumerState<ExpenseFiltersScreen> {
       DateTime(date.year, date.month, date.day);
 
   String _formatDate(DateTime? date) {
-    if (date == null) return 'All';
+    if (date == null) return 'common.all'.tr();
     final month = date.month.toString().padLeft(2, '0');
     final day = date.day.toString().padLeft(2, '0');
     return '$day/$month/${date.year}';
@@ -74,11 +77,11 @@ class _ExpenseFiltersScreenState extends ConsumerState<ExpenseFiltersScreen> {
     String? toError;
 
     if (_dateFrom != null && _dateFrom!.isAfter(_today)) {
-      fromError = 'Date cannot be in the future';
+      fromError = 'expenses.filter.future_date'.tr();
       isValid = false;
     }
     if (_dateTo != null && _dateTo!.isAfter(_today)) {
-      toError = 'Date cannot be in the future';
+      toError = 'expenses.filter.future_date'.tr();
       isValid = false;
     }
 
@@ -117,17 +120,18 @@ class _ExpenseFiltersScreenState extends ConsumerState<ExpenseFiltersScreen> {
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('Filters'),
+        title: Text('expenses.filter.title'.tr()),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(context.paddingMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Date From', style: theme.textTheme.titleMedium),
+            Text('expenses.filter.date_from'.tr(), style: theme.textTheme.titleMedium),
             SizedBox(height: context.spaceSmall),
             _DateFilterField(
               value: _formatDate(_dateFrom),
+              isPlaceholder: _dateFrom == null,
               errorText: _dateFromError,
               onTap: () => _pickDate(isFrom: true),
               onClear: _dateFrom != null
@@ -138,10 +142,11 @@ class _ExpenseFiltersScreenState extends ConsumerState<ExpenseFiltersScreen> {
                   : null,
             ),
             SizedBox(height: context.spaceMedium),
-            Text('Date To', style: theme.textTheme.titleMedium),
+            Text('expenses.filter.date_to'.tr(), style: theme.textTheme.titleMedium),
             SizedBox(height: context.spaceSmall),
             _DateFilterField(
               value: _formatDate(_dateTo),
+              isPlaceholder: _dateTo == null,
               errorText: _dateToError,
               onTap: () => _pickDate(isFrom: false),
               onClear: _dateTo != null
@@ -153,10 +158,10 @@ class _ExpenseFiltersScreenState extends ConsumerState<ExpenseFiltersScreen> {
             ),
             SizedBox(height: context.spaceMedium),
             FilterSection<ExpenseType>(
-              title: 'Expense Type',
+              title: 'expenses.filter.expense_type'.tr(),
               value: _expenseType,
               items: ExpenseType.values,
-              labelBuilder: (e) => e.label,
+              labelBuilder: ExpenseTypeBadge.labelFor,
               onChanged: (value) => setState(() => _expenseType = value),
             ),
             SizedBox(height: context.spaceMedium),
@@ -174,7 +179,7 @@ class _ExpenseFiltersScreenState extends ConsumerState<ExpenseFiltersScreen> {
                         ),
                       )
                     : Text(
-                        'Apply Filter',
+                        'expenses.filter.apply'.tr(),
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -190,12 +195,14 @@ class _ExpenseFiltersScreenState extends ConsumerState<ExpenseFiltersScreen> {
 
 class _DateFilterField extends StatelessWidget {
   final String value;
+  final bool isPlaceholder;
   final String? errorText;
   final VoidCallback onTap;
   final VoidCallback? onClear;
 
   const _DateFilterField({
     required this.value,
+    required this.isPlaceholder,
     this.errorText,
     required this.onTap,
     this.onClear,
@@ -205,7 +212,6 @@ class _DateFilterField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isPlaceholder = value == 'All';
     final hasError = errorText != null && errorText!.isNotEmpty;
 
     return Column(

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 
@@ -30,7 +31,7 @@ class ExpenseAddDateField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Expense Date', style: theme.textTheme.titleMedium),
+        Text('expenses.form.expense_date'.tr(), style: theme.textTheme.titleMedium),
         SizedBox(height: context.spaceSmall),
         InkWell(
           onTap: enabled ? onTap : null,

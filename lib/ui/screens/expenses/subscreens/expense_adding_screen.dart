@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -11,6 +12,7 @@ import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 import '../widgets/expense_adding/expense_add_date_field.dart';
 import '../widgets/expense_adding/expense_add_dropdown.dart';
 import '../widgets/expense_adding/expense_add_form_field.dart';
+import '../widgets/expense_card/expense_type_badge.dart';
 
 class ExpenseAddingScreen extends ConsumerStatefulWidget {
   const ExpenseAddingScreen({super.key});
@@ -81,7 +83,7 @@ class _ExpenseAddingScreenState extends ConsumerState<ExpenseAddingScreen> {
       if (!mounted) return;
       AppSnackBar.show(
         context,
-        message: 'Expense added',
+        message: 'expenses.add.success'.tr(),
         variant: AppSnackBarVariant.success,
       );
       Navigator.of(context).pop();
@@ -89,7 +91,7 @@ class _ExpenseAddingScreenState extends ConsumerState<ExpenseAddingScreen> {
       if (!mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to add expense. Please try again.';
+          : 'expenses.add.failed'.tr();
       AppSnackBar.show(
         context,
         message: message,
@@ -110,7 +112,7 @@ class _ExpenseAddingScreenState extends ConsumerState<ExpenseAddingScreen> {
           icon: const Icon(Icons.close),
           onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
         ),
-        title: const Text('Add Expense'),
+        title: Text('expenses.add.title'.tr()),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(context.paddingMedium),
@@ -121,16 +123,16 @@ class _ExpenseAddingScreenState extends ConsumerState<ExpenseAddingScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ExpenseAddDropdown<ExpenseType>(
-                label: 'Expense Type',
+                label: 'expenses.form.expense_type'.tr(),
                 value: _expenseType,
                 items: ExpenseType.values,
-                itemLabel: (e) => e.label,
+                itemLabel: ExpenseTypeBadge.labelFor,
                 enabled: !_isLoading,
                 onChanged: (v) => setState(() => _expenseType = v!),
               ),
               SizedBox(height: context.spaceMedium),
               ExpenseAddFormField(
-                label: 'Amount',
+                label: 'expenses.form.amount'.tr(),
                 controller: _amountController,
                 hint: '0.00',
                 enabled: !_isLoading,
@@ -148,11 +150,11 @@ class _ExpenseAddingScreenState extends ConsumerState<ExpenseAddingScreen> {
               ),
               SizedBox(height: context.spaceMedium),
               ExpenseAddFormField(
-                label: 'Label',
+                label: 'expenses.form.label'.tr(),
                 controller: _labelController,
                 hint: _expenseType == ExpenseType.other
-                    ? 'Required for Other'
-                    : 'Optional label',
+                    ? 'expenses.form.label_required_other'.tr()
+                    : 'expenses.form.label_optional'.tr(),
                 enabled: !_isLoading,
                 maxLength: ExpenseFormValidators.labelMaxLength,
                 validator: (value) => ExpenseFormValidators.label(
@@ -162,9 +164,9 @@ class _ExpenseAddingScreenState extends ConsumerState<ExpenseAddingScreen> {
               ),
               SizedBox(height: context.spaceMedium),
               ExpenseAddFormField(
-                label: 'Notes',
+                label: 'expenses.form.notes'.tr(),
                 controller: _notesController,
-                hint: 'Optional notes',
+                hint: 'expenses.form.notes_optional'.tr(),
                 enabled: !_isLoading,
                 maxLines: 3,
                 maxLength: ExpenseFormValidators.notesMaxLength,
@@ -186,7 +188,7 @@ class _ExpenseAddingScreenState extends ConsumerState<ExpenseAddingScreen> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Text(
-                            'Add Expense',
+                            'expenses.add.submit'.tr(),
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),

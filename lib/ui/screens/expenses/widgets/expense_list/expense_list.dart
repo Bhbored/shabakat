@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/domain/entities/expenses/expenses.dart';
@@ -19,7 +20,7 @@ class ExpenseList extends StatelessWidget {
           SizedBox(height: context.screenHeight * 0.2),
           Center(
             child: Text(
-              'No expenses found',
+              'expenses.empty_list'.tr(),
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),

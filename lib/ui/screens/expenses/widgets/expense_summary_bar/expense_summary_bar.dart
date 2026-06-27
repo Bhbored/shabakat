@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -19,7 +20,7 @@ class ExpenseSummaryBar extends ConsumerWidget {
         children: [
           Expanded(
             child: ExpenseSummaryTile(
-              label: 'Entries',
+              label: 'expenses.summary.entries'.tr(),
               value: '${pagination.totalCount}',
               icon: LucideIcons.receipt,
             ),
@@ -27,7 +28,7 @@ class ExpenseSummaryBar extends ConsumerWidget {
           SizedBox(width: context.paddingSmall),
           Expanded(
             child: ExpenseSummaryTile(
-              label: 'Total',
+              label: 'expenses.summary.total'.tr(),
               value: pagination.totalAmount.toStringAsFixed(2),
               icon: LucideIcons.banknote,
               isAccent: true,

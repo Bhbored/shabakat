@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -9,6 +10,13 @@ class ExpenseTypeBadge extends StatelessWidget {
   final ExpenseType type;
 
   const ExpenseTypeBadge({super.key, required this.type});
+
+  static String labelFor(ExpenseType type) => switch (type) {
+    ExpenseType.fuel => 'expenses.types.fuel'.tr(),
+    ExpenseType.maintenance => 'expenses.types.maintenance'.tr(),
+    ExpenseType.employees => 'expenses.types.employees'.tr(),
+    ExpenseType.other => 'expenses.types.other'.tr(),
+  };
 
   static IconData iconFor(ExpenseType type) => switch (type) {
     ExpenseType.fuel => LucideIcons.fuel,
@@ -46,7 +54,7 @@ class ExpenseTypeBadge extends StatelessWidget {
           Icon(_icon, size: 12, color: color),
           SizedBox(width: context.paddingSmall * 0.5),
           Text(
-            type.label,
+            ExpenseTypeBadge.labelFor(type),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w600,
