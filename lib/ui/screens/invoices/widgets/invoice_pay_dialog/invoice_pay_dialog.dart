@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/request/invoice/add_payment_request.dart';
+import 'package:shabakat/core/utilities/decimal_amount.dart';
 import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
 import 'package:shabakat/data/providers/invoice/single_invoice_provider.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
@@ -50,7 +51,7 @@ class _InvoicePayDialogState extends ConsumerState<InvoicePayDialog> {
   void initState() {
     super.initState();
     _amountController = TextEditingController(
-      text: widget.amountDue.toStringAsFixed(2),
+      text: formatDecimalAmount(widget.amountDue),
     );
     _notesController = TextEditingController();
   }
@@ -67,8 +68,8 @@ class _InvoicePayDialogState extends ConsumerState<InvoicePayDialog> {
     final amount = double.tryParse(value.trim());
     if (amount == null) return 'Enter a valid number';
     if (amount <= 0) return 'Amount must be greater than 0';
-    if (amount > widget.amountDue) {
-      return 'Amount cannot exceed \$${widget.amountDue.toStringAsFixed(2)}';
+    if (amountExceedsDue(amount, widget.amountDue)) {
+      return 'Amount cannot exceed \$${formatDecimalAmount(widget.amountDue)}';
     }
     return null;
   }
