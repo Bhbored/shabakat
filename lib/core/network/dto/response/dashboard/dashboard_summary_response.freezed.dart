@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DashboardSummaryResponse {
 
- double get totalBilledThisMonth; double get totalCollectedThisMonth; double get totalOutstandingAllTime; double get collectionRate; double get totalExpensesThisMonth; double get netIncomeThisMonth; CustomerOverviewResponse get customers; InvoiceOverviewResponse get invoices; ExpensesByTypeResponse get expensesByType;
+ double get totalBilledAllTime; double get totalCollectedAllTime; double get totalOutstandingAllTime; double get collectionRate; double get totalExpensesAllTime; double get netIncomeAllTime; CustomerOverviewResponse get customers; InvoiceOverviewResponse get invoices; ExpensesByTypeResponse get expensesByType;
 /// Create a copy of DashboardSummaryResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $DashboardSummaryResponseCopyWith<DashboardSummaryResponse> get copyWith => _$Da
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardSummaryResponse&&(identical(other.totalBilledThisMonth, totalBilledThisMonth) || other.totalBilledThisMonth == totalBilledThisMonth)&&(identical(other.totalCollectedThisMonth, totalCollectedThisMonth) || other.totalCollectedThisMonth == totalCollectedThisMonth)&&(identical(other.totalOutstandingAllTime, totalOutstandingAllTime) || other.totalOutstandingAllTime == totalOutstandingAllTime)&&(identical(other.collectionRate, collectionRate) || other.collectionRate == collectionRate)&&(identical(other.totalExpensesThisMonth, totalExpensesThisMonth) || other.totalExpensesThisMonth == totalExpensesThisMonth)&&(identical(other.netIncomeThisMonth, netIncomeThisMonth) || other.netIncomeThisMonth == netIncomeThisMonth)&&(identical(other.customers, customers) || other.customers == customers)&&(identical(other.invoices, invoices) || other.invoices == invoices)&&(identical(other.expensesByType, expensesByType) || other.expensesByType == expensesByType));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardSummaryResponse&&(identical(other.totalBilledAllTime, totalBilledAllTime) || other.totalBilledAllTime == totalBilledAllTime)&&(identical(other.totalCollectedAllTime, totalCollectedAllTime) || other.totalCollectedAllTime == totalCollectedAllTime)&&(identical(other.totalOutstandingAllTime, totalOutstandingAllTime) || other.totalOutstandingAllTime == totalOutstandingAllTime)&&(identical(other.collectionRate, collectionRate) || other.collectionRate == collectionRate)&&(identical(other.totalExpensesAllTime, totalExpensesAllTime) || other.totalExpensesAllTime == totalExpensesAllTime)&&(identical(other.netIncomeAllTime, netIncomeAllTime) || other.netIncomeAllTime == netIncomeAllTime)&&(identical(other.customers, customers) || other.customers == customers)&&(identical(other.invoices, invoices) || other.invoices == invoices)&&(identical(other.expensesByType, expensesByType) || other.expensesByType == expensesByType));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,totalBilledThisMonth,totalCollectedThisMonth,totalOutstandingAllTime,collectionRate,totalExpensesThisMonth,netIncomeThisMonth,customers,invoices,expensesByType);
+int get hashCode => Object.hash(runtimeType,totalBilledAllTime,totalCollectedAllTime,totalOutstandingAllTime,collectionRate,totalExpensesAllTime,netIncomeAllTime,customers,invoices,expensesByType);
 
 @override
 String toString() {
-  return 'DashboardSummaryResponse(totalBilledThisMonth: $totalBilledThisMonth, totalCollectedThisMonth: $totalCollectedThisMonth, totalOutstandingAllTime: $totalOutstandingAllTime, collectionRate: $collectionRate, totalExpensesThisMonth: $totalExpensesThisMonth, netIncomeThisMonth: $netIncomeThisMonth, customers: $customers, invoices: $invoices, expensesByType: $expensesByType)';
+  return 'DashboardSummaryResponse(totalBilledAllTime: $totalBilledAllTime, totalCollectedAllTime: $totalCollectedAllTime, totalOutstandingAllTime: $totalOutstandingAllTime, collectionRate: $collectionRate, totalExpensesAllTime: $totalExpensesAllTime, netIncomeAllTime: $netIncomeAllTime, customers: $customers, invoices: $invoices, expensesByType: $expensesByType)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $DashboardSummaryResponseCopyWith<$Res>  {
   factory $DashboardSummaryResponseCopyWith(DashboardSummaryResponse value, $Res Function(DashboardSummaryResponse) _then) = _$DashboardSummaryResponseCopyWithImpl;
 @useResult
 $Res call({
- double totalBilledThisMonth, double totalCollectedThisMonth, double totalOutstandingAllTime, double collectionRate, double totalExpensesThisMonth, double netIncomeThisMonth, CustomerOverviewResponse customers, InvoiceOverviewResponse invoices, ExpensesByTypeResponse expensesByType
+ double totalBilledAllTime, double totalCollectedAllTime, double totalOutstandingAllTime, double collectionRate, double totalExpensesAllTime, double netIncomeAllTime, CustomerOverviewResponse customers, InvoiceOverviewResponse invoices, ExpensesByTypeResponse expensesByType
 });
 
 
@@ -65,14 +65,14 @@ class _$DashboardSummaryResponseCopyWithImpl<$Res>
 
 /// Create a copy of DashboardSummaryResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? totalBilledThisMonth = null,Object? totalCollectedThisMonth = null,Object? totalOutstandingAllTime = null,Object? collectionRate = null,Object? totalExpensesThisMonth = null,Object? netIncomeThisMonth = null,Object? customers = null,Object? invoices = null,Object? expensesByType = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? totalBilledAllTime = null,Object? totalCollectedAllTime = null,Object? totalOutstandingAllTime = null,Object? collectionRate = null,Object? totalExpensesAllTime = null,Object? netIncomeAllTime = null,Object? customers = null,Object? invoices = null,Object? expensesByType = null,}) {
   return _then(_self.copyWith(
-totalBilledThisMonth: null == totalBilledThisMonth ? _self.totalBilledThisMonth : totalBilledThisMonth // ignore: cast_nullable_to_non_nullable
-as double,totalCollectedThisMonth: null == totalCollectedThisMonth ? _self.totalCollectedThisMonth : totalCollectedThisMonth // ignore: cast_nullable_to_non_nullable
+totalBilledAllTime: null == totalBilledAllTime ? _self.totalBilledAllTime : totalBilledAllTime // ignore: cast_nullable_to_non_nullable
+as double,totalCollectedAllTime: null == totalCollectedAllTime ? _self.totalCollectedAllTime : totalCollectedAllTime // ignore: cast_nullable_to_non_nullable
 as double,totalOutstandingAllTime: null == totalOutstandingAllTime ? _self.totalOutstandingAllTime : totalOutstandingAllTime // ignore: cast_nullable_to_non_nullable
 as double,collectionRate: null == collectionRate ? _self.collectionRate : collectionRate // ignore: cast_nullable_to_non_nullable
-as double,totalExpensesThisMonth: null == totalExpensesThisMonth ? _self.totalExpensesThisMonth : totalExpensesThisMonth // ignore: cast_nullable_to_non_nullable
-as double,netIncomeThisMonth: null == netIncomeThisMonth ? _self.netIncomeThisMonth : netIncomeThisMonth // ignore: cast_nullable_to_non_nullable
+as double,totalExpensesAllTime: null == totalExpensesAllTime ? _self.totalExpensesAllTime : totalExpensesAllTime // ignore: cast_nullable_to_non_nullable
+as double,netIncomeAllTime: null == netIncomeAllTime ? _self.netIncomeAllTime : netIncomeAllTime // ignore: cast_nullable_to_non_nullable
 as double,customers: null == customers ? _self.customers : customers // ignore: cast_nullable_to_non_nullable
 as CustomerOverviewResponse,invoices: null == invoices ? _self.invoices : invoices // ignore: cast_nullable_to_non_nullable
 as InvoiceOverviewResponse,expensesByType: null == expensesByType ? _self.expensesByType : expensesByType // ignore: cast_nullable_to_non_nullable
@@ -185,10 +185,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double totalBilledThisMonth,  double totalCollectedThisMonth,  double totalOutstandingAllTime,  double collectionRate,  double totalExpensesThisMonth,  double netIncomeThisMonth,  CustomerOverviewResponse customers,  InvoiceOverviewResponse invoices,  ExpensesByTypeResponse expensesByType)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double totalBilledAllTime,  double totalCollectedAllTime,  double totalOutstandingAllTime,  double collectionRate,  double totalExpensesAllTime,  double netIncomeAllTime,  CustomerOverviewResponse customers,  InvoiceOverviewResponse invoices,  ExpensesByTypeResponse expensesByType)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DashboardSummaryResponse() when $default != null:
-return $default(_that.totalBilledThisMonth,_that.totalCollectedThisMonth,_that.totalOutstandingAllTime,_that.collectionRate,_that.totalExpensesThisMonth,_that.netIncomeThisMonth,_that.customers,_that.invoices,_that.expensesByType);case _:
+return $default(_that.totalBilledAllTime,_that.totalCollectedAllTime,_that.totalOutstandingAllTime,_that.collectionRate,_that.totalExpensesAllTime,_that.netIncomeAllTime,_that.customers,_that.invoices,_that.expensesByType);case _:
   return orElse();
 
 }
@@ -206,10 +206,10 @@ return $default(_that.totalBilledThisMonth,_that.totalCollectedThisMonth,_that.t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double totalBilledThisMonth,  double totalCollectedThisMonth,  double totalOutstandingAllTime,  double collectionRate,  double totalExpensesThisMonth,  double netIncomeThisMonth,  CustomerOverviewResponse customers,  InvoiceOverviewResponse invoices,  ExpensesByTypeResponse expensesByType)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double totalBilledAllTime,  double totalCollectedAllTime,  double totalOutstandingAllTime,  double collectionRate,  double totalExpensesAllTime,  double netIncomeAllTime,  CustomerOverviewResponse customers,  InvoiceOverviewResponse invoices,  ExpensesByTypeResponse expensesByType)  $default,) {final _that = this;
 switch (_that) {
 case _DashboardSummaryResponse():
-return $default(_that.totalBilledThisMonth,_that.totalCollectedThisMonth,_that.totalOutstandingAllTime,_that.collectionRate,_that.totalExpensesThisMonth,_that.netIncomeThisMonth,_that.customers,_that.invoices,_that.expensesByType);}
+return $default(_that.totalBilledAllTime,_that.totalCollectedAllTime,_that.totalOutstandingAllTime,_that.collectionRate,_that.totalExpensesAllTime,_that.netIncomeAllTime,_that.customers,_that.invoices,_that.expensesByType);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -223,10 +223,10 @@ return $default(_that.totalBilledThisMonth,_that.totalCollectedThisMonth,_that.t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double totalBilledThisMonth,  double totalCollectedThisMonth,  double totalOutstandingAllTime,  double collectionRate,  double totalExpensesThisMonth,  double netIncomeThisMonth,  CustomerOverviewResponse customers,  InvoiceOverviewResponse invoices,  ExpensesByTypeResponse expensesByType)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double totalBilledAllTime,  double totalCollectedAllTime,  double totalOutstandingAllTime,  double collectionRate,  double totalExpensesAllTime,  double netIncomeAllTime,  CustomerOverviewResponse customers,  InvoiceOverviewResponse invoices,  ExpensesByTypeResponse expensesByType)?  $default,) {final _that = this;
 switch (_that) {
 case _DashboardSummaryResponse() when $default != null:
-return $default(_that.totalBilledThisMonth,_that.totalCollectedThisMonth,_that.totalOutstandingAllTime,_that.collectionRate,_that.totalExpensesThisMonth,_that.netIncomeThisMonth,_that.customers,_that.invoices,_that.expensesByType);case _:
+return $default(_that.totalBilledAllTime,_that.totalCollectedAllTime,_that.totalOutstandingAllTime,_that.collectionRate,_that.totalExpensesAllTime,_that.netIncomeAllTime,_that.customers,_that.invoices,_that.expensesByType);case _:
   return null;
 
 }
@@ -238,15 +238,15 @@ return $default(_that.totalBilledThisMonth,_that.totalCollectedThisMonth,_that.t
 @JsonSerializable()
 
 class _DashboardSummaryResponse implements DashboardSummaryResponse {
-  const _DashboardSummaryResponse({this.totalBilledThisMonth = 0.0, this.totalCollectedThisMonth = 0.0, this.totalOutstandingAllTime = 0.0, this.collectionRate = 0.0, this.totalExpensesThisMonth = 0.0, this.netIncomeThisMonth = 0.0, this.customers = const CustomerOverviewResponse(), this.invoices = const InvoiceOverviewResponse(), this.expensesByType = const ExpensesByTypeResponse()});
+  const _DashboardSummaryResponse({this.totalBilledAllTime = 0.0, this.totalCollectedAllTime = 0.0, this.totalOutstandingAllTime = 0.0, this.collectionRate = 0.0, this.totalExpensesAllTime = 0.0, this.netIncomeAllTime = 0.0, this.customers = const CustomerOverviewResponse(), this.invoices = const InvoiceOverviewResponse(), this.expensesByType = const ExpensesByTypeResponse()});
   factory _DashboardSummaryResponse.fromJson(Map<String, dynamic> json) => _$DashboardSummaryResponseFromJson(json);
 
-@override@JsonKey() final  double totalBilledThisMonth;
-@override@JsonKey() final  double totalCollectedThisMonth;
+@override@JsonKey() final  double totalBilledAllTime;
+@override@JsonKey() final  double totalCollectedAllTime;
 @override@JsonKey() final  double totalOutstandingAllTime;
 @override@JsonKey() final  double collectionRate;
-@override@JsonKey() final  double totalExpensesThisMonth;
-@override@JsonKey() final  double netIncomeThisMonth;
+@override@JsonKey() final  double totalExpensesAllTime;
+@override@JsonKey() final  double netIncomeAllTime;
 @override@JsonKey() final  CustomerOverviewResponse customers;
 @override@JsonKey() final  InvoiceOverviewResponse invoices;
 @override@JsonKey() final  ExpensesByTypeResponse expensesByType;
@@ -264,16 +264,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardSummaryResponse&&(identical(other.totalBilledThisMonth, totalBilledThisMonth) || other.totalBilledThisMonth == totalBilledThisMonth)&&(identical(other.totalCollectedThisMonth, totalCollectedThisMonth) || other.totalCollectedThisMonth == totalCollectedThisMonth)&&(identical(other.totalOutstandingAllTime, totalOutstandingAllTime) || other.totalOutstandingAllTime == totalOutstandingAllTime)&&(identical(other.collectionRate, collectionRate) || other.collectionRate == collectionRate)&&(identical(other.totalExpensesThisMonth, totalExpensesThisMonth) || other.totalExpensesThisMonth == totalExpensesThisMonth)&&(identical(other.netIncomeThisMonth, netIncomeThisMonth) || other.netIncomeThisMonth == netIncomeThisMonth)&&(identical(other.customers, customers) || other.customers == customers)&&(identical(other.invoices, invoices) || other.invoices == invoices)&&(identical(other.expensesByType, expensesByType) || other.expensesByType == expensesByType));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardSummaryResponse&&(identical(other.totalBilledAllTime, totalBilledAllTime) || other.totalBilledAllTime == totalBilledAllTime)&&(identical(other.totalCollectedAllTime, totalCollectedAllTime) || other.totalCollectedAllTime == totalCollectedAllTime)&&(identical(other.totalOutstandingAllTime, totalOutstandingAllTime) || other.totalOutstandingAllTime == totalOutstandingAllTime)&&(identical(other.collectionRate, collectionRate) || other.collectionRate == collectionRate)&&(identical(other.totalExpensesAllTime, totalExpensesAllTime) || other.totalExpensesAllTime == totalExpensesAllTime)&&(identical(other.netIncomeAllTime, netIncomeAllTime) || other.netIncomeAllTime == netIncomeAllTime)&&(identical(other.customers, customers) || other.customers == customers)&&(identical(other.invoices, invoices) || other.invoices == invoices)&&(identical(other.expensesByType, expensesByType) || other.expensesByType == expensesByType));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,totalBilledThisMonth,totalCollectedThisMonth,totalOutstandingAllTime,collectionRate,totalExpensesThisMonth,netIncomeThisMonth,customers,invoices,expensesByType);
+int get hashCode => Object.hash(runtimeType,totalBilledAllTime,totalCollectedAllTime,totalOutstandingAllTime,collectionRate,totalExpensesAllTime,netIncomeAllTime,customers,invoices,expensesByType);
 
 @override
 String toString() {
-  return 'DashboardSummaryResponse(totalBilledThisMonth: $totalBilledThisMonth, totalCollectedThisMonth: $totalCollectedThisMonth, totalOutstandingAllTime: $totalOutstandingAllTime, collectionRate: $collectionRate, totalExpensesThisMonth: $totalExpensesThisMonth, netIncomeThisMonth: $netIncomeThisMonth, customers: $customers, invoices: $invoices, expensesByType: $expensesByType)';
+  return 'DashboardSummaryResponse(totalBilledAllTime: $totalBilledAllTime, totalCollectedAllTime: $totalCollectedAllTime, totalOutstandingAllTime: $totalOutstandingAllTime, collectionRate: $collectionRate, totalExpensesAllTime: $totalExpensesAllTime, netIncomeAllTime: $netIncomeAllTime, customers: $customers, invoices: $invoices, expensesByType: $expensesByType)';
 }
 
 
@@ -284,7 +284,7 @@ abstract mixin class _$DashboardSummaryResponseCopyWith<$Res> implements $Dashbo
   factory _$DashboardSummaryResponseCopyWith(_DashboardSummaryResponse value, $Res Function(_DashboardSummaryResponse) _then) = __$DashboardSummaryResponseCopyWithImpl;
 @override @useResult
 $Res call({
- double totalBilledThisMonth, double totalCollectedThisMonth, double totalOutstandingAllTime, double collectionRate, double totalExpensesThisMonth, double netIncomeThisMonth, CustomerOverviewResponse customers, InvoiceOverviewResponse invoices, ExpensesByTypeResponse expensesByType
+ double totalBilledAllTime, double totalCollectedAllTime, double totalOutstandingAllTime, double collectionRate, double totalExpensesAllTime, double netIncomeAllTime, CustomerOverviewResponse customers, InvoiceOverviewResponse invoices, ExpensesByTypeResponse expensesByType
 });
 
 
@@ -301,14 +301,14 @@ class __$DashboardSummaryResponseCopyWithImpl<$Res>
 
 /// Create a copy of DashboardSummaryResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? totalBilledThisMonth = null,Object? totalCollectedThisMonth = null,Object? totalOutstandingAllTime = null,Object? collectionRate = null,Object? totalExpensesThisMonth = null,Object? netIncomeThisMonth = null,Object? customers = null,Object? invoices = null,Object? expensesByType = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? totalBilledAllTime = null,Object? totalCollectedAllTime = null,Object? totalOutstandingAllTime = null,Object? collectionRate = null,Object? totalExpensesAllTime = null,Object? netIncomeAllTime = null,Object? customers = null,Object? invoices = null,Object? expensesByType = null,}) {
   return _then(_DashboardSummaryResponse(
-totalBilledThisMonth: null == totalBilledThisMonth ? _self.totalBilledThisMonth : totalBilledThisMonth // ignore: cast_nullable_to_non_nullable
-as double,totalCollectedThisMonth: null == totalCollectedThisMonth ? _self.totalCollectedThisMonth : totalCollectedThisMonth // ignore: cast_nullable_to_non_nullable
+totalBilledAllTime: null == totalBilledAllTime ? _self.totalBilledAllTime : totalBilledAllTime // ignore: cast_nullable_to_non_nullable
+as double,totalCollectedAllTime: null == totalCollectedAllTime ? _self.totalCollectedAllTime : totalCollectedAllTime // ignore: cast_nullable_to_non_nullable
 as double,totalOutstandingAllTime: null == totalOutstandingAllTime ? _self.totalOutstandingAllTime : totalOutstandingAllTime // ignore: cast_nullable_to_non_nullable
 as double,collectionRate: null == collectionRate ? _self.collectionRate : collectionRate // ignore: cast_nullable_to_non_nullable
-as double,totalExpensesThisMonth: null == totalExpensesThisMonth ? _self.totalExpensesThisMonth : totalExpensesThisMonth // ignore: cast_nullable_to_non_nullable
-as double,netIncomeThisMonth: null == netIncomeThisMonth ? _self.netIncomeThisMonth : netIncomeThisMonth // ignore: cast_nullable_to_non_nullable
+as double,totalExpensesAllTime: null == totalExpensesAllTime ? _self.totalExpensesAllTime : totalExpensesAllTime // ignore: cast_nullable_to_non_nullable
+as double,netIncomeAllTime: null == netIncomeAllTime ? _self.netIncomeAllTime : netIncomeAllTime // ignore: cast_nullable_to_non_nullable
 as double,customers: null == customers ? _self.customers : customers // ignore: cast_nullable_to_non_nullable
 as CustomerOverviewResponse,invoices: null == invoices ? _self.invoices : invoices // ignore: cast_nullable_to_non_nullable
 as InvoiceOverviewResponse,expensesByType: null == expensesByType ? _self.expensesByType : expensesByType // ignore: cast_nullable_to_non_nullable

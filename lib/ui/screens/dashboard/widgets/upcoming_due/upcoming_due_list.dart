@@ -12,14 +12,14 @@ String _formatMoney(double value) => '\$${value.toStringAsFixed(2)}';
 class CustomerExpensesOverview extends StatelessWidget {
   final CustomerOverviewResponse customers;
   final ExpensesByTypeResponse expensesByType;
-  final double totalExpensesThisMonth;
+  final double totalExpensesAllTime;
   final VoidCallback? onSendReminders;
 
   const CustomerExpensesOverview({
     super.key,
     required this.customers,
     required this.expensesByType,
-    required this.totalExpensesThisMonth,
+    required this.totalExpensesAllTime,
     this.onSendReminders,
   });
 
@@ -78,7 +78,7 @@ class CustomerExpensesOverview extends StatelessWidget {
               ),
             SizedBox(height: context.spaceMedium),
             Text(
-              'EXPENSES THIS MONTH · ${_formatMoney(totalExpensesThisMonth)}',
+              'EXPENSES · ${_formatMoney(totalExpensesAllTime)}',
               style: theme.textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.0,
@@ -89,7 +89,7 @@ class CustomerExpensesOverview extends StatelessWidget {
             for (var i = 0; i < expenseRows.length; i++)
               _ExpenseTypeRow(
                 data: expenseRows[i],
-                total: totalExpensesThisMonth,
+                total: totalExpensesAllTime,
                 isLast: i == expenseRows.length - 1,
               ),
             SizedBox(height: context.spaceMedium),

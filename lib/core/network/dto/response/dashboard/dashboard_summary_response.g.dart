@@ -9,16 +9,15 @@ part of 'dashboard_summary_response.dart';
 _DashboardSummaryResponse _$DashboardSummaryResponseFromJson(
   Map<String, dynamic> json,
 ) => _DashboardSummaryResponse(
-  totalBilledThisMonth:
-      (json['totalBilledThisMonth'] as num?)?.toDouble() ?? 0.0,
-  totalCollectedThisMonth:
-      (json['totalCollectedThisMonth'] as num?)?.toDouble() ?? 0.0,
+  totalBilledAllTime: (json['totalBilledAllTime'] as num?)?.toDouble() ?? 0.0,
+  totalCollectedAllTime:
+      (json['totalCollectedAllTime'] as num?)?.toDouble() ?? 0.0,
   totalOutstandingAllTime:
       (json['totalOutstandingAllTime'] as num?)?.toDouble() ?? 0.0,
   collectionRate: (json['collectionRate'] as num?)?.toDouble() ?? 0.0,
-  totalExpensesThisMonth:
-      (json['totalExpensesThisMonth'] as num?)?.toDouble() ?? 0.0,
-  netIncomeThisMonth: (json['netIncomeThisMonth'] as num?)?.toDouble() ?? 0.0,
+  totalExpensesAllTime:
+      (json['totalExpensesAllTime'] as num?)?.toDouble() ?? 0.0,
+  netIncomeAllTime: (json['netIncomeAllTime'] as num?)?.toDouble() ?? 0.0,
   customers: json['customers'] == null
       ? const CustomerOverviewResponse()
       : CustomerOverviewResponse.fromJson(
@@ -39,12 +38,12 @@ _DashboardSummaryResponse _$DashboardSummaryResponseFromJson(
 Map<String, dynamic> _$DashboardSummaryResponseToJson(
   _DashboardSummaryResponse instance,
 ) => <String, dynamic>{
-  'totalBilledThisMonth': instance.totalBilledThisMonth,
-  'totalCollectedThisMonth': instance.totalCollectedThisMonth,
+  'totalBilledAllTime': instance.totalBilledAllTime,
+  'totalCollectedAllTime': instance.totalCollectedAllTime,
   'totalOutstandingAllTime': instance.totalOutstandingAllTime,
   'collectionRate': instance.collectionRate,
-  'totalExpensesThisMonth': instance.totalExpensesThisMonth,
-  'netIncomeThisMonth': instance.netIncomeThisMonth,
+  'totalExpensesAllTime': instance.totalExpensesAllTime,
+  'netIncomeAllTime': instance.netIncomeAllTime,
   'customers': instance.customers,
   'invoices': instance.invoices,
   'expensesByType': instance.expensesByType,

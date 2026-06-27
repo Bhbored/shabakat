@@ -35,8 +35,8 @@ class StatGrid extends StatelessWidget {
             SizedBox(width: context.paddingSmall),
             Expanded(
               child: StatCard(
-                label: 'COLLECTED THIS MONTH',
-                value: _formatMoney(summary.totalCollectedThisMonth),
+                label: 'TOTAL COLLECTED',
+                value: _formatMoney(summary.totalCollectedAllTime),
                 trend: '${summary.collectionRate.toStringAsFixed(1)}% collection rate',
                 icon: LucideIcons.userCheck,
                 iconColor: AppColors.success,
@@ -60,8 +60,8 @@ class StatGrid extends StatelessWidget {
             SizedBox(width: context.paddingSmall),
             Expanded(
               child: StatCard(
-                label: 'BILLED THIS MONTH',
-                value: _formatMoney(summary.totalBilledThisMonth),
+                label: 'TOTAL BILLED',
+                value: _formatMoney(summary.totalBilledAllTime),
                 trend:
                     '${_formatMoney(summary.totalOutstandingAllTime)} all-time due',
                 icon: LucideIcons.dollarSign,

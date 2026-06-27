@@ -9,12 +9,12 @@ part 'dashboard_summary_response.g.dart';
 @freezed
 sealed class DashboardSummaryResponse with _$DashboardSummaryResponse {
   const factory DashboardSummaryResponse({
-    @Default(0.0) double totalBilledThisMonth,
-    @Default(0.0) double totalCollectedThisMonth,
+    @Default(0.0) double totalBilledAllTime,
+    @Default(0.0) double totalCollectedAllTime,
     @Default(0.0) double totalOutstandingAllTime,
     @Default(0.0) double collectionRate,
-    @Default(0.0) double totalExpensesThisMonth,
-    @Default(0.0) double netIncomeThisMonth,
+    @Default(0.0) double totalExpensesAllTime,
+    @Default(0.0) double netIncomeAllTime,
     @Default(CustomerOverviewResponse()) CustomerOverviewResponse customers,
     @Default(InvoiceOverviewResponse()) InvoiceOverviewResponse invoices,
     @Default(ExpensesByTypeResponse()) ExpensesByTypeResponse expensesByType,

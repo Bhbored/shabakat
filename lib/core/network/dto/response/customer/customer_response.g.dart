@@ -29,7 +29,6 @@ _CustomerResponse _$CustomerResponseFromJson(Map<String, dynamic> json) =>
       totalBilled: (json['totalBilled'] as num?)?.toDouble() ?? 0.0,
       totalPaid: (json['totalPaid'] as num?)?.toDouble() ?? 0.0,
       totalOutstanding: (json['totalOutstanding'] as num?)?.toDouble() ?? 0.0,
-      paidThisMonth: json['paidThisMonth'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$CustomerResponseToJson(_CustomerResponse instance) =>
@@ -51,5 +50,4 @@ Map<String, dynamic> _$CustomerResponseToJson(_CustomerResponse instance) =>
       'totalBilled': instance.totalBilled,
       'totalPaid': instance.totalPaid,
       'totalOutstanding': instance.totalOutstanding,
-      'paidThisMonth': instance.paidThisMonth,
     };

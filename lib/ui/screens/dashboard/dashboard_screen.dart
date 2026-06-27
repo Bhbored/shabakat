@@ -91,7 +91,7 @@ class _DashboardBody extends StatelessWidget {
           CustomerExpensesOverview(
             customers: summary.customers,
             expensesByType: summary.expensesByType,
-            totalExpensesThisMonth: summary.totalExpensesThisMonth,
+            totalExpensesAllTime: summary.totalExpensesAllTime,
             onSendReminders: onSendReminders,
           ),
         ],

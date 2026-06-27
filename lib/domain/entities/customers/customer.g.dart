@@ -36,7 +36,6 @@ _Customer _$CustomerFromJson(Map<String, dynamic> json) => _Customer(
   invoices: (json['invoices'] as List<dynamic>?)
       ?.map((e) => Invoice.fromJson(e as Map<String, dynamic>))
       .toList(),
-  paidThisMonth: json['paidThisMonth'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$CustomerToJson(_Customer instance) => <String, dynamic>{
@@ -62,7 +61,6 @@ Map<String, dynamic> _$CustomerToJson(_Customer instance) => <String, dynamic>{
   'plan': _$PlanTypeEnumMap[instance.plan]!,
   'planValue': instance.planValue,
   'invoices': instance.invoices,
-  'paidThisMonth': instance.paidThisMonth,
 };
 
 const _$CustomerTypeEnumMap = {
