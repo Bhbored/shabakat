@@ -62,12 +62,14 @@ class RevenueChart extends StatelessWidget {
       FinancialBar(
         label: 'Expenses',
         value: summary.totalExpensesAllTime,
-        color: colorScheme.tertiary,
+        color: AppColors.chartExpenses,
       ),
       FinancialBar(
         label: 'Net',
         value: summary.netIncomeAllTime,
-        color: colorScheme.inversePrimary,
+        color: summary.netIncomeAllTime >= 0
+            ? AppColors.success
+            : AppColors.error,
       ),
     ];
   }

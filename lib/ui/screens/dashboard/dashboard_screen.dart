@@ -12,12 +12,10 @@ import 'widgets/upcoming_due/upcoming_due_list.dart';
 
 class DashboardScreen extends ConsumerWidget {
   final VoidCallback? onViewInvoices;
-  final VoidCallback? onSendReminders;
 
   const DashboardScreen({
     super.key,
     this.onViewInvoices,
-    this.onSendReminders,
   });
 
   @override
@@ -53,7 +51,6 @@ class DashboardScreen extends ConsumerWidget {
         child: _DashboardBody(
           summary: summary,
           onViewInvoices: onViewInvoices,
-          onSendReminders: onSendReminders,
         ),
       ),
     );
@@ -63,12 +60,10 @@ class DashboardScreen extends ConsumerWidget {
 class _DashboardBody extends StatelessWidget {
   final DashboardSummaryResponse summary;
   final VoidCallback? onViewInvoices;
-  final VoidCallback? onSendReminders;
 
   const _DashboardBody({
     required this.summary,
     this.onViewInvoices,
-    this.onSendReminders,
   });
 
   @override
@@ -92,7 +87,6 @@ class _DashboardBody extends StatelessWidget {
             customers: summary.customers,
             expensesByType: summary.expensesByType,
             totalExpensesAllTime: summary.totalExpensesAllTime,
-            onSendReminders: onSendReminders,
           ),
         ],
       ),

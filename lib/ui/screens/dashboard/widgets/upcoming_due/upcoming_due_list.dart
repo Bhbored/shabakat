@@ -5,7 +5,6 @@ import 'package:shabakat/core/network/dto/response/dashboard/customer_overview_r
 import 'package:shabakat/core/network/dto/response/dashboard/expenses_by_type_response.dart';
 import 'package:shabakat/core/themes/app_colors.dart';
 import 'package:shabakat/ui/screens/dashboard/widgets/upcoming_due/pending_badge.dart';
-import 'package:shabakat/ui/screens/dashboard/widgets/upcoming_due/send_reminders_button.dart';
 
 String _formatMoney(double value) => '\$${value.toStringAsFixed(2)}';
 
@@ -13,14 +12,12 @@ class CustomerExpensesOverview extends StatelessWidget {
   final CustomerOverviewResponse customers;
   final ExpensesByTypeResponse expensesByType;
   final double totalExpensesAllTime;
-  final VoidCallback? onSendReminders;
 
   const CustomerExpensesOverview({
     super.key,
     required this.customers,
     required this.expensesByType,
     required this.totalExpensesAllTime,
-    this.onSendReminders,
   });
 
   @override
@@ -92,8 +89,6 @@ class CustomerExpensesOverview extends StatelessWidget {
                 total: totalExpensesAllTime,
                 isLast: i == expenseRows.length - 1,
               ),
-            SizedBox(height: context.spaceMedium),
-            SendRemindersButton(onPressed: onSendReminders),
           ],
         ),
       ),

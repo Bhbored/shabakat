@@ -61,7 +61,6 @@ class _MainTabPageState extends State<MainTabPage> {
         children: [
           DashboardScreen(
             onViewInvoices: () => _onTabChanged(2),
-            onSendReminders: () => _onTabChanged(4),
           ),
           const SubscribersScreen(),
           const InvoicesScreen(),

@@ -38,17 +38,6 @@ class NegativeBarSegment extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       mainAxisSize: MainAxisSize.max,
       children: [
-        Container(
-          width: barWidth,
-          height: barHeight,
-          decoration: BoxDecoration(
-            color: bar.color,
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(context.borderRadiusMedium * 0.35),
-            ),
-          ),
-        ),
-        SizedBox(height: context.spaceSmall * 0.25),
         Text(
           formatCompactFinancialValue(bar.value),
           textAlign: TextAlign.center,
@@ -58,6 +47,17 @@ class NegativeBarSegment extends StatelessWidget {
             fontWeight: FontWeight.w600,
             fontFamily: 'JetBrains Mono',
             fontSize: (theme.textTheme.labelSmall?.fontSize ?? 12) * 0.85,
+          ),
+        ),
+        SizedBox(height: context.spaceSmall * 0.25),
+        Container(
+          width: barWidth,
+          height: barHeight,
+          decoration: BoxDecoration(
+            color: bar.color,
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(context.borderRadiusMedium * 0.35),
+            ),
           ),
         ),
       ],
