@@ -58,4 +58,36 @@ class SharedPreferencesHandler {
       return ThemeMode.system;
     }
   }
+
+  Future<void> setString(String key, String value) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(key, value);
+      log.i('Preference saved [$key]: $value');
+    } on Exception catch (e) {
+      log.e('Failed to save preference [$key]: $e');
+    }
+  }
+
+  Future<String?> getString(String key) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final value = prefs.getString(key);
+      log.i('Preference loaded [$key]: $value');
+      return value;
+    } on Exception catch (e) {
+      log.e('Failed to load preference [$key]: $e');
+      return null;
+    }
+  }
+
+  Future<void> remove(String key) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(key);
+      log.i('Preference removed [$key]');
+    } on Exception catch (e) {
+      log.e('Failed to remove preference [$key]: $e');
+    }
+  }
 }

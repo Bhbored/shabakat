@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -25,17 +26,17 @@ class CustomerExpensesOverview extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final customerRows = [
-      _MetricRow('Active', customers.active, LucideIcons.userCheck, AppColors.success),
-      _MetricRow('Suspended', customers.suspended, LucideIcons.userX, AppColors.warning),
-      _MetricRow('Terminated', customers.terminated, LucideIcons.userMinus, AppColors.error),
-      _MetricRow('Ampere', customers.ampereCount, LucideIcons.zap, colorScheme.primary),
-      _MetricRow('Kilowatt', customers.kilowattCount, LucideIcons.gauge, colorScheme.tertiary),
+      _MetricRow('dashboard.customers_expenses.active'.tr(), customers.active, LucideIcons.userCheck, AppColors.success),
+      _MetricRow('dashboard.customers_expenses.suspended'.tr(), customers.suspended, LucideIcons.userX, AppColors.warning),
+      _MetricRow('dashboard.customers_expenses.terminated'.tr(), customers.terminated, LucideIcons.userMinus, AppColors.error),
+      _MetricRow('dashboard.customers_expenses.ampere'.tr(), customers.ampereCount, LucideIcons.zap, colorScheme.primary),
+      _MetricRow('dashboard.customers_expenses.kilowatt'.tr(), customers.kilowattCount, LucideIcons.gauge, colorScheme.tertiary),
     ];
     final expenseRows = [
-      _ExpenseRow('Fuel', expensesByType.fuel),
-      _ExpenseRow('Maintenance', expensesByType.maintenance),
-      _ExpenseRow('Employees', expensesByType.employees),
-      _ExpenseRow('Other', expensesByType.other),
+      _ExpenseRow('dashboard.customers_expenses.fuel'.tr(), expensesByType.fuel),
+      _ExpenseRow('dashboard.customers_expenses.maintenance'.tr(), expensesByType.maintenance),
+      _ExpenseRow('dashboard.customers_expenses.employees'.tr(), expensesByType.employees),
+      _ExpenseRow('dashboard.customers_expenses.other'.tr(), expensesByType.other),
     ];
 
     return Card(
@@ -48,7 +49,7 @@ class CustomerExpensesOverview extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Customers & Expenses',
+                  'dashboard.customers_expenses.title'.tr(),
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -60,7 +61,7 @@ class CustomerExpensesOverview extends StatelessWidget {
             ),
             SizedBox(height: context.spaceSmall),
             Text(
-              'CUSTOMERS',
+              'dashboard.customers_expenses.customers'.tr(),
               style: theme.textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.0,
@@ -75,7 +76,9 @@ class CustomerExpensesOverview extends StatelessWidget {
               ),
             SizedBox(height: context.spaceMedium),
             Text(
-              'EXPENSES · ${_formatMoney(totalExpensesAllTime)}',
+              'dashboard.customers_expenses.expenses_header'.tr(
+                args: [_formatMoney(totalExpensesAllTime)],
+              ),
               style: theme.textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.0,

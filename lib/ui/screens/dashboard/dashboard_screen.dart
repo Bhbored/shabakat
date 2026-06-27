@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -27,7 +28,7 @@ class DashboardScreen extends ConsumerWidget {
       error: (err, _) {
         final message = err is ApiException
             ? err.userMessage
-            : 'Failed to load dashboard.';
+            : 'dashboard.load_error'.tr();
         return Center(
           child: Padding(
             padding: EdgeInsets.all(context.paddingMedium),
@@ -39,7 +40,7 @@ class DashboardScreen extends ConsumerWidget {
                 ElevatedButton(
                   onPressed: () =>
                       ref.read(dashboardProvider.notifier).refresh(),
-                  child: const Text('Retry'),
+                  child: Text('dashboard.retry'.tr()),
                 ),
               ],
             ),

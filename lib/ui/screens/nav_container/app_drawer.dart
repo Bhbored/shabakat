@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -59,7 +60,7 @@ class AppDrawer extends ConsumerWidget {
                 children: [
                   _DrawerItem(
                     icon: LucideIcons.settings,
-                    label: 'Settings',
+                    label: 'drawer.settings'.tr(),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.push(
@@ -72,7 +73,7 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   _DrawerItem(
                     icon: LucideIcons.helpCircle,
-                    label: 'Help & Support',
+                    label: 'drawer.help_support'.tr(),
                     onTap: () {},
                   ),
                 ],
@@ -114,7 +115,7 @@ class AppDrawer extends ConsumerWidget {
                                 strokeWidth: 2,
                                 color: colorScheme.onPrimary,
                               )
-                            : const Text('Logout'),
+                            : Text('drawer.logout'.tr()),
                       ),
               ),
             ),

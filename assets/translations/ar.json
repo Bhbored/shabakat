@@ -1,0 +1,53 @@
+{
+  "dashboard": {
+    "load_error": "فشل تحميل لوحة التحكم.",
+    "retry": "إعادة المحاولة",
+    "stat": {
+      "total_subscribers": "إجمالي المشتركين",
+      "total_collected": "إجمالي المحصّل",
+      "unpaid_invoices": "فواتير غير مدفوعة",
+      "total_billed": "إجمالي المفوتر",
+      "active": "{} نشط",
+      "collection_rate": "{}% نسبة التحصيل",
+      "outstanding": "{} متبقي",
+      "all_time_due": "{} مستحق إجمالاً"
+    },
+    "financial_summary": {
+      "title": "الملخص المالي",
+      "subtitle": "إجمالي الفواتير والتحصيل والمصاريف وصافي الدخل لكل المدة للشركة الحالية.",
+      "billed": "المفوترة",
+      "collected": "المحصلة",
+      "due": "المستحق",
+      "expenses": "المصاريف",
+      "net": "الصافي"
+    },
+    "invoice_overview": {
+      "title": "نظرة عامة على الفواتير",
+      "view_all": "عرض الكل ←",
+      "paid": "مدفوعة",
+      "partially_paid": "مدفوعة جزئياً",
+      "unpaid": "غير مدفوعة",
+      "invoice_count": "{} فاتورة"
+    },
+    "customers_expenses": {
+      "title": "العملاء والمصاريف",
+      "customers": "العملاء",
+      "expenses_header": "المصاريف · {}",
+      "active": "نشط",
+      "suspended": "معلّق",
+      "terminated": "منتهي",
+      "ampere": "أمبير",
+      "kilowatt": "كيلوواط",
+      "fuel": "وقود",
+      "maintenance": "صيانة",
+      "employees": "موظفون",
+      "other": "أخرى",
+      "pending": "{} معلّق"
+    }
+  },
+  "drawer": {
+    "settings": "الإعدادات",
+    "help_support": "المساعدة والدعم",
+    "logout": "تسجيل الخروج"
+  }
+}

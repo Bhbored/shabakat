@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -20,21 +21,21 @@ class InvoiceOverviewList extends StatelessWidget {
   Widget build(BuildContext context) {
     final rows = [
       _InvoiceRowData(
-        label: 'Paid',
+        label: 'dashboard.invoice_overview.paid'.tr(),
         count: invoices.paidCount,
         total: invoices.paidTotal,
         icon: LucideIcons.checkCircle2,
         color: AppColors.success,
       ),
       _InvoiceRowData(
-        label: 'Partially paid',
+        label: 'dashboard.invoice_overview.partially_paid'.tr(),
         count: invoices.partiallyPaidCount,
         total: invoices.partiallyPaidTotal,
         icon: LucideIcons.circleDashed,
         color: AppColors.warning,
       ),
       _InvoiceRowData(
-        label: 'Unpaid',
+        label: 'dashboard.invoice_overview.unpaid'.tr(),
         count: invoices.unpaidCount,
         total: invoices.unpaidTotal,
         icon: LucideIcons.alertCircle,
@@ -52,7 +53,7 @@ class InvoiceOverviewList extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Invoice Overview',
+                  'dashboard.invoice_overview.title'.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -60,7 +61,7 @@ class InvoiceOverviewList extends StatelessWidget {
                 TextButton(
                   onPressed: onViewAll,
                   child: Text(
-                    'View all →',
+                    'dashboard.invoice_overview.view_all'.tr(),
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ),
@@ -138,7 +139,9 @@ class _InvoiceOverviewRow extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${data.count} invoices',
+                  'dashboard.invoice_overview.invoice_count'.tr(
+                    args: [data.count.toString()],
+                  ),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurface.withValues(alpha: 0.6),
                   ),

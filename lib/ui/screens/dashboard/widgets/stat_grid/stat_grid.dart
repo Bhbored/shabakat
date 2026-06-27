@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/network/dto/response/dashboard/dashboard_summary_response.dart';
@@ -25,9 +26,11 @@ class StatGrid extends StatelessWidget {
           children: [
             Expanded(
               child: StatCard(
-                label: 'TOTAL SUBSCRIBERS',
+                label: 'dashboard.stat.total_subscribers'.tr(),
                 value: customers.total.toString(),
-                trend: '${customers.active} active',
+                trend: 'dashboard.stat.active'.tr(
+                  args: [customers.active.toString()],
+                ),
                 icon: LucideIcons.users,
                 iconColor: AppColors.primary,
               ),
@@ -35,9 +38,11 @@ class StatGrid extends StatelessWidget {
             SizedBox(width: context.paddingSmall),
             Expanded(
               child: StatCard(
-                label: 'TOTAL COLLECTED',
+                label: 'dashboard.stat.total_collected'.tr(),
                 value: _formatMoney(summary.totalCollectedAllTime),
-                trend: '${summary.collectionRate.toStringAsFixed(1)}% collection rate',
+                trend: 'dashboard.stat.collection_rate'.tr(
+                  args: [summary.collectionRate.toStringAsFixed(1)],
+                ),
                 icon: LucideIcons.userCheck,
                 iconColor: AppColors.success,
               ),
@@ -49,9 +54,11 @@ class StatGrid extends StatelessWidget {
           children: [
             Expanded(
               child: StatCard(
-                label: 'UNPAID INVOICES',
+                label: 'dashboard.stat.unpaid_invoices'.tr(),
                 value: unpaidCount.toString(),
-                trend: '${_formatMoney(unpaidTotal)} outstanding',
+                trend: 'dashboard.stat.outstanding'.tr(
+                  args: [_formatMoney(unpaidTotal)],
+                ),
                 trendColor: AppColors.error,
                 icon: LucideIcons.alertCircle,
                 iconColor: AppColors.error,
@@ -60,10 +67,11 @@ class StatGrid extends StatelessWidget {
             SizedBox(width: context.paddingSmall),
             Expanded(
               child: StatCard(
-                label: 'TOTAL BILLED',
+                label: 'dashboard.stat.total_billed'.tr(),
                 value: _formatMoney(summary.totalBilledAllTime),
-                trend:
-                    '${_formatMoney(summary.totalOutstandingAllTime)} all-time due',
+                trend: 'dashboard.stat.all_time_due'.tr(
+                  args: [_formatMoney(summary.totalOutstandingAllTime)],
+                ),
                 icon: LucideIcons.dollarSign,
                 isAccent: true,
               ),

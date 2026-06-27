@@ -1,0 +1,53 @@
+{
+  "dashboard": {
+    "load_error": "Failed to load dashboard.",
+    "retry": "Retry",
+    "stat": {
+      "total_subscribers": "TOTAL SUBSCRIBERS",
+      "total_collected": "TOTAL COLLECTED",
+      "unpaid_invoices": "UNPAID INVOICES",
+      "total_billed": "TOTAL BILLED",
+      "active": "{} active",
+      "collection_rate": "{}% collection rate",
+      "outstanding": "{} outstanding",
+      "all_time_due": "{} all-time due"
+    },
+    "financial_summary": {
+      "title": "Financial Summary",
+      "subtitle": "Total billings, collections, expenses, and net income for the entire period for the current company.",
+      "billed": "Billed",
+      "collected": "Collected",
+      "due": "Due",
+      "expenses": "Expenses",
+      "net": "Net"
+    },
+    "invoice_overview": {
+      "title": "Invoice Overview",
+      "view_all": "View all →",
+      "paid": "Paid",
+      "partially_paid": "Partially paid",
+      "unpaid": "Unpaid",
+      "invoice_count": "{} invoices"
+    },
+    "customers_expenses": {
+      "title": "Customers & Expenses",
+      "customers": "CUSTOMERS",
+      "expenses_header": "EXPENSES · {}",
+      "active": "Active",
+      "suspended": "Suspended",
+      "terminated": "Terminated",
+      "ampere": "Ampere",
+      "kilowatt": "Kilowatt",
+      "fuel": "Fuel",
+      "maintenance": "Maintenance",
+      "employees": "Employees",
+      "other": "Other",
+      "pending": "{} pending"
+    }
+  },
+  "drawer": {
+    "settings": "Settings",
+    "help_support": "Help & Support",
+    "logout": "Logout"
+  }
+}

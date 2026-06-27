@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/app_snack_bar_variant.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/request/company/update_preferences_request.dart';
+import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
 import 'package:shabakat/data/providers/company/company_provider.dart';
 import 'package:shabakat/domain/entities/settings/company_preferences.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
@@ -43,14 +45,18 @@ class _LanguagePreferenceScreenState
 
     try {
       await ref.read(companyProvider.notifier).upsertPreferences(request);
-      if (mounted) {
-        AppSnackBar.show(
+      await ref
+          .read(sharedPreferencesHandlerProvider)
+          .setString('language', languageCode);
+      if (!mounted) return;
+      await context.setLocale(Locale(languageCode));
+      if (!mounted) return;
+      AppSnackBar.show(
           context,
           message: 'Preference saved',
           variant: AppSnackBarVariant.success,
-        );
-        Navigator.of(context).pop();
-      }
+      );
+      Navigator.of(context).pop();
     } catch (e) {
       if (mounted) {
         final message = e is ApiException
