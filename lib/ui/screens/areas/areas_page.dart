@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -70,7 +71,7 @@ class _AreasPageState extends ConsumerState<AreasPage> {
                   child: Text(err.userMessage, textAlign: TextAlign.center),
                 );
               }
-              return Center(child: Text('Error loading areas: $err'));
+              return Center(child: Text('areas.load_failed'.tr()));
             },
             data: (_) => RefreshIndicator(
               onRefresh: () async {

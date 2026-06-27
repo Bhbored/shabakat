@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
@@ -15,8 +16,8 @@ class AreaDetailsHeader extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final subscriberLabel = area.customerCount == 1
-        ? '1 subscriber'
-        : '${area.customerCount} subscribers';
+        ? 'areas.subscriber_count_one'.tr()
+        : 'areas.subscriber_count'.tr(args: [area.customerCount.toString()]);
 
     return Container(
       width: double.infinity,
@@ -82,17 +83,17 @@ class AreaDetailsHeader extends StatelessWidget {
               children: [
                 AreaDetailStatChip(
                   icon: Icons.calendar_today_outlined,
-                  label: 'Created',
+                  label: 'areas.details.created'.tr(),
                   value: _formatDate(area.createdAt),
                 ),
                 AreaDetailStatChip(
                   icon: Icons.update_outlined,
-                  label: 'Updated',
+                  label: 'areas.details.updated'.tr(),
                   value: _formatDate(area.updatedAt),
                 ),
                 AreaDetailStatChip(
                   icon: Icons.people_outline,
-                  label: 'Subscribers',
+                  label: 'areas.details.subscribers'.tr(),
                   value: area.customerCount.toString(),
                 ),
               ],

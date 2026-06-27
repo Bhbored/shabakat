@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class AreaDeleteDialog extends StatefulWidget {
@@ -31,15 +32,15 @@ class _AreaDeleteDialogState extends State<AreaDeleteDialog> {
     final theme = Theme.of(context);
 
     return AlertDialog(
-      title: const Text('Delete Area'),
+      title: Text('areas.delete.title'.tr()),
       content: Text(
-        'Are you sure you want to delete "${widget.areaName}"? This action cannot be undone.',
+        'areas.delete.message'.tr(args: [widget.areaName]),
         style: theme.textTheme.bodyMedium,
       ),
       actions: [
         TextButton(
           onPressed: _isDeleting ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text('settings.cancel'.tr()),
         ),
         ElevatedButton(
           onPressed: _isDeleting ? null : _confirm,
@@ -49,7 +50,7 @@ class _AreaDeleteDialogState extends State<AreaDeleteDialog> {
                   width: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Delete'),
+              : Text('areas.delete.confirm'.tr()),
         ),
       ],
     );

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -39,13 +40,13 @@ class _AreaAddingScreenState extends ConsumerState<AreaAddingScreen> {
     try {
       await ref.read(areaProvider.notifier).createArea(request);
       success = true;
-      message = 'Area added successfully';
+      message = 'areas.add.success'.tr();
       variant = AppSnackBarVariant.success;
     } catch (e) {
       success = false;
       message = e is ApiException
           ? e.userMessage
-          : 'Failed to add area. Please try again.';
+          : 'areas.add.failed'.tr();
       variant = AppSnackBarVariant.error;
     } finally {
       if (mounted) {
@@ -66,7 +67,7 @@ class _AreaAddingScreenState extends ConsumerState<AreaAddingScreen> {
           icon: const Icon(Icons.close),
           onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
         ),
-        title: const Text('Add Area'),
+        title: Text('areas.add.title'.tr()),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(context.paddingMedium),
@@ -75,7 +76,7 @@ class _AreaAddingScreenState extends ConsumerState<AreaAddingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Name', style: theme.textTheme.titleMedium),
+              Text('areas.add.name_label'.tr(), style: theme.textTheme.titleMedium),
               SizedBox(height: context.spaceSmall),
               TextFormField(
                 controller: _nameController,
@@ -83,11 +84,17 @@ class _AreaAddingScreenState extends ConsumerState<AreaAddingScreen> {
                 textInputAction: TextInputAction.done,
                 onFieldSubmitted: (_) => _onSubmit(),
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty) return 'Required';
-                  if (value.trim().length > 200) return 'Max 200 characters';
+                  if (value == null || value.trim().isEmpty) {
+                    return 'areas.validation.required'.tr();
+                  }
+                  if (value.trim().length > 200) {
+                    return 'areas.validation.max_characters'.tr(args: ['200']);
+                  }
                   return null;
                 },
-                decoration: const InputDecoration(hintText: 'Enter area name'),
+                decoration: InputDecoration(
+                  hintText: 'areas.add.name_hint'.tr(),
+                ),
               ),
               SizedBox(height: context.spaceExtraLarge),
               SizedBox(
@@ -100,7 +107,7 @@ class _AreaAddingScreenState extends ConsumerState<AreaAddingScreen> {
                           width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('Add Area'),
+                      : Text('areas.add.submit'.tr()),
                 ),
               ),
             ],

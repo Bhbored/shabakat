@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 
@@ -28,16 +29,18 @@ class AreasToolbar extends StatelessWidget {
             controller: searchController,
             onChanged: onSearchChanged,
             maxLines: 1,
-            decoration: const InputDecoration(
-              hintText: 'Search by name...',
-              prefixIcon: Icon(Icons.search, size: 20),
+            decoration: InputDecoration(
+              hintText: 'areas.search_hint'.tr(),
+              prefixIcon: const Icon(Icons.search, size: 20),
             ),
           ),
           SizedBox(height: context.spaceSmall),
           Text(
             resultCount == totalCount
-                ? '$totalCount areas'
-                : '$resultCount of $totalCount areas',
+                ? 'areas.count_all'.tr(args: [totalCount.toString()])
+                : 'areas.count_filtered'.tr(
+                    args: [resultCount.toString(), totalCount.toString()],
+                  ),
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),

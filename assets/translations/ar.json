@@ -194,5 +194,51 @@
       "max_characters": "الحد الأقصى {} حرفاً",
       "future_date": "لا يمكن أن يكون تاريخ المصروف في المستقبل"
     }
+  },
+  "areas": {
+    "load_failed": "فشل تحميل المناطق.",
+    "search_hint": "البحث بالاسم...",
+    "count_all": "{} منطقة",
+    "count_filtered": "{} من {} مناطق",
+    "empty_list": "لا توجد مناطق",
+    "created": "أُنشئ {}",
+    "subscriber": "مشترك",
+    "subscribers": "مشتركون",
+    "subscriber_count_one": "مشترك واحد",
+    "subscriber_count": "{} مشترك",
+    "add": {
+      "title": "إضافة منطقة",
+      "submit": "إضافة منطقة",
+      "success": "تمت إضافة المنطقة بنجاح",
+      "failed": "فشل إضافة المنطقة. يرجى المحاولة مرة أخرى.",
+      "name_label": "الاسم",
+      "name_hint": "أدخل اسم المنطقة"
+    },
+    "details": {
+      "title": "تفاصيل المنطقة",
+      "created": "تاريخ الإنشاء",
+      "updated": "تاريخ التحديث",
+      "subscribers": "المشتركون",
+      "subscribers_section": "المشتركون",
+      "no_subscribers": "لا يوجد مشتركون في هذه المنطقة",
+      "load_subscribers_failed": "فشل تحميل المشتركين."
+    },
+    "edit": {
+      "title": "تعديل المنطقة",
+      "success": "تم تحديث المنطقة",
+      "failed": "فشل تحديث المنطقة. يرجى المحاولة مرة أخرى."
+    },
+    "delete": {
+      "title": "حذف المنطقة",
+      "message": "هل أنت متأكد من حذف \"{}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حذف",
+      "success": "تم حذف المنطقة",
+      "failed": "فشل حذف المنطقة. يرجى المحاولة مرة أخرى."
+    },
+    "validation": {
+      "required": "مطلوب",
+      "name_required": "أدخل اسم المنطقة",
+      "max_characters": "الحد الأقصى {} حرفاً"
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class CustomerCountBadge extends StatelessWidget {
@@ -9,7 +10,9 @@ class CustomerCountBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final label = count == 1 ? 'subscriber' : 'subscribers';
+    final label = count == 1
+        ? 'areas.subscriber'.tr()
+        : 'areas.subscribers'.tr();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,

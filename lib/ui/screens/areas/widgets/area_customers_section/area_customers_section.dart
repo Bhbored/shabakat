@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -37,7 +38,7 @@ class AreaCustomersSection extends ConsumerWidget {
               context.spaceSmall,
             ),
             child: Text(
-              'Subscribers',
+              'areas.details.subscribers_section'.tr(),
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -54,14 +55,14 @@ class AreaCustomersSection extends ConsumerWidget {
                   );
                 }
                 return Center(
-                  child: Text('Error loading subscribers: $err'),
+                  child: Text('areas.details.load_subscribers_failed'.tr()),
                 );
               },
               data: (customers) {
                 if (customers.isEmpty) {
                   return Center(
                     child: Text(
-                      'No subscribers in this area',
+                      'areas.details.no_subscribers'.tr(),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: colorScheme.onSurface.withValues(alpha: 0.6),
                       ),

@@ -194,5 +194,51 @@
       "max_characters": "Max {} characters",
       "future_date": "Expense date cannot be in the future"
     }
+  },
+  "areas": {
+    "load_failed": "Failed to load areas.",
+    "search_hint": "Search by name...",
+    "count_all": "{} areas",
+    "count_filtered": "{} of {} areas",
+    "empty_list": "No areas found",
+    "created": "Created {}",
+    "subscriber": "subscriber",
+    "subscribers": "subscribers",
+    "subscriber_count_one": "1 subscriber",
+    "subscriber_count": "{} subscribers",
+    "add": {
+      "title": "Add Area",
+      "submit": "Add Area",
+      "success": "Area added successfully",
+      "failed": "Failed to add area. Please try again.",
+      "name_label": "Name",
+      "name_hint": "Enter area name"
+    },
+    "details": {
+      "title": "Area Details",
+      "created": "Created",
+      "updated": "Updated",
+      "subscribers": "Subscribers",
+      "subscribers_section": "Subscribers",
+      "no_subscribers": "No subscribers in this area",
+      "load_subscribers_failed": "Failed to load subscribers."
+    },
+    "edit": {
+      "title": "Edit Area",
+      "success": "Area updated",
+      "failed": "Failed to update area. Please try again."
+    },
+    "delete": {
+      "title": "Delete Area",
+      "message": "Are you sure you want to delete \"{}\"? This action cannot be undone.",
+      "confirm": "Delete",
+      "success": "Area deleted",
+      "failed": "Failed to delete area. Please try again."
+    },
+    "validation": {
+      "required": "Required",
+      "name_required": "Enter area name",
+      "max_characters": "Max {} characters"
+    }
   }
 }

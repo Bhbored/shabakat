@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
@@ -44,7 +45,7 @@ class AreaCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Created ${_formatDate(area.createdAt)}',
+                    'areas.created'.tr(args: [_formatDate(area.createdAt)]),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: colorScheme.onSurface.withValues(alpha: 0.6),
                     ),

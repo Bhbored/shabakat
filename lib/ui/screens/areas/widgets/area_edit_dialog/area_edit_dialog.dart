@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class AreaEditDialog extends StatefulWidget {
@@ -49,7 +50,7 @@ class _AreaEditDialogState extends State<AreaEditDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Edit Area'),
+      title: Text('areas.edit.title'.tr()),
       content: Form(
         key: _formKey,
         autovalidateMode: AutovalidateMode.disabled,
@@ -60,13 +61,13 @@ class _AreaEditDialogState extends State<AreaEditDialog> {
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _save(),
           validator: widget.validator,
-          decoration: const InputDecoration(hintText: 'Enter area name'),
+          decoration: InputDecoration(hintText: 'areas.add.name_hint'.tr()),
         ),
       ),
       actions: [
         TextButton(
           onPressed: _isSaving ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text('settings.cancel'.tr()),
         ),
         ElevatedButton(
           onPressed: _isSaving ? null : _save,
@@ -76,7 +77,7 @@ class _AreaEditDialogState extends State<AreaEditDialog> {
                   width: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Save'),
+              : Text('settings.save'.tr()),
         ),
       ],
     );

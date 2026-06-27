@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/enums/enums.dart';
@@ -53,9 +54,11 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
 
   String? _validateAreaName(String? value) {
     final trimmed = value?.trim() ?? '';
-    if (trimmed.isEmpty) return 'Enter area name';
+    if (trimmed.isEmpty) return 'areas.validation.name_required'.tr();
     if (trimmed.length > _nameMaxLength) {
-      return 'Max $_nameMaxLength characters';
+      return 'areas.validation.max_characters'.tr(
+        args: [_nameMaxLength.toString()],
+      );
     }
     return null;
   }
@@ -91,14 +94,14 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
       if (!mounted) return;
       AppSnackBar.show(
         context,
-        message: 'Area updated',
+        message: 'areas.edit.success'.tr(),
         variant: AppSnackBarVariant.success,
       );
     } catch (e) {
       if (!dialogContext.mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to update area. Please try again.';
+          : 'areas.edit.failed'.tr();
       AppSnackBar.show(
         dialogContext,
         message: message,
@@ -131,7 +134,7 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
       if (!mounted) return;
       AppSnackBar.show(
         context,
-        message: 'Area deleted',
+        message: 'areas.delete.success'.tr(),
         variant: AppSnackBarVariant.success,
       );
       _resetFilterAndPop();
@@ -139,7 +142,7 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
       if (!dialogContext.mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to delete area. Please try again.';
+          : 'areas.delete.failed'.tr();
       AppSnackBar.show(
         dialogContext,
         message: message,
@@ -167,7 +170,7 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
             onPressed: _resetFilterAndPop,
           ),
           title: Text(
-            'Area Details',
+            'areas.details.title'.tr(),
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
