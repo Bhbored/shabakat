@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -83,7 +84,7 @@ class _MainTabPageState extends State<MainTabPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Dashboard',
+                'tabs.dashboard'.tr(),
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: colorScheme.onSecondary,
@@ -129,7 +130,7 @@ class _MainTabPageState extends State<MainTabPage> {
       case 1:
         return AppBar(
           title: Text(
-            'Subscribers',
+            'tabs.subscribers'.tr(),
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: colorScheme.onSecondary,
@@ -146,7 +147,7 @@ class _MainTabPageState extends State<MainTabPage> {
       case 2:
         return AppBar(
           title: Text(
-            'Invoices',
+            'tabs.invoices'.tr(),
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: colorScheme.onSecondary,
@@ -159,7 +160,7 @@ class _MainTabPageState extends State<MainTabPage> {
       case 3:
         return AppBar(
           title: Text(
-            'Expenses',
+            'tabs.expenses'.tr(),
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: colorScheme.onSecondary,
@@ -176,7 +177,7 @@ class _MainTabPageState extends State<MainTabPage> {
       case 4:
         return AppBar(
           title: Text(
-            'Areas',
+            'tabs.areas'.tr(),
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: colorScheme.onSecondary,

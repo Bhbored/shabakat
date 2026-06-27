@@ -53,7 +53,7 @@ class _LanguagePreferenceScreenState
       if (!mounted) return;
       AppSnackBar.show(
           context,
-          message: 'Preference saved',
+          message: 'settings.preference_saved'.tr(),
           variant: AppSnackBarVariant.success,
       );
       Navigator.of(context).pop();
@@ -61,7 +61,7 @@ class _LanguagePreferenceScreenState
       if (mounted) {
         final message = e is ApiException
             ? e.userMessage
-            : 'Failed to save preference. Please try again.';
+            : 'settings.preference_save_failed'.tr();
         AppSnackBar.show(
           context,
           message: message,
@@ -85,7 +85,7 @@ class _LanguagePreferenceScreenState
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('Language'),
+        title: Text('settings.preferences.language'.tr()),
       ),
       body: Stack(
         children: [
@@ -93,13 +93,13 @@ class _LanguagePreferenceScreenState
             padding: EdgeInsets.all(context.paddingMedium),
             children: [
               _LanguageOptionTile(
-                label: 'English',
+                label: 'settings.language_english'.tr(),
                 isSelected: currentLanguage == 'en',
                 onTap: () => _selectLanguage('en'),
               ),
               SizedBox(height: context.spaceSmall),
               _LanguageOptionTile(
-                label: 'Arabic',
+                label: 'settings.language_arabic'.tr(),
                 isSelected: currentLanguage == 'ar',
                 onTap: () => _selectLanguage('ar'),
               ),

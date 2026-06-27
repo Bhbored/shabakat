@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -88,13 +89,13 @@ class _TriggerMessagePreferenceScreenState
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('Trigger Message'),
+        title: Text('settings.preferences.trigger_message'.tr()),
         actions: [
           TextButton(
             onPressed: showFieldLoading || isSaving || _draft == null
                 ? null
                 : _clearAll,
-            child: const Text('Clear all'),
+            child: Text('settings.clear_all'.tr()),
           ),
         ],
       ),
@@ -110,7 +111,7 @@ class _TriggerMessagePreferenceScreenState
             ),
             child: Text(
               textAlign: TextAlign.center,
-              'Message sent to unpaid customers via WhatsApp on the trigger date.',
+              'settings.trigger_message.description'.tr(),
               style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: colorScheme.onSurface.withValues(alpha: 0.6),
@@ -122,9 +123,9 @@ class _TriggerMessagePreferenceScreenState
               padding: EdgeInsets.symmetric(horizontal: context.paddingMedium),
               child: showFieldLoading
                   ? InputDecorator(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         alignLabelWithHint: true,
-                        labelText: 'Message',
+                        labelText: 'settings.trigger_message.label'.tr(),
                       ),
                       child: Center(
                         child: SizedBox(
@@ -145,10 +146,10 @@ class _TriggerMessagePreferenceScreenState
                       expands: true,
                       textAlignVertical: TextAlignVertical.top,
                       keyboardType: TextInputType.multiline,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         alignLabelWithHint: true,
-                        labelText: 'Message',
-                        hintText: 'Enter trigger message...',
+                        labelText: 'settings.trigger_message.label'.tr(),
+                        hintText: 'settings.trigger_message.hint'.tr(),
                         counterText: '',
                       ),
                       onChanged: _onMessageChanged,
@@ -177,7 +178,7 @@ class _TriggerMessagePreferenceScreenState
               child: Text(
                 preferencesAsync.error is ApiException
                     ? (preferencesAsync.error! as ApiException).userMessage
-                    : 'Failed to load preferences.',
+                    : 'settings.load_preferences_failed'.tr(),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: colorScheme.error,
                 ),
@@ -185,7 +186,12 @@ class _TriggerMessagePreferenceScreenState
             ),
           ],
           Padding(
-            padding: EdgeInsets.all(context.paddingMedium),
+            padding: EdgeInsets.fromLTRB(
+              context.paddingMedium,
+              context.paddingSmall,
+              context.paddingMedium,
+              context.viewInsets.bottom + context.paddingLarge,
+            ),
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -209,7 +215,7 @@ class _TriggerMessagePreferenceScreenState
                           if (!context.mounted) return;
                           AppSnackBar.show(
                             context,
-                            message: 'Preference saved',
+                            message: 'settings.preference_saved'.tr(),
                             variant: AppSnackBarVariant.success,
                           );
                           Navigator.of(context).pop();
@@ -217,7 +223,7 @@ class _TriggerMessagePreferenceScreenState
                           if (!context.mounted) return;
                           final errorMessage = e is ApiException
                               ? e.userMessage
-                              : 'Failed to save preference. Please try again.';
+                              : 'settings.preference_save_failed'.tr();
                           AppSnackBar.show(
                             context,
                             message: errorMessage,
@@ -235,7 +241,7 @@ class _TriggerMessagePreferenceScreenState
                           color: colorScheme.onPrimary,
                         ),
                       )
-                    : const Text('Save'),
+                    : Text('settings.save'.tr()),
               ),
             ),
           ),

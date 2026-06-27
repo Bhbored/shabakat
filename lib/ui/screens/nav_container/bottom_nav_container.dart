@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -30,31 +31,31 @@ class BottomNavContainer extends StatelessWidget {
           children: [
             BottomNavItem(
               icon: LucideIcons.layoutDashboard,
-              label: 'Dashboard',
+              label: 'tabs.dashboard'.tr(),
               isActive: currentIndex == 0,
               onTap: () => onTabChanged(0),
             ),
             BottomNavItem(
               icon: LucideIcons.users,
-              label: 'Subscribers',
+              label: 'tabs.subscribers'.tr(),
               isActive: currentIndex == 1,
               onTap: () => onTabChanged(1),
             ),
             BottomNavItem(
               icon: LucideIcons.fileText,
-              label: 'Invoices',
+              label: 'tabs.invoices'.tr(),
               isActive: currentIndex == 2,
               onTap: () => onTabChanged(2),
             ),
             BottomNavItem(
               icon: LucideIcons.wallet,
-              label: 'Expenses',
+              label: 'tabs.expenses'.tr(),
               isActive: currentIndex == 3,
               onTap: () => onTabChanged(3),
             ),
             BottomNavItem(
               icon: LucideIcons.mapPin,
-              label: 'Areas',
+              label: 'tabs.areas'.tr(),
               isActive: currentIndex == 4,
               onTap: () => onTabChanged(4),
             ),

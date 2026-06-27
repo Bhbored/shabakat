@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -17,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Settings',
+          'settings.title'.tr(),
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
             color: colorScheme.onSecondary,
@@ -29,7 +30,7 @@ class SettingsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SettingsSectionTitle(title: 'Appearance'),
+            SettingsSectionTitle(title: 'settings.appearance'.tr()),
             SizedBox(height: context.spaceSmall),
             Card(
               child: Padding(
@@ -38,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Theme',
+                      'settings.theme'.tr(),
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -50,34 +51,34 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: context.spaceMedium),
-            const SettingsSectionTitle(title: 'Company Preferences'),
+            SettingsSectionTitle(title: 'settings.company_preferences'.tr()),
             SizedBox(height: context.spaceSmall),
             const CompanyPreferencesSection(),
             SizedBox(height: context.spaceMedium),
-            const SettingsSectionTitle(title: 'Notifications'),
+            SettingsSectionTitle(title: 'settings.notifications'.tr()),
             SizedBox(height: context.spaceSmall),
             Card(
               child: Column(
                 children: [
-                  const SwitchTile(
-                    title: 'Payment Reminders',
-                    subtitle: 'Notify when payments are due',
+                  SwitchTile(
+                    title: 'settings.payment_reminders'.tr(),
+                    subtitle: 'settings.payment_reminders_subtitle'.tr(),
                     icon: LucideIcons.bell,
                     value: true,
                     onChanged: null,
                   ),
                   Divider(height: 1, color: colorScheme.outline),
-                  const SwitchTile(
-                    title: 'New Subscribers',
-                    subtitle: 'Alert when a subscriber joins',
+                  SwitchTile(
+                    title: 'settings.new_subscribers'.tr(),
+                    subtitle: 'settings.new_subscribers_subtitle'.tr(),
                     icon: LucideIcons.userPlus,
                     value: true,
                     onChanged: null,
                   ),
                   Divider(height: 1, color: colorScheme.outline),
-                  const SwitchTile(
-                    title: 'Overdue Alerts',
-                    subtitle: 'Warn about overdue invoices',
+                  SwitchTile(
+                    title: 'settings.overdue_alerts'.tr(),
+                    subtitle: 'settings.overdue_alerts_subtitle'.tr(),
                     icon: LucideIcons.alertTriangle,
                     value: false,
                     onChanged: null,
@@ -86,7 +87,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: context.spaceMedium),
-            const SettingsSectionTitle(title: 'About'),
+            SettingsSectionTitle(title: 'settings.about'.tr()),
             SizedBox(height: context.spaceSmall),
             Card(
               child: Column(
@@ -96,7 +97,9 @@ class SettingsScreen extends StatelessWidget {
                       padding: EdgeInsets.all(context.paddingSmall),
                       decoration: BoxDecoration(
                         color: colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+                        borderRadius: BorderRadius.circular(
+                          context.borderRadiusMedium,
+                        ),
                       ),
                       child: Icon(
                         LucideIcons.info,
@@ -105,7 +108,7 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     title: Text(
-                      'Version',
+                      'settings.version'.tr(),
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w500,
                       ),

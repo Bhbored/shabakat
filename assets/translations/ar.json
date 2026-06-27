@@ -49,5 +49,75 @@
     "settings": "الإعدادات",
     "help_support": "المساعدة والدعم",
     "logout": "تسجيل الخروج"
+  },
+  "tabs": {
+    "dashboard": "لوحة التحكم",
+    "subscribers": "المشتركون",
+    "invoices": "الفواتير",
+    "expenses": "المصاريف",
+    "areas": "المناطق"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "appearance": "المظهر",
+    "theme": "السمة",
+    "theme_light": "فاتح",
+    "theme_dark": "داكن",
+    "theme_system": "النظام",
+    "company_preferences": "تفضيلات الشركة",
+    "notifications": "الإشعارات",
+    "payment_reminders": "تذكيرات الدفع",
+    "payment_reminders_subtitle": "إشعار عند استحقاق الدفعات",
+    "new_subscribers": "مشتركون جدد",
+    "new_subscribers_subtitle": "تنبيه عند انضمام مشترك",
+    "overdue_alerts": "تنبيهات التأخير",
+    "overdue_alerts_subtitle": "تحذير بشأن الفواتير المتأخرة",
+    "about": "حول التطبيق",
+    "version": "الإصدار",
+    "not_set": "غير محدد",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "clear_all": "مسح الكل",
+    "preference_saved": "تم حفظ التفضيل",
+    "preference_save_failed": "فشل حفظ التفضيل. يرجى المحاولة مرة أخرى.",
+    "load_preferences_failed": "فشل تحميل التفضيلات.",
+    "price": "السعر",
+    "customer_type": "نوع العميل",
+    "language_english": "الإنجليزية",
+    "language_arabic": "العربية",
+    "day_of_month": "{} من الشهر",
+    "day_hint": "1-31",
+    "preferences": {
+      "price_per_kilowatt": "السعر لكل كيلوواط",
+      "price_per_amp": "السعر لكل أمبير",
+      "fixed_charge": "الرسوم الثابتة",
+      "tva": "ضريبة القيمة المضافة (%)",
+      "language": "اللغة",
+      "due_date": "تاريخ الاستحقاق",
+      "trigger_date": "تاريخ التذكير",
+      "trigger_message": "رسالة التذكير"
+    },
+    "due_date_description": "يوم الشهر الذي تستحق فيه الفواتير.",
+    "trigger_date_description": "يوم الشهر الذي تُرسل فيه تذكيرات الفواتير للعملاء.",
+    "validation": {
+      "required": "مطلوب",
+      "invalid_number": "أدخل رقماً صالحاً",
+      "day_range": "يجب أن يكون بين 1 و 31"
+    },
+    "tier": {
+      "base": "أساسي",
+      "residential": "سكني",
+      "commercial": "تجاري",
+      "industrial": "صناعي",
+      "base_description": "يُستخدم كقيمة افتراضية لجميع أنواع العملاء عند عدم تحديد إعداد خاص.",
+      "residential_description": "يُطبّق على العملاء السكنيين عند التكوين.",
+      "commercial_description": "يُطبّق على العملاء التجاريين عند التكوين.",
+      "industrial_description": "يُطبّق على العملاء الصناعيين عند التكوين."
+    },
+    "trigger_message": {
+      "description": "رسالة تُرسل للعملاء غير المدفوعين عبر واتساب في تاريخ التذكير.",
+      "label": "الرسالة",
+      "hint": "أدخل رسالة التذكير..."
+    }
   }
 }

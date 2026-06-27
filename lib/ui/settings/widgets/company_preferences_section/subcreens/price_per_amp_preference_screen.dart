@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -74,23 +75,19 @@ class _PricePerAmpPreferenceScreenState
 
   String _tierLabel(_CustomerTier tier) {
     return switch (tier) {
-      _CustomerTier.base => 'Base',
-      _CustomerTier.residential => 'Residential',
-      _CustomerTier.commercial => 'Commercial',
-      _CustomerTier.industrial => 'Industrial',
+      _CustomerTier.base => 'settings.tier.base'.tr(),
+      _CustomerTier.residential => 'settings.tier.residential'.tr(),
+      _CustomerTier.commercial => 'settings.tier.commercial'.tr(),
+      _CustomerTier.industrial => 'settings.tier.industrial'.tr(),
     };
   }
 
   String _tierDescription(_CustomerTier tier) {
     return switch (tier) {
-      _CustomerTier.base =>
-        'Used as the fallback for all customer types when no specific configuration is set.',
-      _CustomerTier.residential =>
-        'Applies to residential customers when configured.',
-      _CustomerTier.commercial =>
-        'Applies to commercial customers when configured.',
-      _CustomerTier.industrial =>
-        'Applies to industrial customers when configured.',
+      _CustomerTier.base => 'settings.tier.base_description'.tr(),
+      _CustomerTier.residential => 'settings.tier.residential_description'.tr(),
+      _CustomerTier.commercial => 'settings.tier.commercial_description'.tr(),
+      _CustomerTier.industrial => 'settings.tier.industrial_description'.tr(),
     };
   }
 
@@ -144,7 +141,7 @@ class _PricePerAmpPreferenceScreenState
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('Price per Amp'),
+        title: Text('settings.preferences.price_per_amp'.tr()),
       ),
       body: Column(
         children: [
@@ -170,7 +167,7 @@ class _PricePerAmpPreferenceScreenState
                         ),
                         style: theme.textTheme.bodyLarge,
                         decoration: InputDecoration(
-                          labelText: 'Customer type',
+                          labelText: 'settings.customer_type'.tr(),
                         ).applyDefaults(theme.inputDecorationTheme),
                         items: _CustomerTier.values
                             .map(
@@ -191,8 +188,8 @@ class _PricePerAmpPreferenceScreenState
                       flex: 3,
                       child: showFieldLoading
                           ? InputDecorator(
-                              decoration: const InputDecoration(
-                                labelText: 'Price',
+                              decoration: InputDecoration(
+                                labelText: 'settings.price'.tr(),
                               ),
                               child: Center(
                                 child: SizedBox(
@@ -212,8 +209,8 @@ class _PricePerAmpPreferenceScreenState
                                   const TextInputType.numberWithOptions(
                                     decimal: true,
                                   ),
-                              decoration: const InputDecoration(
-                                labelText: 'Price',
+                              decoration: InputDecoration(
+                                labelText: 'settings.price'.tr(),
                                 hintText: '0',
                               ),
                               onChanged: _onPriceChanged,
@@ -235,7 +232,7 @@ class _PricePerAmpPreferenceScreenState
                   Text(
                     preferencesAsync.error is ApiException
                         ? (preferencesAsync.error! as ApiException).userMessage
-                        : 'Failed to load preferences.',
+                        : 'settings.load_preferences_failed'.tr(),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: colorScheme.error,
                     ),
@@ -245,7 +242,12 @@ class _PricePerAmpPreferenceScreenState
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(context.paddingMedium),
+            padding: EdgeInsets.fromLTRB(
+              context.paddingMedium,
+              context.paddingSmall,
+              context.paddingMedium,
+              context.viewInsets.bottom + context.paddingLarge,
+            ),
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -272,7 +274,7 @@ class _PricePerAmpPreferenceScreenState
                           if (!context.mounted) return;
                           AppSnackBar.show(
                             context,
-                            message: 'Preference saved',
+                            message: 'settings.preference_saved'.tr(),
                             variant: AppSnackBarVariant.success,
                           );
                           Navigator.of(context).pop();
@@ -280,7 +282,7 @@ class _PricePerAmpPreferenceScreenState
                           if (!context.mounted) return;
                           final message = e is ApiException
                               ? e.userMessage
-                              : 'Failed to save preference. Please try again.';
+                              : 'settings.preference_save_failed'.tr();
                           AppSnackBar.show(
                             context,
                             message: message,
@@ -299,7 +301,7 @@ class _PricePerAmpPreferenceScreenState
                         ),
                       )
                     : Text(
-                        'Save',
+                        'settings.save'.tr(),
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

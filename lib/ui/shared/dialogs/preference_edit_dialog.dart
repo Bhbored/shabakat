@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
@@ -86,13 +87,13 @@ class _PreferenceEditDialogState extends State<PreferenceEditDialog> {
     try {
       await widget.onSave(_controller.text.trim());
       success = true;
-      message = 'Preference saved';
+      message = 'settings.preference_saved'.tr();
       variant = AppSnackBarVariant.success;
     } catch (e) {
       success = false;
       message = e is ApiException
           ? e.userMessage
-          : 'Failed to save preference. Please try again.';
+          : 'settings.preference_save_failed'.tr();
       variant = AppSnackBarVariant.error;
     } finally {
       if (mounted) {
@@ -139,7 +140,7 @@ class _PreferenceEditDialogState extends State<PreferenceEditDialog> {
       actions: [
         TextButton(
           onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text('settings.cancel'.tr()),
         ),
         ElevatedButton(
           onPressed: _isLoading ? null : _save,
@@ -149,7 +150,7 @@ class _PreferenceEditDialogState extends State<PreferenceEditDialog> {
                   width: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Save'),
+              : Text('settings.save'.tr()),
         ),
       ],
     );

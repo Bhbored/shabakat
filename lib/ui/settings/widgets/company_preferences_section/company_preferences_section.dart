@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -30,7 +31,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
       child: Column(
         children: [
           PreferenceTile(
-            label: 'Price per Kilowatt',
+            label: 'settings.preferences.price_per_kilowatt'.tr(),
             icon: LucideIcons.zap,
             labelOnly: true,
             onTap: () => Navigator.of(context).push(
@@ -39,7 +40,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
           ),
           _divider(context, colorScheme),
           PreferenceTile(
-            label: 'Price per Amp',
+            label: 'settings.preferences.price_per_amp'.tr(),
             icon: LucideIcons.zap,
             labelOnly: true,
             onTap: () => Navigator.of(context).push(
@@ -48,7 +49,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
           ),
           _divider(context, colorScheme),
           PreferenceTile(
-            label: 'Fixed Charge',
+            label: 'settings.preferences.fixed_charge'.tr(),
             icon: LucideIcons.receipt,
             labelOnly: true,
             onTap: () => Navigator.of(context).push(
@@ -57,7 +58,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
           ),
           _divider(context, colorScheme),
           PreferenceTile(
-            label: 'TVA (%)',
+            label: 'settings.preferences.tva'.tr(),
             icon: LucideIcons.percent,
             labelOnly: true,
             onTap: () => Navigator.of(
@@ -66,7 +67,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
           ),
           _divider(context, colorScheme),
           PreferenceTile(
-            label: 'Language',
+            label: 'settings.preferences.language'.tr(),
             value: preferencesAsync.when(
               data: (preferences) => _formatLanguage(preferences.language),
               loading: () => _formatLanguage(_defaultPreferences.language),
@@ -77,7 +78,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
           ),
           _divider(context, colorScheme),
           PreferenceTile(
-            label: 'Due Date',
+            label: 'settings.preferences.due_date'.tr(),
             value: preferencesAsync.when(
               data: (preferences) => _formatDayOfMonth(preferences.dueDate),
               loading: () => null,
@@ -88,7 +89,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
           ),
           _divider(context, colorScheme),
           PreferenceTile(
-            label: 'Trigger Date',
+            label: 'settings.preferences.trigger_date'.tr(),
             value: preferencesAsync.when(
               data: (preferences) => _formatDayOfMonth(preferences.triggerDate),
               loading: () => null,
@@ -99,7 +100,7 @@ class CompanyPreferencesSection extends ConsumerWidget {
           ),
           _divider(context, colorScheme),
           PreferenceTile(
-            label: 'Trigger Message',
+            label: 'settings.preferences.trigger_message'.tr(),
             value: preferencesAsync.when(
               data: (preferences) => preferences.triggerMessage,
               loading: () => null,
@@ -125,20 +126,14 @@ class CompanyPreferencesSection extends ConsumerWidget {
 
   String _formatLanguage(String language) {
     return switch (language.toLowerCase()) {
-      'en' => 'English',
-      'ar' => 'Arabic',
+      'en' => 'settings.language_english'.tr(),
+      'ar' => 'settings.language_arabic'.tr(),
       _ => language,
     };
   }
 
   String _formatDayOfMonth(int day) {
-    final suffix = switch (day % 10) {
-      1 when day != 11 => 'st',
-      2 when day != 12 => 'nd',
-      3 when day != 13 => 'rd',
-      _ => 'th',
-    };
-    return '$day$suffix of month';
+    return 'settings.day_of_month'.tr(args: [day.toString()]);
   }
 
   void _openLanguageScreen(BuildContext context, WidgetRef ref) {
@@ -158,16 +153,18 @@ class CompanyPreferencesSection extends ConsumerWidget {
 
     showPreferenceEditDialog(
       context: context,
-      title: 'Due Date',
+      title: 'settings.preferences.due_date'.tr(),
       initialValue: current.dueDate.toString(),
-      hintText: '1-31',
-      description: 'Day of the month when invoices are due.',
+      hintText: 'settings.day_hint'.tr(),
+      description: 'settings.due_date_description'.tr(),
       keyboardType: TextInputType.number,
       validator: (value) {
-        if (value == null || value.trim().isEmpty) return 'Required';
+        if (value == null || value.trim().isEmpty) {
+          return 'settings.validation.required'.tr();
+        }
         final day = int.tryParse(value.trim());
-        if (day == null) return 'Enter a valid number';
-        if (day < 1 || day > 31) return 'Must be between 1 and 31';
+        if (day == null) return 'settings.validation.invalid_number'.tr();
+        if (day < 1 || day > 31) return 'settings.validation.day_range'.tr();
 
         return null;
       },
@@ -188,17 +185,18 @@ class CompanyPreferencesSection extends ConsumerWidget {
 
     showPreferenceEditDialog(
       context: context,
-      title: 'Trigger Date',
+      title: 'settings.preferences.trigger_date'.tr(),
       initialValue: current.triggerDate.toString(),
-      hintText: '1-31',
-      description:
-          'Day of the month when invoice reminders are sent to customers.',
+      hintText: 'settings.day_hint'.tr(),
+      description: 'settings.trigger_date_description'.tr(),
       keyboardType: TextInputType.number,
       validator: (value) {
-        if (value == null || value.trim().isEmpty) return 'Required';
+        if (value == null || value.trim().isEmpty) {
+          return 'settings.validation.required'.tr();
+        }
         final day = int.tryParse(value.trim());
-        if (day == null) return 'Enter a valid number';
-        if (day < 1 || day > 31) return 'Must be between 1 and 31';
+        if (day == null) return 'settings.validation.invalid_number'.tr();
+        if (day < 1 || day > 31) return 'settings.validation.day_range'.tr();
 
         return null;
       },

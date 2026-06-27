@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -19,9 +20,9 @@ class _ThemeSelectorState extends ConsumerState<ThemeSelector> {
     final themeModeAsync = ref.watch(themeModeProvider);
 
     final options = [
-      (label: 'Light', icon: LucideIcons.sun, mode: ThemeMode.light),
-      (label: 'Dark', icon: LucideIcons.moon, mode: ThemeMode.dark),
-      (label: 'System', icon: LucideIcons.monitor, mode: ThemeMode.system),
+      (label: 'settings.theme_light'.tr(), icon: LucideIcons.sun, mode: ThemeMode.light),
+      (label: 'settings.theme_dark'.tr(), icon: LucideIcons.moon, mode: ThemeMode.dark),
+      (label: 'settings.theme_system'.tr(), icon: LucideIcons.monitor, mode: ThemeMode.system),
     ];
 
     final currentMode = themeModeAsync.value ?? ThemeMode.system;

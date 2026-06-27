@@ -49,5 +49,75 @@
     "settings": "Settings",
     "help_support": "Help & Support",
     "logout": "Logout"
+  },
+  "tabs": {
+    "dashboard": "Dashboard",
+    "subscribers": "Subscribers",
+    "invoices": "Invoices",
+    "expenses": "Expenses",
+    "areas": "Areas"
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "theme_light": "Light",
+    "theme_dark": "Dark",
+    "theme_system": "System",
+    "company_preferences": "Company Preferences",
+    "notifications": "Notifications",
+    "payment_reminders": "Payment Reminders",
+    "payment_reminders_subtitle": "Notify when payments are due",
+    "new_subscribers": "New Subscribers",
+    "new_subscribers_subtitle": "Alert when a subscriber joins",
+    "overdue_alerts": "Overdue Alerts",
+    "overdue_alerts_subtitle": "Warn about overdue invoices",
+    "about": "About",
+    "version": "Version",
+    "not_set": "Not set",
+    "save": "Save",
+    "cancel": "Cancel",
+    "clear_all": "Clear all",
+    "preference_saved": "Preference saved",
+    "preference_save_failed": "Failed to save preference. Please try again.",
+    "load_preferences_failed": "Failed to load preferences.",
+    "price": "Price",
+    "customer_type": "Customer type",
+    "language_english": "English",
+    "language_arabic": "Arabic",
+    "day_of_month": "{} of month",
+    "day_hint": "1-31",
+    "preferences": {
+      "price_per_kilowatt": "Price per Kilowatt",
+      "price_per_amp": "Price per Amp",
+      "fixed_charge": "Fixed Charge",
+      "tva": "TVA (%)",
+      "language": "Language",
+      "due_date": "Due Date",
+      "trigger_date": "Trigger Date",
+      "trigger_message": "Trigger Message"
+    },
+    "due_date_description": "Day of the month when invoices are due.",
+    "trigger_date_description": "Day of the month when invoice reminders are sent to customers.",
+    "validation": {
+      "required": "Required",
+      "invalid_number": "Enter a valid number",
+      "day_range": "Must be between 1 and 31"
+    },
+    "tier": {
+      "base": "Base",
+      "residential": "Residential",
+      "commercial": "Commercial",
+      "industrial": "Industrial",
+      "base_description": "Used as the fallback for all customer types when no specific configuration is set.",
+      "residential_description": "Applies to residential customers when configured.",
+      "commercial_description": "Applies to commercial customers when configured.",
+      "industrial_description": "Applies to industrial customers when configured."
+    },
+    "trigger_message": {
+      "description": "Message sent to unpaid customers via WhatsApp on the trigger date.",
+      "label": "Message",
+      "hint": "Enter trigger message..."
+    }
   }
 }

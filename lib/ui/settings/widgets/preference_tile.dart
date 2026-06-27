@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -51,7 +52,7 @@ class PreferenceTile extends StatelessWidget {
             if (!labelOnly) ...[
               const SizedBox(height: 2),
               Text(
-                value ?? 'Not set',
+                value ?? 'settings.not_set'.tr(),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: subtitleStyle,
