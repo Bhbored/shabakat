@@ -20,9 +20,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   bool _isWhatsApp = true;
   final Set<int> _sentIds = {};
 
-  List<Subscriber> get _pending =>
-      allSubscribers.where((s) => s.status != SubscriberStatus.paid).toList();
-
+  List<Subscriber> get _pending => [];
   int get _remaining => _pending.where((s) => !_sentIds.contains(s.id)).length;
 
   void _send(int id) => setState(() => _sentIds.add(id));

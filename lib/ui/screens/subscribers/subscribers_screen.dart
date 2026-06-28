@@ -31,7 +31,8 @@ class SubscribersScreen extends ConsumerWidget {
     }
 
     return customersAsync.when(
-      skipLoadingOnRefresh: true,
+      skipLoadingOnRefresh: false,
+      skipLoadingOnReload: false,
       loading: () => const SubscribersSkeleton(),
       error: (err, _) => _SubscribersLayout(
         body: DynamicError(

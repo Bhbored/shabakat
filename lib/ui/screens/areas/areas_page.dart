@@ -54,7 +54,8 @@ class _AreasPageState extends ConsumerState<AreasPage> {
     final filtered = _filterAreas(areas);
 
     return areasAsync.when(
-      skipLoadingOnRefresh: true,
+      skipLoadingOnRefresh: false,
+      skipLoadingOnReload: false,
       loading: () => const AreasSkeleton(),
       error: (err, _) => _AreasLayout(
         searchController: _searchController,

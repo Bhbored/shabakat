@@ -46,7 +46,8 @@ class _InvoicesScreenState extends ConsumerState<InvoicesScreen> {
     }
 
     return invoicesAsync.when(
-      skipLoadingOnRefresh: true,
+      skipLoadingOnRefresh: false,
+      skipLoadingOnReload: false,
       loading: () => const InvoicesSkeleton(),
       error: (err, _) => _InvoicesLayout(
         body: DynamicError(
