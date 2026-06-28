@@ -53,6 +53,23 @@
   "common": {
     "all": "الكل"
   },
+  "errors": {
+    "try_again": "حاول مرة أخرى"
+  },
+  "api_errors": {
+    "no_internet": "لا يوجد اتصال بالإنترنت.",
+    "request_timeout": "انتهت مهلة الاتصال.",
+    "send_timeout": "انتهت مهلة الإرسال.",
+    "receive_timeout": "انتهت مهلة استجابة الخادم.",
+    "bad_response": "استجابة غير صالحة من الخادم.",
+    "cancelled": "تم إلغاء الطلب.",
+    "unknown": "حدث خطأ غير متوقع.",
+    "certificate_failed": "فشل الاتصال الآمن.",
+    "connection_failed": "تعذر الوصول إلى الخادم.",
+    "unauthorized": "انتهت الجلسة. سجّل دخولك.",
+    "not_found": "غير موجود.",
+    "server_error": "خطأ في الخادم."
+  },
   "tabs": {
     "dashboard": "لوحة التحكم",
     "subscribers": "المشتركون",

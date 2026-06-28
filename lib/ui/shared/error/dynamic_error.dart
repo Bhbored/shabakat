@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -74,7 +75,7 @@ class DynamicError extends StatelessWidget {
                       SizedBox(height: context.spaceLarge),
                       ElevatedButton(
                         onPressed: () => onTryAgain(),
-                        child: const Text('Try Again'),
+                        child: Text('errors.try_again'.tr()),
                       ),
                     ],
                   ),

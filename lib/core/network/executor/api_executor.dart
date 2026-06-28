@@ -92,7 +92,7 @@ class ApiExecutor {
       ),
       DioExceptionType.receiveTimeout => ApiException(
         error: 'Server took too long to respond.',
-        userMessage: ApiErrors.requestTimeout,
+        userMessage: ApiErrors.receiveTimeout,
         statusCode: status,
         originalError: e,
       ),
@@ -116,7 +116,7 @@ class ApiExecutor {
       ),
       DioExceptionType.connectionError => ApiException(
         error: 'No internet connection.',
-        userMessage: ApiErrors.connectionFailed,
+        userMessage: ApiErrors.noInternet,
         statusCode: status,
         originalError: e,
       ),
