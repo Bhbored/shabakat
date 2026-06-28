@@ -8,6 +8,7 @@ import 'package:shabakat/data/providers/expense/expense_pagination_provider.dart
 import 'package:shabakat/data/providers/expense/expense_provider.dart';
 import 'package:shabakat/ui/screens/subscribers/widgets/subscribers_pagination/subscribers_pagination.dart';
 import 'package:shabakat/ui/shared/error/dynamic_error.dart';
+import 'package:shabakat/ui/shared/skeletons/expenses_skeleton.dart';
 
 import 'widgets/expense_filter_chips/expense_filter_chips_row.dart';
 import 'widgets/expense_list/expense_list.dart';
@@ -30,33 +31,35 @@ class ExpensesScreen extends ConsumerWidget {
           );
     }
 
-    return _ExpensesLayout(
-      body: expensesAsync.when(
-        skipLoadingOnRefresh: true,
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, _) => DynamicError(
+    return expensesAsync.when(
+      skipLoadingOnRefresh: true,
+      loading: () => const ExpensesSkeleton(),
+      error: (err, _) => _ExpensesLayout(
+        body: DynamicError(
           text: err is ApiException
               ? err.userMessage
               : 'expenses.load_failed'.tr(),
           onTryAgain: () => ref.read(expenseProvider.notifier).refresh(),
         ),
-        data: (expenses) => RefreshIndicator(
+      ),
+      data: (expenses) => _ExpensesLayout(
+        body: RefreshIndicator(
           onRefresh: () async {
             ref.read(expenseFilterProvider.notifier).clearFilter();
             ref.invalidate(expenseProvider);
           },
           child: ExpenseList(expenses: expenses),
         ),
+        pagination: pagination.totalPages > 1
+            ? SubscribersPagination(
+                currentPage: pagination.pageNumber,
+                totalPages: pagination.totalPages,
+                onPageChanged: goToPage,
+                onFirstPage: filterNotifier.firstPage,
+                onLastPage: filterNotifier.lastPage,
+              )
+            : null,
       ),
-      pagination: pagination.totalPages > 1
-          ? SubscribersPagination(
-              currentPage: pagination.pageNumber,
-              totalPages: pagination.totalPages,
-              onPageChanged: goToPage,
-              onFirstPage: filterNotifier.firstPage,
-              onLastPage: filterNotifier.lastPage,
-            )
-          : null,
     );
   }
 }

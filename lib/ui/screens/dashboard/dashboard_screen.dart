@@ -6,6 +6,7 @@ import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/response/dashboard/dashboard_summary_response.dart';
 import 'package:shabakat/data/providers/dashboard/dashboard_provider.dart';
 import 'package:shabakat/ui/shared/error/dynamic_error.dart';
+import 'package:shabakat/ui/shared/skeletons/dashboard_skeleton.dart';
 
 import 'widgets/recent_payments/recent_payments_list.dart';
 import 'widgets/revenue_chart/revenue_chart.dart';
@@ -22,8 +23,9 @@ class DashboardScreen extends ConsumerWidget {
     final summaryAsync = ref.watch(dashboardProvider);
 
     return summaryAsync.when(
-      skipLoadingOnRefresh: true,
-      loading: () => const Center(child: CircularProgressIndicator()),
+      skipLoadingOnRefresh: false,
+      skipLoadingOnReload: false,
+      loading: () => const DashboardSkeleton(),
       error: (err, _) => DynamicError(
         text: err is ApiException
             ? err.userMessage

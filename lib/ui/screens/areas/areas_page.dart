@@ -7,6 +7,7 @@ import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
 import 'package:shabakat/ui/shared/error/dynamic_error.dart';
+import 'package:shabakat/ui/shared/skeletons/areas_skeleton.dart';
 
 import 'widgets/area_list/area_list.dart';
 import 'widgets/areas_toolbar/areas_toolbar.dart';
@@ -52,34 +53,65 @@ class _AreasPageState extends ConsumerState<AreasPage> {
     final areas = areasAsync.asData?.value ?? [];
     final filtered = _filterAreas(areas);
 
+    return areasAsync.when(
+      skipLoadingOnRefresh: true,
+      loading: () => const AreasSkeleton(),
+      error: (err, _) => _AreasLayout(
+        searchController: _searchController,
+        onSearchChanged: (_) => setState(() {}),
+        resultCount: filtered.length,
+        totalCount: areas.length,
+        body: DynamicError(
+          text: err is ApiException
+              ? err.userMessage
+              : 'areas.load_failed'.tr(),
+          onTryAgain: () => ref.read(areaProvider.notifier).refresh(),
+        ),
+      ),
+      data: (_) => _AreasLayout(
+        searchController: _searchController,
+        onSearchChanged: (_) => setState(() {}),
+        resultCount: filtered.length,
+        totalCount: areas.length,
+        body: RefreshIndicator(
+          onRefresh: () async {
+            ref.invalidate(areaProvider);
+          },
+          child: AreaList(areas: filtered),
+        ),
+      ),
+    );
+  }
+}
+
+class _AreasLayout extends StatelessWidget {
+  final TextEditingController searchController;
+  final ValueChanged<String> onSearchChanged;
+  final int resultCount;
+  final int totalCount;
+  final Widget body;
+
+  const _AreasLayout({
+    required this.searchController,
+    required this.onSearchChanged,
+    required this.resultCount,
+    required this.totalCount,
+    required this.body,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AreasToolbar(
-          searchController: _searchController,
-          onSearchChanged: (_) => setState(() {}),
-          resultCount: filtered.length,
-          totalCount: areas.length,
+          searchController: searchController,
+          onSearchChanged: onSearchChanged,
+          resultCount: resultCount,
+          totalCount: totalCount,
         ),
         SizedBox(height: context.spaceSmall),
-        Expanded(
-          child: areasAsync.when(
-            skipLoadingOnRefresh: true,
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (err, _) => DynamicError(
-              text: err is ApiException
-                  ? err.userMessage
-                  : 'areas.load_failed'.tr(),
-              onTryAgain: () => ref.read(areaProvider.notifier).refresh(),
-            ),
-            data: (_) => RefreshIndicator(
-              onRefresh: () async {
-                ref.invalidate(areaProvider);
-              },
-              child: AreaList(areas: filtered),
-            ),
-          ),
-        ),
+        Expanded(child: body),
       ],
     );
   }

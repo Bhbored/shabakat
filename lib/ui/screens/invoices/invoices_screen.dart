@@ -6,6 +6,7 @@ import 'package:shabakat/data/providers/invoice/invoice_pagination_provider.dart
 import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
 import 'package:shabakat/ui/screens/subscribers/widgets/subscribers_pagination/subscribers_pagination.dart';
 import 'package:shabakat/ui/shared/error/dynamic_error.dart';
+import 'package:shabakat/ui/shared/skeletons/invoices_skeleton.dart';
 
 import 'widgets/invoice_filter_chips/invoice_filter_chips_row.dart';
 import 'widgets/invoice_list/invoice_list.dart';
@@ -45,9 +46,7 @@ class _InvoicesScreenState extends ConsumerState<InvoicesScreen> {
 
     return invoicesAsync.when(
       skipLoadingOnRefresh: true,
-      loading: () => const _InvoicesLayout(
-        body: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () => const InvoicesSkeleton(),
       error: (err, _) => _InvoicesLayout(
         body: DynamicError(
           text: err is ApiException
