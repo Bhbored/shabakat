@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,7 +76,7 @@ class _SubscriberDetailsScreenState
             ),
 
             title: Text(
-              'Subscriber Details',
+              'subscribers.details.title'.tr(),
 
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
@@ -89,7 +90,7 @@ class _SubscriberDetailsScreenState
         error: (err, _) {
           final message = err is ApiException
               ? err.userMessage
-              : 'Failed to load subscriber details.';
+              : 'subscribers.details.load_failed'.tr();
 
           return Scaffold(
             appBar: AppBar(
@@ -100,7 +101,7 @@ class _SubscriberDetailsScreenState
               ),
 
               title: Text(
-                'Subscriber Details',
+                'subscribers.details.title'.tr(),
 
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
@@ -121,7 +122,7 @@ class _SubscriberDetailsScreenState
             ),
 
             title: Text(
-              'Subscriber Details',
+              'subscribers.details.title'.tr(),
 
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,

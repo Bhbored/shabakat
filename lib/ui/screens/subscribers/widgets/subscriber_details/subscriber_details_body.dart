@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -45,54 +46,54 @@ class SubscriberDetailsBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SubscriberDetailSection(
-                  title: 'Location',
+                  title: 'subscribers.details.section.location'.tr(),
                   children: [
                     SubscriberDetailRow(
                       icon: LucideIcons.mapPin,
-                      label: 'Area',
-                      value: customer.areaName ?? '-',
+                      label: 'subscribers.form.area'.tr(),
+                      value: customer.areaName ?? 'subscribers.empty_value'.tr(),
                     ),
                     SubscriberDetailRow(
                       icon: LucideIcons.home,
-                      label: 'Address',
-                      value: customer.address ?? '-',
+                      label: 'subscribers.form.address'.tr(),
+                      value: customer.address ?? 'subscribers.empty_value'.tr(),
                     ),
                   ],
                 ),
                 SizedBox(height: context.spaceMedium),
                 SubscriberDetailSection(
-                  title: 'Subscription',
+                  title: 'subscribers.details.section.subscription'.tr(),
                   children: [
                     SubscriberDetailRow(
                       icon: LucideIcons.calendarCheck,
-                      label: 'Subscribed',
+                      label: 'subscribers.details.subscribed'.tr(),
                       value: _formatDate(customer.subscriptionDate),
                     ),
                     SubscriberDetailRow(
                       icon: LucideIcons.calendar,
-                      label: 'Created',
+                      label: 'subscribers.details.created'.tr(),
                       value: _formatDate(customer.createdAt),
                     ),
                     if (customer.customerRelation != null)
                       SubscriberDetailRow(
                         icon: LucideIcons.users,
-                        label: 'Relation',
+                        label: 'subscribers.form.customer_relation'.tr(),
                         value: customer.customerRelation!.label,
                       ),
                   ],
                 ),
                 SizedBox(height: context.spaceMedium),
                 SubscriberDetailSection(
-                  title: 'Plan',
+                  title: 'subscribers.details.section.plan'.tr(),
                   children: [
                     SubscriberDetailRow(
                       icon: LucideIcons.zap,
-                      label: 'Type',
+                      label: 'subscribers.details.plan_type'.tr(),
                       value: customer.plan.label,
                     ),
                     SubscriberDetailRow(
                       icon: LucideIcons.gauge,
-                      label: PlanType.ampere.label,
+                      label: 'subscribers.form.plan_value'.tr(),
                       value: customer.planValue.toStringAsFixed(2),
                       isHighlighted: true,
                     ),
@@ -100,21 +101,21 @@ class SubscriberDetailsBody extends StatelessWidget {
                 ),
                 SizedBox(height: context.spaceMedium),
                 SubscriberDetailSection(
-                  title: 'Billing Summary',
+                  title: 'subscribers.details.section.billing_summary'.tr(),
                   children: [
                     SubscriberDetailRow(
                       icon: LucideIcons.receipt,
-                      label: 'Total Billed',
+                      label: 'subscribers.details.total_billed'.tr(),
                       value: _formatAmount(customer.totalBilled),
                     ),
                     SubscriberDetailRow(
                       icon: LucideIcons.banknote,
-                      label: 'Total Paid',
+                      label: 'subscribers.details.total_paid'.tr(),
                       value: _formatAmount(customer.totalPaid),
                     ),
                     SubscriberDetailRow(
                       icon: LucideIcons.wallet,
-                      label: 'Outstanding',
+                      label: 'subscribers.details.outstanding'.tr(),
                       value: _formatAmount(customer.totalOutstanding),
                       isHighlighted: (customer.totalOutstanding ?? 0) > 0,
                     ),
@@ -123,18 +124,18 @@ class SubscriberDetailsBody extends StatelessWidget {
                 if (_hasPricingOverrides) ...[
                   SizedBox(height: context.spaceMedium),
                   SubscriberDetailSection(
-                    title: 'Pricing Overrides',
+                    title: 'subscribers.details.section.pricing_overrides'.tr(),
                     children: [
                       if (customer.priceOverride != null)
                         SubscriberDetailRow(
                           icon: LucideIcons.dollarSign,
-                          label: 'Price',
+                          label: 'subscribers.details.price'.tr(),
                           value: customer.priceOverride!.toStringAsFixed(2),
                         ),
                       if (customer.fixedChargeOverride != null)
                         SubscriberDetailRow(
                           icon: LucideIcons.receipt,
-                          label: 'Fixed Charge',
+                          label: 'subscribers.details.fixed_charge'.tr(),
                           value: customer.fixedChargeOverride!.toStringAsFixed(
                             2,
                           ),
@@ -142,7 +143,7 @@ class SubscriberDetailsBody extends StatelessWidget {
                       if (customer.tvaOverride != null)
                         SubscriberDetailRow(
                           icon: LucideIcons.percent,
-                          label: 'TVA',
+                          label: 'subscribers.details.tva'.tr(),
                           value: customer.tvaOverride!.toStringAsFixed(2),
                         ),
                     ],

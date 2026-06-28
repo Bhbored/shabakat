@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
@@ -46,7 +47,7 @@ class _AreaSelectingScreenState extends ConsumerState<AreaSelectingScreen> {
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('Select Area'),
+        title: Text('subscribers.area_select.title'.tr()),
       ),
       body: Column(
         children: [
@@ -64,7 +65,7 @@ class _AreaSelectingScreenState extends ConsumerState<AreaSelectingScreen> {
                     child: Text(err.userMessage, textAlign: TextAlign.center),
                   );
                 }
-                return Center(child: Text('Error loading areas: $err'));
+                return Center(child: Text('areas.load_failed'.tr()));
               },
               data: (areas) => AreaSelectList(
                 areas: _filterAreas(areas),

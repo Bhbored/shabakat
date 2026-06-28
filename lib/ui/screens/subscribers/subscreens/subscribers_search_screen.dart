@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -164,7 +165,7 @@ class _SubscribersSearchScreenState
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('Search'),
+        title: Text('subscribers.search.title'.tr()),
       ),
       body: Padding(
         padding: EdgeInsets.all(context.paddingMedium),
@@ -183,7 +184,9 @@ class _SubscribersSearchScreenState
                     onSubmitted: isArea ? null : (_) => _applySearch(),
                     onChanged: (_) => setState(() {}),
                     decoration: InputDecoration(
-                      hintText: isArea ? 'Search areas...' : 'Search customer',
+                      hintText: isArea
+                          ? 'subscribers.search.hint_areas'.tr()
+                          : 'subscribers.search.hint_customer'.tr(),
                       prefixIcon: IconButton(
                         icon: const Icon(Icons.search, size: 20),
                         onPressed: isArea ? null : _applySearch,
@@ -205,9 +208,9 @@ class _SubscribersSearchScreenState
               runSpacing: context.paddingSmall,
               children: _SearchCriteria.values.map((criteria) {
                 final label = switch (criteria) {
-                  _SearchCriteria.name => 'Name',
-                  _SearchCriteria.area => 'Area',
-                  _SearchCriteria.phone => 'Phone',
+                  _SearchCriteria.name => 'subscribers.search.criteria.name'.tr(),
+                  _SearchCriteria.area => 'subscribers.search.criteria.area'.tr(),
+                  _SearchCriteria.phone => 'subscribers.search.criteria.phone'.tr(),
                 };
                 return FilterChip(
                   label: Text(label),
@@ -238,7 +241,7 @@ class _SubscribersSearchScreenState
                   error: (err, _) {
                     final message = err is ApiException
                         ? err.userMessage
-                        : 'Failed to load areas.';
+                        : 'areas.load_failed'.tr();
                     return Center(
                       child: Text(message, textAlign: TextAlign.center),
                     );

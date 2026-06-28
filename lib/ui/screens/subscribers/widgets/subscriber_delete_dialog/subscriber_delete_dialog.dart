@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/enums/enums.dart';
@@ -38,7 +39,7 @@ class SubscriberDeleteDialog extends ConsumerWidget {
       if (!context.mounted) return;
       AppSnackBar.show(
         scaffoldContext,
-        message: 'Subscriber deleted',
+        message: 'subscribers.delete.success_one'.tr(),
         variant: AppSnackBarVariant.success,
       );
       Navigator.of(context).pop();
@@ -49,7 +50,7 @@ class SubscriberDeleteDialog extends ConsumerWidget {
       if (!context.mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to delete subscriber. Please try again.';
+          : 'subscribers.delete.failed'.tr();
       AppSnackBar.show(
         context,
         message: message,
@@ -64,15 +65,15 @@ class SubscriberDeleteDialog extends ConsumerWidget {
     final isDeleting = ref.watch(customerProvider).isLoading;
 
     return AlertDialog(
-      title: const Text('Delete Subscriber'),
+      title: Text('subscribers.delete.title'.tr()),
       content: Text(
-        'Are you sure you want to delete "$customerName"? This action cannot be undone.',
+        'subscribers.delete.message'.tr(args: [customerName]),
         style: theme.textTheme.bodyMedium,
       ),
       actions: [
         TextButton(
           onPressed: isDeleting ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text('settings.cancel'.tr()),
         ),
         ElevatedButton(
           onPressed: isDeleting ? null : () => _onDelete(context, ref),
@@ -82,7 +83,7 @@ class SubscriberDeleteDialog extends ConsumerWidget {
                   width: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Delete'),
+              : Text('subscribers.actions.delete'.tr()),
         ),
       ],
     );

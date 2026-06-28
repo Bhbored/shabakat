@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 
@@ -23,8 +24,12 @@ class SubscriberEditPricingSection extends StatelessWidget {
 
   String? _validateOverride(String? value) {
     if (!hasPricingOverride) return null;
-    if (value == null || value.trim().isEmpty) return 'Required';
-    if (double.tryParse(value.trim()) == null) return 'Invalid number';
+    if (value == null || value.trim().isEmpty) {
+      return 'settings.validation.required'.tr();
+    }
+    if (double.tryParse(value.trim()) == null) {
+      return 'subscribers.validation.invalid_number'.tr();
+    }
     return null;
   }
 
@@ -37,7 +42,7 @@ class SubscriberEditPricingSection extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text('Pricing Override', style: theme.textTheme.titleMedium),
+            Text('subscribers.form.pricing_override'.tr(), style: theme.textTheme.titleMedium),
             const Spacer(),
             Switch(
               value: hasPricingOverride,
@@ -48,25 +53,25 @@ class SubscriberEditPricingSection extends StatelessWidget {
         if (hasPricingOverride) ...[
           SizedBox(height: context.spaceSmall),
           SubscriberEditFormField(
-            label: 'Price Override',
+            label: 'subscribers.form.price_override'.tr(),
             controller: priceOverrideController,
-            hint: '0.00',
+            hint: 'subscribers.form.amount_hint'.tr(),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             validator: _validateOverride,
           ),
           SizedBox(height: context.spaceMedium),
           SubscriberEditFormField(
-            label: 'Fixed Charge Override',
+            label: 'subscribers.form.fixed_charge_override'.tr(),
             controller: fixedChargeOverrideController,
-            hint: '0.00',
+            hint: 'subscribers.form.amount_hint'.tr(),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             validator: _validateOverride,
           ),
           SizedBox(height: context.spaceMedium),
           SubscriberEditFormField(
-            label: 'TVA Override',
+            label: 'subscribers.form.tva_override'.tr(),
             controller: tvaOverrideController,
-            hint: '0.00',
+            hint: 'subscribers.form.amount_hint'.tr(),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             validator: _validateOverride,
           ),

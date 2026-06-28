@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 
@@ -24,8 +25,8 @@ class AreaSelectSearchBar extends StatelessWidget {
               controller: controller,
               autofocus: true,
               onChanged: onChanged,
-              decoration: const InputDecoration(
-                hintText: 'Search areas...',
+              decoration: InputDecoration(
+                hintText: 'subscribers.search.hint_areas'.tr(),
                 prefixIcon: Icon(Icons.search, size: 20),
               ),
             ),

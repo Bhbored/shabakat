@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 
@@ -19,7 +20,7 @@ class SubscriberSuspendLoadingContent extends StatelessWidget {
         ),
         SizedBox(height: context.spaceMedium),
         Text(
-          'Suspending subscribers...',
+          'subscribers.suspend.loading'.tr(),
           textAlign: TextAlign.center,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurface.withValues(alpha: 0.7),

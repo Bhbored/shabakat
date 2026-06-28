@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 
@@ -23,7 +24,7 @@ class AreaSelectField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Area', style: theme.textTheme.titleMedium),
+        Text('subscribers.form.area'.tr(), style: theme.textTheme.titleMedium),
         SizedBox(height: context.spaceSmall),
         ListTile(
           onTap: onTap,
@@ -39,7 +40,7 @@ class AreaSelectField extends StatelessWidget {
                 ? errorText!
                 : hasSelection
                 ? areaName!
-                : 'Select area',
+                : 'subscribers.form.area_hint'.tr(),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: theme.textTheme.bodyMedium?.copyWith(

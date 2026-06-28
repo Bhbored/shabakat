@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/data/providers/meter/meter_reading_provider.dart';
@@ -47,16 +48,17 @@ class MeterReadingDeleteDialog extends ConsumerWidget {
         ref.watch(meterReadingProvider(customerId)).isLoading;
 
     return AlertDialog(
-      title: const Text('Delete Reading'),
+      title: Text('subscribers.meter_readings.delete_title'.tr()),
       content: Text(
-        'Delete the reading of ${readingValue.toStringAsFixed(2)} kWh? '
-        'You can record the correct value afterward.',
+        'subscribers.meter_readings.delete_message'.tr(
+          args: [readingValue.toStringAsFixed(2)],
+        ),
         style: theme.textTheme.bodyMedium,
       ),
       actions: [
         TextButton(
           onPressed: isDeleting ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text('settings.cancel'.tr()),
         ),
         ElevatedButton(
           onPressed: isDeleting ? null : () => _onDelete(context, ref),
@@ -66,7 +68,7 @@ class MeterReadingDeleteDialog extends ConsumerWidget {
                   width: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Delete'),
+              : Text('subscribers.actions.delete'.tr()),
         ),
       ],
     );

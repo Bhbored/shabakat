@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -77,7 +78,7 @@ class SubscribersToolbar extends ConsumerWidget {
                     color: colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                   title: Text(
-                    activeQuery ?? 'Search customer',
+                    activeQuery ?? 'subscribers.search.hint_customer'.tr(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodyMedium?.copyWith(
@@ -104,8 +105,14 @@ class SubscribersToolbar extends ConsumerWidget {
               Expanded(
                 child: Text(
                   selection.isSelectionMode
-                      ? '${selection.selectedCustomerIds.length} selected'
-                      : '${pagination.totalCount} subscribers',
+                      ? 'subscribers.selection.count_selected'.tr(
+                          args: [selection.selectedCustomerIds.length.toString()],
+                        )
+                      : pagination.totalCount == 1
+                      ? 'areas.subscriber_count_one'.tr()
+                      : 'areas.subscriber_count'.tr(
+                          args: [pagination.totalCount.toString()],
+                        ),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurface.withValues(alpha: 0.6),
                   ),

@@ -1,10 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
+
 enum PlanType { ampere, kilowatt, fixedKilowatt }
 
 extension PlanTypeX on PlanType {
   String get label => switch (this) {
-    PlanType.ampere => 'Ampere',
-    PlanType.kilowatt => 'Kilowatt',
-    PlanType.fixedKilowatt => 'Fixed Kilowatt',
+    PlanType.ampere => 'subscribers.plan.ampere'.tr(),
+    PlanType.kilowatt => 'subscribers.plan.kilowatt'.tr(),
+    PlanType.fixedKilowatt => 'subscribers.plan.fixed_kilowatt'.tr(),
   };
 }
 

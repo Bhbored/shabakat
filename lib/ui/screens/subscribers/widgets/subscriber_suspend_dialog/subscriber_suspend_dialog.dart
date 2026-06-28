@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -78,7 +79,7 @@ class _SubscriberSuspendDialogState
       if (!mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to suspend subscribers. Please try again.';
+          : 'subscribers.suspend.failed'.tr();
       setState(() {
         _errorMessage = message;
         _step = _SuspendStep.error;
@@ -103,7 +104,7 @@ class _SubscriberSuspendDialogState
           children: [
             Icon(LucideIcons.pauseCircle, color: colorScheme.primary, size: 22),
             SizedBox(width: context.spaceSmall),
-            const Expanded(child: Text('Suspend Subscribers')),
+            Expanded(child: Text('subscribers.suspend.title'.tr())),
           ],
         ),
         content: switch (_step) {
@@ -122,31 +123,31 @@ class _SubscriberSuspendDialogState
           _SuspendStep.confirm => [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text('settings.cancel'.tr()),
             ),
             ElevatedButton(
               onPressed: _onSuspend,
-              child: const Text('Suspend'),
+              child: Text('subscribers.suspend.confirm'.tr()),
             ),
           ],
           _SuspendStep.loading => const [],
           _SuspendStep.success => [
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Done'),
+              child: Text('subscribers.suspend.done'.tr()),
             ),
           ],
           _SuspendStep.error => [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
+              child: Text('subscribers.suspend.close'.tr()),
             ),
             ElevatedButton(
               onPressed: () => setState(() {
                 _step = _SuspendStep.confirm;
                 _errorMessage = null;
               }),
-              child: const Text('Try Again'),
+              child: Text('subscribers.suspend.try_again'.tr()),
             ),
           ],
         },

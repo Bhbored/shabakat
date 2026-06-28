@@ -240,5 +240,174 @@
       "name_required": "Enter area name",
       "max_characters": "Max {} characters"
     }
+  },
+  "subscribers": {
+    "load_failed": "Failed to load subscribers.",
+    "empty_value": "-",
+    "fallback_name": "this subscriber",
+    "search": {
+      "title": "Search",
+      "hint_customer": "Search customer",
+      "hint_areas": "Search areas...",
+      "criteria": {
+        "name": "Name",
+        "area": "Area",
+        "phone": "Phone"
+      }
+    },
+    "filter": {
+      "relation": "Relation",
+      "plan": "Plan",
+      "status": "Status"
+    },
+    "selection": {
+      "count_selected": "{} selected"
+    },
+    "actions": {
+      "suspend": "Suspend",
+      "delete": "Delete"
+    },
+    "form": {
+      "name": "Name",
+      "name_hint": "Enter full name",
+      "phone": "Phone",
+      "phone_hint": "Enter phone number",
+      "area": "Area",
+      "area_hint": "Select area",
+      "address": "Address",
+      "address_hint": "Enter address",
+      "customer_type": "Customer Type",
+      "plan": "Plan",
+      "plan_value": "Plan Value",
+      "plan_value_hint": "1-100",
+      "status": "Status",
+      "customer_relation": "Customer Relation",
+      "none": "None",
+      "pricing_override": "Pricing Override",
+      "price_override": "Price Override",
+      "fixed_charge_override": "Fixed Charge Override",
+      "tva_override": "TVA Override",
+      "amount_hint": "0.00",
+      "subscription_date": "Subscription Date"
+    },
+    "validation": {
+      "name_required": "Enter subscriber name",
+      "phone_required": "Enter phone number",
+      "address_required": "Enter address",
+      "area_required": "Select an area",
+      "plan_value_required": "Enter plan value",
+      "plan_value_range": "Must be between 1 and 100",
+      "invalid_number": "Invalid number",
+      "max_characters": "Max {} characters",
+      "subscription_date_future": "Subscription date cannot be in the future"
+    },
+    "plan": {
+      "ampere": "Ampere",
+      "kilowatt": "Kilowatt",
+      "fixed_kilowatt": "Fixed Kilowatt"
+    },
+    "relation": {
+      "friend": "Friend",
+      "family": "Family",
+      "owner": "Owner"
+    },
+    "payment_method": {
+      "cash": "Cash",
+      "wish": "Wish"
+    },
+    "add": {
+      "title": "Add Subscriber",
+      "submit": "Add Subscriber",
+      "success": "Subscriber added",
+      "failed": "Failed to add subscriber. Please try again."
+    },
+    "edit": {
+      "title": "Edit Subscriber",
+      "success": "Subscriber updated",
+      "failed": "Failed to update subscriber. Please try again."
+    },
+    "details": {
+      "title": "Subscriber Details",
+      "load_failed": "Failed to load subscriber details.",
+      "section": {
+        "location": "Location",
+        "subscription": "Subscription",
+        "plan": "Plan",
+        "billing_summary": "Billing Summary",
+        "pricing_overrides": "Pricing Overrides"
+      },
+      "subscribed": "Subscribed",
+      "created": "Created",
+      "plan_type": "Type",
+      "total_billed": "Total Billed",
+      "total_paid": "Total Paid",
+      "outstanding": "Outstanding",
+      "price": "Price",
+      "fixed_charge": "Fixed Charge",
+      "tva": "TVA"
+    },
+    "delete": {
+      "title": "Delete Subscriber",
+      "message": "Are you sure you want to delete \"{}\"? This action cannot be undone.",
+      "success_one": "Subscriber deleted",
+      "success_many": "{} subscribers deleted",
+      "failed": "Failed to delete subscriber. Please try again.",
+      "failed_bulk": "Failed to delete subscribers. Please try again."
+    },
+    "delete_bulk": {
+      "title": "Delete Subscribers",
+      "message_one": "Are you sure you want to delete {} subscriber? This action cannot be undone.",
+      "message_many": "Are you sure you want to delete {} subscribers? This action cannot be undone."
+    },
+    "suspend": {
+      "title": "Suspend Subscribers",
+      "message": "Are you sure you want to suspend {} {}? Suspended subscribers will not receive service until they are reactivated.",
+      "noun_one": "subscriber",
+      "noun_many": "subscribers",
+      "confirm": "Suspend",
+      "loading": "Suspending subscribers...",
+      "success_label": "Suspended",
+      "done": "Done",
+      "close": "Close",
+      "try_again": "Try Again",
+      "failed": "Failed to suspend subscribers. Please try again."
+    },
+    "area_select": {
+      "title": "Select Area"
+    },
+    "invoices": {
+      "title": "Invoices",
+      "empty": "No invoices",
+      "load_failed": "Failed to load invoices.",
+      "create_title": "Create Invoice",
+      "create_confirm": "Create a new invoice for \"{}\"?",
+      "create_description": "Create a new invoice for \"{}\".",
+      "create_submit": "Create",
+      "create_success": "Invoice created",
+      "create_failed": "Failed to create invoice. Please try again.",
+      "payment": "Payment",
+      "amount": "Amount",
+      "validation": {
+        "amount_positive": "Amount must be greater than 0"
+      }
+    },
+    "meter_readings": {
+      "title": "Meter Readings",
+      "empty": "No meter readings",
+      "load_failed": "Failed to load meter readings.",
+      "unit_kwh": "kWh",
+      "record_title": "Record Reading",
+      "record_description": "Log a new meter value for {}.",
+      "reading_value": "Reading Value",
+      "reading_date": "Reading Date",
+      "record_submit": "Record",
+      "record_success": "Meter reading recorded",
+      "record_failed": "Failed to record meter reading. Please try again.",
+      "delete_title": "Delete Reading",
+      "delete_message": "Delete the reading of {} kWh? You can record the correct value afterward.",
+      "validation": {
+        "non_negative": "Must be 0 or greater"
+      }
+    }
   }
 }

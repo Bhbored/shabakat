@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -83,7 +84,7 @@ class _SubscriberMeterReadingsSectionState
               children: [
                 Expanded(
                   child: Text(
-                    'Meter Readings',
+                    'subscribers.meter_readings.title'.tr(),
                     style: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -151,7 +152,7 @@ class _SubscriberMeterReadingsSectionState
               error: (err, _) {
                 final message = err is ApiException
                     ? err.userMessage
-                    : 'Failed to load meter readings.';
+                    : 'subscribers.meter_readings.load_failed'.tr();
                 return Text(message, style: theme.textTheme.bodyMedium);
               },
               data: (readings) {
@@ -160,7 +161,7 @@ class _SubscriberMeterReadingsSectionState
 
                 if (readings.isEmpty) {
                   return Text(
-                    'No meter readings',
+                    'subscribers.meter_readings.empty'.tr(),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: colorScheme.onSurface.withValues(alpha: 0.6),
                     ),

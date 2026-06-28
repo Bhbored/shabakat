@@ -240,5 +240,174 @@
       "name_required": "أدخل اسم المنطقة",
       "max_characters": "الحد الأقصى {} حرفاً"
     }
+  },
+  "subscribers": {
+    "load_failed": "فشل تحميل المشتركين.",
+    "empty_value": "-",
+    "fallback_name": "هذا المشترك",
+    "search": {
+      "title": "بحث",
+      "hint_customer": "البحث عن مشترك",
+      "hint_areas": "البحث عن مناطق...",
+      "criteria": {
+        "name": "الاسم",
+        "area": "المنطقة",
+        "phone": "الهاتف"
+      }
+    },
+    "filter": {
+      "relation": "العلاقة",
+      "plan": "الخطة",
+      "status": "الحالة"
+    },
+    "selection": {
+      "count_selected": "{} محدد"
+    },
+    "actions": {
+      "suspend": "تعليق",
+      "delete": "حذف"
+    },
+    "form": {
+      "name": "الاسم",
+      "name_hint": "أدخل الاسم الكامل",
+      "phone": "الهاتف",
+      "phone_hint": "أدخل رقم الهاتف",
+      "area": "المنطقة",
+      "area_hint": "اختر منطقة",
+      "address": "العنوان",
+      "address_hint": "أدخل العنوان",
+      "customer_type": "نوع العميل",
+      "plan": "الخطة",
+      "plan_value": "قيمة الخطة",
+      "plan_value_hint": "1-100",
+      "status": "الحالة",
+      "customer_relation": "علاقة العميل",
+      "none": "لا شيء",
+      "pricing_override": "تجاوز التسعير",
+      "price_override": "تجاوز السعر",
+      "fixed_charge_override": "تجاوز الرسوم الثابتة",
+      "tva_override": "تجاوز الضريبة",
+      "amount_hint": "0.00",
+      "subscription_date": "تاريخ الاشتراك"
+    },
+    "validation": {
+      "name_required": "أدخل اسم المشترك",
+      "phone_required": "أدخل رقم الهاتف",
+      "address_required": "أدخل العنوان",
+      "area_required": "اختر منطقة",
+      "plan_value_required": "أدخل قيمة الخطة",
+      "plan_value_range": "يجب أن تكون بين 1 و 100",
+      "invalid_number": "رقم غير صالح",
+      "max_characters": "الحد الأقصى {} حرفاً",
+      "subscription_date_future": "لا يمكن أن يكون تاريخ الاشتراك في المستقبل"
+    },
+    "plan": {
+      "ampere": "أمبير",
+      "kilowatt": "كيلوواط",
+      "fixed_kilowatt": "كيلوواط ثابت"
+    },
+    "relation": {
+      "friend": "صديق",
+      "family": "عائلة",
+      "owner": "مالك"
+    },
+    "payment_method": {
+      "cash": "نقداً",
+      "wish": "Wish"
+    },
+    "add": {
+      "title": "إضافة مشترك",
+      "submit": "إضافة مشترك",
+      "success": "تمت إضافة المشترك",
+      "failed": "فشل إضافة المشترك. يرجى المحاولة مرة أخرى."
+    },
+    "edit": {
+      "title": "تعديل المشترك",
+      "success": "تم تحديث المشترك",
+      "failed": "فشل تحديث المشترك. يرجى المحاولة مرة أخرى."
+    },
+    "details": {
+      "title": "تفاصيل المشترك",
+      "load_failed": "فشل تحميل تفاصيل المشترك.",
+      "section": {
+        "location": "الموقع",
+        "subscription": "الاشتراك",
+        "plan": "الخطة",
+        "billing_summary": "ملخص الفوترة",
+        "pricing_overrides": "تجاوزات التسعير"
+      },
+      "subscribed": "تاريخ الاشتراك",
+      "created": "تاريخ الإنشاء",
+      "plan_type": "النوع",
+      "total_billed": "إجمالي الفواتير",
+      "total_paid": "إجمالي المدفوع",
+      "outstanding": "المتبقي",
+      "price": "السعر",
+      "fixed_charge": "الرسوم الثابتة",
+      "tva": "الضريبة"
+    },
+    "delete": {
+      "title": "حذف المشترك",
+      "message": "هل أنت متأكد من حذف \"{}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "success_one": "تم حذف المشترك",
+      "success_many": "تم حذف {} مشتركين",
+      "failed": "فشل حذف المشترك. يرجى المحاولة مرة أخرى.",
+      "failed_bulk": "فشل حذف المشتركين. يرجى المحاولة مرة أخرى."
+    },
+    "delete_bulk": {
+      "title": "حذف المشتركين",
+      "message_one": "هل أنت متأكد من حذف {} مشترك؟ لا يمكن التراجع عن هذا الإجراء.",
+      "message_many": "هل أنت متأكد من حذف {} مشتركين؟ لا يمكن التراجع عن هذا الإجراء."
+    },
+    "suspend": {
+      "title": "تعليق المشتركين",
+      "message": "هل أنت متأكد من تعليق {} {}؟ لن يتلقى المشتركون المعلقون الخدمة حتى إعادة تفعيلهم.",
+      "noun_one": "مشترك",
+      "noun_many": "مشتركين",
+      "confirm": "تعليق",
+      "loading": "جارٍ تعليق المشتركين...",
+      "success_label": "معلق",
+      "done": "تم",
+      "close": "إغلاق",
+      "try_again": "حاول مرة أخرى",
+      "failed": "فشل تعليق المشتركين. يرجى المحاولة مرة أخرى."
+    },
+    "area_select": {
+      "title": "اختر منطقة"
+    },
+    "invoices": {
+      "title": "الفواتير",
+      "empty": "لا توجد فواتير",
+      "load_failed": "فشل تحميل الفواتير.",
+      "create_title": "إنشاء فاتورة",
+      "create_confirm": "إنشاء فاتورة جديدة لـ \"{}\"؟",
+      "create_description": "إنشاء فاتورة جديدة لـ \"{}\".",
+      "create_submit": "إنشاء",
+      "create_success": "تم إنشاء الفاتورة",
+      "create_failed": "فشل إنشاء الفاتورة. يرجى المحاولة مرة أخرى.",
+      "payment": "الدفع",
+      "amount": "المبلغ",
+      "validation": {
+        "amount_positive": "يجب أن يكون المبلغ أكبر من 0"
+      }
+    },
+    "meter_readings": {
+      "title": "قراءات العداد",
+      "empty": "لا توجد قراءات",
+      "load_failed": "فشل تحميل قراءات العداد.",
+      "unit_kwh": "كيلوواط ساعة",
+      "record_title": "تسجيل قراءة",
+      "record_description": "تسجيل قيمة عداد جديدة لـ {}.",
+      "reading_value": "قيمة القراءة",
+      "reading_date": "تاريخ القراءة",
+      "record_submit": "تسجيل",
+      "record_success": "تم تسجيل قراءة العداد",
+      "record_failed": "فشل تسجيل قراءة العداد. يرجى المحاولة مرة أخرى.",
+      "delete_title": "حذف القراءة",
+      "delete_message": "حذف قراءة {} كيلوواط ساعة؟ يمكنك تسجيل القيمة الصحيحة لاحقاً.",
+      "validation": {
+        "non_negative": "يجب أن تكون 0 أو أكبر"
+      }
+    }
   }
 }

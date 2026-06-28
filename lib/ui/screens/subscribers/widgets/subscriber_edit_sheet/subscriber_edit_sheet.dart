@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/enums/enums.dart';
@@ -130,7 +131,7 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
     if (_selectedAreaId == null) {
       AppSnackBar.show(
         context,
-        message: 'Select an area',
+        message: 'subscribers.validation.area_required'.tr(),
         variant: AppSnackBarVariant.error,
       );
       return;
@@ -175,7 +176,7 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
       if (!mounted) return;
       AppSnackBar.show(
         context,
-        message: 'Subscriber updated',
+        message: 'subscribers.edit.success'.tr(),
         variant: AppSnackBarVariant.success,
       );
       Navigator.of(context).pop();
@@ -183,7 +184,7 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
       if (!mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to update subscriber. Please try again.';
+          : 'subscribers.edit.failed'.tr();
       AppSnackBar.show(
         context,
         message: message,

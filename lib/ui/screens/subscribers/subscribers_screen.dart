@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -36,7 +37,7 @@ class SubscribersScreen extends ConsumerWidget {
         body: DynamicError(
           text: err is ApiException
               ? err.userMessage
-              : 'Failed to load subscribers.',
+              : 'subscribers.load_failed'.tr(),
           onTryAgain: () => ref.read(customerProvider.notifier).refresh(),
         ),
       ),

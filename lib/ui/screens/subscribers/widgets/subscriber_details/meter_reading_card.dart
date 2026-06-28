@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -48,7 +49,7 @@ class MeterReadingCard extends StatelessWidget {
                 ),
                 if (reading.consumption != null)
                   Text(
-                    '${reading.consumption!.toStringAsFixed(2)} kWh',
+                    '${reading.consumption!.toStringAsFixed(2)} ${'subscribers.meter_readings.unit_kwh'.tr()}',
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: colorScheme.primary,

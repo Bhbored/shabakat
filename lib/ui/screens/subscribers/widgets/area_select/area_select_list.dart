@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
 
@@ -18,7 +19,7 @@ class AreaSelectList extends StatelessWidget {
     if (areas.isEmpty) {
       return Center(
         child: Text(
-          'No areas found',
+          'areas.empty_list'.tr(),
           style: theme.textTheme.bodyMedium?.copyWith(
             color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
           ),

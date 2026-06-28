@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -45,7 +46,7 @@ class SubscriberSuspendSuccessContent extends StatelessWidget {
               ),
               SizedBox(height: context.spaceSmall * 0.25),
               Text(
-                'Suspended',
+                'subscribers.suspend.success_label'.tr(),
                 style: theme.textTheme.labelSmall?.copyWith(
                   color: colorScheme.onSurface.withValues(alpha: 0.55),
                 ),

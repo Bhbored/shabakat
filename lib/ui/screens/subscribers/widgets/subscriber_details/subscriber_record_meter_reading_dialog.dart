@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -59,7 +60,7 @@ class _SubscriberRecordMeterReadingDialogState
   String get _targetLabel {
     final name = widget.customerName?.trim();
     if (name != null && name.isNotEmpty) return name;
-    return 'this subscriber';
+    return 'subscribers.fallback_name'.tr();
   }
 
   String _formatDate(DateTime date) {
@@ -100,7 +101,7 @@ class _SubscriberRecordMeterReadingDialogState
       if (widget.scaffoldContext.mounted) {
         AppSnackBar.show(
           widget.scaffoldContext,
-          message: 'Meter reading recorded',
+          message: 'subscribers.meter_readings.record_success'.tr(),
           variant: AppSnackBarVariant.success,
         );
       }
@@ -108,7 +109,7 @@ class _SubscriberRecordMeterReadingDialogState
       if (!mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to record meter reading. Please try again.';
+          : 'subscribers.meter_readings.record_failed'.tr();
       AppSnackBar.show(
         context,
         message: message,
@@ -164,14 +165,15 @@ class _SubscriberRecordMeterReadingDialogState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Record Reading',
+                            'subscribers.meter_readings.record_title'.tr(),
                             style: theme.textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                           SizedBox(height: context.spaceSmall * 0.5),
                           Text(
-                            'Log a new meter value for $_targetLabel.',
+                            'subscribers.meter_readings.record_description'
+                                .tr(args: [_targetLabel]),
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: colorScheme.onSurface.withValues(
                                 alpha: 0.65,
@@ -200,7 +202,7 @@ class _SubscriberRecordMeterReadingDialogState
                     final useRow = constraints.maxWidth >= 360;
 
                     final valueField = _MeterReadingField(
-                      label: 'Reading Value',
+                      label: 'subscribers.meter_readings.reading_value'.tr(),
                       child: TextFormField(
                         controller: _readingValueController,
                         enabled: !isSubmitting,
@@ -208,25 +210,30 @@ class _SubscriberRecordMeterReadingDialogState
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                         ),
-                        decoration: const InputDecoration(
-                          hintText: '0.00',
-                          suffixText: 'kWh',
+                        decoration: InputDecoration(
+                          hintText: 'subscribers.form.amount_hint'.tr(),
+                          suffixText: 'subscribers.meter_readings.unit_kwh'.tr(),
                         ),
                         validator: (value) {
                           final trimmed = value?.trim();
                           if (trimmed == null || trimmed.isEmpty) {
-                            return 'Required';
+                            return 'settings.validation.required'.tr();
                           }
                           final parsed = double.tryParse(trimmed);
-                          if (parsed == null) return 'Invalid number';
-                          if (parsed < 0) return 'Must be 0 or greater';
+                          if (parsed == null) {
+                            return 'subscribers.validation.invalid_number'.tr();
+                          }
+                          if (parsed < 0) {
+                            return 'subscribers.meter_readings.validation.non_negative'
+                                .tr();
+                          }
                           return null;
                         },
                       ),
                     );
 
                     final dateField = _MeterReadingField(
-                      label: 'Reading Date',
+                      label: 'subscribers.meter_readings.reading_date'.tr(),
                       child: InkWell(
                         onTap: isSubmitting ? null : _pickDate,
                         borderRadius: BorderRadius.circular(
@@ -272,7 +279,7 @@ class _SubscriberRecordMeterReadingDialogState
                         onPressed: isSubmitting
                             ? null
                             : () => Navigator.of(context).pop(),
-                        child: const Text('Cancel'),
+                        child: Text('settings.cancel'.tr()),
                       ),
                     ),
                     SizedBox(width: context.spaceMedium),
@@ -288,7 +295,7 @@ class _SubscriberRecordMeterReadingDialogState
                                   color: colorScheme.onPrimary,
                                 ),
                               )
-                            : const Text('Record'),
+                            : Text('subscribers.meter_readings.record_submit'.tr()),
                       ),
                     ),
                   ],

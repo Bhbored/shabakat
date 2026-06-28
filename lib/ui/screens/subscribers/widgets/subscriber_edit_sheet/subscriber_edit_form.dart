@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
@@ -72,16 +73,16 @@ class SubscriberEditForm extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SubscriberEditFormField(
-              label: 'Name',
+              label: 'subscribers.form.name'.tr(),
               controller: nameController,
-              hint: 'Enter full name',
+              hint: 'subscribers.form.name_hint'.tr(),
               validator: SubscriberEditValidators.name,
             ),
             SizedBox(height: context.spaceMedium),
             SubscriberEditFormField(
-              label: 'Phone',
+              label: 'subscribers.form.phone'.tr(),
               controller: phoneController,
-              hint: 'Enter phone number',
+              hint: 'subscribers.form.phone_hint'.tr(),
               keyboardType: TextInputType.phone,
               validator: SubscriberEditValidators.phone,
             ),
@@ -93,14 +94,14 @@ class SubscriberEditForm extends StatelessWidget {
             ),
             SizedBox(height: context.spaceMedium),
             SubscriberEditFormField(
-              label: 'Address',
+              label: 'subscribers.form.address'.tr(),
               controller: addressController,
-              hint: 'Enter address',
+              hint: 'subscribers.form.address_hint'.tr(),
               validator: SubscriberEditValidators.address,
             ),
             SizedBox(height: context.spaceMedium),
             SubscriberEditDropdown<CustomerType>(
-              label: 'Customer Type',
+              label: 'subscribers.form.customer_type'.tr(),
               value: customerType,
               items: CustomerType.values,
               itemLabel: (e) => e.label,
@@ -108,7 +109,7 @@ class SubscriberEditForm extends StatelessWidget {
             ),
             SizedBox(height: context.spaceMedium),
             SubscriberEditDropdown<PlanType>(
-              label: 'Plan',
+              label: 'subscribers.form.plan'.tr(),
               value: plan,
               items: PlanType.values,
               itemLabel: (e) => e.label,
@@ -116,15 +117,15 @@ class SubscriberEditForm extends StatelessWidget {
             ),
             SizedBox(height: context.spaceMedium),
             SubscriberEditFormField(
-              label: 'Plan Value',
+              label: 'subscribers.form.plan_value'.tr(),
               controller: planValueController,
-              hint: '1-100',
+              hint: 'subscribers.form.plan_value_hint'.tr(),
               keyboardType: TextInputType.number,
               validator: SubscriberEditValidators.planValue,
             ),
             SizedBox(height: context.spaceMedium),
             SubscriberEditDropdown<CustomerStatus>(
-              label: 'Status',
+              label: 'subscribers.form.status'.tr(),
               value: customerStatus,
               items: CustomerStatus.values,
               itemLabel: (e) => e.label,
@@ -132,10 +133,10 @@ class SubscriberEditForm extends StatelessWidget {
             ),
             SizedBox(height: context.spaceMedium),
             SubscriberEditDropdown<CustomerRelation?>(
-              label: 'Customer Relation',
+              label: 'subscribers.form.customer_relation'.tr(),
               value: customerRelation,
               items: [null, ...CustomerRelation.values],
-              itemLabel: (e) => e?.label ?? 'None',
+              itemLabel: (e) => e?.label ?? 'subscribers.form.none'.tr(),
               onChanged: isSaving ? null : onCustomerRelationChanged,
             ),
             SizedBox(height: context.spaceMedium),

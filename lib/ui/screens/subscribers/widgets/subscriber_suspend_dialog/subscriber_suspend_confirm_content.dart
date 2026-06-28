@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SubscriberSuspendConfirmContent extends StatelessWidget {
@@ -8,11 +9,12 @@ class SubscriberSuspendConfirmContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final noun = count == 1 ? 'subscriber' : 'subscribers';
+    final noun = count == 1
+        ? 'subscribers.suspend.noun_one'.tr()
+        : 'subscribers.suspend.noun_many'.tr();
 
     return Text(
-      'Are you sure you want to suspend $count $noun? '
-      'Suspended subscribers will not receive service until they are reactivated.',
+      'subscribers.suspend.message'.tr(args: [count.toString(), noun]),
       style: theme.textTheme.bodyMedium,
     );
   }

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SubscriberEditSaveButton extends StatelessWidget {
@@ -29,7 +30,7 @@ class SubscriberEditSaveButton extends StatelessWidget {
                 ),
               )
             : Text(
-                'Save',
+                'settings.save'.tr(),
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

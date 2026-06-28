@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -11,6 +12,7 @@ import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import '../widgets/area_select/area_select_field.dart';
+import '../widgets/subscriber_edit_sheet/subscriber_edit_validators.dart';
 import 'area_selecting_screen.dart';
 
 class SubscriberAddingScreen extends ConsumerStatefulWidget {
@@ -70,7 +72,7 @@ class _SubscriberAddingScreenState
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('Add Subscriber'),
+        title: Text('subscribers.add.title'.tr()),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(context.paddingMedium),
@@ -80,49 +82,31 @@ class _SubscriberAddingScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildTextField(
-                label: 'Name',
+                label: 'subscribers.form.name'.tr(),
                 controller: _nameController,
-                hint: 'Enter full name',
-                validator: (v) {
-                  if (v == null || v.trim().isEmpty) {
-                    return 'Enter subscriber name';
-                  }
-                  if (v.trim().length > 200) return 'Max 200 characters';
-                  return null;
-                },
+                hint: 'subscribers.form.name_hint'.tr(),
+                validator: SubscriberEditValidators.name,
               ),
               SizedBox(height: context.spaceMedium),
               _buildTextField(
-                label: 'Phone',
+                label: 'subscribers.form.phone'.tr(),
                 controller: _phoneController,
-                hint: 'Enter phone number',
+                hint: 'subscribers.form.phone_hint'.tr(),
                 keyboardType: TextInputType.phone,
-                validator: (v) {
-                  if (v == null || v.trim().isEmpty) {
-                    return 'Enter phone number';
-                  }
-                  if (v.trim().length > 30) return 'Max 30 characters';
-                  return null;
-                },
+                validator: SubscriberEditValidators.phone,
               ),
               SizedBox(height: context.spaceMedium),
               _buildAreaField(),
               SizedBox(height: context.spaceMedium),
               _buildTextField(
-                label: 'Address',
+                label: 'subscribers.form.address'.tr(),
                 controller: _addressController,
-                hint: 'Enter address',
-                validator: (v) {
-                  if (v == null || v.trim().isEmpty) {
-                    return 'Enter address';
-                  }
-                  if (v.trim().length > 500) return 'Max 500 characters';
-                  return null;
-                },
+                hint: 'subscribers.form.address_hint'.tr(),
+                validator: SubscriberEditValidators.address,
               ),
               SizedBox(height: context.spaceMedium),
               _buildDropdown(
-                label: 'Customer Type',
+                label: 'subscribers.form.customer_type'.tr(),
                 value: _customerType,
                 items: CustomerType.values,
                 itemLabel: (e) => e.label,
@@ -130,7 +114,7 @@ class _SubscriberAddingScreenState
               ),
               SizedBox(height: context.spaceMedium),
               _buildDropdown(
-                label: 'Plan',
+                label: 'subscribers.form.plan'.tr(),
                 value: _plan,
                 items: PlanType.values,
                 itemLabel: (e) => e.label,
@@ -138,9 +122,9 @@ class _SubscriberAddingScreenState
               ),
               SizedBox(height: context.spaceMedium),
               _buildTextField(
-                label: 'Plan Value',
+                label: 'subscribers.form.plan_value'.tr(),
                 controller: _planValueController,
-                hint: '1-100',
+                hint: 'subscribers.form.plan_value_hint'.tr(),
                 keyboardType: TextInputType.number,
                 validator: _validatePlanValue,
               ),
@@ -148,16 +132,16 @@ class _SubscriberAddingScreenState
               _buildDatePicker(context),
               SizedBox(height: context.spaceMedium),
               _buildDropdown(
-                label: 'Customer Relation',
+                label: 'subscribers.form.customer_relation'.tr(),
                 value: _customerRelation,
                 items: [null, ...CustomerRelation.values],
-                itemLabel: (e) => e?.label ?? 'None',
+                itemLabel: (e) => e?.label ?? 'subscribers.form.none'.tr(),
                 onChanged: (v) => setState(() => _customerRelation = v),
               ),
               SizedBox(height: context.spaceMedium),
               Row(
                 children: [
-                  Text('Pricing Override', style: theme.textTheme.titleMedium),
+                  Text('subscribers.form.pricing_override'.tr(), style: theme.textTheme.titleMedium),
                   const Spacer(),
                   Switch(
                     value: _hasPricingOverride,
@@ -168,49 +152,61 @@ class _SubscriberAddingScreenState
               if (_hasPricingOverride) ...[
                 SizedBox(height: context.spaceSmall),
                 _buildTextField(
-                  label: 'Price Override',
+                  label: 'subscribers.form.price_override'.tr(),
                   controller: _priceOverrideController,
-                  hint: '0.00',
+                  hint: 'subscribers.form.amount_hint'.tr(),
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
                   validator: (v) {
                     if (!_hasPricingOverride) return null;
-                    if (v == null || v.trim().isEmpty) return 'Required';
+                    if (v == null || v.trim().isEmpty) {
+                      return 'settings.validation.required'.tr();
+                    }
                     final n = double.tryParse(v.trim());
-                    if (n == null) return 'Invalid number';
+                    if (n == null) {
+                      return 'subscribers.validation.invalid_number'.tr();
+                    }
                     return null;
                   },
                 ),
                 SizedBox(height: context.spaceMedium),
                 _buildTextField(
-                  label: 'Fixed Charge Override',
+                  label: 'subscribers.form.fixed_charge_override'.tr(),
                   controller: _fixedChargeOverrideController,
-                  hint: '0.00',
+                  hint: 'subscribers.form.amount_hint'.tr(),
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
                   validator: (v) {
                     if (!_hasPricingOverride) return null;
-                    if (v == null || v.trim().isEmpty) return 'Required';
+                    if (v == null || v.trim().isEmpty) {
+                      return 'settings.validation.required'.tr();
+                    }
                     final n = double.tryParse(v.trim());
-                    if (n == null) return 'Invalid number';
+                    if (n == null) {
+                      return 'subscribers.validation.invalid_number'.tr();
+                    }
                     return null;
                   },
                 ),
                 SizedBox(height: context.spaceMedium),
                 _buildTextField(
-                  label: 'TVA Override',
+                  label: 'subscribers.form.tva_override'.tr(),
                   controller: _tvaOverrideController,
-                  hint: '0.00',
+                  hint: 'subscribers.form.amount_hint'.tr(),
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
                   validator: (v) {
                     if (!_hasPricingOverride) return null;
-                    if (v == null || v.trim().isEmpty) return 'Required';
+                    if (v == null || v.trim().isEmpty) {
+                      return 'settings.validation.required'.tr();
+                    }
                     final n = double.tryParse(v.trim());
-                    if (n == null) return 'Invalid number';
+                    if (n == null) {
+                      return 'subscribers.validation.invalid_number'.tr();
+                    }
                     return null;
                   },
                 ),
@@ -231,7 +227,7 @@ class _SubscriberAddingScreenState
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Text(
-                            'Add Subscriber',
+                            'subscribers.add.submit'.tr(),
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -271,7 +267,8 @@ class _SubscriberAddingScreenState
   Widget _buildAreaField() {
     return FormField<Area>(
       key: _areaFieldKey,
-      validator: (value) => value == null ? 'Select an area' : null,
+      validator: (value) =>
+          value == null ? 'subscribers.validation.area_required'.tr() : null,
       builder: (field) {
         return AreaSelectField(
           areaName: field.value?.name,
@@ -282,13 +279,8 @@ class _SubscriberAddingScreenState
     );
   }
 
-  String? _validatePlanValue(String? value) {
-    if (value == null || value.trim().isEmpty) return 'Enter plan value';
-    final parsed = int.tryParse(value.trim());
-    if (parsed == null) return 'Enter a valid number';
-    if (parsed < 1 || parsed > 100) return 'Must be between 1 and 100';
-    return null;
-  }
+  String? _validatePlanValue(String? value) =>
+      SubscriberEditValidators.planValue(value);
 
   Widget _buildDropdown<T>({
     required String label,
@@ -354,7 +346,7 @@ class _SubscriberAddingScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Subscription Date', style: theme.textTheme.titleMedium),
+        Text('subscribers.form.subscription_date'.tr(), style: theme.textTheme.titleMedium),
         SizedBox(height: context.spaceSmall),
         InkWell(
           onTap: () async {
@@ -427,7 +419,7 @@ class _SubscriberAddingScreenState
     if (selectedArea == null) return;
 
     if (_toDateOnly(_subscriptionDate).isAfter(_toDateOnly(DateTime.now()))) {
-      setState(() => _dateError = 'Subscription date cannot be in the future');
+      setState(() => _dateError = 'subscribers.validation.subscription_date_future'.tr());
       return;
     }
 
@@ -461,7 +453,7 @@ class _SubscriberAddingScreenState
       if (!mounted) return;
       AppSnackBar.show(
         context,
-        message: 'Subscriber added',
+        message: 'subscribers.add.success'.tr(),
         variant: AppSnackBarVariant.success,
       );
       Navigator.of(context).pop();
@@ -469,7 +461,7 @@ class _SubscriberAddingScreenState
       if (!mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to add subscriber. Please try again.';
+          : 'subscribers.add.failed'.tr();
       AppSnackBar.show(
         context,
         message: message,

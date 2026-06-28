@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -43,7 +44,7 @@ class SubscriberInvoicesSection extends ConsumerWidget {
               children: [
                 Expanded(
                   child: Text(
-                    'Invoices',
+                    'subscribers.invoices.title'.tr(),
                     style: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -84,13 +85,13 @@ class SubscriberInvoicesSection extends ConsumerWidget {
               error: (err, _) {
                 final message = err is ApiException
                     ? err.userMessage
-                    : 'Failed to load invoices.';
+                    : 'subscribers.invoices.load_failed'.tr();
                 return Text(message, style: theme.textTheme.bodyMedium);
               },
               data: (invoices) {
                 if (invoices.isEmpty) {
                   return Text(
-                    'No invoices',
+                    'subscribers.invoices.empty'.tr(),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: colorScheme.onSurface.withValues(alpha: 0.6),
                     ),

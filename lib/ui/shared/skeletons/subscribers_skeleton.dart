@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
@@ -111,7 +112,7 @@ class _SubscribersToolbarSkeleton extends StatelessWidget {
                     color: colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                   title: Text(
-                    'Search customer',
+                    'subscribers.search.hint_customer'.tr(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodyMedium?.copyWith(
@@ -128,7 +129,7 @@ class _SubscribersToolbarSkeleton extends StatelessWidget {
           ),
           SizedBox(height: context.spaceSmall),
           Text(
-            '128 subscribers',
+            'areas.subscriber_count'.tr(args: ['128']),
             style: theme.textTheme.bodySmall?.copyWith(
               color: colorScheme.onSurface.withValues(alpha: 0.6),
             ),

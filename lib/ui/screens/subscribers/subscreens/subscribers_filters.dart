@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -62,7 +63,7 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('Filters'),
+        title: Text('expenses.filter.title'.tr()),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(context.paddingMedium),
@@ -70,7 +71,7 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FilterSection<CustomerRelation>(
-              title: 'Relation',
+              title: 'subscribers.filter.relation'.tr(),
               value: _relation,
               items: CustomerRelation.values,
               labelBuilder: (e) => e.label,
@@ -78,7 +79,7 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
             ),
             SizedBox(height: context.spaceMedium),
             FilterSection<PlanType>(
-              title: 'Plan',
+              title: 'subscribers.filter.plan'.tr(),
               value: _planType,
               items: PlanType.values,
               labelBuilder: (e) => e.label,
@@ -86,7 +87,7 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
             ),
             SizedBox(height: context.spaceMedium),
             FilterSection<CustomerStatus>(
-              title: 'Status',
+              title: 'subscribers.filter.status'.tr(),
               value: _customerStatus,
               items: CustomerStatus.values,
               labelBuilder: (e) => e.label,
@@ -107,7 +108,7 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
                         ),
                       )
                     : Text(
-                        'Apply Filter',
+                        'expenses.filter.apply'.tr(),
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

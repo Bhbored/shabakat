@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -44,7 +45,7 @@ class SubscriberCreateInvoiceDialog extends ConsumerStatefulWidget {
   String get _targetLabel {
     final name = customerName?.trim();
     if (name != null && name.isNotEmpty) return name;
-    return 'this subscriber';
+    return 'subscribers.fallback_name'.tr();
   }
 
   @override
@@ -77,8 +78,8 @@ class _SubscriberCreateInvoiceDialogState
   String? _amountValidator(String? value) {
     if (value == null || value.trim().isEmpty) return null;
     final amount = double.tryParse(value.trim());
-    if (amount == null) return 'Enter a valid number';
-    if (amount <= 0) return 'Amount must be greater than 0';
+    if (amount == null) return 'settings.validation.invalid_number'.tr();
+    if (amount <= 0) return 'subscribers.invoices.validation.amount_positive'.tr();
     return null;
   }
 
@@ -125,7 +126,7 @@ class _SubscriberCreateInvoiceDialogState
       if (widget.scaffoldContext.mounted) {
         AppSnackBar.show(
           widget.scaffoldContext,
-          message: 'Invoice created',
+          message: 'subscribers.invoices.create_success'.tr(),
           variant: AppSnackBarVariant.success,
         );
       }
@@ -133,7 +134,7 @@ class _SubscriberCreateInvoiceDialogState
       if (!mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to create invoice. Please try again.';
+          : 'subscribers.invoices.create_failed'.tr();
       AppSnackBar.show(
         context,
         message: message,
@@ -148,7 +149,7 @@ class _SubscriberCreateInvoiceDialogState
     final isCreating = ref.watch(invoiceProvider).isLoading;
 
     return AlertDialog(
-      title: const Text('Create Invoice'),
+      title: Text('subscribers.invoices.create_title'.tr()),
       content: SizedBox(
         width: double.maxFinite,
         child: widget._isFixedKilowatt
@@ -173,14 +174,14 @@ class _SubscriberCreateInvoiceDialogState
                     : (value) => setState(() => _isKilowattMode = value),
               )
             : Text(
-                'Create a new invoice for "${widget._targetLabel}"?',
+                'subscribers.invoices.create_confirm'.tr(args: [widget._targetLabel]),
                 style: theme.textTheme.bodyMedium,
               ),
       ),
       actions: [
         TextButton(
           onPressed: isCreating ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text('settings.cancel'.tr()),
         ),
         ElevatedButton(
           onPressed: isCreating ? null : _onCreate,
@@ -190,7 +191,7 @@ class _SubscriberCreateInvoiceDialogState
                   width: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Create'),
+              : Text('subscribers.invoices.create_submit'.tr()),
         ),
       ],
     );
@@ -232,7 +233,7 @@ class _FixedKilowattContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Create a new invoice for "$targetLabel".',
+          'subscribers.invoices.create_description'.tr(args: [targetLabel]),
           style: theme.textTheme.bodyMedium,
         ),
         SizedBox(height: context.spaceMedium),
@@ -240,14 +241,16 @@ class _FixedKilowattContent extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                isKilowattMode ? 'Kilowatt' : 'Payment',
+                isKilowattMode
+                    ? 'subscribers.plan.kilowatt'.tr()
+                    : 'subscribers.invoices.payment'.tr(),
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ),
             Text(
-              'Payment',
+              'subscribers.invoices.payment'.tr(),
               style: theme.textTheme.labelMedium?.copyWith(
                 color: colorScheme.onSurface.withValues(
                   alpha: isKilowattMode ? 0.45 : 1,
@@ -260,7 +263,7 @@ class _FixedKilowattContent extends StatelessWidget {
               onChanged: enabled ? onKilowattModeChanged : null,
             ),
             Text(
-              'Kilowatt',
+              'subscribers.plan.kilowatt'.tr(),
               style: theme.textTheme.labelMedium?.copyWith(
                 color: colorScheme.onSurface.withValues(
                   alpha: isKilowattMode ? 1 : 0.45,
@@ -279,7 +282,9 @@ class _FixedKilowattContent extends StatelessWidget {
           enabled: enabled,
           amountValidator: amountValidator,
           onPaymentMethodChanged: onPaymentMethodChanged,
-          amountLabel: isKilowattMode ? 'Kilowatt' : 'Amount',
+          amountLabel: isKilowattMode
+              ? 'subscribers.plan.kilowatt'.tr()
+              : 'subscribers.invoices.amount'.tr(),
         ),
       ],
     );

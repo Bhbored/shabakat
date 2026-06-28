@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 
@@ -28,7 +29,7 @@ class SubscriberEditSheetHeader extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Edit Subscriber',
+                  'subscribers.edit.title'.tr(),
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

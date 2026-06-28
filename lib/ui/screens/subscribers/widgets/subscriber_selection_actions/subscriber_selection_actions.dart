@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -27,7 +28,7 @@ class SubscriberSelectionActions extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          tooltip: 'Suspend',
+          tooltip: 'subscribers.actions.suspend'.tr(),
           onPressed: isLoading || !hasSelection
               ? null
               : () {
@@ -40,7 +41,7 @@ class SubscriberSelectionActions extends ConsumerWidget {
           icon: const Icon(LucideIcons.pauseCircle),
         ),
         IconButton(
-          tooltip: 'Delete',
+          tooltip: 'subscribers.actions.delete'.tr(),
           onPressed: isLoading || !hasSelection
               ? null
               : () async {
@@ -49,20 +50,26 @@ class SubscriberSelectionActions extends ConsumerWidget {
                   final confirmed = await showDialog<bool>(
                     context: context,
                     builder: (dialogContext) => AlertDialog(
-                      title: const Text('Delete Subscribers'),
+                      title: Text('subscribers.delete_bulk.title'.tr()),
                       content: Text(
-                        'Are you sure you want to delete $count subscriber${count == 1 ? '' : 's'}? This action cannot be undone.',
+                        count == 1
+                            ? 'subscribers.delete_bulk.message_one'.tr(
+                                args: [count.toString()],
+                              )
+                            : 'subscribers.delete_bulk.message_many'.tr(
+                                args: [count.toString()],
+                              ),
                       ),
                       actions: [
                         TextButton(
                           onPressed: () =>
                               Navigator.of(dialogContext).pop(false),
-                          child: const Text('Cancel'),
+                          child: Text('settings.cancel'.tr()),
                         ),
                         ElevatedButton(
                           onPressed: () =>
                               Navigator.of(dialogContext).pop(true),
-                          child: const Text('Delete'),
+                          child: Text('subscribers.actions.delete'.tr()),
                         ),
                       ],
                     ),
@@ -79,15 +86,17 @@ class SubscriberSelectionActions extends ConsumerWidget {
                     AppSnackBar.show(
                       context,
                       message: count == 1
-                          ? 'Subscriber deleted'
-                          : '$count subscribers deleted',
+                          ? 'subscribers.delete.success_one'.tr()
+                          : 'subscribers.delete.success_many'.tr(
+                              args: [count.toString()],
+                            ),
                       variant: AppSnackBarVariant.success,
                     );
                   } catch (e) {
                     if (!context.mounted) return;
                     final message = e is ApiException
                         ? e.userMessage
-                        : 'Failed to delete subscribers. Please try again.';
+                        : 'subscribers.delete.failed_bulk'.tr();
                     AppSnackBar.show(
                       context,
                       message: message,
