@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shabakat/core/enums/enums.dart';
 
 import 'customer_pricing_override_dto.dart';
 
@@ -12,11 +13,11 @@ sealed class UpdateCustomerRequest with _$UpdateCustomerRequest {
     String? phone,
     String? address,
     String? areaId,
-    String? customerType,
-    String? plan,
+    CustomerType? customerType,
+    PlanType? plan,
     double? planValue,
-    String? customerStatus,
-    String? customerRelation,
+    CustomerStatus? customerStatus,
+    CustomerRelation? customerRelation,
     CustomerPricingOverrideDto? pricingOverride,
     @Default(false) bool clearPricingOverride,
   }) = _UpdateCustomerRequest;

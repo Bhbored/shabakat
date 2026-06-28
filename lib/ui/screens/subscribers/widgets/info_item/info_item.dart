@@ -32,11 +32,18 @@ class InfoItem extends StatelessWidget {
             letterSpacing: 1.0,
             color: colorScheme.onSurface.withValues(alpha: 0.5),
           ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         SizedBox(height: context.spaceSmall * 0.25),
         for (var i = 0; i < values.length; i++) ...[
           if (i > 0) SizedBox(height: context.spaceSmall * 0.25),
-          Text(values[i], style: valueStyle),
+          Text(
+            values[i],
+            style: valueStyle,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ],
     );

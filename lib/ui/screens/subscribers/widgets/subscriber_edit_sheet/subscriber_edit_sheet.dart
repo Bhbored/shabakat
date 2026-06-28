@@ -88,6 +88,7 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
     _selectedAreaId = customer.areaId;
     _selectedAreaName = customer.areaName;
     _hasPricingOverride =
+        customer.hasPricingOverride ||
         customer.priceOverride != null ||
         customer.fixedChargeOverride != null ||
         customer.tvaOverride != null;
@@ -137,6 +138,7 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
 
     final planValue = double.parse(_planValueController.text.trim());
     final hadPricingOverride =
+        widget.customer.hasPricingOverride ||
         widget.customer.priceOverride != null ||
         widget.customer.fixedChargeOverride != null ||
         widget.customer.tvaOverride != null;
@@ -146,11 +148,11 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
       phone: _phoneController.text.trim(),
       address: _addressController.text.trim(),
       areaId: _selectedAreaId,
-      customerType: _customerType.label,
-      plan: _plan.label,
+      customerType: _customerType,
+      plan: _plan,
       planValue: planValue,
-      customerStatus: _customerStatus.name,
-      customerRelation: _customerRelation?.label,
+      customerStatus: _customerStatus,
+      customerRelation: _customerRelation,
       pricingOverride: _hasPricingOverride
           ? CustomerPricingOverrideDto(
               price: double.parse(_priceOverrideController.text.trim()),

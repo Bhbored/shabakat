@@ -22,9 +22,10 @@ extension CustomerResponseMapper on CustomerResponse {
     customerType: toCustomerType(customerType),
     customerRelation: toCustomerRelation(customerRelation),
     subscriptionDate: subscriptionDate,
-    priceOverride: pricingOverride?.price,
-    fixedChargeOverride: pricingOverride?.fixedCharge,
-    tvaOverride: pricingOverride?.tva,
+    priceOverride: hasPricingOverride ? pricingOverride?.price : null,
+    fixedChargeOverride: hasPricingOverride ? pricingOverride?.fixedCharge : null,
+    tvaOverride: hasPricingOverride ? pricingOverride?.tva : null,
+    hasPricingOverride: hasPricingOverride,
     customerStatus: toCustomerStatus(customerStatus),
     plan: plan.toPlanType(),
     planValue: planValue,
@@ -71,9 +72,11 @@ extension CustomerSummaryResponseMapper on CustomerSummaryResponse {
     priceOverride: null,
     fixedChargeOverride: null,
     tvaOverride: null,
+    hasPricingOverride: hasPricingOverride,
     customerStatus: toCustomerStatus(customerStatus),
     plan: plan.toPlanType(),
     planValue: planValue,
+    totalOutstanding: amountDue,
   );
 }
 
@@ -96,6 +99,9 @@ extension CustomerWithInvoicesResponseMapper on CustomerWithInvoicesResponse {
     customerStatus: toCustomerStatus(customerStatus),
     plan: plan.toPlanType(),
     planValue: planValue,
+    totalBilled: totalBilled,
+    totalPaid: totalPaid,
+    totalOutstanding: totalOutstanding,
     invoices: invoices.map((i) => i.toEntity()).toList(),
   );
 }

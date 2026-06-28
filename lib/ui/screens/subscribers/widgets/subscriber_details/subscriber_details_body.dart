@@ -25,6 +25,7 @@ class SubscriberDetailsBody extends StatelessWidget {
   String _formatAmount(double? amount) => (amount ?? 0).toStringAsFixed(2);
 
   bool get _hasPricingOverrides =>
+      customer.hasPricingOverride ||
       customer.priceOverride != null ||
       customer.fixedChargeOverride != null ||
       customer.tvaOverride != null;

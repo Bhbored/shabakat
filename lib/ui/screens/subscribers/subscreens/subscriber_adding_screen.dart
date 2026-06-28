@@ -440,11 +440,11 @@ class _SubscriberAddingScreenState
       phone: _phoneController.text.trim(),
       address: _addressController.text.trim(),
       areaId: selectedArea.id,
-      customerType: _customerType.label,
-      plan: _plan.label,
+      customerType: _customerType,
+      plan: _plan,
       planValue: planValue,
       subscriptionDate: _subscriptionDate,
-      customerRelation: _customerRelation?.label,
+      customerRelation: _customerRelation,
       pricingOverride: _hasPricingOverride
           ? CustomerPricingOverrideDto(
               price: double.parse(_priceOverrideController.text.trim()),

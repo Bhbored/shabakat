@@ -26,6 +26,7 @@ sealed class Customer with _$Customer {
     double? priceOverride,
     double? fixedChargeOverride,
     double? tvaOverride,
+    @Default(false) bool hasPricingOverride,
     @Default(CustomerStatus.active) CustomerStatus customerStatus,
     required PlanType plan,
     required double planValue,

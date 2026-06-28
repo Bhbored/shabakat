@@ -43,6 +43,7 @@ Map<String, dynamic> _$CustomerFilterRequestToJson(
 const _$PlanTypeEnumMap = {
   PlanType.ampere: 'ampere',
   PlanType.kilowatt: 'kilowatt',
+  PlanType.fixedKilowatt: 'fixedKilowatt',
 };
 
 const _$CustomerRelationEnumMap = {

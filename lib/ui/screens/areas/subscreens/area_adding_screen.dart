@@ -44,9 +44,7 @@ class _AreaAddingScreenState extends ConsumerState<AreaAddingScreen> {
       variant = AppSnackBarVariant.success;
     } catch (e) {
       success = false;
-      message = e is ApiException
-          ? e.userMessage
-          : 'areas.add.failed'.tr();
+      message = e is ApiException ? e.userMessage : 'areas.add.failed'.tr();
       variant = AppSnackBarVariant.error;
     } finally {
       if (mounted) {
@@ -76,7 +74,10 @@ class _AreaAddingScreenState extends ConsumerState<AreaAddingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('areas.add.name_label'.tr(), style: theme.textTheme.titleMedium),
+              Text(
+                'areas.add.name_label'.tr(),
+                style: theme.textTheme.titleMedium,
+              ),
               SizedBox(height: context.spaceSmall),
               TextFormField(
                 controller: _nameController,

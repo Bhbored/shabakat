@@ -28,6 +28,7 @@ _Customer _$CustomerFromJson(Map<String, dynamic> json) => _Customer(
   priceOverride: (json['priceOverride'] as num?)?.toDouble(),
   fixedChargeOverride: (json['fixedChargeOverride'] as num?)?.toDouble(),
   tvaOverride: (json['tvaOverride'] as num?)?.toDouble(),
+  hasPricingOverride: json['hasPricingOverride'] as bool? ?? false,
   customerStatus:
       $enumDecodeNullable(_$CustomerStatusEnumMap, json['customerStatus']) ??
       CustomerStatus.active,
@@ -57,6 +58,7 @@ Map<String, dynamic> _$CustomerToJson(_Customer instance) => <String, dynamic>{
   'priceOverride': instance.priceOverride,
   'fixedChargeOverride': instance.fixedChargeOverride,
   'tvaOverride': instance.tvaOverride,
+  'hasPricingOverride': instance.hasPricingOverride,
   'customerStatus': _$CustomerStatusEnumMap[instance.customerStatus]!,
   'plan': _$PlanTypeEnumMap[instance.plan]!,
   'planValue': instance.planValue,
@@ -84,4 +86,5 @@ const _$CustomerStatusEnumMap = {
 const _$PlanTypeEnumMap = {
   PlanType.ampere: 'ampere',
   PlanType.kilowatt: 'kilowatt',
+  PlanType.fixedKilowatt: 'fixedKilowatt',
 };

@@ -13,11 +13,14 @@ _CreateCustomerRequest _$CreateCustomerRequestFromJson(
   phone: json['phone'] as String?,
   address: json['address'] as String?,
   areaId: json['areaId'] as String?,
-  customerType: json['customerType'] as String,
-  plan: json['plan'] as String,
+  customerType: $enumDecode(_$CustomerTypeEnumMap, json['customerType']),
+  plan: $enumDecode(_$PlanTypeEnumMap, json['plan']),
   planValue: (json['planValue'] as num).toDouble(),
   subscriptionDate: _dateOnlyFromJson(json['subscriptionDate'] as String?),
-  customerRelation: json['customerRelation'] as String?,
+  customerRelation: $enumDecodeNullable(
+    _$CustomerRelationEnumMap,
+    json['customerRelation'],
+  ),
   pricingOverride: json['pricingOverride'] == null
       ? null
       : CustomerPricingOverrideDto.fromJson(
@@ -32,10 +35,28 @@ Map<String, dynamic> _$CreateCustomerRequestToJson(
   'phone': instance.phone,
   'address': instance.address,
   'areaId': instance.areaId,
-  'customerType': instance.customerType,
-  'plan': instance.plan,
+  'customerType': _$CustomerTypeEnumMap[instance.customerType]!,
+  'plan': _$PlanTypeEnumMap[instance.plan]!,
   'planValue': instance.planValue,
   'subscriptionDate': _dateOnlyToJson(instance.subscriptionDate),
-  'customerRelation': instance.customerRelation,
+  'customerRelation': _$CustomerRelationEnumMap[instance.customerRelation],
   'pricingOverride': instance.pricingOverride,
+};
+
+const _$CustomerTypeEnumMap = {
+  CustomerType.residential: 'residential',
+  CustomerType.commercial: 'commercial',
+  CustomerType.industrial: 'industrial',
+};
+
+const _$PlanTypeEnumMap = {
+  PlanType.ampere: 'ampere',
+  PlanType.kilowatt: 'kilowatt',
+  PlanType.fixedKilowatt: 'fixedKilowatt',
+};
+
+const _$CustomerRelationEnumMap = {
+  CustomerRelation.friend: 'friend',
+  CustomerRelation.family: 'family',
+  CustomerRelation.owner: 'owner',
 };
