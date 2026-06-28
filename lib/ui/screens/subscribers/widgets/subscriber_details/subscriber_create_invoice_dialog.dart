@@ -4,7 +4,6 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/request/invoice/create_invoice_request.dart';
-import 'package:shabakat/data/providers/customer/single_customer_provider.dart';
 import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
 import 'package:shabakat/ui/screens/invoices/widgets/invoice_pay_dialog/invoice_pay_dialog_content.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';

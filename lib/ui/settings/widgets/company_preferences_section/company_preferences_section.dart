@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/utilities/day_of_month_formatter.dart';
 import 'package:shabakat/data/providers/company/company_provider.dart';
 import 'package:shabakat/domain/entities/settings/company_preferences.dart';
 import 'package:shabakat/domain/mappers/company_preferences/company_preferences_mapper.dart';
 import 'package:shabakat/ui/settings/widgets/preference_tile.dart';
-import 'package:shabakat/ui/shared/dialogs/preference_edit_dialog.dart';
+import 'package:shabakat/ui/shared/dialogs/preference_day_picker_dialog.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
 import 'subcreens/trigger_message_preference_screen.dart';
@@ -80,7 +81,8 @@ class CompanyPreferencesSection extends ConsumerWidget {
           PreferenceTile(
             label: 'settings.preferences.due_date'.tr(),
             value: preferencesAsync.when(
-              data: (preferences) => _formatDayOfMonth(preferences.dueDate),
+              data: (preferences) =>
+                  _formatDayOfMonth(context, preferences.dueDate),
               loading: () => null,
               error: (_, _) => null,
             ),
@@ -91,7 +93,8 @@ class CompanyPreferencesSection extends ConsumerWidget {
           PreferenceTile(
             label: 'settings.preferences.trigger_date'.tr(),
             value: preferencesAsync.when(
-              data: (preferences) => _formatDayOfMonth(preferences.triggerDate),
+              data: (preferences) =>
+                  _formatDayOfMonth(context, preferences.triggerDate),
               loading: () => null,
               error: (_, _) => null,
             ),
@@ -132,8 +135,8 @@ class CompanyPreferencesSection extends ConsumerWidget {
     };
   }
 
-  String _formatDayOfMonth(int day) {
-    return 'settings.day_of_month'.tr(args: [day.toString()]);
+  String _formatDayOfMonth(BuildContext context, int day) {
+    return DayOfMonthFormatter.format(context, day);
   }
 
   void _openLanguageScreen(BuildContext context, WidgetRef ref) {
@@ -151,27 +154,14 @@ class CompanyPreferencesSection extends ConsumerWidget {
     final current = ref.read(companyProvider).asData?.value;
     if (current == null) return;
 
-    showPreferenceEditDialog(
+    showPreferenceDayPickerDialog(
       context: context,
       title: 'settings.preferences.due_date'.tr(),
-      initialValue: current.dueDate.toString(),
-      hintText: 'settings.day_hint'.tr(),
+      initialDay: current.dueDate,
       description: 'settings.due_date_description'.tr(),
-      keyboardType: TextInputType.number,
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return 'settings.validation.required'.tr();
-        }
-        final day = int.tryParse(value.trim());
-        if (day == null) return 'settings.validation.invalid_number'.tr();
-        if (day < 1 || day > 31) return 'settings.validation.day_range'.tr();
-
-        return null;
-      },
-      onSave: (value) async {
-        final parsed = int.parse(value.trim());
+      onSave: (day) async {
         final latest = ref.read(companyProvider).asData?.value ?? current;
-        final updated = latest.copyWith(dueDate: parsed);
+        final updated = latest.copyWith(dueDate: day);
         await ref
             .read(companyProvider.notifier)
             .upsertPreferences(updated.toUpdateRequest());
@@ -183,27 +173,14 @@ class CompanyPreferencesSection extends ConsumerWidget {
     final current = ref.read(companyProvider).asData?.value;
     if (current == null) return;
 
-    showPreferenceEditDialog(
+    showPreferenceDayPickerDialog(
       context: context,
       title: 'settings.preferences.trigger_date'.tr(),
-      initialValue: current.triggerDate.toString(),
-      hintText: 'settings.day_hint'.tr(),
+      initialDay: current.triggerDate,
       description: 'settings.trigger_date_description'.tr(),
-      keyboardType: TextInputType.number,
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return 'settings.validation.required'.tr();
-        }
-        final day = int.tryParse(value.trim());
-        if (day == null) return 'settings.validation.invalid_number'.tr();
-        if (day < 1 || day > 31) return 'settings.validation.day_range'.tr();
-
-        return null;
-      },
-      onSave: (value) async {
-        final parsed = int.parse(value.trim());
+      onSave: (day) async {
         final latest = ref.read(companyProvider).asData?.value ?? current;
-        final updated = latest.copyWith(triggerDate: parsed);
+        final updated = latest.copyWith(triggerDate: day);
         await ref
             .read(companyProvider.notifier)
             .upsertPreferences(updated.toUpdateRequest());

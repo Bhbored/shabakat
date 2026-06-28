@@ -88,7 +88,7 @@
     "customer_type": "Customer type",
     "language_english": "English",
     "language_arabic": "Arabic",
-    "day_of_month": "{} of month",
+    "day_of_month": "{} of the month",
     "day_hint": "1-31",
     "preferences": {
       "price_per_kilowatt": "Price per Kilowatt",
