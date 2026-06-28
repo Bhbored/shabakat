@@ -51,7 +51,8 @@
     "logout": "Logout"
   },
   "common": {
-    "all": "All"
+    "all": "All",
+    "back_online": "You are back online"
   },
   "errors": {
     "try_again": "Try Again"

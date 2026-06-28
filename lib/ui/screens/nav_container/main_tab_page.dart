@@ -1,8 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:shabakat/core/constants/api_errors.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/themes/app_colors.dart';
+import 'package:shabakat/data/providers/network/internet_connection_provider.dart';
+import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 import 'app_drawer.dart';
 import 'bottom_nav_container.dart';
 import '../dashboard/dashboard_screen.dart';
@@ -16,14 +21,14 @@ import '../areas/subscreens/area_adding_screen.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 import '../subscribers/subscreens/subscriber_adding_screen.dart';
 
-class MainTabPage extends StatefulWidget {
+class MainTabPage extends ConsumerStatefulWidget {
   const MainTabPage({super.key});
 
   @override
-  State<MainTabPage> createState() => _MainTabPageState();
+  ConsumerState<MainTabPage> createState() => _MainTabPageState();
 }
 
-class _MainTabPageState extends State<MainTabPage> {
+class _MainTabPageState extends ConsumerState<MainTabPage> {
   late final PageController _pageController;
   int _currentIndex = 0;
 
@@ -52,6 +57,23 @@ class _MainTabPageState extends State<MainTabPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    ref.listen(internetConnectionProvider, (previous, next) {
+      if (previous == null || previous == next) return;
+
+      if (next) {
+        AppSnackBar.show(
+          context,
+          message: 'common.back_online'.tr(),
+          variant: AppSnackBarVariant.success,
+        );
+      } else {
+        AppSnackBar.show(
+          context,
+          message: ApiErrors.noInternet,
+          variant: AppSnackBarVariant.error,
+        );
+      }
+    });
 
     return Scaffold(
       appBar: _buildAppBar(theme, colorScheme),
@@ -60,9 +82,7 @@ class _MainTabPageState extends State<MainTabPage> {
         controller: _pageController,
         onPageChanged: (index) => setState(() => _currentIndex = index),
         children: [
-          DashboardScreen(
-            onViewInvoices: () => _onTabChanged(2),
-          ),
+          DashboardScreen(onViewInvoices: () => _onTabChanged(2)),
           const SubscribersScreen(),
           const InvoicesScreen(),
           const ExpensesScreen(),
@@ -153,9 +173,7 @@ class _MainTabPageState extends State<MainTabPage> {
               color: colorScheme.onSecondary,
             ),
           ),
-          actions: const [
-            BulkCreateInvoicesAction(),
-          ],
+          actions: const [BulkCreateInvoicesAction()],
         );
       case 3:
         return AppBar(
@@ -197,20 +215,20 @@ class _MainTabPageState extends State<MainTabPage> {
   }
 
   void _onAddSubscriber() {
-    Navigator.of(context).push(
-      openInnerScreen(widget: const SubscriberAddingScreen()),
-    );
+    Navigator.of(
+      context,
+    ).push(openInnerScreen(widget: const SubscriberAddingScreen()));
   }
 
   void _onAddExpense() {
-    Navigator.of(context).push(
-      openInnerScreen(widget: const ExpenseAddingScreen()),
-    );
+    Navigator.of(
+      context,
+    ).push(openInnerScreen(widget: const ExpenseAddingScreen()));
   }
 
   void _onAddArea() {
-    Navigator.of(context).push(
-      openInnerScreen(widget: const AreaAddingScreen()),
-    );
+    Navigator.of(
+      context,
+    ).push(openInnerScreen(widget: const AreaAddingScreen()));
   }
 }
