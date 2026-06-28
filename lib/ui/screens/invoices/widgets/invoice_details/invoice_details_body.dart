@@ -144,6 +144,26 @@ class InvoiceDetailsBody extends StatelessWidget {
                       ),
                     ],
                   ),
+                  invoice.billedConsumption == null
+                      ? const SizedBox.shrink()
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: context.spaceMedium),
+                            InvoiceDetailSection(
+                              title: 'BILLED CONSUMPTION',
+                              children: [
+                                InvoiceDetailTile(
+                                  icon: LucideIcons.gauge,
+                                  label: 'Consumption',
+                                  value:
+                                      '${invoice.billedConsumption!.toStringAsFixed(2)} kWh',
+                                  accentColor: colorScheme.tertiary,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                   if (invoice.payments != null &&
                       invoice.payments!.isNotEmpty) ...[
                     SizedBox(height: context.spaceMedium),

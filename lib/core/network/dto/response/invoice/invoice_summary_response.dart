@@ -22,6 +22,7 @@ sealed class InvoiceSummaryResponse with _$InvoiceSummaryResponse {
     required double totalAmount,
     required double paidAmount,
     required double amountDue,
+    double? billedConsumption,
     required DateTime createdAt,
   }) = _InvoiceSummaryResponse;
 

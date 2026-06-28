@@ -18,6 +18,7 @@ _InvoiceSummaryResponse _$InvoiceSummaryResponseFromJson(
   totalAmount: (json['totalAmount'] as num).toDouble(),
   paidAmount: (json['paidAmount'] as num).toDouble(),
   amountDue: (json['amountDue'] as num).toDouble(),
+  billedConsumption: (json['billedConsumption'] as num?)?.toDouble(),
   createdAt: DateTime.parse(json['createdAt'] as String),
 );
 
@@ -33,5 +34,6 @@ Map<String, dynamic> _$InvoiceSummaryResponseToJson(
   'totalAmount': instance.totalAmount,
   'paidAmount': instance.paidAmount,
   'amountDue': instance.amountDue,
+  'billedConsumption': instance.billedConsumption,
   'createdAt': instance.createdAt.toIso8601String(),
 };

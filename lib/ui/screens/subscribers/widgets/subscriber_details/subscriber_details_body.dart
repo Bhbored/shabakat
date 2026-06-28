@@ -148,12 +148,13 @@ class SubscriberDetailsBody extends StatelessWidget {
                     ],
                   ),
                 ],
-                if (customer.plan == PlanType.kilowatt) ...[
+                if (customer.plan != PlanType.ampere) ...[
                   SizedBox(height: context.spaceMedium),
                   SubscriberMeterReadingsSection(
                     customerId: customer.id,
                     customerName: customer.name,
                     customerStatus: customer.customerStatus,
+                    plan: customer.plan,
                   ),
                 ],
                 SizedBox(height: context.spaceMedium),
@@ -161,6 +162,7 @@ class SubscriberDetailsBody extends StatelessWidget {
                   customerId: customer.id,
                   customerName: customer.name,
                   customerStatus: customer.customerStatus,
+                  plan: customer.plan,
                 ),
               ],
             ),

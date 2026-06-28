@@ -8,11 +8,13 @@ import 'meter_reading_delete_dialog.dart';
 class MeterReadingCard extends StatelessWidget {
   final String customerId;
   final MeterReading reading;
+  final bool canDelete;
 
   const MeterReadingCard({
     super.key,
     required this.customerId,
     required this.reading,
+    this.canDelete = true,
   });
 
   String _formatDateTime(DateTime date) {
@@ -52,15 +54,16 @@ class MeterReadingCard extends StatelessWidget {
                       color: colorScheme.primary,
                     ),
                   ),
-                IconButton(
-                  icon: const Icon(Icons.delete_outline),
-                  onPressed: () => showMeterReadingDeleteDialog(
-                    context: context,
-                    customerId: customerId,
-                    readingId: reading.id,
-                    readingValue: reading.readingValue,
+                if (canDelete)
+                  IconButton(
+                    icon: const Icon(Icons.delete_outline),
+                    onPressed: () => showMeterReadingDeleteDialog(
+                      context: context,
+                      customerId: customerId,
+                      readingId: reading.id,
+                      readingValue: reading.readingValue,
+                    ),
                   ),
-                ),
               ],
             ),
             SizedBox(height: context.spaceSmall),

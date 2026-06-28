@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$InvoiceSummaryResponse {
 
- String get id; int get invoiceNumber; String get customerName; String get invoiceStatus;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime get issueDate;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime get dueDate; double get totalAmount; double get paidAmount; double get amountDue; DateTime get createdAt;
+ String get id; int get invoiceNumber; String get customerName; String get invoiceStatus;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime get issueDate;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime get dueDate; double get totalAmount; double get paidAmount; double get amountDue; double? get billedConsumption; DateTime get createdAt;
 /// Create a copy of InvoiceSummaryResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $InvoiceSummaryResponseCopyWith<InvoiceSummaryResponse> get copyWith => _$Invoic
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is InvoiceSummaryResponse&&(identical(other.id, id) || other.id == id)&&(identical(other.invoiceNumber, invoiceNumber) || other.invoiceNumber == invoiceNumber)&&(identical(other.customerName, customerName) || other.customerName == customerName)&&(identical(other.invoiceStatus, invoiceStatus) || other.invoiceStatus == invoiceStatus)&&(identical(other.issueDate, issueDate) || other.issueDate == issueDate)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.paidAmount, paidAmount) || other.paidAmount == paidAmount)&&(identical(other.amountDue, amountDue) || other.amountDue == amountDue)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is InvoiceSummaryResponse&&(identical(other.id, id) || other.id == id)&&(identical(other.invoiceNumber, invoiceNumber) || other.invoiceNumber == invoiceNumber)&&(identical(other.customerName, customerName) || other.customerName == customerName)&&(identical(other.invoiceStatus, invoiceStatus) || other.invoiceStatus == invoiceStatus)&&(identical(other.issueDate, issueDate) || other.issueDate == issueDate)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.paidAmount, paidAmount) || other.paidAmount == paidAmount)&&(identical(other.amountDue, amountDue) || other.amountDue == amountDue)&&(identical(other.billedConsumption, billedConsumption) || other.billedConsumption == billedConsumption)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,invoiceNumber,customerName,invoiceStatus,issueDate,dueDate,totalAmount,paidAmount,amountDue,createdAt);
+int get hashCode => Object.hash(runtimeType,id,invoiceNumber,customerName,invoiceStatus,issueDate,dueDate,totalAmount,paidAmount,amountDue,billedConsumption,createdAt);
 
 @override
 String toString() {
-  return 'InvoiceSummaryResponse(id: $id, invoiceNumber: $invoiceNumber, customerName: $customerName, invoiceStatus: $invoiceStatus, issueDate: $issueDate, dueDate: $dueDate, totalAmount: $totalAmount, paidAmount: $paidAmount, amountDue: $amountDue, createdAt: $createdAt)';
+  return 'InvoiceSummaryResponse(id: $id, invoiceNumber: $invoiceNumber, customerName: $customerName, invoiceStatus: $invoiceStatus, issueDate: $issueDate, dueDate: $dueDate, totalAmount: $totalAmount, paidAmount: $paidAmount, amountDue: $amountDue, billedConsumption: $billedConsumption, createdAt: $createdAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $InvoiceSummaryResponseCopyWith<$Res>  {
   factory $InvoiceSummaryResponseCopyWith(InvoiceSummaryResponse value, $Res Function(InvoiceSummaryResponse) _then) = _$InvoiceSummaryResponseCopyWithImpl;
 @useResult
 $Res call({
- String id, int invoiceNumber, String customerName, String invoiceStatus,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime issueDate,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime dueDate, double totalAmount, double paidAmount, double amountDue, DateTime createdAt
+ String id, int invoiceNumber, String customerName, String invoiceStatus,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime issueDate,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime dueDate, double totalAmount, double paidAmount, double amountDue, double? billedConsumption, DateTime createdAt
 });
 
 
@@ -65,7 +65,7 @@ class _$InvoiceSummaryResponseCopyWithImpl<$Res>
 
 /// Create a copy of InvoiceSummaryResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? invoiceNumber = null,Object? customerName = null,Object? invoiceStatus = null,Object? issueDate = null,Object? dueDate = null,Object? totalAmount = null,Object? paidAmount = null,Object? amountDue = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? invoiceNumber = null,Object? customerName = null,Object? invoiceStatus = null,Object? issueDate = null,Object? dueDate = null,Object? totalAmount = null,Object? paidAmount = null,Object? amountDue = null,Object? billedConsumption = freezed,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,invoiceNumber: null == invoiceNumber ? _self.invoiceNumber : invoiceNumber // ignore: cast_nullable_to_non_nullable
@@ -76,7 +76,8 @@ as DateTime,dueDate: null == dueDate ? _self.dueDate : dueDate // ignore: cast_n
 as DateTime,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
 as double,paidAmount: null == paidAmount ? _self.paidAmount : paidAmount // ignore: cast_nullable_to_non_nullable
 as double,amountDue: null == amountDue ? _self.amountDue : amountDue // ignore: cast_nullable_to_non_nullable
-as double,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as double,billedConsumption: freezed == billedConsumption ? _self.billedConsumption : billedConsumption // ignore: cast_nullable_to_non_nullable
+as double?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }
@@ -159,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int invoiceNumber,  String customerName,  String invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime issueDate, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime dueDate,  double totalAmount,  double paidAmount,  double amountDue,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int invoiceNumber,  String customerName,  String invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime issueDate, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime dueDate,  double totalAmount,  double paidAmount,  double amountDue,  double? billedConsumption,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _InvoiceSummaryResponse() when $default != null:
-return $default(_that.id,_that.invoiceNumber,_that.customerName,_that.invoiceStatus,_that.issueDate,_that.dueDate,_that.totalAmount,_that.paidAmount,_that.amountDue,_that.createdAt);case _:
+return $default(_that.id,_that.invoiceNumber,_that.customerName,_that.invoiceStatus,_that.issueDate,_that.dueDate,_that.totalAmount,_that.paidAmount,_that.amountDue,_that.billedConsumption,_that.createdAt);case _:
   return orElse();
 
 }
@@ -180,10 +181,10 @@ return $default(_that.id,_that.invoiceNumber,_that.customerName,_that.invoiceSta
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int invoiceNumber,  String customerName,  String invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime issueDate, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime dueDate,  double totalAmount,  double paidAmount,  double amountDue,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int invoiceNumber,  String customerName,  String invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime issueDate, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime dueDate,  double totalAmount,  double paidAmount,  double amountDue,  double? billedConsumption,  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _InvoiceSummaryResponse():
-return $default(_that.id,_that.invoiceNumber,_that.customerName,_that.invoiceStatus,_that.issueDate,_that.dueDate,_that.totalAmount,_that.paidAmount,_that.amountDue,_that.createdAt);}
+return $default(_that.id,_that.invoiceNumber,_that.customerName,_that.invoiceStatus,_that.issueDate,_that.dueDate,_that.totalAmount,_that.paidAmount,_that.amountDue,_that.billedConsumption,_that.createdAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -197,10 +198,10 @@ return $default(_that.id,_that.invoiceNumber,_that.customerName,_that.invoiceSta
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int invoiceNumber,  String customerName,  String invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime issueDate, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime dueDate,  double totalAmount,  double paidAmount,  double amountDue,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int invoiceNumber,  String customerName,  String invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime issueDate, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime dueDate,  double totalAmount,  double paidAmount,  double amountDue,  double? billedConsumption,  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _InvoiceSummaryResponse() when $default != null:
-return $default(_that.id,_that.invoiceNumber,_that.customerName,_that.invoiceStatus,_that.issueDate,_that.dueDate,_that.totalAmount,_that.paidAmount,_that.amountDue,_that.createdAt);case _:
+return $default(_that.id,_that.invoiceNumber,_that.customerName,_that.invoiceStatus,_that.issueDate,_that.dueDate,_that.totalAmount,_that.paidAmount,_that.amountDue,_that.billedConsumption,_that.createdAt);case _:
   return null;
 
 }
@@ -212,7 +213,7 @@ return $default(_that.id,_that.invoiceNumber,_that.customerName,_that.invoiceSta
 @JsonSerializable()
 
 class _InvoiceSummaryResponse implements InvoiceSummaryResponse {
-  const _InvoiceSummaryResponse({required this.id, required this.invoiceNumber, required this.customerName, required this.invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) required this.issueDate, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) required this.dueDate, required this.totalAmount, required this.paidAmount, required this.amountDue, required this.createdAt});
+  const _InvoiceSummaryResponse({required this.id, required this.invoiceNumber, required this.customerName, required this.invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) required this.issueDate, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) required this.dueDate, required this.totalAmount, required this.paidAmount, required this.amountDue, this.billedConsumption, required this.createdAt});
   factory _InvoiceSummaryResponse.fromJson(Map<String, dynamic> json) => _$InvoiceSummaryResponseFromJson(json);
 
 @override final  String id;
@@ -224,6 +225,7 @@ class _InvoiceSummaryResponse implements InvoiceSummaryResponse {
 @override final  double totalAmount;
 @override final  double paidAmount;
 @override final  double amountDue;
+@override final  double? billedConsumption;
 @override final  DateTime createdAt;
 
 /// Create a copy of InvoiceSummaryResponse
@@ -239,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _InvoiceSummaryResponse&&(identical(other.id, id) || other.id == id)&&(identical(other.invoiceNumber, invoiceNumber) || other.invoiceNumber == invoiceNumber)&&(identical(other.customerName, customerName) || other.customerName == customerName)&&(identical(other.invoiceStatus, invoiceStatus) || other.invoiceStatus == invoiceStatus)&&(identical(other.issueDate, issueDate) || other.issueDate == issueDate)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.paidAmount, paidAmount) || other.paidAmount == paidAmount)&&(identical(other.amountDue, amountDue) || other.amountDue == amountDue)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _InvoiceSummaryResponse&&(identical(other.id, id) || other.id == id)&&(identical(other.invoiceNumber, invoiceNumber) || other.invoiceNumber == invoiceNumber)&&(identical(other.customerName, customerName) || other.customerName == customerName)&&(identical(other.invoiceStatus, invoiceStatus) || other.invoiceStatus == invoiceStatus)&&(identical(other.issueDate, issueDate) || other.issueDate == issueDate)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.paidAmount, paidAmount) || other.paidAmount == paidAmount)&&(identical(other.amountDue, amountDue) || other.amountDue == amountDue)&&(identical(other.billedConsumption, billedConsumption) || other.billedConsumption == billedConsumption)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,invoiceNumber,customerName,invoiceStatus,issueDate,dueDate,totalAmount,paidAmount,amountDue,createdAt);
+int get hashCode => Object.hash(runtimeType,id,invoiceNumber,customerName,invoiceStatus,issueDate,dueDate,totalAmount,paidAmount,amountDue,billedConsumption,createdAt);
 
 @override
 String toString() {
-  return 'InvoiceSummaryResponse(id: $id, invoiceNumber: $invoiceNumber, customerName: $customerName, invoiceStatus: $invoiceStatus, issueDate: $issueDate, dueDate: $dueDate, totalAmount: $totalAmount, paidAmount: $paidAmount, amountDue: $amountDue, createdAt: $createdAt)';
+  return 'InvoiceSummaryResponse(id: $id, invoiceNumber: $invoiceNumber, customerName: $customerName, invoiceStatus: $invoiceStatus, issueDate: $issueDate, dueDate: $dueDate, totalAmount: $totalAmount, paidAmount: $paidAmount, amountDue: $amountDue, billedConsumption: $billedConsumption, createdAt: $createdAt)';
 }
 
 
@@ -259,7 +261,7 @@ abstract mixin class _$InvoiceSummaryResponseCopyWith<$Res> implements $InvoiceS
   factory _$InvoiceSummaryResponseCopyWith(_InvoiceSummaryResponse value, $Res Function(_InvoiceSummaryResponse) _then) = __$InvoiceSummaryResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String id, int invoiceNumber, String customerName, String invoiceStatus,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime issueDate,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime dueDate, double totalAmount, double paidAmount, double amountDue, DateTime createdAt
+ String id, int invoiceNumber, String customerName, String invoiceStatus,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime issueDate,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime dueDate, double totalAmount, double paidAmount, double amountDue, double? billedConsumption, DateTime createdAt
 });
 
 
@@ -276,7 +278,7 @@ class __$InvoiceSummaryResponseCopyWithImpl<$Res>
 
 /// Create a copy of InvoiceSummaryResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? invoiceNumber = null,Object? customerName = null,Object? invoiceStatus = null,Object? issueDate = null,Object? dueDate = null,Object? totalAmount = null,Object? paidAmount = null,Object? amountDue = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? invoiceNumber = null,Object? customerName = null,Object? invoiceStatus = null,Object? issueDate = null,Object? dueDate = null,Object? totalAmount = null,Object? paidAmount = null,Object? amountDue = null,Object? billedConsumption = freezed,Object? createdAt = null,}) {
   return _then(_InvoiceSummaryResponse(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,invoiceNumber: null == invoiceNumber ? _self.invoiceNumber : invoiceNumber // ignore: cast_nullable_to_non_nullable
@@ -287,7 +289,8 @@ as DateTime,dueDate: null == dueDate ? _self.dueDate : dueDate // ignore: cast_n
 as DateTime,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
 as double,paidAmount: null == paidAmount ? _self.paidAmount : paidAmount // ignore: cast_nullable_to_non_nullable
 as double,amountDue: null == amountDue ? _self.amountDue : amountDue // ignore: cast_nullable_to_non_nullable
-as double,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as double,billedConsumption: freezed == billedConsumption ? _self.billedConsumption : billedConsumption // ignore: cast_nullable_to_non_nullable
+as double?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }

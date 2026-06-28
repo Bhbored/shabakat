@@ -25,6 +25,7 @@ sealed class InvoiceResponse with _$InvoiceResponse {
     required double totalAmount,
     required double paidAmount,
     required double amountDue,
+    double? billedConsumption,
     required String invoiceStatus,
     required DateTime createdAt,
     required DateTime updatedAt,

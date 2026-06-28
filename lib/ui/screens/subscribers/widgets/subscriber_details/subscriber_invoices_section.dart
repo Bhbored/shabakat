@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/customer_status.dart';
+import 'package:shabakat/core/enums/plan_type.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/invoice/invoice_filter_provider.dart';
 import 'package:shabakat/data/providers/invoice/invoice_pagination_provider.dart';
@@ -14,11 +15,13 @@ class SubscriberInvoicesSection extends ConsumerWidget {
   final String customerId;
   final String? customerName;
   final CustomerStatus customerStatus;
+  final PlanType plan;
 
   const SubscriberInvoicesSection({
     super.key,
     required this.customerId,
     required this.customerStatus,
+    required this.plan,
     this.customerName,
   });
 
@@ -52,6 +55,7 @@ class SubscriberInvoicesSection extends ConsumerWidget {
                     onPressed: () => showSubscriberCreateInvoiceDialog(
                       context: context,
                       customerId: customerId,
+                      plan: plan,
                       customerName: customerName,
                     ),
                   ),

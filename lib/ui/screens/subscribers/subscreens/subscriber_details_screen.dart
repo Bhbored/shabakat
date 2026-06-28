@@ -162,7 +162,7 @@ class _SubscriberDetailsScreenState
                   .refresh();
               final customer =
                   ref.read(singleCustomerProvider(widget.customerId)).value;
-              if (customer?.plan == PlanType.kilowatt) {
+              if (customer?.plan != PlanType.ampere) {
                 await ref
                     .read(meterReadingProvider(widget.customerId).notifier)
                     .refresh();

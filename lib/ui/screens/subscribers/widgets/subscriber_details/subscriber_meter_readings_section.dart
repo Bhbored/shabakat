@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/customer_status.dart';
+import 'package:shabakat/core/enums/plan_type.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/meter/meter_reading_provider.dart';
 import 'package:shabakat/domain/entities/meter/meter_reading.dart';
@@ -13,11 +14,13 @@ class SubscriberMeterReadingsSection extends ConsumerStatefulWidget {
   final String customerId;
   final String? customerName;
   final CustomerStatus customerStatus;
+  final PlanType plan;
 
   const SubscriberMeterReadingsSection({
     super.key,
     required this.customerId,
     required this.customerStatus,
+    required this.plan,
     this.customerName,
   });
 
@@ -86,7 +89,8 @@ class _SubscriberMeterReadingsSectionState
                     ),
                   ),
                 ),
-                if (widget.customerStatus == CustomerStatus.active &&
+                if (widget.plan != PlanType.fixedKilowatt &&
+                    widget.customerStatus == CustomerStatus.active &&
                     readingsAsync.maybeWhen(
                       data: _canAddReading,
                       orElse: () => false,
@@ -170,6 +174,7 @@ class _SubscriberMeterReadingsSectionState
                       MeterReadingCard(
                         customerId: widget.customerId,
                         reading: pageReadings[i],
+                        canDelete: widget.plan != PlanType.fixedKilowatt,
                       ),
                     ],
                   ],

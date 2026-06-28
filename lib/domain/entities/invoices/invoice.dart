@@ -22,6 +22,7 @@ sealed class Invoice with _$Invoice {
     required double totalAmount,
     required double paidAmount,
     required double amountDue,
+    double? billedConsumption,
     @Default(InvoiceStatus.unpaid) InvoiceStatus invoiceStatus,
     List<Payment>? payments,
   }) = _Invoice;

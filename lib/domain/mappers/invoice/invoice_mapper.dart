@@ -20,6 +20,7 @@ extension InvoiceResponseMapper on InvoiceResponse {
     totalAmount: totalAmount,
     paidAmount: paidAmount,
     amountDue: amountDue,
+    billedConsumption: billedConsumption,
     invoiceStatus: toInvoiceStatus(invoiceStatus),
     payments: payments.map((p) => p.toEntity()).toList(),
   );
@@ -41,6 +42,7 @@ extension InvoiceSummaryResponseMapper on InvoiceSummaryResponse {
     totalAmount: totalAmount,
     paidAmount: paidAmount,
     amountDue: amountDue,
+    billedConsumption: billedConsumption,
     invoiceStatus: toInvoiceStatus(invoiceStatus),
   );
 }
