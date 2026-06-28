@@ -54,20 +54,11 @@ class _AreasPageState extends ConsumerState<AreasPage> {
     final filtered = _filterAreas(areas);
 
     return areasAsync.when(
-      skipLoadingOnRefresh: false,
-      skipLoadingOnReload: false,
+      skipLoadingOnRefresh: true,
       loading: () => const AreasSkeleton(),
-      error: (err, _) => _AreasLayout(
-        searchController: _searchController,
-        onSearchChanged: (_) => setState(() {}),
-        resultCount: filtered.length,
-        totalCount: areas.length,
-        body: DynamicError(
-          text: err is ApiException
-              ? err.userMessage
-              : 'areas.load_failed'.tr(),
-          onTryAgain: () => ref.read(areaProvider.notifier).refresh(),
-        ),
+      error: (err, _) => DynamicError(
+        text: err is ApiException ? err.userMessage : 'areas.load_failed'.tr(),
+        onTryAgain: () => ref.read(areaProvider.notifier).refresh(),
       ),
       data: (_) => _AreasLayout(
         searchController: _searchController,

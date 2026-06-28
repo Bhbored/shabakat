@@ -46,16 +46,13 @@ class _InvoicesScreenState extends ConsumerState<InvoicesScreen> {
     }
 
     return invoicesAsync.when(
-      skipLoadingOnRefresh: false,
-      skipLoadingOnReload: false,
+      skipLoadingOnRefresh: true,
       loading: () => const InvoicesSkeleton(),
-      error: (err, _) => _InvoicesLayout(
-        body: DynamicError(
-          text: err is ApiException
-              ? err.userMessage
-              : 'invoices.load_failed'.tr(),
-          onTryAgain: () => ref.read(invoiceProvider.notifier).refresh(),
-        ),
+      error: (err, _) => DynamicError(
+        text: err is ApiException
+            ? err.userMessage
+            : 'invoices.load_failed'.tr(),
+        onTryAgain: () => ref.read(invoiceProvider.notifier).refresh(),
       ),
       data: (invoices) {
         final filterNotifier = ref.read(invoiceFilterProvider.notifier);

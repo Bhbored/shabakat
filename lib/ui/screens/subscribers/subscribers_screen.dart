@@ -31,16 +31,13 @@ class SubscribersScreen extends ConsumerWidget {
     }
 
     return customersAsync.when(
-      skipLoadingOnRefresh: false,
-      skipLoadingOnReload: false,
+      skipLoadingOnRefresh: true,
       loading: () => const SubscribersSkeleton(),
-      error: (err, _) => _SubscribersLayout(
-        body: DynamicError(
-          text: err is ApiException
-              ? err.userMessage
-              : 'subscribers.load_failed'.tr(),
-          onTryAgain: () => ref.read(customerProvider.notifier).refresh(),
-        ),
+      error: (err, _) => DynamicError(
+        text: err is ApiException
+            ? err.userMessage
+            : 'subscribers.load_failed'.tr(),
+        onTryAgain: () => ref.read(customerProvider.notifier).refresh(),
       ),
       data: (customers) => _SubscribersLayout(
         body: RefreshIndicator(

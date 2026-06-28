@@ -34,13 +34,11 @@ class ExpensesScreen extends ConsumerWidget {
     return expensesAsync.when(
       skipLoadingOnRefresh: true,
       loading: () => const ExpensesSkeleton(),
-      error: (err, _) => _ExpensesLayout(
-        body: DynamicError(
-          text: err is ApiException
-              ? err.userMessage
-              : 'expenses.load_failed'.tr(),
-          onTryAgain: () => ref.read(expenseProvider.notifier).refresh(),
-        ),
+      error: (err, _) => DynamicError(
+        text: err is ApiException
+            ? err.userMessage
+            : 'expenses.load_failed'.tr(),
+        onTryAgain: () => ref.read(expenseProvider.notifier).refresh(),
       ),
       data: (expenses) => _ExpensesLayout(
         body: RefreshIndicator(

@@ -23,8 +23,7 @@ class DashboardScreen extends ConsumerWidget {
     final summaryAsync = ref.watch(dashboardProvider);
 
     return summaryAsync.when(
-      skipLoadingOnRefresh: false,
-      skipLoadingOnReload: false,
+      skipLoadingOnRefresh: true,
       loading: () => const DashboardSkeleton(),
       error: (err, _) => DynamicError(
         text: err is ApiException
