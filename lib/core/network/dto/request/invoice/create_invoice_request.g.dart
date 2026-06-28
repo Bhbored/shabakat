@@ -11,6 +11,7 @@ _CreateInvoiceRequest _$CreateInvoiceRequestFromJson(
 ) => _CreateInvoiceRequest(
   customerId: json['customerId'] as String,
   paymentAmount: (json['paymentAmount'] as num?)?.toDouble(),
+  kilowattAmount: (json['kilowattAmount'] as num?)?.toDouble(),
   paymentMethod: $enumDecodeNullable(
     _$PaymentMethodEnumMap,
     json['paymentMethod'],
@@ -23,6 +24,7 @@ Map<String, dynamic> _$CreateInvoiceRequestToJson(
 ) => <String, dynamic>{
   'customerId': instance.customerId,
   'paymentAmount': instance.paymentAmount,
+  'kilowattAmount': instance.kilowattAmount,
   'paymentMethod': _$PaymentMethodEnumMap[instance.paymentMethod],
   'notes': instance.notes,
 };

@@ -58,6 +58,7 @@ class _SubscriberCreateInvoiceDialogState
   late final TextEditingController _amountController;
   late final TextEditingController _notesController;
   PaymentMethod _paymentMethod = PaymentMethod.cash;
+  bool _isKilowattMode = false;
 
   @override
   void initState() {
@@ -84,12 +85,23 @@ class _SubscriberCreateInvoiceDialogState
   CreateInvoiceRequest _buildRequest() {
     final amountText = _amountController.text.trim();
     final notes = _notesController.text.trim();
-    final paymentAmount = amountText.isEmpty ? null : double.parse(amountText);
+    double? paymentAmount;
+    double? kilowattAmount;
+
+    if (amountText.isNotEmpty) {
+      final amount = double.parse(amountText);
+      if (_isKilowattMode) {
+        kilowattAmount = amount;
+      } else {
+        paymentAmount = amount;
+      }
+    }
 
     return CreateInvoiceRequest(
       customerId: widget.customerId,
       paymentAmount: paymentAmount,
-      paymentMethod: paymentAmount != null ? _paymentMethod : null,
+      kilowattAmount: kilowattAmount,
+      paymentMethod: _paymentMethod,
       notes: notes.isEmpty ? null : notes,
     );
   }
@@ -146,6 +158,7 @@ class _SubscriberCreateInvoiceDialogState
                 amountController: _amountController,
                 notesController: _notesController,
                 paymentMethod: _paymentMethod,
+                isKilowattMode: _isKilowattMode,
                 enabled: !isCreating,
                 amountValidator: _amountValidator,
                 onPaymentMethodChanged: isCreating
@@ -155,6 +168,9 @@ class _SubscriberCreateInvoiceDialogState
                           setState(() => _paymentMethod = value);
                         }
                       },
+                onKilowattModeChanged: isCreating
+                    ? null
+                    : (value) => setState(() => _isKilowattMode = value),
               )
             : Text(
                 'Create a new invoice for "${widget._targetLabel}"?',
@@ -187,9 +203,11 @@ class _FixedKilowattContent extends StatelessWidget {
   final TextEditingController amountController;
   final TextEditingController notesController;
   final PaymentMethod paymentMethod;
+  final bool isKilowattMode;
   final bool enabled;
   final String? Function(String?)? amountValidator;
   final ValueChanged<PaymentMethod?> onPaymentMethodChanged;
+  final ValueChanged<bool>? onKilowattModeChanged;
 
   const _FixedKilowattContent({
     required this.formKey,
@@ -197,14 +215,17 @@ class _FixedKilowattContent extends StatelessWidget {
     required this.amountController,
     required this.notesController,
     required this.paymentMethod,
+    required this.isKilowattMode,
     required this.enabled,
     required this.amountValidator,
     required this.onPaymentMethodChanged,
+    required this.onKilowattModeChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -215,11 +236,39 @@ class _FixedKilowattContent extends StatelessWidget {
           style: theme.textTheme.bodyMedium,
         ),
         SizedBox(height: context.spaceMedium),
-        Text(
-          'Payment (optional)',
-          style: theme.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                isKilowattMode ? 'Kilowatt' : 'Payment',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            Text(
+              'Payment',
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: colorScheme.onSurface.withValues(
+                  alpha: isKilowattMode ? 0.45 : 1,
+                ),
+                fontWeight: isKilowattMode ? null : FontWeight.w600,
+              ),
+            ),
+            Switch(
+              value: isKilowattMode,
+              onChanged: enabled ? onKilowattModeChanged : null,
+            ),
+            Text(
+              'Kilowatt',
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: colorScheme.onSurface.withValues(
+                  alpha: isKilowattMode ? 1 : 0.45,
+                ),
+                fontWeight: isKilowattMode ? FontWeight.w600 : null,
+              ),
+            ),
+          ],
         ),
         SizedBox(height: context.spaceSmall),
         InvoicePayDialogContent(
@@ -230,6 +279,7 @@ class _FixedKilowattContent extends StatelessWidget {
           enabled: enabled,
           amountValidator: amountValidator,
           onPaymentMethodChanged: onPaymentMethodChanged,
+          amountLabel: isKilowattMode ? 'Kilowatt' : 'Amount',
         ),
       ],
     );

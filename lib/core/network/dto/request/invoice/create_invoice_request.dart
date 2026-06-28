@@ -9,6 +9,7 @@ sealed class CreateInvoiceRequest with _$CreateInvoiceRequest {
   const factory CreateInvoiceRequest({
     required String customerId,
     double? paymentAmount,
+    double? kilowattAmount,
     PaymentMethod? paymentMethod,
     String? notes,
   }) = _CreateInvoiceRequest;

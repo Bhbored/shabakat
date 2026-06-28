@@ -14,6 +14,9 @@ class InvoicePayDialogContent extends StatelessWidget {
   final String? Function(String?)? amountValidator;
   final ValueChanged<PaymentMethod?> onPaymentMethodChanged;
 
+  final String amountLabel;
+  final bool showPaymentMethod;
+
   const InvoicePayDialogContent({
     super.key,
     required this.formKey,
@@ -23,6 +26,8 @@ class InvoicePayDialogContent extends StatelessWidget {
     required this.enabled,
     required this.amountValidator,
     required this.onPaymentMethodChanged,
+    this.amountLabel = 'Amount',
+    this.showPaymentMethod = true,
   });
 
   @override
@@ -35,19 +40,21 @@ class InvoicePayDialogContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ExpenseAddFormField(
-            label: 'Amount',
+            label: amountLabel,
             controller: amountController,
             hint: '0.00',
             enabled: enabled,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             validator: amountValidator,
           ),
-          SizedBox(height: context.spaceMedium),
-          InvoicePayMethodField(
-            value: paymentMethod,
-            enabled: enabled,
-            onChanged: onPaymentMethodChanged,
-          ),
+          if (showPaymentMethod) ...[
+            SizedBox(height: context.spaceMedium),
+            InvoicePayMethodField(
+              value: paymentMethod,
+              enabled: enabled,
+              onChanged: onPaymentMethodChanged,
+            ),
+          ],
           SizedBox(height: context.spaceMedium),
           ExpenseAddFormField(
             label: 'Notes',
