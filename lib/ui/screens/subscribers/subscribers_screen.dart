@@ -5,6 +5,7 @@ import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_pagination_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
+import 'package:shabakat/ui/shared/error/dynamic_error.dart';
 
 import 'widgets/subscriber_list/subscriber_list.dart';
 import 'widgets/subscribers_pagination/subscribers_pagination.dart';
@@ -31,16 +32,16 @@ class SubscribersScreen extends ConsumerWidget {
       body: customersAsync.when(
         skipLoadingOnRefresh: true,
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, _) {
-          final message = err is ApiException
+        error: (err, _) => DynamicError(
+          text: err is ApiException
               ? err.userMessage
-              : 'Error loading customers: $err';
-          return Center(child: Text(message, textAlign: TextAlign.center));
-        },
+              : 'Failed to load subscribers.',
+          onTryAgain: () => ref.read(customerProvider.notifier).refresh(),
+        ),
         data: (customers) => RefreshIndicator(
           onRefresh: () async {
             ref.read(customerFilterProvider.notifier).clearFilter();
-            await ref.read(customerProvider.notifier).refresh();
+            ref.invalidate(customerProvider);
           },
           child: SubscriberList(customers: customers),
         ),

@@ -13,4 +13,25 @@ class AppGradients {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
+
+  static const LinearGradient errorBorderGradient = LinearGradient(
+    colors: [AppColors.error, AppColors.primary],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+  static LinearGradient cardGradientFor(Brightness brightness) {
+    if (brightness == Brightness.dark) {
+      return const LinearGradient(
+        colors: [AppColors.popover, AppColors.card],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
+    }
+    return const LinearGradient(
+      colors: [AppColors.cardLight, AppColors.mutedLight],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
+  }
 }

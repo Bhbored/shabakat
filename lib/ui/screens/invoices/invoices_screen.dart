@@ -5,6 +5,7 @@ import 'package:shabakat/data/providers/invoice/invoice_filter_provider.dart';
 import 'package:shabakat/data/providers/invoice/invoice_pagination_provider.dart';
 import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
 import 'package:shabakat/ui/screens/subscribers/widgets/subscribers_pagination/subscribers_pagination.dart';
+import 'package:shabakat/ui/shared/error/dynamic_error.dart';
 
 import 'widgets/invoice_filter_chips/invoice_filter_chips_row.dart';
 import 'widgets/invoice_list/invoice_list.dart';
@@ -47,14 +48,14 @@ class _InvoicesScreenState extends ConsumerState<InvoicesScreen> {
       loading: () => const _InvoicesLayout(
         body: Center(child: CircularProgressIndicator()),
       ),
-      error: (err, _) {
-        final message = err is ApiException
-            ? err.userMessage
-            : 'Failed to load invoices.';
-        return _InvoicesLayout(
-          body: Center(child: Text(message, textAlign: TextAlign.center)),
-        );
-      },
+      error: (err, _) => _InvoicesLayout(
+        body: DynamicError(
+          text: err is ApiException
+              ? err.userMessage
+              : 'Failed to load invoices.',
+          onTryAgain: () => ref.read(invoiceProvider.notifier).refresh(),
+        ),
+      ),
       data: (invoices) {
         final filterNotifier = ref.read(invoiceFilterProvider.notifier);
 
@@ -62,7 +63,7 @@ class _InvoicesScreenState extends ConsumerState<InvoicesScreen> {
           body: RefreshIndicator(
             onRefresh: () async {
               ref.read(invoiceFilterProvider.notifier).clearFilter();
-              await ref.read(invoiceProvider.notifier).refresh();
+              ref.invalidate(invoiceProvider);
             },
             child: InvoiceList(invoices: invoices),
           ),

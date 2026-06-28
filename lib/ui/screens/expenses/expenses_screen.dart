@@ -7,6 +7,7 @@ import 'package:shabakat/data/providers/expense/expense_filter_provider.dart';
 import 'package:shabakat/data/providers/expense/expense_pagination_provider.dart';
 import 'package:shabakat/data/providers/expense/expense_provider.dart';
 import 'package:shabakat/ui/screens/subscribers/widgets/subscribers_pagination/subscribers_pagination.dart';
+import 'package:shabakat/ui/shared/error/dynamic_error.dart';
 
 import 'widgets/expense_filter_chips/expense_filter_chips_row.dart';
 import 'widgets/expense_list/expense_list.dart';
@@ -33,16 +34,16 @@ class ExpensesScreen extends ConsumerWidget {
       body: expensesAsync.when(
         skipLoadingOnRefresh: true,
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, _) {
-          final message = err is ApiException
+        error: (err, _) => DynamicError(
+          text: err is ApiException
               ? err.userMessage
-              : 'expenses.load_failed'.tr();
-          return Center(child: Text(message, textAlign: TextAlign.center));
-        },
+              : 'expenses.load_failed'.tr(),
+          onTryAgain: () => ref.read(expenseProvider.notifier).refresh(),
+        ),
         data: (expenses) => RefreshIndicator(
           onRefresh: () async {
             ref.read(expenseFilterProvider.notifier).clearFilter();
-            await ref.read(expenseProvider.notifier).refresh();
+            ref.invalidate(expenseProvider);
           },
           child: ExpenseList(expenses: expenses),
         ),

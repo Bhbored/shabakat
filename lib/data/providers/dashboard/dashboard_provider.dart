@@ -15,7 +15,7 @@ class DashboardNotifier extends _$DashboardNotifier {
       _dashboardService.getSummary();
 
   Future<void> refresh() async {
-    ref.invalidateSelf();
-    await future;
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async => await build());
   }
 }

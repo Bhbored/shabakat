@@ -6,6 +6,7 @@ import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
+import 'package:shabakat/ui/shared/error/dynamic_error.dart';
 
 import 'widgets/area_list/area_list.dart';
 import 'widgets/areas_toolbar/areas_toolbar.dart';
@@ -65,17 +66,15 @@ class _AreasPageState extends ConsumerState<AreasPage> {
           child: areasAsync.when(
             skipLoadingOnRefresh: true,
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (err, stack) {
-              if (err is ApiException) {
-                return Center(
-                  child: Text(err.userMessage, textAlign: TextAlign.center),
-                );
-              }
-              return Center(child: Text('areas.load_failed'.tr()));
-            },
+            error: (err, _) => DynamicError(
+              text: err is ApiException
+                  ? err.userMessage
+                  : 'areas.load_failed'.tr(),
+              onTryAgain: () => ref.read(areaProvider.notifier).refresh(),
+            ),
             data: (_) => RefreshIndicator(
               onRefresh: () async {
-                await ref.read(areaProvider.notifier).refresh();
+                ref.invalidate(areaProvider);
               },
               child: AreaList(areas: filtered),
             ),

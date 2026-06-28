@@ -37,8 +37,8 @@ class InvoiceNotifier extends _$InvoiceNotifier {
   }
 
   Future<void> refresh() async {
-    ref.invalidateSelf();
-    await future;
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async => await build());
   }
 
   Future<void> createInvoice(CreateInvoiceRequest request) async {
