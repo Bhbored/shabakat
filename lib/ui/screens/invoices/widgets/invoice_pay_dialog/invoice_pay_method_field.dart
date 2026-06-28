@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
@@ -22,7 +23,7 @@ class InvoicePayMethodField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Payment method', style: theme.textTheme.titleMedium),
+        Text('invoices.pay.payment_method'.tr(), style: theme.textTheme.titleMedium),
         SizedBox(height: context.spaceSmall),
         Container(
           padding: EdgeInsets.symmetric(horizontal: context.paddingMedium),

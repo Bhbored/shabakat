@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/enums/enums.dart';
@@ -38,7 +39,7 @@ class InvoiceDeleteDialog extends ConsumerWidget {
       if (!context.mounted) return;
       AppSnackBar.show(
         scaffoldContext,
-        message: 'Invoice deleted',
+        message: 'invoices.delete.success'.tr(),
         variant: AppSnackBarVariant.success,
       );
       Navigator.of(context).pop();
@@ -49,7 +50,7 @@ class InvoiceDeleteDialog extends ConsumerWidget {
       if (!context.mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to delete invoice. Please try again.';
+          : 'invoices.delete.failed'.tr();
       AppSnackBar.show(
         context,
         message: message,
@@ -64,15 +65,15 @@ class InvoiceDeleteDialog extends ConsumerWidget {
     final isDeleting = ref.watch(invoiceProvider).isLoading;
 
     return AlertDialog(
-      title: const Text('Delete Invoice'),
+      title: Text('invoices.delete.title'.tr()),
       content: Text(
-        'Are you sure you want to delete invoice #$invoiceNumber? This action cannot be undone.',
+        'invoices.delete.message'.tr(args: [invoiceNumber.toString()]),
         style: theme.textTheme.bodyMedium,
       ),
       actions: [
         TextButton(
           onPressed: isDeleting ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text('settings.cancel'.tr()),
         ),
         ElevatedButton(
           onPressed: isDeleting ? null : () => _onDelete(context, ref),
@@ -82,7 +83,7 @@ class InvoiceDeleteDialog extends ConsumerWidget {
                   width: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Delete'),
+              : Text('invoices.delete.confirm'.tr()),
         ),
       ],
     );

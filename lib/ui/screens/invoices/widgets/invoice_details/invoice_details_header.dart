@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -81,7 +82,7 @@ class InvoiceDetailsHeader extends StatelessWidget {
             ),
           ),
           Text(
-            'amount due',
+            'invoices.details.amount_due'.tr(),
             style: theme.textTheme.labelSmall?.copyWith(
               color: colorScheme.onSurface.withValues(alpha: 0.55),
               letterSpacing: 0.6,

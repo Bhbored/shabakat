@@ -409,5 +409,108 @@
         "non_negative": "Must be 0 or greater"
       }
     }
+  },
+  "invoices": {
+    "load_failed": "Failed to load invoices.",
+    "load_details_failed": "Failed to load invoice details.",
+    "empty_list": "No invoices found",
+    "count_one": "1 invoice",
+    "count": "{} invoices",
+    "filter": {
+      "from": "From",
+      "to": "To",
+      "issue_date_from": "Issue Date From",
+      "issue_date_to": "Issue Date To",
+      "status": "Status"
+    },
+    "card": {
+      "issued": "Issued",
+      "due": "Due",
+      "total": "Total"
+    },
+    "details": {
+      "title": "Invoice",
+      "title_number": "Invoice #{}",
+      "amount_due": "amount due",
+      "total": "Total",
+      "paid": "Paid",
+      "due": "Due",
+      "timeline": "TIMELINE",
+      "issued": "Issued",
+      "breakdown": "BREAKDOWN",
+      "charge": "Charge",
+      "fixed_charge": "Fixed charge",
+      "tva": "TVA",
+      "tva_rate": "TVA ({}%)",
+      "billed_consumption": "BILLED CONSUMPTION",
+      "consumption": "Consumption",
+      "consumption_value": "{} kWh",
+      "payments": "PAYMENTS",
+      "record": "RECORD",
+      "created": "Created",
+      "updated": "Updated"
+    },
+    "pay": {
+      "title": "Pay Invoice",
+      "button": "Pay",
+      "process": "Process",
+      "amount": "Amount",
+      "payment_method": "Payment method",
+      "notes": "Notes",
+      "notes_hint": "Optional notes",
+      "success": "Payment recorded",
+      "failed": "Failed to record payment. Please try again.",
+      "validation": {
+        "amount_required": "Enter amount",
+        "amount_exceeds": "Amount cannot exceed {}"
+      }
+    },
+    "payment_details": {
+      "title": "Payment Details",
+      "amount": "Amount",
+      "method": "Method",
+      "payment_date": "Payment date",
+      "notes": "Notes",
+      "created": "Created",
+      "close": "Close"
+    },
+    "edit": {
+      "title": "Edit Invoice",
+      "issue_date": "Issue date",
+      "due_date": "Due date",
+      "save_changes": "Save Changes",
+      "success": "Invoice updated",
+      "failed": "Failed to update invoice. Please try again.",
+      "validation": {
+        "due_before_issue": "Due date cannot be before issue date"
+      }
+    },
+    "delete": {
+      "title": "Delete Invoice",
+      "message": "Are you sure you want to delete invoice #{}? This action cannot be undone.",
+      "confirm": "Delete",
+      "success": "Invoice deleted",
+      "failed": "Failed to delete invoice. Please try again."
+    },
+    "bulk_create": {
+      "action": "Bulk Generate",
+      "title": "Bulk Generate Invoices",
+      "description": "Creates unpaid invoices for all active customers who do not yet have an invoice for their current billing period.",
+      "billing_periods": "BILLING PERIODS",
+      "ampere_period": "Ampere — current month (prepaid)",
+      "kilowatt_period": "Kilowatt — previous month (postpaid)",
+      "excluded": "EXCLUDED AUTOMATICALLY",
+      "excluded_suspended": "Suspended customers",
+      "excluded_terminated": "Terminated customers",
+      "excluded_existing": "Customers who already have an invoice for their period",
+      "proceed": "Proceed",
+      "done": "Done",
+      "close": "Close",
+      "try_again": "Try Again",
+      "failed": "Bulk invoice creation failed. Please try again.",
+      "success_snackbar": "{} invoices created successfully.",
+      "created": "Created",
+      "skipped": "Skipped"
+    }
   }
 }

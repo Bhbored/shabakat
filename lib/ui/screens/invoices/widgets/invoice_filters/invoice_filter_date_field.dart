@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 
@@ -19,7 +20,7 @@ class InvoiceFilterDateField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isPlaceholder = value == 'All';
+    final isPlaceholder = value == 'common.all'.tr();
     final hasError = errorText != null && errorText!.isNotEmpty;
 
     return Column(

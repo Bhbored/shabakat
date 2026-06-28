@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -56,7 +57,7 @@ class InvoiceDetailsBody extends StatelessWidget {
                     children: [
                       Expanded(
                         child: InvoiceAmountStatCard(
-                          label: 'Total',
+                          label: 'invoices.details.total'.tr(),
                           value: invoice.totalAmount,
                           icon: LucideIcons.receipt,
                           accentColor: colorScheme.primary,
@@ -65,7 +66,7 @@ class InvoiceDetailsBody extends StatelessWidget {
                       SizedBox(width: context.paddingSmall),
                       Expanded(
                         child: InvoiceAmountStatCard(
-                          label: 'Paid',
+                          label: 'invoices.details.paid'.tr(),
                           value: invoice.paidAmount,
                           icon: LucideIcons.checkCircle2,
                           accentColor: AppColors.success,
@@ -74,7 +75,7 @@ class InvoiceDetailsBody extends StatelessWidget {
                       SizedBox(width: context.paddingSmall),
                       Expanded(
                         child: InvoiceAmountStatCard(
-                          label: 'Due',
+                          label: 'invoices.details.due'.tr(),
                           value: invoice.amountDue,
                           icon: LucideIcons.alertCircle,
                           accentColor: invoice.amountDue > 0
@@ -86,13 +87,13 @@ class InvoiceDetailsBody extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: context.spaceMedium),
-                  Text('TIMELINE', style: mutedLabel),
+                  Text('invoices.details.timeline'.tr(), style: mutedLabel),
                   SizedBox(height: context.spaceSmall),
                   Row(
                     children: [
                       Expanded(
                         child: InvoiceDetailMetaTile(
-                          label: 'Issued',
+                          label: 'invoices.details.issued'.tr(),
                           value: _formatDate(invoice.issueDate),
                           icon: LucideIcons.calendar,
                           accentColor: colorScheme.primary,
@@ -101,7 +102,7 @@ class InvoiceDetailsBody extends StatelessWidget {
                       SizedBox(width: context.paddingSmall),
                       Expanded(
                         child: InvoiceDetailMetaTile(
-                          label: 'Due',
+                          label: 'invoices.details.due'.tr(),
                           value: _formatDate(invoice.dueDate),
                           icon: LucideIcons.calendarClock,
                           accentColor: AppColors.warning,
@@ -111,34 +112,33 @@ class InvoiceDetailsBody extends StatelessWidget {
                   ),
                   SizedBox(height: context.spaceMedium),
                   InvoiceDetailSection(
-                    title: 'BREAKDOWN',
+                    title: 'invoices.details.breakdown'.tr(),
                     children: [
                       InvoiceDetailTile(
                         icon: LucideIcons.zap,
-                        label: 'Charge',
+                        label: 'invoices.details.charge'.tr(),
                         value: '\$${breakdown.charge.toStringAsFixed(2)}',
                         accentColor: colorScheme.primary,
                       ),
-
                       SizedBox(height: context.spaceSmall),
                       const Divider(),
                       SizedBox(height: context.spaceSmall),
-
                       InvoiceDetailTile(
                         icon: LucideIcons.badgeDollarSign,
-                        label: 'Fixed charge',
+                        label: 'invoices.details.fixed_charge'.tr(),
                         value: '\$${breakdown.fixedCharge.toStringAsFixed(2)}',
                         accentColor: colorScheme.primary,
                       ),
                       SizedBox(height: context.spaceSmall),
                       const Divider(),
                       SizedBox(height: context.spaceSmall),
-
                       InvoiceDetailTile(
                         icon: LucideIcons.percent,
                         label: breakdown.tvaRate > 0
-                            ? 'TVA (${breakdown.tvaRate.toStringAsFixed(0)}%)'
-                            : 'TVA',
+                            ? 'invoices.details.tva_rate'.tr(
+                                args: [breakdown.tvaRate.toStringAsFixed(0)],
+                              )
+                            : 'invoices.details.tva'.tr(),
                         value: '\$${breakdown.tvaAmount.toStringAsFixed(2)}',
                         accentColor: AppColors.success,
                       ),
@@ -151,13 +151,18 @@ class InvoiceDetailsBody extends StatelessWidget {
                           children: [
                             SizedBox(height: context.spaceMedium),
                             InvoiceDetailSection(
-                              title: 'BILLED CONSUMPTION',
+                              title: 'invoices.details.billed_consumption'.tr(),
                               children: [
                                 InvoiceDetailTile(
                                   icon: LucideIcons.gauge,
-                                  label: 'Consumption',
-                                  value:
-                                      '${invoice.billedConsumption!.toStringAsFixed(2)} kWh',
+                                  label: 'invoices.details.consumption'.tr(),
+                                  value: 'invoices.details.consumption_value'
+                                      .tr(
+                                    args: [
+                                      invoice.billedConsumption!
+                                          .toStringAsFixed(2),
+                                    ],
+                                  ),
                                   accentColor: colorScheme.tertiary,
                                 ),
                               ],
@@ -168,7 +173,7 @@ class InvoiceDetailsBody extends StatelessWidget {
                       invoice.payments!.isNotEmpty) ...[
                     SizedBox(height: context.spaceMedium),
                     InvoiceDetailSection(
-                      title: 'PAYMENTS',
+                      title: 'invoices.details.payments'.tr(),
                       children: [
                         for (var i = 0; i < invoice.payments!.length; i++) ...[
                           if (i > 0) SizedBox(height: context.spaceSmall),
@@ -181,13 +186,13 @@ class InvoiceDetailsBody extends StatelessWidget {
                     ),
                   ],
                   SizedBox(height: context.spaceMedium),
-                  Text('RECORD', style: mutedLabel),
+                  Text('invoices.details.record'.tr(), style: mutedLabel),
                   SizedBox(height: context.spaceSmall),
                   Row(
                     children: [
                       Expanded(
                         child: InvoiceDetailMetaTile(
-                          label: 'Created',
+                          label: 'invoices.details.created'.tr(),
                           value: _formatDate(invoice.createdAt),
                           icon: LucideIcons.clock,
                           accentColor: colorScheme.onSurface.withValues(
@@ -198,7 +203,7 @@ class InvoiceDetailsBody extends StatelessWidget {
                       SizedBox(width: context.paddingSmall),
                       Expanded(
                         child: InvoiceDetailMetaTile(
-                          label: 'Updated',
+                          label: 'invoices.details.updated'.tr(),
                           value: _formatDate(invoice.updatedAt),
                           icon: LucideIcons.refreshCw,
                           accentColor: colorScheme.onSurface.withValues(

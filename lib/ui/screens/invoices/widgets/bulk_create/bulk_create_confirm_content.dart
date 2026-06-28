@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -20,32 +21,29 @@ class BulkCreateConfirmContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Creates unpaid invoices for all active customers who do not yet '
-          'have an invoice for their current billing period.',
+          'invoices.bulk_create.description'.tr(),
           style: theme.textTheme.bodyMedium,
         ),
         SizedBox(height: context.spaceMedium),
-        Text('BILLING PERIODS', style: labelStyle),
+        Text('invoices.bulk_create.billing_periods'.tr(), style: labelStyle),
         SizedBox(height: context.spaceSmall),
-        const _Bullet(
+        _Bullet(
           icon: LucideIcons.zap,
-          text: 'Ampere — current month (prepaid)',
+          text: 'invoices.bulk_create.ampere_period'.tr(),
         ),
         SizedBox(height: context.spaceSmall * 0.5),
-        const _Bullet(
+        _Bullet(
           icon: LucideIcons.gauge,
-          text: 'Kilowatt — previous month (postpaid)',
+          text: 'invoices.bulk_create.kilowatt_period'.tr(),
         ),
         SizedBox(height: context.spaceMedium),
-        Text('EXCLUDED AUTOMATICALLY', style: labelStyle),
+        Text('invoices.bulk_create.excluded'.tr(), style: labelStyle),
         SizedBox(height: context.spaceSmall),
-        const _Bullet(text: 'Suspended customers'),
+        _Bullet(text: 'invoices.bulk_create.excluded_suspended'.tr()),
         SizedBox(height: context.spaceSmall * 0.5),
-        const _Bullet(text: 'Terminated customers'),
+        _Bullet(text: 'invoices.bulk_create.excluded_terminated'.tr()),
         SizedBox(height: context.spaceSmall * 0.5),
-        const _Bullet(
-          text: 'Customers who already have an invoice for their period',
-        ),
+        _Bullet(text: 'invoices.bulk_create.excluded_existing'.tr()),
       ],
     );
   }

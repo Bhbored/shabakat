@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -21,16 +22,16 @@ class InvoiceDetailsScreen extends ConsumerWidget {
     final detailAsync = ref.watch(singleInvoiceProvider(invoiceId));
 
     return detailAsync.when(
-      loading: () => const InvoiceDetailsScaffold(
-        title: 'Invoice',
-        body: Center(child: CircularProgressIndicator()),
+      loading: () => InvoiceDetailsScaffold(
+        title: 'invoices.details.title'.tr(),
+        body: const Center(child: CircularProgressIndicator()),
       ),
       error: (err, _) {
         final message = err is ApiException
             ? err.userMessage
-            : 'Failed to load invoice details.';
+            : 'invoices.load_details_failed'.tr();
         return InvoiceDetailsScaffold(
-          title: 'Invoice',
+          title: 'invoices.details.title'.tr(),
           body: Center(child: Text(message, textAlign: TextAlign.center)),
         );
       },
@@ -38,7 +39,9 @@ class InvoiceDetailsScreen extends ConsumerWidget {
         final isUnpaid = invoice.invoiceStatus == InvoiceStatus.unpaid;
 
         return InvoiceDetailsScaffold(
-          title: 'Invoice #${invoice.invoiceNumber}',
+          title: 'invoices.details.title_number'.tr(
+            args: [invoice.invoiceNumber.toString()],
+          ),
           onEdit: isUnpaid
               ? () => InvoiceEditSheet.show(
                   context,

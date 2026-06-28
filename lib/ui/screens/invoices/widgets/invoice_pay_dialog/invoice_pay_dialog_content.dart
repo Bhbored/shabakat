@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
@@ -14,7 +15,7 @@ class InvoicePayDialogContent extends StatelessWidget {
   final String? Function(String?)? amountValidator;
   final ValueChanged<PaymentMethod?> onPaymentMethodChanged;
 
-  final String amountLabel;
+  final String? amountLabel;
   final bool showPaymentMethod;
 
   const InvoicePayDialogContent({
@@ -26,7 +27,7 @@ class InvoicePayDialogContent extends StatelessWidget {
     required this.enabled,
     required this.amountValidator,
     required this.onPaymentMethodChanged,
-    this.amountLabel = 'Amount',
+    this.amountLabel,
     this.showPaymentMethod = true,
   });
 
@@ -40,9 +41,9 @@ class InvoicePayDialogContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ExpenseAddFormField(
-            label: amountLabel,
+            label: amountLabel ?? 'invoices.pay.amount'.tr(),
             controller: amountController,
-            hint: '0.00',
+            hint: 'subscribers.form.amount_hint'.tr(),
             enabled: enabled,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             validator: amountValidator,
@@ -57,9 +58,9 @@ class InvoicePayDialogContent extends StatelessWidget {
           ],
           SizedBox(height: context.spaceMedium),
           ExpenseAddFormField(
-            label: 'Notes',
+            label: 'invoices.pay.notes'.tr(),
             controller: notesController,
-            hint: 'Optional notes',
+            hint: 'invoices.pay.notes_hint'.tr(),
             enabled: enabled,
             maxLines: 3,
             maxLength: 500,

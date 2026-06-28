@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -36,7 +37,7 @@ class InvoicePaymentDetailDialog extends StatelessWidget {
     final notes = payment.notes?.trim();
 
     return AlertDialog(
-      title: const Text('Payment Details'),
+      title: Text('invoices.payment_details.title'.tr()),
       content: SizedBox(
         width: double.maxFinite,
         child: ConstrainedBox(
@@ -50,7 +51,7 @@ class InvoicePaymentDetailDialog extends StatelessWidget {
               children: [
                 InvoiceDetailTile(
                   icon: LucideIcons.banknote,
-                  label: 'Amount',
+                  label: 'invoices.payment_details.amount'.tr(),
                   value: '\$${payment.amount.toStringAsFixed(2)}',
                   accentColor: AppColors.success,
                 ),
@@ -59,7 +60,7 @@ class InvoicePaymentDetailDialog extends StatelessWidget {
                 SizedBox(height: context.spaceSmall),
                 InvoiceDetailTile(
                   icon: LucideIcons.wallet,
-                  label: 'Method',
+                  label: 'invoices.payment_details.method'.tr(),
                   value: payment.paymentMethod.label,
                   accentColor: colorScheme.primary,
                 ),
@@ -68,7 +69,7 @@ class InvoicePaymentDetailDialog extends StatelessWidget {
                 SizedBox(height: context.spaceSmall),
                 InvoiceDetailTile(
                   icon: LucideIcons.calendar,
-                  label: 'Payment date',
+                  label: 'invoices.payment_details.payment_date'.tr(),
                   value: formatDate(payment.paymentDate),
                   accentColor: colorScheme.primary,
                 ),
@@ -78,7 +79,7 @@ class InvoicePaymentDetailDialog extends StatelessWidget {
                   SizedBox(height: context.spaceSmall),
                   InvoiceDetailTile(
                     icon: LucideIcons.fileText,
-                    label: 'Notes',
+                    label: 'invoices.payment_details.notes'.tr(),
                     value: notes,
                     accentColor: colorScheme.onSurface.withValues(alpha: 0.55),
                   ),
@@ -88,7 +89,7 @@ class InvoicePaymentDetailDialog extends StatelessWidget {
                 SizedBox(height: context.spaceSmall),
                 InvoiceDetailTile(
                   icon: LucideIcons.clock,
-                  label: 'Created',
+                  label: 'invoices.payment_details.created'.tr(),
                   value: formatDate(payment.createdAt),
                   accentColor: colorScheme.onSurface.withValues(alpha: 0.55),
                 ),
@@ -102,7 +103,7 @@ class InvoicePaymentDetailDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Close'),
+          child: Text('invoices.payment_details.close'.tr()),
         ),
       ],
     );

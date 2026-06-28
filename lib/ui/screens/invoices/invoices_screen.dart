@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
@@ -51,7 +52,7 @@ class _InvoicesScreenState extends ConsumerState<InvoicesScreen> {
         body: DynamicError(
           text: err is ApiException
               ? err.userMessage
-              : 'Failed to load invoices.',
+              : 'invoices.load_failed'.tr(),
           onTryAgain: () => ref.read(invoiceProvider.notifier).refresh(),
         ),
       ),

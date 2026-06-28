@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -103,7 +104,7 @@ class _InvoiceEditSheetState extends ConsumerState<InvoiceEditSheet> {
     String? dueError;
 
     if (_dueDate.isBefore(_issueDate)) {
-      dueError = 'Due date cannot be before issue date';
+      dueError = 'invoices.edit.validation.due_before_issue'.tr();
       valid = false;
     }
 
@@ -133,14 +134,14 @@ class _InvoiceEditSheetState extends ConsumerState<InvoiceEditSheet> {
       Navigator.of(context).pop();
       AppSnackBar.show(
         context,
-        message: 'Invoice updated',
+        message: 'invoices.edit.success'.tr(),
         variant: AppSnackBarVariant.success,
       );
     } catch (e) {
       if (!mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to update invoice. Please try again.';
+          : 'invoices.edit.failed'.tr();
       AppSnackBar.show(
         context,
         message: message,
@@ -174,7 +175,7 @@ class _InvoiceEditSheetState extends ConsumerState<InvoiceEditSheet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InvoiceEditDateField(
-                      label: 'Issue date',
+                      label: 'invoices.edit.issue_date'.tr(),
                       date: _issueDate,
                       errorText: _issueDateError,
                       enabled: !isSaving,
@@ -182,7 +183,7 @@ class _InvoiceEditSheetState extends ConsumerState<InvoiceEditSheet> {
                     ),
                     SizedBox(height: context.spaceMedium),
                     InvoiceEditDateField(
-                      label: 'Due date',
+                      label: 'invoices.edit.due_date'.tr(),
                       date: _dueDate,
                       errorText: _dueDateError,
                       enabled: !isSaving,
@@ -203,7 +204,7 @@ class _InvoiceEditSheetState extends ConsumerState<InvoiceEditSheet> {
                                 ),
                               )
                             : Text(
-                                'Save Changes',
+                                'invoices.edit.save_changes'.tr(),
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),

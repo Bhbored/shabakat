@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -83,7 +84,7 @@ class _InvoicesToolbarSkeleton extends StatelessWidget {
         0,
       ),
       child: Text(
-        '48 invoices',
+        'invoices.count'.tr(args: ['48']),
         style: theme.textTheme.bodySmall?.copyWith(
           color: colorScheme.onSurface.withValues(alpha: 0.6),
         ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -38,14 +39,16 @@ class _BulkCreateInvoicesDialogState
       });
       AppSnackBar.show(
         context,
-        message: '${response.created} invoices created successfully.',
+        message: 'invoices.bulk_create.success_snackbar'.tr(
+          args: [response.created.toString()],
+        ),
         variant: AppSnackBarVariant.success,
       );
     } catch (e) {
       if (!mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Bulk invoice creation failed. Please try again.';
+          : 'invoices.bulk_create.failed'.tr();
       setState(() {
         _errorMessage = message;
         _step = _BulkCreateStep.error;
@@ -68,7 +71,7 @@ class _BulkCreateInvoicesDialogState
         children: [
           Icon(LucideIcons.layers, color: colorScheme.primary, size: 22),
           SizedBox(width: context.spaceSmall),
-          const Expanded(child: Text('Bulk Generate Invoices')),
+          Expanded(child: Text('invoices.bulk_create.title'.tr())),
         ],
       ),
       content: switch (_step) {
@@ -84,7 +87,7 @@ class _BulkCreateInvoicesDialogState
         _BulkCreateStep.confirm => [
           TextButton(
             onPressed: isLoading ? null : () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text('settings.cancel'.tr()),
           ),
           ElevatedButton(
             onPressed: isLoading ? null : _onProceed,
@@ -94,26 +97,26 @@ class _BulkCreateInvoicesDialogState
                     width: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Proceed'),
+                : Text('invoices.bulk_create.proceed'.tr()),
           ),
         ],
         _BulkCreateStep.success => [
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Done'),
+            child: Text('invoices.bulk_create.done'.tr()),
           ),
         ],
         _BulkCreateStep.error => [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: Text('invoices.bulk_create.close'.tr()),
           ),
           ElevatedButton(
             onPressed: () => setState(() {
               _step = _BulkCreateStep.confirm;
               _errorMessage = null;
             }),
-            child: const Text('Try Again'),
+            child: Text('invoices.bulk_create.try_again'.tr()),
           ),
         ],
       },

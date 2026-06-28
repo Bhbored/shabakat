@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -56,7 +57,7 @@ class BulkCreateInvoicesAction extends ConsumerWidget {
                     ),
                     SizedBox(width: context.spaceSmall * 0.5),
                     Text(
-                      'Bulk Generate',
+                      'invoices.bulk_create.action'.tr(),
                       style: theme.textTheme.labelLarge?.copyWith(
                         color: colorScheme.primary,
                         fontWeight: FontWeight.w700,

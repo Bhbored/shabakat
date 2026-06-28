@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -37,14 +38,14 @@ class InvoiceFilterChipsRow extends ConsumerWidget {
     if (filter.issueDateFrom != null) {
       chips.add(
         InvoiceFilterDateChip(
-          label: 'From',
+          label: 'invoices.filter.from'.tr(),
           date: _formatDate(_toDateOnly(filter.issueDateFrom!)),
         ),
       );
     }
     if (effectiveTo != null) {
       chips.add(
-        InvoiceFilterDateChip(label: 'To', date: _formatDate(effectiveTo)),
+        InvoiceFilterDateChip(label: 'invoices.filter.to'.tr(), date: _formatDate(effectiveTo)),
       );
     }
     if (filter.invoiceStatus != null) {

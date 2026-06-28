@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -30,7 +31,7 @@ class _InvoiceFiltersScreenState extends ConsumerState<InvoiceFiltersScreen> {
       DateTime(date.year, date.month, date.day);
 
   String _formatDate(DateTime? date) {
-    if (date == null) return 'All';
+    if (date == null) return 'common.all'.tr();
     final month = date.month.toString().padLeft(2, '0');
     final day = date.day.toString().padLeft(2, '0');
     return '$day/$month/${date.year}';
@@ -80,11 +81,11 @@ class _InvoiceFiltersScreenState extends ConsumerState<InvoiceFiltersScreen> {
     String? toError;
 
     if (_issueDateFrom != null && _issueDateFrom!.isAfter(_today)) {
-      fromError = 'Date cannot be in the future';
+      fromError = 'expenses.filter.future_date'.tr();
       isValid = false;
     }
     if (_issueDateTo != null && _issueDateTo!.isAfter(_today)) {
-      toError = 'Date cannot be in the future';
+      toError = 'expenses.filter.future_date'.tr();
       isValid = false;
     }
 
@@ -124,14 +125,17 @@ class _InvoiceFiltersScreenState extends ConsumerState<InvoiceFiltersScreen> {
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('Filters'),
+        title: Text('expenses.filter.title'.tr()),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(context.paddingMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Issue Date From', style: theme.textTheme.titleMedium),
+            Text(
+              'invoices.filter.issue_date_from'.tr(),
+              style: theme.textTheme.titleMedium,
+            ),
             SizedBox(height: context.spaceSmall),
             InvoiceFilterDateField(
               value: _formatDate(_issueDateFrom),
@@ -145,7 +149,10 @@ class _InvoiceFiltersScreenState extends ConsumerState<InvoiceFiltersScreen> {
                   : null,
             ),
             SizedBox(height: context.spaceMedium),
-            Text('Issue Date To', style: theme.textTheme.titleMedium),
+            Text(
+              'invoices.filter.issue_date_to'.tr(),
+              style: theme.textTheme.titleMedium,
+            ),
             SizedBox(height: context.spaceSmall),
             InvoiceFilterDateField(
               value: _formatDate(_issueDateTo),
@@ -160,7 +167,7 @@ class _InvoiceFiltersScreenState extends ConsumerState<InvoiceFiltersScreen> {
             ),
             SizedBox(height: context.spaceMedium),
             FilterSection<InvoiceStatus>(
-              title: 'Status',
+              title: 'invoices.filter.status'.tr(),
               value: _invoiceStatus,
               items: InvoiceStatus.values,
               labelBuilder: (e) => e.label,
@@ -181,7 +188,7 @@ class _InvoiceFiltersScreenState extends ConsumerState<InvoiceFiltersScreen> {
                         ),
                       )
                     : Text(
-                        'Apply Filter',
+                        'expenses.filter.apply'.tr(),
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

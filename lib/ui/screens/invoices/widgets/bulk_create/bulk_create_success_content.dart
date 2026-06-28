@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -35,7 +36,7 @@ class BulkCreateSuccessContent extends StatelessWidget {
           children: [
             Expanded(
               child: BulkCreateResultTile(
-                label: 'Created',
+                label: 'invoices.bulk_create.created'.tr(),
                 value: '${response.created}',
                 color: AppColors.success,
               ),
@@ -43,7 +44,7 @@ class BulkCreateSuccessContent extends StatelessWidget {
             SizedBox(width: context.spaceSmall),
             Expanded(
               child: BulkCreateResultTile(
-                label: 'Skipped',
+                label: 'invoices.bulk_create.skipped'.tr(),
                 value: '${response.skipped}',
                 color: colorScheme.onSurface.withValues(alpha: 0.55),
               ),

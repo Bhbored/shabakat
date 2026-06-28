@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/enums/enums.dart';
@@ -64,12 +65,18 @@ class _InvoicePayDialogState extends ConsumerState<InvoicePayDialog> {
   }
 
   String? _amountValidator(String? value) {
-    if (value == null || value.trim().isEmpty) return 'Enter amount';
+    if (value == null || value.trim().isEmpty) {
+      return 'invoices.pay.validation.amount_required'.tr();
+    }
     final amount = double.tryParse(value.trim());
-    if (amount == null) return 'Enter a valid number';
-    if (amount <= 0) return 'Amount must be greater than 0';
+    if (amount == null) return 'settings.validation.invalid_number'.tr();
+    if (amount <= 0) {
+      return 'subscribers.invoices.validation.amount_positive'.tr();
+    }
     if (amountExceedsDue(amount, widget.amountDue)) {
-      return 'Amount cannot exceed \$${formatDecimalAmount(widget.amountDue)}';
+      return 'invoices.pay.validation.amount_exceeds'.tr(
+        args: ['\$${formatDecimalAmount(widget.amountDue)}'],
+      );
     }
     return null;
   }
@@ -96,7 +103,7 @@ class _InvoicePayDialogState extends ConsumerState<InvoicePayDialog> {
       if (widget.scaffoldContext.mounted) {
         AppSnackBar.show(
           widget.scaffoldContext,
-          message: 'Payment recorded',
+          message: 'invoices.pay.success'.tr(),
           variant: AppSnackBarVariant.success,
         );
       }
@@ -104,7 +111,7 @@ class _InvoicePayDialogState extends ConsumerState<InvoicePayDialog> {
       if (!mounted) return;
       final message = e is ApiException
           ? e.userMessage
-          : 'Failed to record payment. Please try again.';
+          : 'invoices.pay.failed'.tr();
       AppSnackBar.show(
         context,
         message: message,
@@ -118,29 +125,29 @@ class _InvoicePayDialogState extends ConsumerState<InvoicePayDialog> {
     final isProcessing = ref.watch(invoiceProvider).isLoading;
 
     return AlertDialog(
-      title: const Text('Pay Invoice'),
+      title: Text('invoices.pay.title'.tr()),
       content: SizedBox(
         width: double.maxFinite,
         child: InvoicePayDialogContent(
-        formKey: _formKey,
-        amountController: _amountController,
-        notesController: _notesController,
-        paymentMethod: _paymentMethod,
-        enabled: !isProcessing,
-        amountValidator: _amountValidator,
-        onPaymentMethodChanged: isProcessing
-            ? (_) {}
-            : (value) {
-                if (value != null) {
-                  setState(() => _paymentMethod = value);
-                }
-              },
+          formKey: _formKey,
+          amountController: _amountController,
+          notesController: _notesController,
+          paymentMethod: _paymentMethod,
+          enabled: !isProcessing,
+          amountValidator: _amountValidator,
+          onPaymentMethodChanged: isProcessing
+              ? (_) {}
+              : (value) {
+                  if (value != null) {
+                    setState(() => _paymentMethod = value);
+                  }
+                },
         ),
       ),
       actions: [
         TextButton(
           onPressed: isProcessing ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text('settings.cancel'.tr()),
         ),
         ElevatedButton(
           onPressed: isProcessing ? null : _onProcess,
@@ -150,7 +157,7 @@ class _InvoicePayDialogState extends ConsumerState<InvoicePayDialog> {
                   width: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Process'),
+              : Text('invoices.pay.process'.tr()),
         ),
       ],
     );

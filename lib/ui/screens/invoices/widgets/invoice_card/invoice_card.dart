@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -75,14 +76,14 @@ class InvoiceCard extends StatelessWidget {
                   Expanded(
                     child: _MetaLine(
                       icon: LucideIcons.calendar,
-                      label: 'Issued',
+                      label: 'invoices.card.issued'.tr(),
                       value: _formatDate(invoice.issueDate),
                     ),
                   ),
                   Expanded(
                     child: _MetaLine(
                       icon: LucideIcons.calendarClock,
-                      label: 'Due',
+                      label: 'invoices.card.due'.tr(),
                       value: _formatDate(invoice.dueDate),
                     ),
                   ),
@@ -95,13 +96,13 @@ class InvoiceCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _AmountLine(
-                      label: 'Total',
+                      label: 'invoices.card.total'.tr(),
                       value: invoice.totalAmount,
                     ),
                   ),
                   Expanded(
                     child: _AmountLine(
-                      label: 'Due',
+                      label: 'invoices.card.due'.tr(),
                       value: invoice.amountDue,
                       emphasize: invoice.amountDue > 0,
                     ),

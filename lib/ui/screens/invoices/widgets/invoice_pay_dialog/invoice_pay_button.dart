@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 
@@ -28,7 +29,7 @@ class InvoicePayButton extends StatelessWidget {
             amountDue: amountDue,
           ),
           child: Text(
-            'Pay',
+            'invoices.pay.button'.tr(),
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),

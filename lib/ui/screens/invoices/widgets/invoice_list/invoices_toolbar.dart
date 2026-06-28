@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -20,7 +21,9 @@ class InvoicesToolbar extends ConsumerWidget {
         0,
       ),
       child: Text(
-        '${pagination.totalCount} invoices',
+        pagination.totalCount == 1
+            ? 'invoices.count_one'.tr()
+            : 'invoices.count'.tr(args: [pagination.totalCount.toString()]),
         style: theme.textTheme.bodySmall?.copyWith(
           color: colorScheme.onSurface.withValues(alpha: 0.6),
         ),
