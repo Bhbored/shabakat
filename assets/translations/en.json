@@ -431,6 +431,10 @@
   "invoices": {
     "load_failed": "Failed to load invoices.",
     "load_details_failed": "Failed to load invoice details.",
+    "print": {
+      "title": "Invoice Preview",
+      "load_failed": "Failed to load invoice preview."
+    },
     "empty_list": "No invoices found",
     "count_one": "1 invoice",
     "count": "{} invoices",

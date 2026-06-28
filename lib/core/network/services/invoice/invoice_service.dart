@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/client/dio_client.dart';
@@ -64,6 +65,30 @@ class InvoiceService {
       },
       failure: (error, statusCode) {
         _logger.e('Failed to retrieve invoice: ${error.toString()}');
+        throw error;
+      },
+    );
+  }
+
+  Future<String> printInvoice(String id) async {
+    final response = await _apiExecutor.execute<String>(
+      ApiRequest(
+        path: 'invoices/print/$id',
+        method: HttpMethod.get,
+        headers: {'Accept': 'text/html'},
+        options: Options(
+          responseType: ResponseType.plain,
+          contentType: 'text/html',
+        ),
+      ),
+    );
+    return response.when(
+      success: (data, statusCode, meta) {
+        _logger.i('Invoice print HTML retrieved successfully');
+        return data;
+      },
+      failure: (error, statusCode) {
+        _logger.e('Failed to retrieve invoice print HTML: ${error.toString()}');
         throw error;
       },
     );

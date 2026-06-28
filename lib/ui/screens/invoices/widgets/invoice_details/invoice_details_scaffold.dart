@@ -4,6 +4,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 class InvoiceDetailsScaffold extends StatelessWidget {
   final String title;
   final Widget body;
+  final VoidCallback? onPreview;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
 
@@ -11,6 +12,7 @@ class InvoiceDetailsScaffold extends StatelessWidget {
     super.key,
     required this.title,
     required this.body,
+    this.onPreview,
     this.onEdit,
     this.onDelete,
   });
@@ -32,6 +34,11 @@ class InvoiceDetailsScaffold extends StatelessWidget {
           ),
         ),
         actions: [
+          if (onPreview != null)
+            IconButton(
+              icon: const Icon(LucideIcons.eye),
+              onPressed: onPreview,
+            ),
           if (onEdit != null)
             IconButton(
               icon: const Icon(Icons.edit_outlined),

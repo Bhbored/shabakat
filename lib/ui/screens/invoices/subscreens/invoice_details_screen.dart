@@ -11,6 +11,7 @@ import '../widgets/invoice_details/invoice_details_body.dart';
 import '../widgets/invoice_details/invoice_details_scaffold.dart';
 import '../widgets/invoice_edit_sheet/invoice_edit_sheet.dart';
 import '../widgets/invoice_pay_dialog/invoice_pay_button.dart';
+import 'invoice_print_preview_screen.dart';
 
 class InvoiceDetailsScreen extends ConsumerWidget {
   final String invoiceId;
@@ -41,6 +42,12 @@ class InvoiceDetailsScreen extends ConsumerWidget {
         return InvoiceDetailsScaffold(
           title: 'invoices.details.title_number'.tr(
             args: [invoice.invoiceNumber.toString()],
+          ),
+          onPreview: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              fullscreenDialog: true,
+              builder: (_) => InvoicePrintPreviewScreen(invoiceId: invoiceId),
+            ),
           ),
           onEdit: isUnpaid
               ? () => InvoiceEditSheet.show(
