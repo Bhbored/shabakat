@@ -432,8 +432,9 @@
     "load_failed": "Failed to load invoices.",
     "load_details_failed": "Failed to load invoice details.",
     "print": {
-      "title": "Invoice Preview",
-      "load_failed": "Failed to load invoice preview."
+      "export_success": "Invoice saved to Downloads/invoices.",
+      "export_failed": "Failed to save invoice PDF.",
+      "share_failed": "Failed to share invoice PDF."
     },
     "empty_list": "No invoices found",
     "count_one": "1 invoice",

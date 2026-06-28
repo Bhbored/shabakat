@@ -1,4 +1,5 @@
 export 'area/area.dart';
+export 'audit/audit_log.dart';
 export 'customers/customer.dart';
 export 'expenses/expenses.dart';
 export 'invoices/invoice.dart';

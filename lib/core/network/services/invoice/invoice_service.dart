@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -25,6 +27,8 @@ InvoiceService invoiceService(Ref ref) {
 }
 
 class InvoiceService {
+  static const _printPdfTimeout = Duration(seconds: 60);
+
   late final ApiExecutor _apiExecutor;
   final _logger = Logger();
   InvoiceService(this._apiExecutor);
@@ -70,25 +74,28 @@ class InvoiceService {
     );
   }
 
-  Future<String> printInvoice(String id) async {
-    final response = await _apiExecutor.execute<String>(
+  Future<Uint8List> printInvoicePdf(String id) async {
+    final response = await _apiExecutor.execute<Uint8List>(
       ApiRequest(
-        path: 'invoices/print/$id',
+        path: 'invoices/print/$id/pdf',
         method: HttpMethod.get,
-        headers: {'Accept': 'text/html'},
+        headers: {'Accept': 'application/pdf'},
         options: Options(
-          responseType: ResponseType.plain,
-          contentType: 'text/html',
+          responseType: ResponseType.bytes,
+          receiveTimeout: _printPdfTimeout,
+          sendTimeout: _printPdfTimeout,
         ),
       ),
     );
     return response.when(
       success: (data, statusCode, meta) {
-        _logger.i('Invoice print HTML retrieved successfully');
+        _logger.i(
+          'Invoice print PDF retrieved successfully (${data.length} bytes)',
+        );
         return data;
       },
       failure: (error, statusCode) {
-        _logger.e('Failed to retrieve invoice print HTML: ${error.toString()}');
+        _logger.e('Failed to retrieve invoice print PDF: ${error.toString()}');
         throw error;
       },
     );

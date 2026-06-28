@@ -432,8 +432,9 @@
     "load_failed": "فشل تحميل الفواتير.",
     "load_details_failed": "فشل تحميل تفاصيل الفاتورة.",
     "print": {
-      "title": "معاينة الفاتورة",
-      "load_failed": "فشل تحميل معاينة الفاتورة."
+      "export_success": "تم حفظ الفاتورة في Downloads/invoices.",
+      "export_failed": "تعذر حفظ ملف PDF للفاتورة.",
+      "share_failed": "تعذر مشاركة ملف PDF للفاتورة."
     },
     "empty_list": "لا توجد فواتير",
     "count_one": "فاتورة واحدة",

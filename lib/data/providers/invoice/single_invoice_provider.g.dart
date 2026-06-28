@@ -51,7 +51,7 @@ final class SingleInvoiceNotifierProvider
 }
 
 String _$singleInvoiceNotifierHash() =>
-    r'4a144665f88b1284c09f8ed577343b93be6589d2';
+    r'e6a8bd1d13ec7a1be39979eb8635a6e332dba733';
 
 final class SingleInvoiceNotifierFamily extends $Family
     with
