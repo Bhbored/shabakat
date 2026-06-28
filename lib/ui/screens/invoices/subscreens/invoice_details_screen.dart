@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/invoice/single_invoice_provider.dart';
 
@@ -33,19 +34,26 @@ class InvoiceDetailsScreen extends ConsumerWidget {
           body: Center(child: Text(message, textAlign: TextAlign.center)),
         );
       },
-      data: (invoice) => InvoiceDetailsScaffold(
-        title: 'Invoice #${invoice.invoiceNumber}',
-        onEdit: () => InvoiceEditSheet.show(
-          context,
-          invoiceId: invoiceId,
-          invoice: invoice,
-        ),
-        onDelete: () => showInvoiceDeleteDialog(
-          context: context,
-          invoiceId: invoiceId,
-          invoiceNumber: invoice.invoiceNumber,
-        ),
-        body: Column(
+      data: (invoice) {
+        final isUnpaid = invoice.invoiceStatus == InvoiceStatus.unpaid;
+
+        return InvoiceDetailsScaffold(
+          title: 'Invoice #${invoice.invoiceNumber}',
+          onEdit: isUnpaid
+              ? () => InvoiceEditSheet.show(
+                  context,
+                  invoiceId: invoiceId,
+                  invoice: invoice,
+                )
+              : null,
+          onDelete: isUnpaid
+              ? () => showInvoiceDeleteDialog(
+                  context: context,
+                  invoiceId: invoiceId,
+                  invoiceNumber: invoice.invoiceNumber,
+                )
+              : null,
+          body: Column(
           children: [
             Expanded(
               child: InvoiceDetailsBody(
@@ -64,7 +72,8 @@ class InvoiceDetailsScreen extends ConsumerWidget {
             ],
           ],
         ),
-      ),
+        );
+      },
     );
   }
 }
