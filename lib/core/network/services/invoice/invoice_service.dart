@@ -7,9 +7,11 @@ import 'package:shabakat/core/network/client/dio_client.dart';
 import 'package:shabakat/core/network/configs/http_methods.dart';
 import 'package:shabakat/core/network/dto/request/invoice/add_payment_request.dart';
 import 'package:shabakat/core/network/dto/request/invoice/create_invoice_request.dart';
+import 'package:shabakat/core/network/dto/request/invoice/fixed_kilowatt_calculate_request.dart';
 import 'package:shabakat/core/network/dto/request/invoice/invoice_filter_request.dart';
 import 'package:shabakat/core/network/dto/request/invoice/update_invoice_request.dart';
 import 'package:shabakat/core/network/dto/response/invoice/bulk_create_invoice_response.dart';
+import 'package:shabakat/core/network/dto/response/invoice/fixed_kilowatt_calculate_response.dart';
 import 'package:shabakat/core/network/dto/response/invoice/invoice_response.dart';
 import 'package:shabakat/core/network/dto/response/invoice/list_invoice_summery_response.dart';
 import 'package:shabakat/core/network/dto/response/payment/payment_response.dart';
@@ -135,6 +137,30 @@ class InvoiceService {
       },
       failure: (error, statusCode) {
         _logger.e('Failed to create invoice: ${error.toString()}');
+        throw error;
+      },
+    );
+  }
+
+  Future<FixedKilowattCalculateResponse> calculateFixedKilowatt(
+    FixedKilowattCalculateRequest request,
+  ) async {
+    final response = await _apiExecutor.execute(
+      ApiRequest(
+        path: 'invoices/fixed-kilowatt/calculate',
+        method: HttpMethod.post,
+        data: request.toJson(),
+      ),
+    );
+    return response.when(
+      success: (data, statusCode, meta) {
+        _logger.i('Fixed kilowatt calculated successfully: $data');
+        return FixedKilowattCalculateResponse.fromJson(
+          data as Map<String, dynamic>,
+        );
+      },
+      failure: (error, statusCode) {
+        _logger.e('Failed to calculate fixed kilowatt: ${error.toString()}');
         throw error;
       },
     );

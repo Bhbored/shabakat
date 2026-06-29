@@ -5,8 +5,10 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/data/providers/auth/auth_provider.dart';
 import 'package:shabakat/ui/screens/auth/login/login_screen.dart';
+import 'package:shabakat/ui/screens/calculator/fixed_kilowatt_calculator_screen.dart';
 import 'package:shabakat/ui/screens/dashboard/widgets/common/dashboard_avatar.dart';
 import 'package:shabakat/ui/settings/settings_screen.dart';
+import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
@@ -67,6 +69,18 @@ class AppDrawer extends ConsumerWidget {
                         context,
                         MaterialPageRoute(
                           builder: (_) => const SettingsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  _DrawerItem(
+                    icon: LucideIcons.calculator,
+                    label: 'drawer.calculator'.tr(),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        openInnerScreen(
+                          widget: const FixedKilowattCalculatorScreen(),
                         ),
                       );
                     },

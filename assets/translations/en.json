@@ -47,8 +47,12 @@
   },
   "drawer": {
     "settings": "Settings",
+    "calculator": "Calculator",
     "help_support": "Help & Support",
     "logout": "Logout"
+  },
+  "calculator": {
+    "title": "Fixed kW Calculator"
   },
   "common": {
     "all": "All",
