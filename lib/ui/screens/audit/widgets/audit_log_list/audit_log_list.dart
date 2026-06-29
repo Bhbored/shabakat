@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -85,7 +86,7 @@ class _AuditLogListState extends ConsumerState<AuditLogList> {
           SizedBox(height: context.screenHeight * 0.2),
           Center(
             child: Text(
-              'No activity recorded yet.',
+              'audit.empty_list'.tr(),
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),

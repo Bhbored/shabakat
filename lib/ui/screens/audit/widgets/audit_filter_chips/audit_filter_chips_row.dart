@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -55,7 +56,7 @@ class AuditFilterChipsRow extends ConsumerWidget {
       chips.add(
         AuditFilterChip(
           icon: LucideIcons.calendar,
-          label: 'From: ${_formatDate(_toDateOnly(filter.createdFrom!))}',
+          label: '${'audit.filter.from'.tr()}: ${_formatDate(_toDateOnly(filter.createdFrom!))}',
           color: colorScheme.primary,
         ),
       );
@@ -64,7 +65,7 @@ class AuditFilterChipsRow extends ConsumerWidget {
       chips.add(
         AuditFilterChip(
           icon: LucideIcons.calendarRange,
-          label: 'To: ${_formatDate(effectiveTo)}',
+          label: '${'audit.filter.to'.tr()}: ${_formatDate(effectiveTo)}',
           color: colorScheme.primary,
         ),
       );

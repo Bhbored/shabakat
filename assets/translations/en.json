@@ -543,6 +543,17 @@
     "summary": {
       "entries": "TOTAL ENTRIES"
     },
+    "filter": {
+      "title": "Filters",
+      "action": "Action",
+      "status": "Status",
+      "created_from": "Created from",
+      "created_to": "Created to",
+      "from": "From",
+      "to": "To",
+      "apply": "Apply filters",
+      "future_date": "Date cannot be in the future"
+    },
     "status": {
       "success": "Success",
       "failed": "Failed"
@@ -564,6 +575,18 @@
       "invoice": "Invoice",
       "payment": "Payment",
       "expense": "Expense"
+    },
+    "details": {
+      "when": "When",
+      "by": "By",
+      "entity_id": "Entity ID",
+      "log_id": "Log ID",
+      "event_data": "EVENT DATA",
+      "no_event_data": "No additional event data"
+    },
+    "detail_value": {
+      "yes": "Yes",
+      "no": "No"
     }
   }
 }

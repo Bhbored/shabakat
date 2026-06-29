@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -29,7 +30,7 @@ class _AuditFiltersScreenState extends ConsumerState<AuditFiltersScreen> {
       DateTime(date.year, date.month, date.day);
 
   String _formatDate(DateTime? date) {
-    if (date == null) return 'All';
+    if (date == null) return 'common.all'.tr();
     final month = date.month.toString().padLeft(2, '0');
     final day = date.day.toString().padLeft(2, '0');
     return '$day/$month/${date.year}';
@@ -80,11 +81,11 @@ class _AuditFiltersScreenState extends ConsumerState<AuditFiltersScreen> {
     String? toError;
 
     if (_createdFrom != null && _createdFrom!.isAfter(_today)) {
-      fromError = 'Date cannot be in the future';
+      fromError = 'audit.filter.future_date'.tr();
       isValid = false;
     }
     if (_createdTo != null && _createdTo!.isAfter(_today)) {
-      toError = 'Date cannot be in the future';
+      toError = 'audit.filter.future_date'.tr();
       isValid = false;
     }
 
@@ -125,7 +126,7 @@ class _AuditFiltersScreenState extends ConsumerState<AuditFiltersScreen> {
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('Filters'),
+        title: Text('audit.filter.title'.tr()),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(context.paddingMedium),
@@ -133,7 +134,7 @@ class _AuditFiltersScreenState extends ConsumerState<AuditFiltersScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FilterSection<AuditAction>(
-              title: 'Action',
+              title: 'audit.filter.action'.tr(),
               value: _action,
               items: AuditAction.values,
               labelBuilder: AuditLogLabels.actionLabel,
@@ -141,14 +142,14 @@ class _AuditFiltersScreenState extends ConsumerState<AuditFiltersScreen> {
             ),
             SizedBox(height: context.spaceMedium),
             FilterSection<AuditLogStatus>(
-              title: 'Status',
+              title: 'audit.filter.status'.tr(),
               value: _status,
               items: AuditLogStatus.values,
               labelBuilder: AuditLogLabels.statusLabel,
               onChanged: (value) => setState(() => _status = value),
             ),
             SizedBox(height: context.spaceMedium),
-            Text('Created from', style: theme.textTheme.titleMedium),
+            Text('audit.filter.created_from'.tr(), style: theme.textTheme.titleMedium),
             SizedBox(height: context.spaceSmall),
             _AuditDateFilterField(
               value: _formatDate(_createdFrom),
@@ -163,7 +164,7 @@ class _AuditFiltersScreenState extends ConsumerState<AuditFiltersScreen> {
                   : null,
             ),
             SizedBox(height: context.spaceMedium),
-            Text('Created to', style: theme.textTheme.titleMedium),
+            Text('audit.filter.created_to'.tr(), style: theme.textTheme.titleMedium),
             SizedBox(height: context.spaceSmall),
             _AuditDateFilterField(
               value: _formatDate(_createdTo),
@@ -192,7 +193,7 @@ class _AuditFiltersScreenState extends ConsumerState<AuditFiltersScreen> {
                         ),
                       )
                     : Text(
-                        'Apply filters',
+                        'audit.filter.apply'.tr(),
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

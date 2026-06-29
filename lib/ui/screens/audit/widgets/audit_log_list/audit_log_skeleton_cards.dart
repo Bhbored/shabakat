@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -95,7 +96,7 @@ class AuditSummaryBarSkeleton extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'TOTAL ENTRIES',
+                      'audit.summary.entries'.tr(),
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: colorScheme.onSurface.withValues(alpha: 0.55),
                         fontWeight: FontWeight.w600,

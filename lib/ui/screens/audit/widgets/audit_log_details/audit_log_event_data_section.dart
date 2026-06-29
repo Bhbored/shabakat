@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -22,7 +23,7 @@ class AuditLogEventDataSection extends StatelessWidget {
             Icon(LucideIcons.listTree, size: 16, color: colorScheme.primary),
             SizedBox(width: context.paddingSmall),
             Text(
-              'EVENT DATA',
+              'audit.details.event_data'.tr(),
               style: theme.textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.w800,
                 letterSpacing: 1.1,
@@ -90,7 +91,7 @@ class _AuditLogEmptyEventData extends StatelessWidget {
           ),
           SizedBox(height: context.paddingSmall * 0.5),
           Text(
-            'No additional event data',
+            'audit.details.no_event_data'.tr(),
             style: theme.textTheme.bodyMedium?.copyWith(
               color: colorScheme.onSurface.withValues(alpha: 0.55),
               fontWeight: FontWeight.w500,

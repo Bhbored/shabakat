@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
+
 String formatAuditDetailKey(String key) {
   final spaced = key.replaceAllMapped(
     RegExp(r'(?<!^)(?=[A-Z])'),
@@ -17,7 +19,9 @@ String formatAuditDetailKey(String key) {
 
 String formatAuditDetailValue(dynamic value) {
   if (value == null) return '—';
-  if (value is bool) return value ? 'Yes' : 'No';
+  if (value is bool) {
+    return value ? 'audit.detail_value.yes'.tr() : 'audit.detail_value.no'.tr();
+  }
   if (value is num || value is String) return value.toString();
   if (value is List) {
     return value.map(formatAuditDetailValue).join(', ');

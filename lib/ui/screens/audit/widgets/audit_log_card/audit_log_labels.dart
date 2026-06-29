@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/enums/enums.dart';
@@ -5,31 +6,33 @@ import 'package:shabakat/core/themes/app_colors.dart';
 
 class AuditLogLabels {
   static String actionLabel(AuditAction action) => switch (action) {
-    AuditAction.customerCreated => 'Customer created',
-    AuditAction.customerUpdated => 'Customer updated',
-    AuditAction.customerDeleted => 'Customer deleted',
-    AuditAction.invoiceCreated => 'Invoice created',
-    AuditAction.invoiceBulkCreated => 'Invoices bulk created',
-    AuditAction.invoicePaymentRecorded => 'Payment recorded',
-    AuditAction.invoiceFixedKilowattCharge => 'Fixed kW charge',
-    AuditAction.expenseCreated => 'Expense created',
-    AuditAction.expenseUpdated => 'Expense updated',
-    AuditAction.expenseDeleted => 'Expense deleted',
+    AuditAction.customerCreated => 'audit.actions.customer_created'.tr(),
+    AuditAction.customerUpdated => 'audit.actions.customer_updated'.tr(),
+    AuditAction.customerDeleted => 'audit.actions.customer_deleted'.tr(),
+    AuditAction.invoiceCreated => 'audit.actions.invoice_created'.tr(),
+    AuditAction.invoiceBulkCreated => 'audit.actions.invoice_bulk_created'.tr(),
+    AuditAction.invoicePaymentRecorded =>
+      'audit.actions.invoice_payment_recorded'.tr(),
+    AuditAction.invoiceFixedKilowattCharge =>
+      'audit.actions.invoice_fixed_kilowatt_charge'.tr(),
+    AuditAction.expenseCreated => 'audit.actions.expense_created'.tr(),
+    AuditAction.expenseUpdated => 'audit.actions.expense_updated'.tr(),
+    AuditAction.expenseDeleted => 'audit.actions.expense_deleted'.tr(),
   };
 
   static String statusLabel(AuditLogStatus status) => switch (status) {
-    AuditLogStatus.success => 'Success',
-    AuditLogStatus.failed => 'Failed',
+    AuditLogStatus.success => 'audit.status.success'.tr(),
+    AuditLogStatus.failed => 'audit.status.failed'.tr(),
   };
 
   static String? entityTypeLabel(AuditEntityType? entityType) =>
       entityType == null
       ? null
       : switch (entityType) {
-          AuditEntityType.customer => 'Customer',
-          AuditEntityType.invoice => 'Invoice',
-          AuditEntityType.payment => 'Payment',
-          AuditEntityType.expense => 'Expense',
+          AuditEntityType.customer => 'audit.entity_types.customer'.tr(),
+          AuditEntityType.invoice => 'audit.entity_types.invoice'.tr(),
+          AuditEntityType.payment => 'audit.entity_types.payment'.tr(),
+          AuditEntityType.expense => 'audit.entity_types.expense'.tr(),
         };
 
   static IconData statusIcon(AuditLogStatus status) => switch (status) {

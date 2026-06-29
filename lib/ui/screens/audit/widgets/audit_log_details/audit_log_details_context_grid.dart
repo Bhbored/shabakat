@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -22,24 +23,24 @@ class AuditLogDetailsContextGrid extends StatelessWidget {
     final items = <_AuditLogContextItem>[
       _AuditLogContextItem(
         icon: LucideIcons.clock,
-        label: 'When',
+        label: 'audit.details.when'.tr(),
         value: _formatDateTime(log.createdAt),
       ),
       if (log.userEmail != null && log.userEmail!.trim().isNotEmpty)
         _AuditLogContextItem(
           icon: LucideIcons.user,
-          label: 'By',
+          label: 'audit.details.by'.tr(),
           value: log.userEmail!.trim(),
         ),
       if (log.entityId != null && log.entityId!.isNotEmpty)
         _AuditLogContextItem(
           icon: LucideIcons.hash,
-          label: 'Entity ID',
+          label: 'audit.details.entity_id'.tr(),
           value: log.entityId!,
         ),
       _AuditLogContextItem(
         icon: LucideIcons.fingerprint,
-        label: 'Log ID',
+        label: 'audit.details.log_id'.tr(),
         value: log.id,
       ),
     ];
