@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/network/dto/response/audit/audit_log_response.dart';
 import 'package:shabakat/domain/entities/audit/audit_log.dart';
@@ -5,36 +7,26 @@ import 'package:shabakat/domain/entities/audit/audit_log.dart';
 extension AuditLogResponseMapper on AuditLogResponse {
   AuditLog toEntity() => AuditLog(
     id: id,
-    action: toAuditAction(action),
-    status: toAuditLogStatus(status),
+    action: action.toAuditAction(),
+    status: status.toAuditLogStatus(),
     summary: summary,
-    entityType: entityType,
+    entityType: entityType.toAuditEntityTypeOrNull(),
     entityId: entityId,
-    details: details,
+    details: parseAuditDetails(details),
     userEmail: userEmail,
     createdAt: createdAt,
   );
 }
 
-AuditAction toAuditAction(String value) => switch (value) {
-  'customerCreated' || 'CustomerCreated' => AuditAction.customerCreated,
-  'customerUpdated' || 'CustomerUpdated' => AuditAction.customerUpdated,
-  'customerDeleted' || 'CustomerDeleted' => AuditAction.customerDeleted,
-  'invoiceCreated' || 'InvoiceCreated' => AuditAction.invoiceCreated,
-  'invoiceBulkCreated' || 'InvoiceBulkCreated' =>
-    AuditAction.invoiceBulkCreated,
-  'invoicePaymentRecorded' || 'InvoicePaymentRecorded' =>
-    AuditAction.invoicePaymentRecorded,
-  'invoiceFixedKilowattCharge' || 'InvoiceFixedKilowattCharge' =>
-    AuditAction.invoiceFixedKilowattCharge,
-  'expenseCreated' || 'ExpenseCreated' => AuditAction.expenseCreated,
-  'expenseUpdated' || 'ExpenseUpdated' => AuditAction.expenseUpdated,
-  'expenseDeleted' || 'ExpenseDeleted' => AuditAction.expenseDeleted,
-  _ => AuditAction.customerCreated,
-};
+Map<String, dynamic>? parseAuditDetails(String? raw) {
+  if (raw == null || raw.trim().isEmpty) return null;
 
-AuditLogStatus toAuditLogStatus(String value) => switch (value.toLowerCase()) {
-  'success' => AuditLogStatus.success,
-  'failed' => AuditLogStatus.failed,
-  _ => AuditLogStatus.failed,
-};
+  try {
+    final decoded = jsonDecode(raw);
+    if (decoded is Map<String, dynamic>) return decoded;
+    if (decoded is Map) return Map<String, dynamic>.from(decoded);
+    return null;
+  } catch (_) {
+    return null;
+  }
+}

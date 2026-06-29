@@ -535,5 +535,35 @@
       "created": "تم الإنشاء",
       "skipped": "تم التخطي"
     }
+  },
+  "audit": {
+    "title": "سجل النشاط",
+    "load_failed": "فشل تحميل سجل النشاط.",
+    "empty_list": "لا يوجد نشاط مسجل بعد.",
+    "summary": {
+      "entries": "إجمالي السجلات"
+    },
+    "status": {
+      "success": "ناجح",
+      "failed": "فاشل"
+    },
+    "actions": {
+      "customer_created": "إنشاء عميل",
+      "customer_updated": "تحديث عميل",
+      "customer_deleted": "حذف عميل",
+      "invoice_created": "إنشاء فاتورة",
+      "invoice_bulk_created": "إنشاء فواتير جماعي",
+      "invoice_payment_recorded": "تسجيل دفعة",
+      "invoice_fixed_kilowatt_charge": "رسوم كيلوواط ثابتة",
+      "expense_created": "إنشاء مصروف",
+      "expense_updated": "تحديث مصروف",
+      "expense_deleted": "حذف مصروف"
+    },
+    "entity_types": {
+      "customer": "عميل",
+      "invoice": "فاتورة",
+      "payment": "دفعة",
+      "expense": "مصروف"
+    }
   }
 }

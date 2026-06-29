@@ -11,9 +11,9 @@ sealed class AuditLog with _$AuditLog {
     required AuditAction action,
     required AuditLogStatus status,
     required String summary,
-    String? entityType,
+    AuditEntityType? entityType,
     String? entityId,
-    String? details,
+    Map<String, dynamic>? details,
     String? userEmail,
     required DateTime createdAt,
   }) = _AuditLog;

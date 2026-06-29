@@ -1,0 +1,35 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'audit_log_list_response.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_AuditLogListResponse _$AuditLogListResponseFromJson(
+  Map<String, dynamic> json,
+) => _AuditLogListResponse(
+  data:
+      (json['data'] as List<dynamic>?)
+          ?.map((e) => AuditLogResponse.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+  totalCount: (json['totalCount'] as num?)?.toInt() ?? 0,
+  pageNumber: (json['pageNumber'] as num?)?.toInt() ?? 1,
+  pageSize: (json['pageSize'] as num?)?.toInt() ?? 20,
+  totalPages: (json['totalPages'] as num?)?.toInt() ?? 0,
+  hasPreviousPage: json['hasPreviousPage'] as bool? ?? false,
+  hasNextPage: json['hasNextPage'] as bool? ?? false,
+);
+
+Map<String, dynamic> _$AuditLogListResponseToJson(
+  _AuditLogListResponse instance,
+) => <String, dynamic>{
+  'data': instance.data,
+  'totalCount': instance.totalCount,
+  'pageNumber': instance.pageNumber,
+  'pageSize': instance.pageSize,
+  'totalPages': instance.totalPages,
+  'hasPreviousPage': instance.hasPreviousPage,
+  'hasNextPage': instance.hasNextPage,
+};

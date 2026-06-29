@@ -16,6 +16,7 @@ import '../invoices/invoices_screen.dart';
 import '../invoices/widgets/bulk_create/bulk_create_action.dart';
 import '../expenses/expenses_screen.dart';
 import '../expenses/subscreens/expense_adding_screen.dart';
+import '../audit/audit_screen.dart';
 import '../areas/areas_page.dart';
 import '../areas/subscreens/area_adding_screen.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
@@ -122,7 +123,7 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(LucideIcons.search)),
             IconButton(
-              onPressed: () {},
+              onPressed: _onOpenAudit,
               icon: Stack(
                 children: [
                   const Icon(LucideIcons.bell),
@@ -212,6 +213,10 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
       default:
         return null;
     }
+  }
+
+  void _onOpenAudit() {
+    Navigator.of(context).push(openInnerScreen(widget: const AuditScreen()));
   }
 
   void _onAddSubscriber() {

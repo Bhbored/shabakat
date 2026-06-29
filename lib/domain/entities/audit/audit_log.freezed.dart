@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuditLog {
 
- String get id; AuditAction get action; AuditLogStatus get status; String get summary; String? get entityType; String? get entityId; String? get details; String? get userEmail; DateTime get createdAt;
+ String get id; AuditAction get action; AuditLogStatus get status; String get summary; AuditEntityType? get entityType; String? get entityId; Map<String, dynamic>? get details; String? get userEmail; DateTime get createdAt;
 /// Create a copy of AuditLog
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,12 +28,12 @@ $AuditLogCopyWith<AuditLog> get copyWith => _$AuditLogCopyWithImpl<AuditLog>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuditLog&&(identical(other.id, id) || other.id == id)&&(identical(other.action, action) || other.action == action)&&(identical(other.status, status) || other.status == status)&&(identical(other.summary, summary) || other.summary == summary)&&(identical(other.entityType, entityType) || other.entityType == entityType)&&(identical(other.entityId, entityId) || other.entityId == entityId)&&(identical(other.details, details) || other.details == details)&&(identical(other.userEmail, userEmail) || other.userEmail == userEmail)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuditLog&&(identical(other.id, id) || other.id == id)&&(identical(other.action, action) || other.action == action)&&(identical(other.status, status) || other.status == status)&&(identical(other.summary, summary) || other.summary == summary)&&(identical(other.entityType, entityType) || other.entityType == entityType)&&(identical(other.entityId, entityId) || other.entityId == entityId)&&const DeepCollectionEquality().equals(other.details, details)&&(identical(other.userEmail, userEmail) || other.userEmail == userEmail)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,action,status,summary,entityType,entityId,details,userEmail,createdAt);
+int get hashCode => Object.hash(runtimeType,id,action,status,summary,entityType,entityId,const DeepCollectionEquality().hash(details),userEmail,createdAt);
 
 @override
 String toString() {
@@ -48,7 +48,7 @@ abstract mixin class $AuditLogCopyWith<$Res>  {
   factory $AuditLogCopyWith(AuditLog value, $Res Function(AuditLog) _then) = _$AuditLogCopyWithImpl;
 @useResult
 $Res call({
- String id, AuditAction action, AuditLogStatus status, String summary, String? entityType, String? entityId, String? details, String? userEmail, DateTime createdAt
+ String id, AuditAction action, AuditLogStatus status, String summary, AuditEntityType? entityType, String? entityId, Map<String, dynamic>? details, String? userEmail, DateTime createdAt
 });
 
 
@@ -72,9 +72,9 @@ as String,action: null == action ? _self.action : action // ignore: cast_nullabl
 as AuditAction,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as AuditLogStatus,summary: null == summary ? _self.summary : summary // ignore: cast_nullable_to_non_nullable
 as String,entityType: freezed == entityType ? _self.entityType : entityType // ignore: cast_nullable_to_non_nullable
-as String?,entityId: freezed == entityId ? _self.entityId : entityId // ignore: cast_nullable_to_non_nullable
+as AuditEntityType?,entityId: freezed == entityId ? _self.entityId : entityId // ignore: cast_nullable_to_non_nullable
 as String?,details: freezed == details ? _self.details : details // ignore: cast_nullable_to_non_nullable
-as String?,userEmail: freezed == userEmail ? _self.userEmail : userEmail // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,userEmail: freezed == userEmail ? _self.userEmail : userEmail // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
@@ -158,7 +158,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  AuditAction action,  AuditLogStatus status,  String summary,  String? entityType,  String? entityId,  String? details,  String? userEmail,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  AuditAction action,  AuditLogStatus status,  String summary,  AuditEntityType? entityType,  String? entityId,  Map<String, dynamic>? details,  String? userEmail,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuditLog() when $default != null:
 return $default(_that.id,_that.action,_that.status,_that.summary,_that.entityType,_that.entityId,_that.details,_that.userEmail,_that.createdAt);case _:
@@ -179,7 +179,7 @@ return $default(_that.id,_that.action,_that.status,_that.summary,_that.entityTyp
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  AuditAction action,  AuditLogStatus status,  String summary,  String? entityType,  String? entityId,  String? details,  String? userEmail,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  AuditAction action,  AuditLogStatus status,  String summary,  AuditEntityType? entityType,  String? entityId,  Map<String, dynamic>? details,  String? userEmail,  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _AuditLog():
 return $default(_that.id,_that.action,_that.status,_that.summary,_that.entityType,_that.entityId,_that.details,_that.userEmail,_that.createdAt);}
@@ -196,7 +196,7 @@ return $default(_that.id,_that.action,_that.status,_that.summary,_that.entityTyp
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  AuditAction action,  AuditLogStatus status,  String summary,  String? entityType,  String? entityId,  String? details,  String? userEmail,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  AuditAction action,  AuditLogStatus status,  String summary,  AuditEntityType? entityType,  String? entityId,  Map<String, dynamic>? details,  String? userEmail,  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _AuditLog() when $default != null:
 return $default(_that.id,_that.action,_that.status,_that.summary,_that.entityType,_that.entityId,_that.details,_that.userEmail,_that.createdAt);case _:
@@ -211,16 +211,24 @@ return $default(_that.id,_that.action,_that.status,_that.summary,_that.entityTyp
 @JsonSerializable()
 
 class _AuditLog implements AuditLog {
-  const _AuditLog({required this.id, required this.action, required this.status, required this.summary, this.entityType, this.entityId, this.details, this.userEmail, required this.createdAt});
+  const _AuditLog({required this.id, required this.action, required this.status, required this.summary, this.entityType, this.entityId, final  Map<String, dynamic>? details, this.userEmail, required this.createdAt}): _details = details;
   factory _AuditLog.fromJson(Map<String, dynamic> json) => _$AuditLogFromJson(json);
 
 @override final  String id;
 @override final  AuditAction action;
 @override final  AuditLogStatus status;
 @override final  String summary;
-@override final  String? entityType;
+@override final  AuditEntityType? entityType;
 @override final  String? entityId;
-@override final  String? details;
+ final  Map<String, dynamic>? _details;
+@override Map<String, dynamic>? get details {
+  final value = _details;
+  if (value == null) return null;
+  if (_details is EqualUnmodifiableMapView) return _details;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(value);
+}
+
 @override final  String? userEmail;
 @override final  DateTime createdAt;
 
@@ -237,12 +245,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuditLog&&(identical(other.id, id) || other.id == id)&&(identical(other.action, action) || other.action == action)&&(identical(other.status, status) || other.status == status)&&(identical(other.summary, summary) || other.summary == summary)&&(identical(other.entityType, entityType) || other.entityType == entityType)&&(identical(other.entityId, entityId) || other.entityId == entityId)&&(identical(other.details, details) || other.details == details)&&(identical(other.userEmail, userEmail) || other.userEmail == userEmail)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuditLog&&(identical(other.id, id) || other.id == id)&&(identical(other.action, action) || other.action == action)&&(identical(other.status, status) || other.status == status)&&(identical(other.summary, summary) || other.summary == summary)&&(identical(other.entityType, entityType) || other.entityType == entityType)&&(identical(other.entityId, entityId) || other.entityId == entityId)&&const DeepCollectionEquality().equals(other._details, _details)&&(identical(other.userEmail, userEmail) || other.userEmail == userEmail)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,action,status,summary,entityType,entityId,details,userEmail,createdAt);
+int get hashCode => Object.hash(runtimeType,id,action,status,summary,entityType,entityId,const DeepCollectionEquality().hash(_details),userEmail,createdAt);
 
 @override
 String toString() {
@@ -257,7 +265,7 @@ abstract mixin class _$AuditLogCopyWith<$Res> implements $AuditLogCopyWith<$Res>
   factory _$AuditLogCopyWith(_AuditLog value, $Res Function(_AuditLog) _then) = __$AuditLogCopyWithImpl;
 @override @useResult
 $Res call({
- String id, AuditAction action, AuditLogStatus status, String summary, String? entityType, String? entityId, String? details, String? userEmail, DateTime createdAt
+ String id, AuditAction action, AuditLogStatus status, String summary, AuditEntityType? entityType, String? entityId, Map<String, dynamic>? details, String? userEmail, DateTime createdAt
 });
 
 
@@ -281,9 +289,9 @@ as String,action: null == action ? _self.action : action // ignore: cast_nullabl
 as AuditAction,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as AuditLogStatus,summary: null == summary ? _self.summary : summary // ignore: cast_nullable_to_non_nullable
 as String,entityType: freezed == entityType ? _self.entityType : entityType // ignore: cast_nullable_to_non_nullable
-as String?,entityId: freezed == entityId ? _self.entityId : entityId // ignore: cast_nullable_to_non_nullable
-as String?,details: freezed == details ? _self.details : details // ignore: cast_nullable_to_non_nullable
-as String?,userEmail: freezed == userEmail ? _self.userEmail : userEmail // ignore: cast_nullable_to_non_nullable
+as AuditEntityType?,entityId: freezed == entityId ? _self.entityId : entityId // ignore: cast_nullable_to_non_nullable
+as String?,details: freezed == details ? _self._details : details // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,userEmail: freezed == userEmail ? _self.userEmail : userEmail // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));

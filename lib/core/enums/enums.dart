@@ -1,4 +1,5 @@
 export 'audit_action.dart';
+export 'audit_entity_type.dart';
 export 'audit_log_status.dart';
 export 'customer_relation.dart';
 export 'customer_status.dart';

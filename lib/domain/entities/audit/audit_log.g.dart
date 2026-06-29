@@ -11,9 +11,9 @@ _AuditLog _$AuditLogFromJson(Map<String, dynamic> json) => _AuditLog(
   action: $enumDecode(_$AuditActionEnumMap, json['action']),
   status: $enumDecode(_$AuditLogStatusEnumMap, json['status']),
   summary: json['summary'] as String,
-  entityType: json['entityType'] as String?,
+  entityType: $enumDecodeNullable(_$AuditEntityTypeEnumMap, json['entityType']),
   entityId: json['entityId'] as String?,
-  details: json['details'] as String?,
+  details: json['details'] as Map<String, dynamic>?,
   userEmail: json['userEmail'] as String?,
   createdAt: DateTime.parse(json['createdAt'] as String),
 );
@@ -23,7 +23,7 @@ Map<String, dynamic> _$AuditLogToJson(_AuditLog instance) => <String, dynamic>{
   'action': _$AuditActionEnumMap[instance.action]!,
   'status': _$AuditLogStatusEnumMap[instance.status]!,
   'summary': instance.summary,
-  'entityType': instance.entityType,
+  'entityType': _$AuditEntityTypeEnumMap[instance.entityType],
   'entityId': instance.entityId,
   'details': instance.details,
   'userEmail': instance.userEmail,
@@ -46,4 +46,11 @@ const _$AuditActionEnumMap = {
 const _$AuditLogStatusEnumMap = {
   AuditLogStatus.success: 'success',
   AuditLogStatus.failed: 'failed',
+};
+
+const _$AuditEntityTypeEnumMap = {
+  AuditEntityType.customer: 'customer',
+  AuditEntityType.invoice: 'invoice',
+  AuditEntityType.payment: 'payment',
+  AuditEntityType.expense: 'expense',
 };

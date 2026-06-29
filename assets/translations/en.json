@@ -535,5 +535,35 @@
       "created": "Created",
       "skipped": "Skipped"
     }
+  },
+  "audit": {
+    "title": "Activity Log",
+    "load_failed": "Failed to load audit logs.",
+    "empty_list": "No activity recorded yet.",
+    "summary": {
+      "entries": "TOTAL ENTRIES"
+    },
+    "status": {
+      "success": "Success",
+      "failed": "Failed"
+    },
+    "actions": {
+      "customer_created": "Customer created",
+      "customer_updated": "Customer updated",
+      "customer_deleted": "Customer deleted",
+      "invoice_created": "Invoice created",
+      "invoice_bulk_created": "Invoices bulk created",
+      "invoice_payment_recorded": "Payment recorded",
+      "invoice_fixed_kilowatt_charge": "Fixed kW charge",
+      "expense_created": "Expense created",
+      "expense_updated": "Expense updated",
+      "expense_deleted": "Expense deleted"
+    },
+    "entity_types": {
+      "customer": "Customer",
+      "invoice": "Invoice",
+      "payment": "Payment",
+      "expense": "Expense"
+    }
   }
 }
