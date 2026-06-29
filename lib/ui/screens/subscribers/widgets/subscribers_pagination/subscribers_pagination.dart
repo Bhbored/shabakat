@@ -65,7 +65,7 @@ class SubscribersPagination extends StatelessWidget {
           context.paddingMedium,
           context.paddingSmall * 0.5,
           context.paddingMedium,
-          context.paddingSmall * 0.5 + context.bottomPadding,
+          context.paddingSmall * 0.5,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

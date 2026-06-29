@@ -19,16 +19,15 @@ class BottomNavContainer extends StatelessWidget {
     final theme = Theme.of(context);
     
     return Container(
-      padding: EdgeInsets.only(bottom: context.viewInsets.bottom),
+      padding: EdgeInsets.only(bottom: context.keyboardBottomInset),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         border: Border(
           top: BorderSide(color: theme.colorScheme.outline),
         ),
       ),
-      child: SafeArea(
-        child: Row(
-          children: [
+      child: Row(
+        children: [
             BottomNavItem(
               icon: LucideIcons.layoutDashboard,
               label: 'tabs.dashboard'.tr(),
@@ -58,9 +57,8 @@ class BottomNavContainer extends StatelessWidget {
               label: 'tabs.areas'.tr(),
               isActive: currentIndex == 4,
               onTap: () => onTabChanged(4),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

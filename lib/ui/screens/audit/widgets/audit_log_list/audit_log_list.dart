@@ -101,12 +101,7 @@ class _AuditLogListState extends ConsumerState<AuditLogList> {
     return ListView.builder(
       controller: _scrollController,
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.fromLTRB(
-        context.paddingMedium,
-        0,
-        context.paddingMedium,
-        context.viewInsets.bottom,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: context.paddingMedium),
       itemCount: itemCount,
       itemBuilder: (context, index) {
         if (index >= widget.logs.length) {

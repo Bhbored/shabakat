@@ -64,9 +64,9 @@ class AppDrawer extends ConsumerWidget {
                     icon: LucideIcons.settings,
                     label: 'drawer.settings'.tr(),
                     onTap: () {
+                      final navigator = Navigator.of(context);
                       Navigator.pop(context);
-                      Navigator.push(
-                        context,
+                      navigator.push(
                         MaterialPageRoute(
                           builder: (_) => const SettingsScreen(),
                         ),

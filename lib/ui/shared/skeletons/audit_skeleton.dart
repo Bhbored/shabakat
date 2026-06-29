@@ -29,19 +29,17 @@ class AuditSkeleton extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.fromLTRB(
-                  context.paddingMedium,
-                  0,
-                  context.paddingMedium,
-                  context.viewInsets.bottom,
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.paddingMedium,
                 ),
                 itemCount: _itemCount,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: EdgeInsets.only(bottom: context.spaceSmall),
                     child: AuditLogCard(
-                      log: AuditLogSkeletonCards.mockLogs[
-                          index % AuditLogSkeletonCards.mockLogs.length],
+                      log:
+                          AuditLogSkeletonCards.mockLogs[index %
+                              AuditLogSkeletonCards.mockLogs.length],
                     ),
                   );
                 },

@@ -12,6 +12,8 @@ extension AppSizes on BuildContext {
 
   double get bottomPadding =>
       viewPadding.bottom > 0 ? viewPadding.bottom : 16.0;
+
+  double get keyboardBottomInset => viewInsets.bottom;
   double get topPadding => viewPadding.top > 0 ? viewPadding.top : 16.0;
 
   // Dynamic Spacing Helpers

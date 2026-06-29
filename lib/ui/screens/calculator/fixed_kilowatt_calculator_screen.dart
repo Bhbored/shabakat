@@ -130,7 +130,7 @@ class _FixedKilowattCalculatorScreenState
           context.paddingMedium,
           context.paddingMedium,
           context.paddingMedium,
-          context.paddingMedium + context.bottomPadding,
+          context.paddingMedium + context.keyboardBottomInset,
         ),
         child: Form(
           key: _formKey,

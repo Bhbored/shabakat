@@ -61,6 +61,12 @@ class MyApp extends ConsumerWidget {
       theme: ThemeSelector.light(),
       darkTheme: ThemeSelector.dark(),
       themeMode: themeModeAsync.value ?? ThemeMode.system,
+      builder: (context, child) {
+        return SafeArea(
+          top: false,
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       home: const SplashScreen(),
     );
   }

@@ -50,7 +50,7 @@ class AuditLogDetailsScreen extends StatelessWidget {
               context.paddingMedium,
               context.spaceSmall,
               context.paddingMedium,
-              context.paddingMedium + context.bottomPadding,
+              context.paddingMedium,
             ),
             sliver: SliverList(
               delegate: SliverChildListDelegate([

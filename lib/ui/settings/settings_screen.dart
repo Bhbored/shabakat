@@ -27,10 +27,10 @@ class SettingsScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(context.paddingMedium),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          padding: EdgeInsets.all(context.paddingMedium),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             const CompanyProfileHeader(),
             SizedBox(height: context.spaceMedium),
             SettingsSectionTitle(title: 'settings.appearance'.tr()),
@@ -126,10 +126,10 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: context.scrollPaddingAboveMainNav),
-          ],
+              SizedBox(height: context.spaceLarge),
+            ],
+          ),
         ),
-      ),
     );
   }
 }
