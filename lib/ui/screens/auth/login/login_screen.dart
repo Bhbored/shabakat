@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -114,7 +115,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   SizedBox(height: context.spaceLarge),
                   Text(
-                    'Welcome Back',
+                    'auth.login.welcome'.tr(),
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -122,7 +123,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   SizedBox(height: context.spaceSmall),
                   Text(
-                    'Sign in to your Shabakat account',
+                    'auth.login.subtitle'.tr(),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
@@ -140,15 +141,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             keyboardType: TextInputType.emailAddress,
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
-                              hintText: 'Email',
+                              hintText: 'auth.login.email'.tr(),
                               prefixIcon: Icon(LucideIcons.mail),
                             ),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return 'Email is required';
+                                return 'auth.login.validation.email_required'
+                                    .tr();
                               }
                               if (!value.contains('@')) {
-                                return 'Enter a valid email';
+                                return 'auth.login.validation.email_invalid'
+                                    .tr();
                               }
                               return null;
                             },
@@ -160,7 +163,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             textInputAction: TextInputAction.done,
                             onFieldSubmitted: (_) => _submit(),
                             decoration: InputDecoration(
-                              hintText: 'Password',
+                              hintText: 'auth.login.password'.tr(),
                               prefixIcon: Icon(LucideIcons.lock),
                               suffixIcon: IconButton(
                                 onPressed: () => setState(
@@ -175,10 +178,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Password is required';
+                                return 'auth.login.validation.password_required'
+                                    .tr();
                               }
                               if (value.length < 6) {
-                                return 'Password must be at least 6 characters';
+                                return 'auth.login.validation.password_min_length'
+                                    .tr();
                               }
                               return null;
                             },
@@ -195,7 +200,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       color: colorScheme.onPrimary,
                                     ),
                                   )
-                                : const Text('Sign In'),
+                                : Text('auth.login.sign_in'.tr()),
                           ),
                         ],
                       ),
@@ -206,7 +211,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don't have an account?",
+                        'auth.login.no_account'.tr(),
                         style: theme.textTheme.bodyMedium,
                       ),
                       TextButton(
@@ -217,7 +222,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                           );
                         },
-                        child: const Text('Register'),
+                        child: Text('auth.login.register'.tr()),
                       ),
                     ],
                   ),
