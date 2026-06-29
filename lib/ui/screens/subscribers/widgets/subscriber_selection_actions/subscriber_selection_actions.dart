@@ -7,6 +7,7 @@ import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_selection_provider.dart';
 import 'package:shabakat/ui/screens/subscribers/widgets/subscriber_suspend_dialog/subscriber_suspend_dialog.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 class SubscriberSelectionActions extends ConsumerWidget {
@@ -47,9 +48,9 @@ class SubscriberSelectionActions extends ConsumerWidget {
               : () async {
                   if (count == 0) return;
 
-                  final confirmed = await showDialog<bool>(
+                  final confirmed = await showAppDialog<bool>(
                     context: context,
-                    builder: (dialogContext) => AlertDialog(
+                    builder: (dialogContext) => AppAlertDialog(
                       title: Text('subscribers.delete_bulk.title'.tr()),
                       content: Text(
                         count == 1

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 Future<void> showPreferenceEditDialog({
@@ -15,7 +16,7 @@ Future<void> showPreferenceEditDialog({
   String? Function(String?)? validator,
   required Future<void> Function(String value) onSave,
 }) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (dialogContext) {
       return PreferenceEditDialog(
@@ -108,7 +109,7 @@ class _PreferenceEditDialogState extends State<PreferenceEditDialog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return AlertDialog(
+    return AppAlertDialog(
       title: Text(widget.title),
       content: Form(
         key: _formKey,

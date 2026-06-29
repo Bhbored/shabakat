@@ -9,6 +9,7 @@ import 'package:shabakat/core/network/dto/request/customer/suspend_customers_req
 import 'package:shabakat/core/network/dto/response/customer/suspend_customers_response.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_selection_provider.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import 'subscriber_suspend_confirm_content.dart';
@@ -22,7 +23,7 @@ Future<void> showSubscriberSuspendDialog({
   required BuildContext context,
   required List<String> customerIds,
 }) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     barrierDismissible: false,
     builder: (dialogContext) => SubscriberSuspendDialog(
@@ -99,7 +100,7 @@ class _SubscriberSuspendDialogState
 
     return PopScope(
       canPop: !isLoading,
-      child: AlertDialog(
+      child: AppAlertDialog(
         title: Row(
           children: [
             Icon(LucideIcons.pauseCircle, color: colorScheme.primary, size: 22),

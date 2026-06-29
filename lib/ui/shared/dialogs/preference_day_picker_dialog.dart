@@ -4,6 +4,7 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/utilities/day_of_month_formatter.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 Future<void> showPreferenceDayPickerDialog({
@@ -13,7 +14,7 @@ Future<void> showPreferenceDayPickerDialog({
   String? description,
   required Future<void> Function(int day) onSave,
 }) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (dialogContext) {
       return PreferenceDayPickerDialog(
@@ -100,7 +101,7 @@ class _PreferenceDayPickerDialogState extends State<PreferenceDayPickerDialog> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return AlertDialog(
+    return AppAlertDialog(
       title: Text(widget.title),
       content: Column(
         mainAxisSize: MainAxisSize.min,

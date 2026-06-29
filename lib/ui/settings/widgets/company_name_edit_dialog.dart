@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 const companyNameMaxLength = 50;
@@ -11,7 +12,7 @@ Future<void> showCompanyNameEditDialog({
   required String initialName,
   required Future<void> Function(String name) onSave,
 }) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (dialogContext) {
       return CompanyNameEditDialog(
@@ -90,7 +91,7 @@ class _CompanyNameEditDialogState extends State<CompanyNameEditDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return AppAlertDialog(
       title: Text('settings.profile.edit_name'.tr()),
       content: TextField(
         controller: _controller,

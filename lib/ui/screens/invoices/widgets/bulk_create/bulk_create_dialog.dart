@@ -7,6 +7,7 @@ import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/response/invoice/bulk_create_invoice_response.dart';
 import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import 'bulk_create_confirm_content.dart';
@@ -66,7 +67,7 @@ class _BulkCreateInvoicesDialogState
     final colorScheme = Theme.of(context).colorScheme;
     final isLoading = ref.watch(invoiceProvider).isLoading;
 
-    return AlertDialog(
+    return AppAlertDialog(
       title: Row(
         children: [
           Icon(LucideIcons.layers, color: colorScheme.primary, size: 22),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 
 enum LogoImageSource { camera, gallery }
 
@@ -25,27 +26,25 @@ abstract final class ImagePickerHelper {
   static Future<LogoPickResult> showSourceSheetAndPick(
     BuildContext context,
   ) async {
-    final source = await showModalBottomSheet<LogoImageSource>(
+    final source = await showAppBottomSheet<LogoImageSource>(
       context: context,
       builder: (sheetContext) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(LucideIcons.camera),
-                title: Text('settings.profile.camera'.tr()),
-                onTap: () =>
-                    Navigator.pop(sheetContext, LogoImageSource.camera),
-              ),
-              ListTile(
-                leading: const Icon(LucideIcons.image),
-                title: Text('settings.profile.gallery'.tr()),
-                onTap: () =>
-                    Navigator.pop(sheetContext, LogoImageSource.gallery),
-              ),
-            ],
-          ),
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(LucideIcons.camera),
+              title: Text('settings.profile.camera'.tr()),
+              onTap: () =>
+                  Navigator.pop(sheetContext, LogoImageSource.camera),
+            ),
+            ListTile(
+              leading: const Icon(LucideIcons.image),
+              title: Text('settings.profile.gallery'.tr()),
+              onTap: () =>
+                  Navigator.pop(sheetContext, LogoImageSource.gallery),
+            ),
+          ],
         );
       },
     );

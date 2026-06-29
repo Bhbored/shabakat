@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 Future<void> showInvoiceDeleteDialog({
@@ -11,7 +12,7 @@ Future<void> showInvoiceDeleteDialog({
   required String invoiceId,
   required int invoiceNumber,
 }) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (dialogContext) => InvoiceDeleteDialog(
       scaffoldContext: context,
@@ -64,7 +65,7 @@ class InvoiceDeleteDialog extends ConsumerWidget {
     final theme = Theme.of(context);
     final isDeleting = ref.watch(invoiceProvider).isLoading;
 
-    return AlertDialog(
+    return AppAlertDialog(
       title: Text('invoices.delete.title'.tr()),
       content: Text(
         'invoices.delete.message'.tr(args: [invoiceNumber.toString()]),

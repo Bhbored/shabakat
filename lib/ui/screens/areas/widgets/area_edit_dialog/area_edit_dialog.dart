@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 
 class AreaEditDialog extends StatefulWidget {
   final String initialName;
@@ -49,7 +50,7 @@ class _AreaEditDialogState extends State<AreaEditDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return AppAlertDialog(
       title: Text('areas.edit.title'.tr()),
       content: Form(
         key: _formKey,

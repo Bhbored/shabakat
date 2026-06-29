@@ -7,6 +7,7 @@ import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/request/invoice/create_invoice_request.dart';
 import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
 import 'package:shabakat/ui/screens/invoices/widgets/invoice_pay_dialog/invoice_pay_dialog_content.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 Future<void> showSubscriberCreateInvoiceDialog({
@@ -15,7 +16,7 @@ Future<void> showSubscriberCreateInvoiceDialog({
   required PlanType plan,
   String? customerName,
 }) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (dialogContext) => SubscriberCreateInvoiceDialog(
       scaffoldContext: context,
@@ -148,7 +149,7 @@ class _SubscriberCreateInvoiceDialogState
     final theme = Theme.of(context);
     final isCreating = ref.watch(invoiceProvider).isLoading;
 
-    return AlertDialog(
+    return AppAlertDialog(
       title: Text('subscribers.invoices.create_title'.tr()),
       content: SizedBox(
         width: double.maxFinite,

@@ -239,7 +239,7 @@ class _TvaPreferenceScreenState extends ConsumerState<TvaPreferenceScreen> {
               context.paddingMedium,
               context.paddingSmall,
               context.paddingMedium,
-              context.viewInsets.bottom + context.paddingLarge,
+              context.paddingMedium,
             ),
             child: SizedBox(
               width: double.infinity,

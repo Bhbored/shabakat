@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 Future<void> showSubscriberDeleteDialog({
@@ -11,7 +12,7 @@ Future<void> showSubscriberDeleteDialog({
   required String customerId,
   required String customerName,
 }) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (dialogContext) => SubscriberDeleteDialog(
       scaffoldContext: context,
@@ -64,7 +65,7 @@ class SubscriberDeleteDialog extends ConsumerWidget {
     final theme = Theme.of(context);
     final isDeleting = ref.watch(customerProvider).isLoading;
 
-    return AlertDialog(
+    return AppAlertDialog(
       title: Text('subscribers.delete.title'.tr()),
       content: Text(
         'subscribers.delete.message'.tr(args: [customerName]),

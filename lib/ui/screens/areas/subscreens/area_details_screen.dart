@@ -7,6 +7,7 @@ import 'package:shabakat/core/network/dto/request/area/update_area_request.dart'
 import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import '../widgets/area_customers_section/area_customers_section.dart';
@@ -64,7 +65,7 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
   }
 
   Future<void> _showAreaEditDialog(Area area) {
-    return showDialog<void>(
+    return showAppDialog<void>(
       context: context,
       builder: (dialogContext) => AreaEditDialog(
         initialName: area.name,
@@ -111,7 +112,7 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
   }
 
   Future<void> _showAreaDeleteDialog(Area area) {
-    return showDialog<void>(
+    return showAppDialog<void>(
       context: context,
       builder: (dialogContext) => AreaDeleteDialog(
         areaName: area.name,
@@ -176,10 +177,11 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
             ),
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.delete_outline),
-              onPressed: () => _showAreaDeleteDialog(currentArea),
-            ),
+            if (currentArea.customerCount == 0)
+              IconButton(
+                icon: const Icon(Icons.delete_outline),
+                onPressed: () => _showAreaDeleteDialog(currentArea),
+              ),
             IconButton(
               icon: const Icon(Icons.edit_outlined),
               onPressed: () => _showAreaEditDialog(currentArea),

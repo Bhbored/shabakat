@@ -9,6 +9,7 @@ import 'package:shabakat/data/providers/expense/expense_provider.dart';
 import 'package:shabakat/data/providers/expense/single_expense_provider.dart';
 import 'package:shabakat/domain/entities/expenses/expenses.dart';
 import 'package:shabakat/ui/screens/expenses/expense_form_validators.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import '../expense_adding/expense_add_date_field.dart';
@@ -31,10 +32,8 @@ class ExpenseEditSheet extends ConsumerStatefulWidget {
     required String expenseId,
     required Expense expense,
   }) {
-    return showModalBottomSheet<void>(
+    return showAppFormBottomSheet<void>(
       context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
       builder: (_) => ExpenseEditSheet(expenseId: expenseId, expense: expense),
     );
   }
@@ -145,11 +144,9 @@ class _ExpenseEditSheetState extends ConsumerState<ExpenseEditSheet> {
     final isSaving =
         _isSaving || ref.watch(expenseProvider).isLoading;
 
-    return Padding(
-      padding: EdgeInsets.only(bottom: context.viewInsets.bottom),
-      child: SizedBox(
-        height: MediaQuery.sizeOf(context).height * 0.92,
-        child: Column(
+    return SizedBox(
+      height: MediaQuery.sizeOf(context).height * 0.92,
+      child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
@@ -264,7 +261,6 @@ class _ExpenseEditSheetState extends ConsumerState<ExpenseEditSheet> {
             ),
           ],
         ),
-      ),
     );
   }
 }

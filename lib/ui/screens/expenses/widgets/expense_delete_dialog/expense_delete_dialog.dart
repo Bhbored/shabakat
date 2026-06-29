@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 
 class ExpenseDeleteDialog extends StatelessWidget {
   final String targetLabel;
@@ -19,7 +20,7 @@ class ExpenseDeleteDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return AlertDialog(
+    return AppAlertDialog(
       title: Text('expenses.delete.title'.tr()),
       content: Text(
         'expenses.delete.message'.tr(args: [targetLabel]),

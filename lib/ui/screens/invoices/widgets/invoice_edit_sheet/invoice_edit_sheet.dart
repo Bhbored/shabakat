@@ -8,6 +8,7 @@ import 'package:shabakat/core/network/dto/request/invoice/update_invoice_request
 import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
 import 'package:shabakat/data/providers/invoice/single_invoice_provider.dart';
 import 'package:shabakat/domain/entities/invoices/invoice.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import 'invoice_edit_date_field.dart';
@@ -28,10 +29,8 @@ class InvoiceEditSheet extends ConsumerStatefulWidget {
     required String invoiceId,
     required Invoice invoice,
   }) {
-    return showModalBottomSheet<void>(
+    return showAppFormBottomSheet<void>(
       context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
       builder: (_) => InvoiceEditSheet(invoiceId: invoiceId, invoice: invoice),
     );
   }
@@ -157,9 +156,7 @@ class _InvoiceEditSheetState extends ConsumerState<InvoiceEditSheet> {
     final theme = Theme.of(context);
     final isSaving = _isSaving || ref.watch(invoiceProvider).isLoading;
 
-    return Padding(
-      padding: EdgeInsets.only(bottom: context.viewInsets.bottom),
-      child: SizedBox(
+    return SizedBox(
         height: MediaQuery.sizeOf(context).height * 0.5,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,7 +214,6 @@ class _InvoiceEditSheetState extends ConsumerState<InvoiceEditSheet> {
             ),
           ],
         ),
-      ),
     );
   }
 }

@@ -5,13 +5,15 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/themes/app_gradients.dart';
 
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
+
 import 'bulk_create_dialog.dart';
 
 class BulkCreateInvoicesAction extends ConsumerWidget {
   const BulkCreateInvoicesAction({super.key});
 
   void _openDialog(BuildContext context) {
-    showDialog<void>(
+    showAppDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (_) => const BulkCreateInvoicesDialog(),

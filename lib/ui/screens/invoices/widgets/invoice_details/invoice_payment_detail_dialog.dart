@@ -6,6 +6,8 @@ import 'package:shabakat/core/enums/payment_method.dart';
 import 'package:shabakat/core/themes/app_colors.dart';
 import 'package:shabakat/domain/entities/payments/payment.dart';
 
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
+
 import 'invoice_detail_tile.dart';
 
 Future<void> showInvoicePaymentDetailDialog({
@@ -13,7 +15,7 @@ Future<void> showInvoicePaymentDetailDialog({
   required Payment payment,
   required String Function(DateTime) formatDate,
 }) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) =>
         InvoicePaymentDetailDialog(payment: payment, formatDate: formatDate),
@@ -36,7 +38,7 @@ class InvoicePaymentDetailDialog extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final notes = payment.notes?.trim();
 
-    return AlertDialog(
+    return AppAlertDialog(
       title: Text('invoices.payment_details.title'.tr()),
       content: SizedBox(
         width: double.maxFinite,

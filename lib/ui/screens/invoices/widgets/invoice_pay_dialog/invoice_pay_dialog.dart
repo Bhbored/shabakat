@@ -1,12 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/request/invoice/add_payment_request.dart';
 import 'package:shabakat/core/utilities/decimal_amount.dart';
 import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
 import 'package:shabakat/data/providers/invoice/single_invoice_provider.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import 'invoice_pay_dialog_content.dart';
@@ -16,9 +18,9 @@ Future<void> showInvoicePayDialog({
   required String invoiceId,
   required double amountDue,
 }) {
-  return showDialog<void>(
+  return showAppBottomSheet<void>(
     context: context,
-    builder: (dialogContext) => InvoicePayDialog(
+    builder: (sheetContext) => InvoicePayDialog(
       scaffoldContext: context,
       invoiceId: invoiceId,
       amountDue: amountDue,
@@ -124,31 +126,30 @@ class _InvoicePayDialogState extends ConsumerState<InvoicePayDialog> {
   Widget build(BuildContext context) {
     final isProcessing = ref.watch(invoiceProvider).isLoading;
 
-    return AlertDialog(
-      title: Text('invoices.pay.title'.tr()),
-      content: SizedBox(
-        width: double.maxFinite,
-        child: InvoicePayDialogContent(
-          formKey: _formKey,
-          amountController: _amountController,
-          notesController: _notesController,
-          paymentMethod: _paymentMethod,
-          enabled: !isProcessing,
-          amountValidator: _amountValidator,
-          onPaymentMethodChanged: isProcessing
-              ? (_) {}
-              : (value) {
-                  if (value != null) {
-                    setState(() => _paymentMethod = value);
-                  }
-                },
-        ),
+    return AppBottomSheet(
+      title: 'invoices.pay.title'.tr(),
+      isBusy: isProcessing,
+      body: InvoicePayDialogContent(
+        formKey: _formKey,
+        amountController: _amountController,
+        notesController: _notesController,
+        paymentMethod: _paymentMethod,
+        enabled: !isProcessing,
+        amountValidator: _amountValidator,
+        onPaymentMethodChanged: isProcessing
+            ? (_) {}
+            : (value) {
+                if (value != null) {
+                  setState(() => _paymentMethod = value);
+                }
+              },
       ),
       actions: [
         TextButton(
           onPressed: isProcessing ? null : () => Navigator.of(context).pop(),
           child: Text('settings.cancel'.tr()),
         ),
+        SizedBox(width: context.spaceSmall),
         ElevatedButton(
           onPressed: isProcessing ? null : _onProcess,
           child: isProcessing

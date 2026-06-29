@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/data/providers/meter/meter_reading_provider.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 
 Future<void> showMeterReadingDeleteDialog({
   required BuildContext context,
@@ -9,7 +10,7 @@ Future<void> showMeterReadingDeleteDialog({
   required String readingId,
   required double readingValue,
 }) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (dialogContext) => MeterReadingDeleteDialog(
       customerId: customerId,
@@ -47,7 +48,7 @@ class MeterReadingDeleteDialog extends ConsumerWidget {
     final isDeleting =
         ref.watch(meterReadingProvider(customerId)).isLoading;
 
-    return AlertDialog(
+    return AppAlertDialog(
       title: Text('subscribers.meter_readings.delete_title'.tr()),
       content: Text(
         'subscribers.meter_readings.delete_message'.tr(

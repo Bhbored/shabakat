@@ -9,6 +9,7 @@ import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
 import 'package:shabakat/data/providers/customer/single_customer_provider.dart';
 import 'package:shabakat/domain/entities/customers/customer.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import 'subscriber_edit_form.dart';
@@ -29,10 +30,8 @@ class SubscriberEditSheet extends ConsumerStatefulWidget {
     required String customerId,
     required Customer customer,
   }) {
-    return showModalBottomSheet<void>(
+    return showAppFormBottomSheet<void>(
       context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
       builder: (_) =>
           SubscriberEditSheet(customerId: customerId, customer: customer),
     );

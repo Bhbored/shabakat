@@ -7,6 +7,7 @@ import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/request/meter/create_meter_reading_request.dart';
 import 'package:shabakat/data/providers/meter/meter_reading_provider.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 Future<void> showSubscriberRecordMeterReadingDialog({
@@ -14,7 +15,7 @@ Future<void> showSubscriberRecordMeterReadingDialog({
   required String customerId,
   String? customerName,
 }) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (dialogContext) => SubscriberRecordMeterReadingDialog(
       scaffoldContext: context,
@@ -128,16 +129,11 @@ class _SubscriberRecordMeterReadingDialogState
         ? context.screenWidth * 0.92
         : 480.0;
 
-    return Dialog(
-      insetPadding: EdgeInsets.symmetric(
-        horizontal: context.paddingMedium,
-        vertical: context.spaceLarge,
-      ),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: dialogWidth),
-        child: Padding(
-          padding: EdgeInsets.all(context.paddingMedium),
-          child: Form(
+    return AppDialog(
+      maxWidth: dialogWidth,
+      child: Padding(
+        padding: EdgeInsets.all(context.paddingMedium),
+        child: Form(
             key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -304,7 +300,6 @@ class _SubscriberRecordMeterReadingDialogState
             ),
           ),
         ),
-      ),
     );
   }
 }

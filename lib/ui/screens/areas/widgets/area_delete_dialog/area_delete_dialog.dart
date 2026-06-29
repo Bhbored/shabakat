@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 
 class AreaDeleteDialog extends StatefulWidget {
   final String areaName;
@@ -31,7 +32,7 @@ class _AreaDeleteDialogState extends State<AreaDeleteDialog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return AlertDialog(
+    return AppAlertDialog(
       title: Text('areas.delete.title'.tr()),
       content: Text(
         'areas.delete.message'.tr(args: [widget.areaName]),

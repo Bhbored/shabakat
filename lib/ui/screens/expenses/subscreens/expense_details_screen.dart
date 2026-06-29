@@ -6,6 +6,7 @@ import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/expense/expense_provider.dart';
 import 'package:shabakat/data/providers/expense/single_expense_provider.dart';
 import 'package:shabakat/domain/entities/expenses/expenses.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import '../widgets/expense_card/expense_type_badge.dart';
@@ -84,7 +85,7 @@ Future<void> _showExpenseDeleteDialog({
   required BuildContext context,
   required Expense expense,
 }) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (dialogContext) => Consumer(
       builder: (context, ref, _) {
