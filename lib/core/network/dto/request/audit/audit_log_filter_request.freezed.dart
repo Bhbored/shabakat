@@ -208,7 +208,7 @@ return $default(_that.action,_that.status,_that.createdFrom,_that.createdTo,_tha
 @JsonSerializable()
 
 class _AuditLogFilterRequest implements AuditLogFilterRequest {
-  const _AuditLogFilterRequest({this.action, this.status, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.createdFrom, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.createdTo, this.pageNumber = 1, this.pageSize = 20});
+  const _AuditLogFilterRequest({this.action, this.status, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.createdFrom, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.createdTo, this.pageNumber = 1, this.pageSize = 10});
   factory _AuditLogFilterRequest.fromJson(Map<String, dynamic> json) => _$AuditLogFilterRequestFromJson(json);
 
 @override final  AuditAction? action;

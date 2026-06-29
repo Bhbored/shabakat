@@ -32,6 +32,11 @@ class AuditLogLabels {
           AuditEntityType.expense => 'Expense',
         };
 
+  static IconData statusIcon(AuditLogStatus status) => switch (status) {
+    AuditLogStatus.success => LucideIcons.checkCircle2,
+    AuditLogStatus.failed => LucideIcons.xCircle,
+  };
+
   static Color statusColor(AuditLogStatus status, ColorScheme colorScheme) =>
       status == AuditLogStatus.success ? AppColors.success : AppColors.error;
 

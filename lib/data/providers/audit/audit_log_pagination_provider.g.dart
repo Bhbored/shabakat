@@ -42,7 +42,7 @@ final class AuditLogPaginationNotifierProvider
 }
 
 String _$auditLogPaginationNotifierHash() =>
-    r'0732b4a54983621925f03f14a07a36c7f9438515';
+    r'9bfeb385983acd146cba7b255b002931fe3a2736';
 
 abstract class _$AuditLogPaginationNotifier
     extends $Notifier<AuditLogPagination> {

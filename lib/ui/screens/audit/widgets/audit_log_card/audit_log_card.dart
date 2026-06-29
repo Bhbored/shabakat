@@ -31,7 +31,7 @@ class AuditLogCard extends StatelessWidget {
     final email = log.userEmail?.trim();
 
     final footerParts = <String>[
-      if (entityLabel != null) entityLabel,
+      ?entityLabel,
       if (email != null && email.isNotEmpty) email,
     ];
 
@@ -39,9 +39,9 @@ class AuditLogCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          Navigator.of(context).push(
-            openInnerScreen(widget: AuditLogDetailsScreen(log: log)),
-          );
+          Navigator.of(
+            context,
+          ).push(openInnerScreen(widget: AuditLogDetailsScreen(log: log)));
         },
         child: IntrinsicHeight(
           child: Row(
@@ -131,7 +131,9 @@ class AuditLogCard extends StatelessWidget {
                       ),
                       SizedBox(width: context.paddingSmall * 0.5),
                       Padding(
-                        padding: EdgeInsets.only(top: context.paddingSmall * 0.25),
+                        padding: EdgeInsets.only(
+                          top: context.paddingSmall * 0.25,
+                        ),
                         child: Icon(
                           LucideIcons.chevronRight,
                           size: 18,
@@ -176,11 +178,7 @@ class _CompactChip extends StatelessWidget {
   final Color color;
   final IconData? icon;
 
-  const _CompactChip({
-    required this.label,
-    required this.color,
-    this.icon,
-  });
+  const _CompactChip({required this.label, required this.color, this.icon});
 
   @override
   Widget build(BuildContext context) {

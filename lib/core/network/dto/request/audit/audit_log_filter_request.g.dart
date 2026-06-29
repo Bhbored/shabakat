@@ -14,7 +14,7 @@ _AuditLogFilterRequest _$AuditLogFilterRequestFromJson(
   createdFrom: _dateOnlyFromJson(json['createdFrom'] as String?),
   createdTo: _dateOnlyFromJson(json['createdTo'] as String?),
   pageNumber: (json['pageNumber'] as num?)?.toInt() ?? 1,
-  pageSize: (json['pageSize'] as num?)?.toInt() ?? 20,
+  pageSize: (json['pageSize'] as num?)?.toInt() ?? 10,
 );
 
 Map<String, dynamic> _$AuditLogFilterRequestToJson(

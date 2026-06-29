@@ -10,6 +10,9 @@ class AuditLogPaginationNotifier extends _$AuditLogPaginationNotifier {
   AuditLogPagination build() => AuditLogPagination();
 
   void update(AuditLogPagination pagination) => state = pagination;
+
+  void setLoadingMore(bool isLoadingMore) =>
+      state = state.copyWith(isLoadingMore: isLoadingMore);
 }
 
 class AuditLogPagination {
@@ -19,6 +22,7 @@ class AuditLogPagination {
   final int totalPages;
   final bool hasPreviousPage;
   final bool hasNextPage;
+  final bool isLoadingMore;
 
   AuditLogPagination({
     this.totalCount = 0,
@@ -27,5 +31,26 @@ class AuditLogPagination {
     this.totalPages = 0,
     this.hasPreviousPage = false,
     this.hasNextPage = false,
+    this.isLoadingMore = false,
   });
+
+  AuditLogPagination copyWith({
+    int? totalCount,
+    int? pageNumber,
+    int? pageSize,
+    int? totalPages,
+    bool? hasPreviousPage,
+    bool? hasNextPage,
+    bool? isLoadingMore,
+  }) {
+    return AuditLogPagination(
+      totalCount: totalCount ?? this.totalCount,
+      pageNumber: pageNumber ?? this.pageNumber,
+      pageSize: pageSize ?? this.pageSize,
+      totalPages: totalPages ?? this.totalPages,
+      hasPreviousPage: hasPreviousPage ?? this.hasPreviousPage,
+      hasNextPage: hasNextPage ?? this.hasNextPage,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+    );
+  }
 }

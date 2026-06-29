@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/data/providers/audit/audit_log_pagination_provider.dart';
+import 'package:shabakat/ui/screens/audit/subscreens/audit_filters_screen.dart';
+import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
 class AuditSummaryBar extends ConsumerWidget {
   const AuditSummaryBar({super.key});
@@ -51,6 +53,14 @@ class AuditSummaryBar extends ConsumerWidget {
                     ),
                   ],
                 ),
+              ),
+              IconButton(
+                icon: const Icon(LucideIcons.slidersHorizontal),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    openInnerScreen(widget: const AuditFiltersScreen()),
+                  );
+                },
               ),
             ],
           ),

@@ -21,7 +21,7 @@ sealed class AuditLogFilterRequest with _$AuditLogFilterRequest {
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
     DateTime? createdTo,
     @Default(1) int pageNumber,
-    @Default(20) int pageSize,
+    @Default(10) int pageSize,
   }) = _AuditLogFilterRequest;
 
   factory AuditLogFilterRequest.fromJson(Map<String, dynamic> json) =>
