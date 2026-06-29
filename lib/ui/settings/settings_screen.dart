@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/ui/settings/widgets/company_preferences_section/company_preferences_section.dart';
+import 'package:shabakat/ui/settings/widgets/company_profile_header.dart';
 import 'package:shabakat/ui/settings/widgets/settings_section_title.dart';
 import 'package:shabakat/ui/settings/widgets/switch_tile.dart';
 import 'package:shabakat/ui/settings/widgets/theme_selector.dart';
@@ -30,6 +31,8 @@ class SettingsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const CompanyProfileHeader(),
+            SizedBox(height: context.spaceMedium),
             SettingsSectionTitle(title: 'settings.appearance'.tr()),
             SizedBox(height: context.spaceSmall),
             Card(

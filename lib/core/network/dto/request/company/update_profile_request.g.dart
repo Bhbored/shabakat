@@ -10,9 +10,9 @@ _UpdateProfileRequest _$UpdateProfileRequestFromJson(
   Map<String, dynamic> json,
 ) => _UpdateProfileRequest(
   name: json['name'] as String,
-  logoUrl: json['logoUrl'] as String?,
+  file: json['file'] as String?,
 );
 
 Map<String, dynamic> _$UpdateProfileRequestToJson(
   _UpdateProfileRequest instance,
-) => <String, dynamic>{'name': instance.name, 'logoUrl': instance.logoUrl};
+) => <String, dynamic>{'name': instance.name, 'file': instance.file};

@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/dto/request/company/update_preferences_request.dart';
-import 'package:shabakat/core/network/dto/request/company/update_profile_request.dart';
 import 'package:shabakat/core/network/services/company/company_service.dart';
 import 'package:shabakat/domain/entities/settings/company_preferences.dart';
 import 'package:shabakat/domain/mappers/company_preferences/company_preferences_mapper.dart';
@@ -23,11 +22,6 @@ class CompanyNotifier extends _$CompanyNotifier {
   Future<void> refresh() async {
     ref.invalidateSelf();
     await future;
-  }
-
-  Future<void> updateProfile(UpdateProfileRequest request) async {
-    await _companyService.updateProfile(request);
-    await refresh();
   }
 
   Future<void> upsertPreferences(UpdatePreferencesRequest request) async {

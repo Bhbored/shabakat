@@ -101,24 +101,12 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
     switch (_currentIndex) {
       case 0:
         return AppBar(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'tabs.dashboard'.tr(),
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onSecondary,
-                ),
-              ),
-              Text(
-                'El-Nour Generators · May 2025',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: colorScheme.onSecondary,
-                ),
-              ),
-            ],
+          title: Text(
+            'tabs.dashboard'.tr(),
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: colorScheme.onSecondary,
+            ),
           ),
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(LucideIcons.search)),

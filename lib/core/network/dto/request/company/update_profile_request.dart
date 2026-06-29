@@ -7,7 +7,7 @@ part 'update_profile_request.g.dart';
 sealed class UpdateProfileRequest with _$UpdateProfileRequest {
   const factory UpdateProfileRequest({
     required String name,
-    String? logoUrl,
+    String? file,
   }) = _UpdateProfileRequest;
 
   factory UpdateProfileRequest.fromJson(Map<String, dynamic> json) =>
