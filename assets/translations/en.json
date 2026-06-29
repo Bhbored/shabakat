@@ -52,7 +52,39 @@
     "logout": "Logout"
   },
   "calculator": {
-    "title": "Fixed kW Calculator"
+    "title": "Fixed kW Calculator",
+    "subtitle": "Enter plan details and either a payment or kWh amount.",
+    "customer_type": "Customer type",
+    "plan_value": "Plan value",
+    "plan_value_hint": "Same as customer plan value",
+    "calculate_from": "Calculate from",
+    "payment": "Payment",
+    "kilowatt": "kWh",
+    "payment_amount": "Payment amount",
+    "kilowatt_amount": "Kilowatt amount (kWh)",
+    "enter_payment": "Enter payment",
+    "enter_kwh": "Enter kWh",
+    "calculate": "Calculate",
+    "load_failed": "Failed to calculate. Please try again.",
+    "result": {
+      "title": "RESULT",
+      "payment_amount": "Payment amount",
+      "kilowatt_amount": "Kilowatt amount",
+      "kilowatt_value": "{} kWh",
+      "unit_price": "Unit price",
+      "fixed_charge": "Fixed charge",
+      "tva": "TVA",
+      "plan_value": "Plan value",
+      "customer_type": "Customer type"
+    },
+    "validation": {
+      "plan_value_required": "Plan value is required",
+      "invalid_number": "Enter a valid number",
+      "plan_value_min": "Plan value must be at least 0.01",
+      "payment_required": "Payment amount is required",
+      "kilowatt_required": "Kilowatt amount is required",
+      "amount_min": "Amount must be greater than 0"
+    }
   },
   "common": {
     "all": "All",

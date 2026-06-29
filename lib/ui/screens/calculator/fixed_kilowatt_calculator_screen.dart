@@ -11,6 +11,14 @@ import 'package:shabakat/core/network/dto/response/invoice/fixed_kilowatt_calcul
 import 'package:shabakat/core/network/services/invoice/invoice_service.dart';
 import 'package:shabakat/core/utilities/decimal_amount.dart';
 
+String _localizedCustomerType(String raw) {
+  final lower = raw.trim().toLowerCase();
+  for (final type in CustomerType.values) {
+    if (type.name == lower) return type.label;
+  }
+  return raw;
+}
+
 class FixedKilowattCalculatorScreen extends ConsumerStatefulWidget {
   const FixedKilowattCalculatorScreen({super.key});
 
@@ -38,31 +46,25 @@ class _FixedKilowattCalculatorScreenState
     super.dispose();
   }
 
-  String _customerTypeLabel(CustomerType type) => switch (type) {
-    CustomerType.residential => 'Residential',
-    CustomerType.commercial => 'Commercial',
-    CustomerType.industrial => 'Industrial',
-  };
-
   String? _planValueValidator(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Plan value is required';
+      return 'calculator.validation.plan_value_required'.tr();
     }
     final parsed = double.tryParse(value.trim());
-    if (parsed == null) return 'Enter a valid number';
-    if (parsed < 0.01) return 'Plan value must be at least 0.01';
+    if (parsed == null) return 'calculator.validation.invalid_number'.tr();
+    if (parsed < 0.01) return 'calculator.validation.plan_value_min'.tr();
     return null;
   }
 
   String? _amountValidator(String? value) {
     if (value == null || value.trim().isEmpty) {
       return _isKilowattMode
-          ? 'Kilowatt amount is required'
-          : 'Payment amount is required';
+          ? 'calculator.validation.kilowatt_required'.tr()
+          : 'calculator.validation.payment_required'.tr();
     }
     final parsed = double.tryParse(value.trim());
-    if (parsed == null) return 'Enter a valid number';
-    if (parsed < 0.0001) return 'Amount must be greater than 0';
+    if (parsed == null) return 'calculator.validation.invalid_number'.tr();
+    if (parsed < 0.0001) return 'calculator.validation.amount_min'.tr();
     return null;
   }
 
@@ -104,7 +106,7 @@ class _FixedKilowattCalculatorScreenState
     } catch (_) {
       if (!mounted) return;
       setState(() {
-        _errorMessage = 'Failed to calculate. Please try again.';
+        _errorMessage = 'calculator.load_failed'.tr();
         _isLoading = false;
       });
     }
@@ -136,7 +138,7 @@ class _FixedKilowattCalculatorScreenState
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Enter plan details and either a payment or kWh amount.',
+                'calculator.subtitle'.tr(),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurface.withValues(alpha: 0.65),
                 ),
@@ -149,7 +151,7 @@ class _FixedKilowattCalculatorScreenState
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        'Customer type',
+                        'calculator.customer_type'.tr(),
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -157,7 +159,7 @@ class _FixedKilowattCalculatorScreenState
                       SizedBox(height: context.spaceSmall),
                       _CustomerTypeDropdown(
                         value: _customerType,
-                        labelBuilder: _customerTypeLabel,
+                        labelBuilder: (type) => type.label,
                         enabled: !_isLoading,
                         onChanged: (value) {
                           if (value == null) return;
@@ -166,7 +168,7 @@ class _FixedKilowattCalculatorScreenState
                       ),
                       SizedBox(height: context.spaceMedium),
                       Text(
-                        'Plan value',
+                        'calculator.plan_value'.tr(),
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -183,9 +185,9 @@ class _FixedKilowattCalculatorScreenState
                             RegExp(r'^\d*\.?\d*'),
                           ),
                         ],
-                        decoration: const InputDecoration(
-                          hintText: 'Same as customer plan value',
-                          prefixIcon: Icon(LucideIcons.gauge),
+                        decoration: InputDecoration(
+                          hintText: 'calculator.plan_value_hint'.tr(),
+                          prefixIcon: const Icon(LucideIcons.gauge),
                         ),
                         validator: _planValueValidator,
                       ),
@@ -200,8 +202,8 @@ class _FixedKilowattCalculatorScreenState
                       SizedBox(height: context.spaceSmall),
                       Text(
                         _isKilowattMode
-                            ? 'Kilowatt amount (kWh)'
-                            : 'Payment amount',
+                            ? 'calculator.kilowatt_amount'.tr()
+                            : 'calculator.payment_amount'.tr(),
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -220,8 +222,8 @@ class _FixedKilowattCalculatorScreenState
                         ],
                         decoration: InputDecoration(
                           hintText: _isKilowattMode
-                              ? 'Enter kWh'
-                              : 'Enter payment',
+                              ? 'calculator.enter_kwh'.tr()
+                              : 'calculator.enter_payment'.tr(),
                           prefixIcon: Icon(
                             _isKilowattMode
                                 ? LucideIcons.zap
@@ -242,7 +244,7 @@ class _FixedKilowattCalculatorScreenState
                                   color: colorScheme.onPrimary,
                                 ),
                               )
-                            : const Text('Calculate'),
+                            : Text('calculator.calculate'.tr()),
                       ),
                     ],
                   ),
@@ -335,14 +337,14 @@ class _AmountModeSwitch extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            'Calculate from',
+            'calculator.calculate_from'.tr(),
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
         ),
         Text(
-          'Payment',
+          'calculator.payment'.tr(),
           style: theme.textTheme.labelMedium?.copyWith(
             color: colorScheme.onSurface.withValues(
               alpha: isKilowattMode ? 0.45 : 1,
@@ -355,7 +357,7 @@ class _AmountModeSwitch extends StatelessWidget {
           onChanged: enabled ? onChanged : null,
         ),
         Text(
-          'kWh',
+          'calculator.kilowatt'.tr(),
           style: theme.textTheme.labelMedium?.copyWith(
             color: colorScheme.onSurface.withValues(
               alpha: isKilowattMode ? 1 : 0.45,
@@ -426,7 +428,7 @@ class _CalculatorResultCard extends StatelessWidget {
                 Icon(LucideIcons.checkCircle2, size: 18, color: colorScheme.primary),
                 SizedBox(width: context.paddingSmall * 0.5),
                 Text(
-                  'RESULT',
+                  'calculator.result.title'.tr(),
                   style: theme.textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w800,
                     letterSpacing: 1,
@@ -437,32 +439,34 @@ class _CalculatorResultCard extends StatelessWidget {
             ),
             SizedBox(height: context.spaceMedium),
             _ResultRow(
-              label: 'Payment amount',
+              label: 'calculator.result.payment_amount'.tr(),
               value: formatDecimalAmount(result.paymentAmount),
             ),
             _ResultRow(
-              label: 'Kilowatt amount',
-              value: '${formatDecimalAmount(result.kilowattAmount)} kWh',
+              label: 'calculator.result.kilowatt_amount'.tr(),
+              value: 'calculator.result.kilowatt_value'.tr(
+                args: [formatDecimalAmount(result.kilowattAmount)],
+              ),
             ),
             _ResultRow(
-              label: 'Unit price',
+              label: 'calculator.result.unit_price'.tr(),
               value: formatDecimalAmount(result.unitPrice),
             ),
             _ResultRow(
-              label: 'Fixed charge',
+              label: 'calculator.result.fixed_charge'.tr(),
               value: formatDecimalAmount(result.fixedCharge),
             ),
             _ResultRow(
-              label: 'TVA',
+              label: 'calculator.result.tva'.tr(),
               value: formatDecimalAmount(result.tva),
             ),
             _ResultRow(
-              label: 'Plan value',
+              label: 'calculator.result.plan_value'.tr(),
               value: formatDecimalAmount(result.planValue),
             ),
             _ResultRow(
-              label: 'Customer type',
-              value: result.customerType,
+              label: 'calculator.result.customer_type'.tr(),
+              value: _localizedCustomerType(result.customerType),
               isLast: true,
             ),
           ],

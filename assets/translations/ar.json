@@ -52,7 +52,39 @@
     "logout": "تسجيل الخروج"
   },
   "calculator": {
-    "title": "حاسبة الكيلوواط الثابت"
+    "title": "حاسبة الكيلوواط الثابت",
+    "subtitle": "أدخل تفاصيل الخطة ومبلغ الدفع أو كمية الكيلوواط.",
+    "customer_type": "نوع العميل",
+    "plan_value": "قيمة الخطة",
+    "plan_value_hint": "نفس قيمة خطة العميل",
+    "calculate_from": "الحساب من",
+    "payment": "دفعة",
+    "kilowatt": "كيلوواط",
+    "payment_amount": "مبلغ الدفع",
+    "kilowatt_amount": "كمية الكيلوواط (kWh)",
+    "enter_payment": "أدخل مبلغ الدفع",
+    "enter_kwh": "أدخل الكيلوواط",
+    "calculate": "احسب",
+    "load_failed": "فشل الحساب. يرجى المحاولة مرة أخرى.",
+    "result": {
+      "title": "النتيجة",
+      "payment_amount": "مبلغ الدفع",
+      "kilowatt_amount": "كمية الكيلوواط",
+      "kilowatt_value": "{} كيلوواط",
+      "unit_price": "سعر الوحدة",
+      "fixed_charge": "الرسوم الثابتة",
+      "tva": "ضريبة القيمة المضافة",
+      "plan_value": "قيمة الخطة",
+      "customer_type": "نوع العميل"
+    },
+    "validation": {
+      "plan_value_required": "قيمة الخطة مطلوبة",
+      "invalid_number": "أدخل رقماً صالحاً",
+      "plan_value_min": "يجب أن تكون قيمة الخطة 0.01 على الأقل",
+      "payment_required": "مبلغ الدفع مطلوب",
+      "kilowatt_required": "كمية الكيلوواط مطلوبة",
+      "amount_min": "يجب أن يكون المبلغ أكبر من 0"
+    }
   },
   "common": {
     "all": "الكل",
