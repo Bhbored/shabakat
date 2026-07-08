@@ -1,3 +1,4 @@
+export 'ampere_schedule/ampere_schedule.dart';
 export 'area/area.dart';
 export 'audit/audit_log.dart';
 export 'customers/customer.dart';

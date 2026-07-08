@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UpdatePreferencesRequest {
 
- double get pricePerKilowat; double get pricePerAmp; double get fixedCharge; double get tva; double get residentialPricePerAmp; double get residentialPricePerKilowat; double get residentialFixedCharge; double get residentialTVA; double get commercialPricePerAmp; double get commercialPricePerKilowat; double get commercialFixedCharge; double get commercialTVA; double get industrialPricePerAmp; double get industrialPricePerKilowat; double get industrialFixedCharge; double get industrialTVA; String get language; int get dueDate; int get triggerDate; String? get triggerMessage;
+ double get pricePerKilowat; double get pricePerAmp; double get fixedCharge; double get tva; double get residentialPricePerAmp; double get residentialPricePerKilowat; double get residentialFixedCharge; double get residentialTVA; double get commercialPricePerAmp; double get commercialPricePerKilowat; double get commercialFixedCharge; double get commercialTVA; double get industrialPricePerAmp; double get industrialPricePerKilowat; double get industrialFixedCharge; double get industrialTVA; String get language; int get dueDate; int get triggerDate; String? get triggerMessage; bool get ampereSchedulePricingEnabled;
 /// Create a copy of UpdatePreferencesRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UpdatePreferencesRequestCopyWith<UpdatePreferencesRequest> get copyWith => _$Up
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdatePreferencesRequest&&(identical(other.pricePerKilowat, pricePerKilowat) || other.pricePerKilowat == pricePerKilowat)&&(identical(other.pricePerAmp, pricePerAmp) || other.pricePerAmp == pricePerAmp)&&(identical(other.fixedCharge, fixedCharge) || other.fixedCharge == fixedCharge)&&(identical(other.tva, tva) || other.tva == tva)&&(identical(other.residentialPricePerAmp, residentialPricePerAmp) || other.residentialPricePerAmp == residentialPricePerAmp)&&(identical(other.residentialPricePerKilowat, residentialPricePerKilowat) || other.residentialPricePerKilowat == residentialPricePerKilowat)&&(identical(other.residentialFixedCharge, residentialFixedCharge) || other.residentialFixedCharge == residentialFixedCharge)&&(identical(other.residentialTVA, residentialTVA) || other.residentialTVA == residentialTVA)&&(identical(other.commercialPricePerAmp, commercialPricePerAmp) || other.commercialPricePerAmp == commercialPricePerAmp)&&(identical(other.commercialPricePerKilowat, commercialPricePerKilowat) || other.commercialPricePerKilowat == commercialPricePerKilowat)&&(identical(other.commercialFixedCharge, commercialFixedCharge) || other.commercialFixedCharge == commercialFixedCharge)&&(identical(other.commercialTVA, commercialTVA) || other.commercialTVA == commercialTVA)&&(identical(other.industrialPricePerAmp, industrialPricePerAmp) || other.industrialPricePerAmp == industrialPricePerAmp)&&(identical(other.industrialPricePerKilowat, industrialPricePerKilowat) || other.industrialPricePerKilowat == industrialPricePerKilowat)&&(identical(other.industrialFixedCharge, industrialFixedCharge) || other.industrialFixedCharge == industrialFixedCharge)&&(identical(other.industrialTVA, industrialTVA) || other.industrialTVA == industrialTVA)&&(identical(other.language, language) || other.language == language)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.triggerDate, triggerDate) || other.triggerDate == triggerDate)&&(identical(other.triggerMessage, triggerMessage) || other.triggerMessage == triggerMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdatePreferencesRequest&&(identical(other.pricePerKilowat, pricePerKilowat) || other.pricePerKilowat == pricePerKilowat)&&(identical(other.pricePerAmp, pricePerAmp) || other.pricePerAmp == pricePerAmp)&&(identical(other.fixedCharge, fixedCharge) || other.fixedCharge == fixedCharge)&&(identical(other.tva, tva) || other.tva == tva)&&(identical(other.residentialPricePerAmp, residentialPricePerAmp) || other.residentialPricePerAmp == residentialPricePerAmp)&&(identical(other.residentialPricePerKilowat, residentialPricePerKilowat) || other.residentialPricePerKilowat == residentialPricePerKilowat)&&(identical(other.residentialFixedCharge, residentialFixedCharge) || other.residentialFixedCharge == residentialFixedCharge)&&(identical(other.residentialTVA, residentialTVA) || other.residentialTVA == residentialTVA)&&(identical(other.commercialPricePerAmp, commercialPricePerAmp) || other.commercialPricePerAmp == commercialPricePerAmp)&&(identical(other.commercialPricePerKilowat, commercialPricePerKilowat) || other.commercialPricePerKilowat == commercialPricePerKilowat)&&(identical(other.commercialFixedCharge, commercialFixedCharge) || other.commercialFixedCharge == commercialFixedCharge)&&(identical(other.commercialTVA, commercialTVA) || other.commercialTVA == commercialTVA)&&(identical(other.industrialPricePerAmp, industrialPricePerAmp) || other.industrialPricePerAmp == industrialPricePerAmp)&&(identical(other.industrialPricePerKilowat, industrialPricePerKilowat) || other.industrialPricePerKilowat == industrialPricePerKilowat)&&(identical(other.industrialFixedCharge, industrialFixedCharge) || other.industrialFixedCharge == industrialFixedCharge)&&(identical(other.industrialTVA, industrialTVA) || other.industrialTVA == industrialTVA)&&(identical(other.language, language) || other.language == language)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.triggerDate, triggerDate) || other.triggerDate == triggerDate)&&(identical(other.triggerMessage, triggerMessage) || other.triggerMessage == triggerMessage)&&(identical(other.ampereSchedulePricingEnabled, ampereSchedulePricingEnabled) || other.ampereSchedulePricingEnabled == ampereSchedulePricingEnabled));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,pricePerKilowat,pricePerAmp,fixedCharge,tva,residentialPricePerAmp,residentialPricePerKilowat,residentialFixedCharge,residentialTVA,commercialPricePerAmp,commercialPricePerKilowat,commercialFixedCharge,commercialTVA,industrialPricePerAmp,industrialPricePerKilowat,industrialFixedCharge,industrialTVA,language,dueDate,triggerDate,triggerMessage]);
+int get hashCode => Object.hashAll([runtimeType,pricePerKilowat,pricePerAmp,fixedCharge,tva,residentialPricePerAmp,residentialPricePerKilowat,residentialFixedCharge,residentialTVA,commercialPricePerAmp,commercialPricePerKilowat,commercialFixedCharge,commercialTVA,industrialPricePerAmp,industrialPricePerKilowat,industrialFixedCharge,industrialTVA,language,dueDate,triggerDate,triggerMessage,ampereSchedulePricingEnabled]);
 
 @override
 String toString() {
-  return 'UpdatePreferencesRequest(pricePerKilowat: $pricePerKilowat, pricePerAmp: $pricePerAmp, fixedCharge: $fixedCharge, tva: $tva, residentialPricePerAmp: $residentialPricePerAmp, residentialPricePerKilowat: $residentialPricePerKilowat, residentialFixedCharge: $residentialFixedCharge, residentialTVA: $residentialTVA, commercialPricePerAmp: $commercialPricePerAmp, commercialPricePerKilowat: $commercialPricePerKilowat, commercialFixedCharge: $commercialFixedCharge, commercialTVA: $commercialTVA, industrialPricePerAmp: $industrialPricePerAmp, industrialPricePerKilowat: $industrialPricePerKilowat, industrialFixedCharge: $industrialFixedCharge, industrialTVA: $industrialTVA, language: $language, dueDate: $dueDate, triggerDate: $triggerDate, triggerMessage: $triggerMessage)';
+  return 'UpdatePreferencesRequest(pricePerKilowat: $pricePerKilowat, pricePerAmp: $pricePerAmp, fixedCharge: $fixedCharge, tva: $tva, residentialPricePerAmp: $residentialPricePerAmp, residentialPricePerKilowat: $residentialPricePerKilowat, residentialFixedCharge: $residentialFixedCharge, residentialTVA: $residentialTVA, commercialPricePerAmp: $commercialPricePerAmp, commercialPricePerKilowat: $commercialPricePerKilowat, commercialFixedCharge: $commercialFixedCharge, commercialTVA: $commercialTVA, industrialPricePerAmp: $industrialPricePerAmp, industrialPricePerKilowat: $industrialPricePerKilowat, industrialFixedCharge: $industrialFixedCharge, industrialTVA: $industrialTVA, language: $language, dueDate: $dueDate, triggerDate: $triggerDate, triggerMessage: $triggerMessage, ampereSchedulePricingEnabled: $ampereSchedulePricingEnabled)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UpdatePreferencesRequestCopyWith<$Res>  {
   factory $UpdatePreferencesRequestCopyWith(UpdatePreferencesRequest value, $Res Function(UpdatePreferencesRequest) _then) = _$UpdatePreferencesRequestCopyWithImpl;
 @useResult
 $Res call({
- double pricePerKilowat, double pricePerAmp, double fixedCharge, double tva, double residentialPricePerAmp, double residentialPricePerKilowat, double residentialFixedCharge, double residentialTVA, double commercialPricePerAmp, double commercialPricePerKilowat, double commercialFixedCharge, double commercialTVA, double industrialPricePerAmp, double industrialPricePerKilowat, double industrialFixedCharge, double industrialTVA, String language, int dueDate, int triggerDate, String? triggerMessage
+ double pricePerKilowat, double pricePerAmp, double fixedCharge, double tva, double residentialPricePerAmp, double residentialPricePerKilowat, double residentialFixedCharge, double residentialTVA, double commercialPricePerAmp, double commercialPricePerKilowat, double commercialFixedCharge, double commercialTVA, double industrialPricePerAmp, double industrialPricePerKilowat, double industrialFixedCharge, double industrialTVA, String language, int dueDate, int triggerDate, String? triggerMessage, bool ampereSchedulePricingEnabled
 });
 
 
@@ -65,7 +65,7 @@ class _$UpdatePreferencesRequestCopyWithImpl<$Res>
 
 /// Create a copy of UpdatePreferencesRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? pricePerKilowat = null,Object? pricePerAmp = null,Object? fixedCharge = null,Object? tva = null,Object? residentialPricePerAmp = null,Object? residentialPricePerKilowat = null,Object? residentialFixedCharge = null,Object? residentialTVA = null,Object? commercialPricePerAmp = null,Object? commercialPricePerKilowat = null,Object? commercialFixedCharge = null,Object? commercialTVA = null,Object? industrialPricePerAmp = null,Object? industrialPricePerKilowat = null,Object? industrialFixedCharge = null,Object? industrialTVA = null,Object? language = null,Object? dueDate = null,Object? triggerDate = null,Object? triggerMessage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? pricePerKilowat = null,Object? pricePerAmp = null,Object? fixedCharge = null,Object? tva = null,Object? residentialPricePerAmp = null,Object? residentialPricePerKilowat = null,Object? residentialFixedCharge = null,Object? residentialTVA = null,Object? commercialPricePerAmp = null,Object? commercialPricePerKilowat = null,Object? commercialFixedCharge = null,Object? commercialTVA = null,Object? industrialPricePerAmp = null,Object? industrialPricePerKilowat = null,Object? industrialFixedCharge = null,Object? industrialTVA = null,Object? language = null,Object? dueDate = null,Object? triggerDate = null,Object? triggerMessage = freezed,Object? ampereSchedulePricingEnabled = null,}) {
   return _then(_self.copyWith(
 pricePerKilowat: null == pricePerKilowat ? _self.pricePerKilowat : pricePerKilowat // ignore: cast_nullable_to_non_nullable
 as double,pricePerAmp: null == pricePerAmp ? _self.pricePerAmp : pricePerAmp // ignore: cast_nullable_to_non_nullable
@@ -87,7 +87,8 @@ as double,language: null == language ? _self.language : language // ignore: cast
 as String,dueDate: null == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
 as int,triggerDate: null == triggerDate ? _self.triggerDate : triggerDate // ignore: cast_nullable_to_non_nullable
 as int,triggerMessage: freezed == triggerMessage ? _self.triggerMessage : triggerMessage // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,ampereSchedulePricingEnabled: null == ampereSchedulePricingEnabled ? _self.ampereSchedulePricingEnabled : ampereSchedulePricingEnabled // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -169,10 +170,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double pricePerKilowat,  double pricePerAmp,  double fixedCharge,  double tva,  double residentialPricePerAmp,  double residentialPricePerKilowat,  double residentialFixedCharge,  double residentialTVA,  double commercialPricePerAmp,  double commercialPricePerKilowat,  double commercialFixedCharge,  double commercialTVA,  double industrialPricePerAmp,  double industrialPricePerKilowat,  double industrialFixedCharge,  double industrialTVA,  String language,  int dueDate,  int triggerDate,  String? triggerMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double pricePerKilowat,  double pricePerAmp,  double fixedCharge,  double tva,  double residentialPricePerAmp,  double residentialPricePerKilowat,  double residentialFixedCharge,  double residentialTVA,  double commercialPricePerAmp,  double commercialPricePerKilowat,  double commercialFixedCharge,  double commercialTVA,  double industrialPricePerAmp,  double industrialPricePerKilowat,  double industrialFixedCharge,  double industrialTVA,  String language,  int dueDate,  int triggerDate,  String? triggerMessage,  bool ampereSchedulePricingEnabled)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UpdatePreferencesRequest() when $default != null:
-return $default(_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.tva,_that.residentialPricePerAmp,_that.residentialPricePerKilowat,_that.residentialFixedCharge,_that.residentialTVA,_that.commercialPricePerAmp,_that.commercialPricePerKilowat,_that.commercialFixedCharge,_that.commercialTVA,_that.industrialPricePerAmp,_that.industrialPricePerKilowat,_that.industrialFixedCharge,_that.industrialTVA,_that.language,_that.dueDate,_that.triggerDate,_that.triggerMessage);case _:
+return $default(_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.tva,_that.residentialPricePerAmp,_that.residentialPricePerKilowat,_that.residentialFixedCharge,_that.residentialTVA,_that.commercialPricePerAmp,_that.commercialPricePerKilowat,_that.commercialFixedCharge,_that.commercialTVA,_that.industrialPricePerAmp,_that.industrialPricePerKilowat,_that.industrialFixedCharge,_that.industrialTVA,_that.language,_that.dueDate,_that.triggerDate,_that.triggerMessage,_that.ampereSchedulePricingEnabled);case _:
   return orElse();
 
 }
@@ -190,10 +191,10 @@ return $default(_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double pricePerKilowat,  double pricePerAmp,  double fixedCharge,  double tva,  double residentialPricePerAmp,  double residentialPricePerKilowat,  double residentialFixedCharge,  double residentialTVA,  double commercialPricePerAmp,  double commercialPricePerKilowat,  double commercialFixedCharge,  double commercialTVA,  double industrialPricePerAmp,  double industrialPricePerKilowat,  double industrialFixedCharge,  double industrialTVA,  String language,  int dueDate,  int triggerDate,  String? triggerMessage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double pricePerKilowat,  double pricePerAmp,  double fixedCharge,  double tva,  double residentialPricePerAmp,  double residentialPricePerKilowat,  double residentialFixedCharge,  double residentialTVA,  double commercialPricePerAmp,  double commercialPricePerKilowat,  double commercialFixedCharge,  double commercialTVA,  double industrialPricePerAmp,  double industrialPricePerKilowat,  double industrialFixedCharge,  double industrialTVA,  String language,  int dueDate,  int triggerDate,  String? triggerMessage,  bool ampereSchedulePricingEnabled)  $default,) {final _that = this;
 switch (_that) {
 case _UpdatePreferencesRequest():
-return $default(_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.tva,_that.residentialPricePerAmp,_that.residentialPricePerKilowat,_that.residentialFixedCharge,_that.residentialTVA,_that.commercialPricePerAmp,_that.commercialPricePerKilowat,_that.commercialFixedCharge,_that.commercialTVA,_that.industrialPricePerAmp,_that.industrialPricePerKilowat,_that.industrialFixedCharge,_that.industrialTVA,_that.language,_that.dueDate,_that.triggerDate,_that.triggerMessage);}
+return $default(_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.tva,_that.residentialPricePerAmp,_that.residentialPricePerKilowat,_that.residentialFixedCharge,_that.residentialTVA,_that.commercialPricePerAmp,_that.commercialPricePerKilowat,_that.commercialFixedCharge,_that.commercialTVA,_that.industrialPricePerAmp,_that.industrialPricePerKilowat,_that.industrialFixedCharge,_that.industrialTVA,_that.language,_that.dueDate,_that.triggerDate,_that.triggerMessage,_that.ampereSchedulePricingEnabled);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -207,10 +208,10 @@ return $default(_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double pricePerKilowat,  double pricePerAmp,  double fixedCharge,  double tva,  double residentialPricePerAmp,  double residentialPricePerKilowat,  double residentialFixedCharge,  double residentialTVA,  double commercialPricePerAmp,  double commercialPricePerKilowat,  double commercialFixedCharge,  double commercialTVA,  double industrialPricePerAmp,  double industrialPricePerKilowat,  double industrialFixedCharge,  double industrialTVA,  String language,  int dueDate,  int triggerDate,  String? triggerMessage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double pricePerKilowat,  double pricePerAmp,  double fixedCharge,  double tva,  double residentialPricePerAmp,  double residentialPricePerKilowat,  double residentialFixedCharge,  double residentialTVA,  double commercialPricePerAmp,  double commercialPricePerKilowat,  double commercialFixedCharge,  double commercialTVA,  double industrialPricePerAmp,  double industrialPricePerKilowat,  double industrialFixedCharge,  double industrialTVA,  String language,  int dueDate,  int triggerDate,  String? triggerMessage,  bool ampereSchedulePricingEnabled)?  $default,) {final _that = this;
 switch (_that) {
 case _UpdatePreferencesRequest() when $default != null:
-return $default(_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.tva,_that.residentialPricePerAmp,_that.residentialPricePerKilowat,_that.residentialFixedCharge,_that.residentialTVA,_that.commercialPricePerAmp,_that.commercialPricePerKilowat,_that.commercialFixedCharge,_that.commercialTVA,_that.industrialPricePerAmp,_that.industrialPricePerKilowat,_that.industrialFixedCharge,_that.industrialTVA,_that.language,_that.dueDate,_that.triggerDate,_that.triggerMessage);case _:
+return $default(_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.tva,_that.residentialPricePerAmp,_that.residentialPricePerKilowat,_that.residentialFixedCharge,_that.residentialTVA,_that.commercialPricePerAmp,_that.commercialPricePerKilowat,_that.commercialFixedCharge,_that.commercialTVA,_that.industrialPricePerAmp,_that.industrialPricePerKilowat,_that.industrialFixedCharge,_that.industrialTVA,_that.language,_that.dueDate,_that.triggerDate,_that.triggerMessage,_that.ampereSchedulePricingEnabled);case _:
   return null;
 
 }
@@ -222,29 +223,30 @@ return $default(_that.pricePerKilowat,_that.pricePerAmp,_that.fixedCharge,_that.
 @JsonSerializable()
 
 class _UpdatePreferencesRequest implements UpdatePreferencesRequest {
-  const _UpdatePreferencesRequest({this.pricePerKilowat = 0, this.pricePerAmp = 0, this.fixedCharge = 0, this.tva = 11, this.residentialPricePerAmp = 0, this.residentialPricePerKilowat = 0, this.residentialFixedCharge = 0, this.residentialTVA = 11, this.commercialPricePerAmp = 0, this.commercialPricePerKilowat = 0, this.commercialFixedCharge = 0, this.commercialTVA = 11, this.industrialPricePerAmp = 0, this.industrialPricePerKilowat = 0, this.industrialFixedCharge = 0, this.industrialTVA = 11, this.language = 'en', this.dueDate = 1, this.triggerDate = 1, this.triggerMessage});
+  const _UpdatePreferencesRequest({required this.pricePerKilowat, required this.pricePerAmp, required this.fixedCharge, required this.tva, required this.residentialPricePerAmp, required this.residentialPricePerKilowat, required this.residentialFixedCharge, required this.residentialTVA, required this.commercialPricePerAmp, required this.commercialPricePerKilowat, required this.commercialFixedCharge, required this.commercialTVA, required this.industrialPricePerAmp, required this.industrialPricePerKilowat, required this.industrialFixedCharge, required this.industrialTVA, required this.language, required this.dueDate, required this.triggerDate, this.triggerMessage, required this.ampereSchedulePricingEnabled});
   factory _UpdatePreferencesRequest.fromJson(Map<String, dynamic> json) => _$UpdatePreferencesRequestFromJson(json);
 
-@override@JsonKey() final  double pricePerKilowat;
-@override@JsonKey() final  double pricePerAmp;
-@override@JsonKey() final  double fixedCharge;
-@override@JsonKey() final  double tva;
-@override@JsonKey() final  double residentialPricePerAmp;
-@override@JsonKey() final  double residentialPricePerKilowat;
-@override@JsonKey() final  double residentialFixedCharge;
-@override@JsonKey() final  double residentialTVA;
-@override@JsonKey() final  double commercialPricePerAmp;
-@override@JsonKey() final  double commercialPricePerKilowat;
-@override@JsonKey() final  double commercialFixedCharge;
-@override@JsonKey() final  double commercialTVA;
-@override@JsonKey() final  double industrialPricePerAmp;
-@override@JsonKey() final  double industrialPricePerKilowat;
-@override@JsonKey() final  double industrialFixedCharge;
-@override@JsonKey() final  double industrialTVA;
-@override@JsonKey() final  String language;
-@override@JsonKey() final  int dueDate;
-@override@JsonKey() final  int triggerDate;
+@override final  double pricePerKilowat;
+@override final  double pricePerAmp;
+@override final  double fixedCharge;
+@override final  double tva;
+@override final  double residentialPricePerAmp;
+@override final  double residentialPricePerKilowat;
+@override final  double residentialFixedCharge;
+@override final  double residentialTVA;
+@override final  double commercialPricePerAmp;
+@override final  double commercialPricePerKilowat;
+@override final  double commercialFixedCharge;
+@override final  double commercialTVA;
+@override final  double industrialPricePerAmp;
+@override final  double industrialPricePerKilowat;
+@override final  double industrialFixedCharge;
+@override final  double industrialTVA;
+@override final  String language;
+@override final  int dueDate;
+@override final  int triggerDate;
 @override final  String? triggerMessage;
+@override final  bool ampereSchedulePricingEnabled;
 
 /// Create a copy of UpdatePreferencesRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -259,16 +261,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdatePreferencesRequest&&(identical(other.pricePerKilowat, pricePerKilowat) || other.pricePerKilowat == pricePerKilowat)&&(identical(other.pricePerAmp, pricePerAmp) || other.pricePerAmp == pricePerAmp)&&(identical(other.fixedCharge, fixedCharge) || other.fixedCharge == fixedCharge)&&(identical(other.tva, tva) || other.tva == tva)&&(identical(other.residentialPricePerAmp, residentialPricePerAmp) || other.residentialPricePerAmp == residentialPricePerAmp)&&(identical(other.residentialPricePerKilowat, residentialPricePerKilowat) || other.residentialPricePerKilowat == residentialPricePerKilowat)&&(identical(other.residentialFixedCharge, residentialFixedCharge) || other.residentialFixedCharge == residentialFixedCharge)&&(identical(other.residentialTVA, residentialTVA) || other.residentialTVA == residentialTVA)&&(identical(other.commercialPricePerAmp, commercialPricePerAmp) || other.commercialPricePerAmp == commercialPricePerAmp)&&(identical(other.commercialPricePerKilowat, commercialPricePerKilowat) || other.commercialPricePerKilowat == commercialPricePerKilowat)&&(identical(other.commercialFixedCharge, commercialFixedCharge) || other.commercialFixedCharge == commercialFixedCharge)&&(identical(other.commercialTVA, commercialTVA) || other.commercialTVA == commercialTVA)&&(identical(other.industrialPricePerAmp, industrialPricePerAmp) || other.industrialPricePerAmp == industrialPricePerAmp)&&(identical(other.industrialPricePerKilowat, industrialPricePerKilowat) || other.industrialPricePerKilowat == industrialPricePerKilowat)&&(identical(other.industrialFixedCharge, industrialFixedCharge) || other.industrialFixedCharge == industrialFixedCharge)&&(identical(other.industrialTVA, industrialTVA) || other.industrialTVA == industrialTVA)&&(identical(other.language, language) || other.language == language)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.triggerDate, triggerDate) || other.triggerDate == triggerDate)&&(identical(other.triggerMessage, triggerMessage) || other.triggerMessage == triggerMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdatePreferencesRequest&&(identical(other.pricePerKilowat, pricePerKilowat) || other.pricePerKilowat == pricePerKilowat)&&(identical(other.pricePerAmp, pricePerAmp) || other.pricePerAmp == pricePerAmp)&&(identical(other.fixedCharge, fixedCharge) || other.fixedCharge == fixedCharge)&&(identical(other.tva, tva) || other.tva == tva)&&(identical(other.residentialPricePerAmp, residentialPricePerAmp) || other.residentialPricePerAmp == residentialPricePerAmp)&&(identical(other.residentialPricePerKilowat, residentialPricePerKilowat) || other.residentialPricePerKilowat == residentialPricePerKilowat)&&(identical(other.residentialFixedCharge, residentialFixedCharge) || other.residentialFixedCharge == residentialFixedCharge)&&(identical(other.residentialTVA, residentialTVA) || other.residentialTVA == residentialTVA)&&(identical(other.commercialPricePerAmp, commercialPricePerAmp) || other.commercialPricePerAmp == commercialPricePerAmp)&&(identical(other.commercialPricePerKilowat, commercialPricePerKilowat) || other.commercialPricePerKilowat == commercialPricePerKilowat)&&(identical(other.commercialFixedCharge, commercialFixedCharge) || other.commercialFixedCharge == commercialFixedCharge)&&(identical(other.commercialTVA, commercialTVA) || other.commercialTVA == commercialTVA)&&(identical(other.industrialPricePerAmp, industrialPricePerAmp) || other.industrialPricePerAmp == industrialPricePerAmp)&&(identical(other.industrialPricePerKilowat, industrialPricePerKilowat) || other.industrialPricePerKilowat == industrialPricePerKilowat)&&(identical(other.industrialFixedCharge, industrialFixedCharge) || other.industrialFixedCharge == industrialFixedCharge)&&(identical(other.industrialTVA, industrialTVA) || other.industrialTVA == industrialTVA)&&(identical(other.language, language) || other.language == language)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.triggerDate, triggerDate) || other.triggerDate == triggerDate)&&(identical(other.triggerMessage, triggerMessage) || other.triggerMessage == triggerMessage)&&(identical(other.ampereSchedulePricingEnabled, ampereSchedulePricingEnabled) || other.ampereSchedulePricingEnabled == ampereSchedulePricingEnabled));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,pricePerKilowat,pricePerAmp,fixedCharge,tva,residentialPricePerAmp,residentialPricePerKilowat,residentialFixedCharge,residentialTVA,commercialPricePerAmp,commercialPricePerKilowat,commercialFixedCharge,commercialTVA,industrialPricePerAmp,industrialPricePerKilowat,industrialFixedCharge,industrialTVA,language,dueDate,triggerDate,triggerMessage]);
+int get hashCode => Object.hashAll([runtimeType,pricePerKilowat,pricePerAmp,fixedCharge,tva,residentialPricePerAmp,residentialPricePerKilowat,residentialFixedCharge,residentialTVA,commercialPricePerAmp,commercialPricePerKilowat,commercialFixedCharge,commercialTVA,industrialPricePerAmp,industrialPricePerKilowat,industrialFixedCharge,industrialTVA,language,dueDate,triggerDate,triggerMessage,ampereSchedulePricingEnabled]);
 
 @override
 String toString() {
-  return 'UpdatePreferencesRequest(pricePerKilowat: $pricePerKilowat, pricePerAmp: $pricePerAmp, fixedCharge: $fixedCharge, tva: $tva, residentialPricePerAmp: $residentialPricePerAmp, residentialPricePerKilowat: $residentialPricePerKilowat, residentialFixedCharge: $residentialFixedCharge, residentialTVA: $residentialTVA, commercialPricePerAmp: $commercialPricePerAmp, commercialPricePerKilowat: $commercialPricePerKilowat, commercialFixedCharge: $commercialFixedCharge, commercialTVA: $commercialTVA, industrialPricePerAmp: $industrialPricePerAmp, industrialPricePerKilowat: $industrialPricePerKilowat, industrialFixedCharge: $industrialFixedCharge, industrialTVA: $industrialTVA, language: $language, dueDate: $dueDate, triggerDate: $triggerDate, triggerMessage: $triggerMessage)';
+  return 'UpdatePreferencesRequest(pricePerKilowat: $pricePerKilowat, pricePerAmp: $pricePerAmp, fixedCharge: $fixedCharge, tva: $tva, residentialPricePerAmp: $residentialPricePerAmp, residentialPricePerKilowat: $residentialPricePerKilowat, residentialFixedCharge: $residentialFixedCharge, residentialTVA: $residentialTVA, commercialPricePerAmp: $commercialPricePerAmp, commercialPricePerKilowat: $commercialPricePerKilowat, commercialFixedCharge: $commercialFixedCharge, commercialTVA: $commercialTVA, industrialPricePerAmp: $industrialPricePerAmp, industrialPricePerKilowat: $industrialPricePerKilowat, industrialFixedCharge: $industrialFixedCharge, industrialTVA: $industrialTVA, language: $language, dueDate: $dueDate, triggerDate: $triggerDate, triggerMessage: $triggerMessage, ampereSchedulePricingEnabled: $ampereSchedulePricingEnabled)';
 }
 
 
@@ -279,7 +281,7 @@ abstract mixin class _$UpdatePreferencesRequestCopyWith<$Res> implements $Update
   factory _$UpdatePreferencesRequestCopyWith(_UpdatePreferencesRequest value, $Res Function(_UpdatePreferencesRequest) _then) = __$UpdatePreferencesRequestCopyWithImpl;
 @override @useResult
 $Res call({
- double pricePerKilowat, double pricePerAmp, double fixedCharge, double tva, double residentialPricePerAmp, double residentialPricePerKilowat, double residentialFixedCharge, double residentialTVA, double commercialPricePerAmp, double commercialPricePerKilowat, double commercialFixedCharge, double commercialTVA, double industrialPricePerAmp, double industrialPricePerKilowat, double industrialFixedCharge, double industrialTVA, String language, int dueDate, int triggerDate, String? triggerMessage
+ double pricePerKilowat, double pricePerAmp, double fixedCharge, double tva, double residentialPricePerAmp, double residentialPricePerKilowat, double residentialFixedCharge, double residentialTVA, double commercialPricePerAmp, double commercialPricePerKilowat, double commercialFixedCharge, double commercialTVA, double industrialPricePerAmp, double industrialPricePerKilowat, double industrialFixedCharge, double industrialTVA, String language, int dueDate, int triggerDate, String? triggerMessage, bool ampereSchedulePricingEnabled
 });
 
 
@@ -296,7 +298,7 @@ class __$UpdatePreferencesRequestCopyWithImpl<$Res>
 
 /// Create a copy of UpdatePreferencesRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? pricePerKilowat = null,Object? pricePerAmp = null,Object? fixedCharge = null,Object? tva = null,Object? residentialPricePerAmp = null,Object? residentialPricePerKilowat = null,Object? residentialFixedCharge = null,Object? residentialTVA = null,Object? commercialPricePerAmp = null,Object? commercialPricePerKilowat = null,Object? commercialFixedCharge = null,Object? commercialTVA = null,Object? industrialPricePerAmp = null,Object? industrialPricePerKilowat = null,Object? industrialFixedCharge = null,Object? industrialTVA = null,Object? language = null,Object? dueDate = null,Object? triggerDate = null,Object? triggerMessage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? pricePerKilowat = null,Object? pricePerAmp = null,Object? fixedCharge = null,Object? tva = null,Object? residentialPricePerAmp = null,Object? residentialPricePerKilowat = null,Object? residentialFixedCharge = null,Object? residentialTVA = null,Object? commercialPricePerAmp = null,Object? commercialPricePerKilowat = null,Object? commercialFixedCharge = null,Object? commercialTVA = null,Object? industrialPricePerAmp = null,Object? industrialPricePerKilowat = null,Object? industrialFixedCharge = null,Object? industrialTVA = null,Object? language = null,Object? dueDate = null,Object? triggerDate = null,Object? triggerMessage = freezed,Object? ampereSchedulePricingEnabled = null,}) {
   return _then(_UpdatePreferencesRequest(
 pricePerKilowat: null == pricePerKilowat ? _self.pricePerKilowat : pricePerKilowat // ignore: cast_nullable_to_non_nullable
 as double,pricePerAmp: null == pricePerAmp ? _self.pricePerAmp : pricePerAmp // ignore: cast_nullable_to_non_nullable
@@ -318,7 +320,8 @@ as double,language: null == language ? _self.language : language // ignore: cast
 as String,dueDate: null == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
 as int,triggerDate: null == triggerDate ? _self.triggerDate : triggerDate // ignore: cast_nullable_to_non_nullable
 as int,triggerMessage: freezed == triggerMessage ? _self.triggerMessage : triggerMessage // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,ampereSchedulePricingEnabled: null == ampereSchedulePricingEnabled ? _self.ampereSchedulePricingEnabled : ampereSchedulePricingEnabled // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

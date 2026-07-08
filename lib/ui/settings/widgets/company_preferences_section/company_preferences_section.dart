@@ -11,6 +11,7 @@ import 'package:shabakat/ui/settings/widgets/preference_tile.dart';
 import 'package:shabakat/ui/shared/dialogs/preference_day_picker_dialog.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
+import 'subcreens/ampere_schedule_pricing_preference_screen.dart';
 import 'subcreens/trigger_message_preference_screen.dart';
 import 'subcreens/fixed_charge_preference_screen.dart';
 import 'subcreens/tva_preference_screen.dart';
@@ -112,6 +113,23 @@ class CompanyPreferencesSection extends ConsumerWidget {
             icon: LucideIcons.messageSquare,
             onTap: () => Navigator.of(context).push(
               openInnerScreen(widget: const TriggerMessagePreferenceScreen()),
+            ),
+          ),
+          _divider(context, colorScheme),
+          PreferenceTile(
+            label: 'Ampere Schedule',
+            value: preferencesAsync.when(
+              data: (preferences) => preferences.ampereSchedulePricingEnabled
+                  ? 'Enabled'
+                  : 'Disabled',
+              loading: () => null,
+              error: (_, _) => null,
+            ),
+            icon: LucideIcons.gauge,
+            onTap: () => Navigator.of(context).push(
+              openInnerScreen(
+                widget: const AmpereSchedulePricingPreferenceScreen(),
+              ),
             ),
           ),
         ],

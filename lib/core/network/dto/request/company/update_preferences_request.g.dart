@@ -9,35 +9,30 @@ part of 'update_preferences_request.dart';
 _UpdatePreferencesRequest _$UpdatePreferencesRequestFromJson(
   Map<String, dynamic> json,
 ) => _UpdatePreferencesRequest(
-  pricePerKilowat: (json['pricePerKilowat'] as num?)?.toDouble() ?? 0,
-  pricePerAmp: (json['pricePerAmp'] as num?)?.toDouble() ?? 0,
-  fixedCharge: (json['fixedCharge'] as num?)?.toDouble() ?? 0,
-  tva: (json['tva'] as num?)?.toDouble() ?? 11,
-  residentialPricePerAmp:
-      (json['residentialPricePerAmp'] as num?)?.toDouble() ?? 0,
-  residentialPricePerKilowat:
-      (json['residentialPricePerKilowat'] as num?)?.toDouble() ?? 0,
-  residentialFixedCharge:
-      (json['residentialFixedCharge'] as num?)?.toDouble() ?? 0,
-  residentialTVA: (json['residentialTVA'] as num?)?.toDouble() ?? 11,
-  commercialPricePerAmp:
-      (json['commercialPricePerAmp'] as num?)?.toDouble() ?? 0,
-  commercialPricePerKilowat:
-      (json['commercialPricePerKilowat'] as num?)?.toDouble() ?? 0,
-  commercialFixedCharge:
-      (json['commercialFixedCharge'] as num?)?.toDouble() ?? 0,
-  commercialTVA: (json['commercialTVA'] as num?)?.toDouble() ?? 11,
-  industrialPricePerAmp:
-      (json['industrialPricePerAmp'] as num?)?.toDouble() ?? 0,
-  industrialPricePerKilowat:
-      (json['industrialPricePerKilowat'] as num?)?.toDouble() ?? 0,
-  industrialFixedCharge:
-      (json['industrialFixedCharge'] as num?)?.toDouble() ?? 0,
-  industrialTVA: (json['industrialTVA'] as num?)?.toDouble() ?? 11,
-  language: json['language'] as String? ?? 'en',
-  dueDate: (json['dueDate'] as num?)?.toInt() ?? 1,
-  triggerDate: (json['triggerDate'] as num?)?.toInt() ?? 1,
+  pricePerKilowat: (json['pricePerKilowat'] as num).toDouble(),
+  pricePerAmp: (json['pricePerAmp'] as num).toDouble(),
+  fixedCharge: (json['fixedCharge'] as num).toDouble(),
+  tva: (json['tva'] as num).toDouble(),
+  residentialPricePerAmp: (json['residentialPricePerAmp'] as num).toDouble(),
+  residentialPricePerKilowat: (json['residentialPricePerKilowat'] as num)
+      .toDouble(),
+  residentialFixedCharge: (json['residentialFixedCharge'] as num).toDouble(),
+  residentialTVA: (json['residentialTVA'] as num).toDouble(),
+  commercialPricePerAmp: (json['commercialPricePerAmp'] as num).toDouble(),
+  commercialPricePerKilowat: (json['commercialPricePerKilowat'] as num)
+      .toDouble(),
+  commercialFixedCharge: (json['commercialFixedCharge'] as num).toDouble(),
+  commercialTVA: (json['commercialTVA'] as num).toDouble(),
+  industrialPricePerAmp: (json['industrialPricePerAmp'] as num).toDouble(),
+  industrialPricePerKilowat: (json['industrialPricePerKilowat'] as num)
+      .toDouble(),
+  industrialFixedCharge: (json['industrialFixedCharge'] as num).toDouble(),
+  industrialTVA: (json['industrialTVA'] as num).toDouble(),
+  language: json['language'] as String,
+  dueDate: (json['dueDate'] as num).toInt(),
+  triggerDate: (json['triggerDate'] as num).toInt(),
   triggerMessage: json['triggerMessage'] as String?,
+  ampereSchedulePricingEnabled: json['ampereSchedulePricingEnabled'] as bool,
 );
 
 Map<String, dynamic> _$UpdatePreferencesRequestToJson(
@@ -63,4 +58,5 @@ Map<String, dynamic> _$UpdatePreferencesRequestToJson(
   'dueDate': instance.dueDate,
   'triggerDate': instance.triggerDate,
   'triggerMessage': instance.triggerMessage,
+  'ampereSchedulePricingEnabled': instance.ampereSchedulePricingEnabled,
 };

@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/app_snack_bar_variant.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
-import 'package:shabakat/core/network/dto/request/company/update_preferences_request.dart';
 import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
 import 'package:shabakat/data/providers/company/company_provider.dart';
 import 'package:shabakat/domain/entities/settings/company_preferences.dart';
+import 'package:shabakat/domain/mappers/company_preferences/company_preferences_mapper.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 class LanguagePreferenceScreen extends ConsumerStatefulWidget {
@@ -33,15 +33,7 @@ class _LanguagePreferenceScreenState
       language: languageCode,
     );
 
-    final request = UpdatePreferencesRequest(
-      pricePerKilowat: updatedPreferences.pricePerKilowat,
-      pricePerAmp: updatedPreferences.pricePerAmp,
-      fixedCharge: updatedPreferences.fixedCharge,
-      tva: updatedPreferences.tva,
-      language: updatedPreferences.language,
-      triggerDate: updatedPreferences.triggerDate,
-      triggerMessage: updatedPreferences.triggerMessage,
-    );
+    final request = updatedPreferences.toUpdateRequest();
 
     try {
       await ref.read(companyProvider.notifier).upsertPreferences(request);

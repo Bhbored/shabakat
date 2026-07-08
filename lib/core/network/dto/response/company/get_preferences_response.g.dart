@@ -38,6 +38,8 @@ _GetPreferencesResponse _$GetPreferencesResponseFromJson(
   dueDate: (json['dueDate'] as num?)?.toInt() ?? 1,
   triggerDate: (json['triggerDate'] as num?)?.toInt() ?? 1,
   triggerMessage: json['triggerMessage'] as String?,
+  ampereSchedulePricingEnabled:
+      json['ampereSchedulePricingEnabled'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$GetPreferencesResponseToJson(
@@ -63,4 +65,5 @@ Map<String, dynamic> _$GetPreferencesResponseToJson(
   'dueDate': instance.dueDate,
   'triggerDate': instance.triggerDate,
   'triggerMessage': instance.triggerMessage,
+  'ampereSchedulePricingEnabled': instance.ampereSchedulePricingEnabled,
 };
