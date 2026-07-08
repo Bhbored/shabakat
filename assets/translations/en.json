@@ -166,7 +166,8 @@
       "language": "Language",
       "due_date": "Due Date",
       "trigger_date": "Trigger Date",
-      "trigger_message": "Trigger Message"
+      "trigger_message": "Trigger Message",
+      "ampere_schedule_pricing": "Ampere Schedule Pricing"
     },
     "due_date_description": "Day of the month when invoices are due.",
     "trigger_date_description": "Day of the month when invoice reminders are sent to customers.",
@@ -189,6 +190,36 @@
       "description": "Message sent to unpaid customers via WhatsApp on the trigger date.",
       "label": "Message",
       "hint": "Enter trigger message..."
+    },
+    "ampere_schedule": {
+      "title": "Ampere Schedule",
+      "pricing_title": "Ampere Schedule Pricing",
+      "pricing_subtitle": "Price customers based on their ampere schedule.",
+      "pricing_description": "Use ampere schedules to determine pricing instead of the default per-amp price.",
+      "load_failed": "Failed to load ampere schedules.",
+      "empty": "No ampere schedules yet.",
+      "add": "Add ampere schedule",
+      "add_title": "Add Ampere Schedule",
+      "edit_title": "Edit Ampere Schedule",
+      "added": "Ampere schedule added.",
+      "updated": "Ampere schedule updated.",
+      "add_failed": "Failed to add ampere schedule.",
+      "update_failed": "Failed to update ampere schedule.",
+      "customers": "customers",
+      "hours_price": "{}h/day  •  {} per amp",
+      "name_hint": "Name",
+      "hours_hint": "Hours per day (1-24)",
+      "price_hint": "Price per amp",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "validation": {
+        "required": "Required",
+        "name_max": "Must be 200 characters or fewer",
+        "invalid_int": "Enter a valid whole number",
+        "hours_range": "Must be between 1 and 24",
+        "invalid_number": "Enter a valid number",
+        "price_range": "Must be between 0.0001 and 9999999"
+      }
     }
   },
   "expenses": {

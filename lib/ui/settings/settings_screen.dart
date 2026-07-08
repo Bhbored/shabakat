@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/ui/settings/widgets/company_preferences_section/company_preferences_section.dart';
-import 'package:shabakat/ui/settings/widgets/company_profile_header.dart';
-import 'package:shabakat/ui/settings/widgets/settings_section_title.dart';
-import 'package:shabakat/ui/settings/widgets/switch_tile.dart';
-import 'package:shabakat/ui/settings/widgets/theme_selector.dart';
+import 'package:shabakat/ui/settings/widgets/company_profile_header/company_profile_header.dart';
+import 'package:shabakat/ui/settings/widgets/settings_section_title/settings_section_title.dart';
+import 'package:shabakat/ui/settings/widgets/switch_tile/switch_tile.dart';
+import 'package:shabakat/ui/settings/widgets/theme_selector/theme_selector.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});

@@ -12,7 +12,7 @@ import 'package:shabakat/core/network/dto/request/company/update_profile_request
 import 'package:shabakat/core/network/dto/response/company/get_profile_response.dart';
 import 'package:shabakat/core/utilities/image_picker_helper.dart';
 import 'package:shabakat/data/providers/company/company_profile_provider.dart';
-import 'package:shabakat/ui/settings/widgets/company_name_edit_dialog.dart';
+import 'package:shabakat/ui/settings/widgets/company_name_edit_dialog/company_name_edit_dialog.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 

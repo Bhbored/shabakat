@@ -7,17 +7,17 @@ import 'package:shabakat/core/utilities/day_of_month_formatter.dart';
 import 'package:shabakat/data/providers/company/company_provider.dart';
 import 'package:shabakat/domain/entities/settings/company_preferences.dart';
 import 'package:shabakat/domain/mappers/company_preferences/company_preferences_mapper.dart';
-import 'package:shabakat/ui/settings/widgets/preference_tile.dart';
+import 'package:shabakat/ui/settings/widgets/preference_tile/preference_tile.dart';
 import 'package:shabakat/ui/shared/dialogs/preference_day_picker_dialog.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
-import 'subcreens/ampere_schedule_pricing_preference_screen.dart';
-import 'subcreens/trigger_message_preference_screen.dart';
-import 'subcreens/fixed_charge_preference_screen.dart';
-import 'subcreens/tva_preference_screen.dart';
-import 'subcreens/price_per_amp_preference_screen.dart';
-import 'subcreens/price_per_kilowatt_preference_screen.dart';
-import '../../subcreens/language_preference_screen.dart';
+import 'package:shabakat/ui/settings/subscreens/ampere_schedule_pricing_preference_screen.dart';
+import 'package:shabakat/ui/settings/subscreens/trigger_message_preference_screen.dart';
+import 'package:shabakat/ui/settings/subscreens/fixed_charge_preference_screen.dart';
+import 'package:shabakat/ui/settings/subscreens/tva_preference_screen.dart';
+import 'package:shabakat/ui/settings/subscreens/price_per_amp_preference_screen.dart';
+import 'package:shabakat/ui/settings/subscreens/price_per_kilowatt_preference_screen.dart';
+import 'package:shabakat/ui/settings/subscreens/language_preference_screen.dart';
 
 class CompanyPreferencesSection extends ConsumerWidget {
   const CompanyPreferencesSection({super.key});
@@ -117,11 +117,11 @@ class CompanyPreferencesSection extends ConsumerWidget {
           ),
           _divider(context, colorScheme),
           PreferenceTile(
-            label: 'Ampere Schedule',
+            label: 'settings.ampere_schedule.title'.tr(),
             value: preferencesAsync.when(
               data: (preferences) => preferences.ampereSchedulePricingEnabled
-                  ? 'Enabled'
-                  : 'Disabled',
+                  ? 'settings.ampere_schedule.enabled'.tr()
+                  : 'settings.ampere_schedule.disabled'.tr(),
               loading: () => null,
               error: (_, _) => null,
             ),
