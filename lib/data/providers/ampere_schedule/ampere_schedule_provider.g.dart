@@ -35,7 +35,7 @@ final class AmpereScheduleNotifierProvider
 }
 
 String _$ampereScheduleNotifierHash() =>
-    r'2c2abeab0a4ebd8e2bf97bfad334758e0428eaab';
+    r'ceac2cc691e76f42c4bb43a220054db666ad07b6';
 
 abstract class _$AmpereScheduleNotifier
     extends $AsyncNotifier<List<AmpereSchedule>> {

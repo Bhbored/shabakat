@@ -38,4 +38,9 @@ class AmpereScheduleNotifier extends _$AmpereScheduleNotifier {
     await _ampereScheduleService.updateAmpereSchedule(scheduleId, request);
     await refresh();
   }
+
+  Future<void> deleteAmpereSchedule(String scheduleId) async {
+    await _ampereScheduleService.deleteAmpereSchedule(scheduleId);
+    await refresh();
+  }
 }

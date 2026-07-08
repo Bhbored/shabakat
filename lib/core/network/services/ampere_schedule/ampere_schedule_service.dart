@@ -85,4 +85,23 @@ class AmpereScheduleService {
       },
     );
   }
+
+  Future<void> deleteAmpereSchedule(String scheduleId) async {
+    final response = await _apiExecutor.execute(
+      ApiRequest(
+        path: 'ampere-schedules/$scheduleId',
+        method: HttpMethod.delete,
+      ),
+    );
+    return response.when(
+      success: (data, statusCode, meta) {
+        _logger.i('Ampere schedule deleted successfully: $data');
+        return;
+      },
+      failure: (error, statusCode) {
+        _logger.e('Failed to delete ampere schedule: ${error.toString()}');
+        throw error;
+      },
+    );
+  }
 }
