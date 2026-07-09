@@ -19,6 +19,8 @@ import '../expenses/subscreens/expense_adding_screen.dart';
 import '../audit/audit_screen.dart';
 import '../areas/areas_page.dart';
 import '../areas/subscreens/area_adding_screen.dart';
+import '../distribution_box/distribution_box_screen.dart';
+import '../distribution_box/subscreens/distribution_box_adding_screen.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 import '../subscribers/subscreens/subscriber_adding_screen.dart';
 
@@ -88,6 +90,7 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
           const InvoicesScreen(),
           const ExpensesScreen(),
           const AreasPage(),
+          const DistributionBoxScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavContainer(
@@ -198,6 +201,23 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
             SizedBox(width: context.paddingSmall),
           ],
         );
+      case 5:
+        return AppBar(
+          title: Text(
+            'Distribution Boxes',
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: colorScheme.onSecondary,
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: _onAddDistributionBox,
+              icon: const Icon(LucideIcons.plus),
+            ),
+            SizedBox(width: context.paddingSmall),
+          ],
+        );
       default:
         return null;
     }
@@ -223,5 +243,11 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
     Navigator.of(
       context,
     ).push(openInnerScreen(widget: const AreaAddingScreen()));
+  }
+
+  void _onAddDistributionBox() {
+    Navigator.of(context).push(
+      openInnerScreen(widget: const DistributionBoxAddingScreen()),
+    );
   }
 }
