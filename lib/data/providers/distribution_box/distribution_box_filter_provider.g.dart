@@ -46,7 +46,7 @@ final class DistributionBoxFilterNotifierProvider
 }
 
 String _$distributionBoxFilterNotifierHash() =>
-    r'7b5d0e17e9a399349c9797b2dcbd9932c951807c';
+    r'1a9359b17250eee78be614ca4732b238dcfd862e';
 
 abstract class _$DistributionBoxFilterNotifier
     extends $Notifier<DistributionBoxFilterRequest> {

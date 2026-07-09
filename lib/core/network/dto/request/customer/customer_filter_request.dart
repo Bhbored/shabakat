@@ -10,6 +10,7 @@ sealed class CustomerFilterRequest with _$CustomerFilterRequest {
     String? name,
     String? phone,
     String? areaId,
+    String? boxId,
     PlanType? planType,
     CustomerRelation? customerRelation,
     CustomerStatus? customerStatus,

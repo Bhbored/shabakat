@@ -384,6 +384,13 @@
       "area_hint": "Select area",
       "address": "Address",
       "address_hint": "Enter address",
+      "building": "Building",
+      "floor": "Floor",
+      "cable_name": "Cable name",
+      "optional": "Optional",
+      "distribution_box": "Distribution box",
+      "distribution_box_hint": "Select distribution box (optional)",
+      "ampere_schedule": "Ampere schedule",
       "customer_type": "Customer Type",
       "plan": "Plan",
       "plan_value": "Plan Value",
@@ -407,7 +414,8 @@
       "plan_value_range": "Must be between 1 and 100",
       "invalid_number": "Invalid number",
       "max_characters": "Max {} characters",
-      "subscription_date_future": "Subscription date cannot be in the future"
+      "subscription_date_future": "Subscription date cannot be in the future",
+      "select_area_first": "Select an area first."
     },
     "plan": {
       "ampere": "Ampere",
@@ -482,6 +490,15 @@
     },
     "area_select": {
       "title": "Select Area"
+    },
+    "box_select": {
+      "title": "Select distribution box",
+      "load_failed": "Failed to load distribution boxes.",
+      "empty": "No distribution boxes in this area."
+    },
+    "card": {
+      "building": "Building {}",
+      "floor": "Floor {}"
     },
     "invoices": {
       "title": "Invoices",

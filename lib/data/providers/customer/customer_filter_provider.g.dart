@@ -42,7 +42,7 @@ final class CustomerFilterNotifierProvider
 }
 
 String _$customerFilterNotifierHash() =>
-    r'aa90bbaa37fc3c178c08a90d538d03fcc5c552bf';
+    r'85f84b957be0c9a4e1b228d4fe4eb30f5cd4049d';
 
 abstract class _$CustomerFilterNotifier
     extends $Notifier<CustomerFilterRequest> {

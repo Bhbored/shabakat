@@ -384,6 +384,13 @@
       "area_hint": "اختر منطقة",
       "address": "العنوان",
       "address_hint": "أدخل العنوان",
+      "building": "المبنى",
+      "floor": "الطابق",
+      "cable_name": "اسم الكابل",
+      "optional": "اختياري",
+      "distribution_box": "صندوق التوزيع",
+      "distribution_box_hint": "اختر صندوق التوزيع (اختياري)",
+      "ampere_schedule": "جدول الأمبير",
       "customer_type": "نوع العميل",
       "plan": "الخطة",
       "plan_value": "قيمة الخطة",
@@ -407,7 +414,8 @@
       "plan_value_range": "يجب أن تكون بين 1 و 100",
       "invalid_number": "رقم غير صالح",
       "max_characters": "الحد الأقصى {} حرفاً",
-      "subscription_date_future": "لا يمكن أن يكون تاريخ الاشتراك في المستقبل"
+      "subscription_date_future": "لا يمكن أن يكون تاريخ الاشتراك في المستقبل",
+      "select_area_first": "اختر منطقة أولاً."
     },
     "plan": {
       "ampere": "أمبير",
@@ -482,6 +490,15 @@
     },
     "area_select": {
       "title": "اختر منطقة"
+    },
+    "box_select": {
+      "title": "اختر صندوق التوزيع",
+      "load_failed": "فشل تحميل صناديق التوزيع.",
+      "empty": "لا توجد صناديق توزيع في هذه المنطقة."
+    },
+    "card": {
+      "building": "المبنى {}",
+      "floor": "الطابق {}"
     },
     "invoices": {
       "title": "الفواتير",

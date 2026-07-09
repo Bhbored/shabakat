@@ -12,6 +12,7 @@ _CustomerFilterRequest _$CustomerFilterRequestFromJson(
   name: json['name'] as String?,
   phone: json['phone'] as String?,
   areaId: json['areaId'] as String?,
+  boxId: json['boxId'] as String?,
   planType: $enumDecodeNullable(_$PlanTypeEnumMap, json['planType']),
   customerRelation: $enumDecodeNullable(
     _$CustomerRelationEnumMap,
@@ -32,6 +33,7 @@ Map<String, dynamic> _$CustomerFilterRequestToJson(
   'name': instance.name,
   'phone': instance.phone,
   'areaId': instance.areaId,
+  'boxId': instance.boxId,
   'planType': _$PlanTypeEnumMap[instance.planType],
   'customerRelation': _$CustomerRelationEnumMap[instance.customerRelation],
   'customerStatus': _$CustomerStatusEnumMap[instance.customerStatus],

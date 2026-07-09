@@ -9,11 +9,28 @@ import 'widgets/distribution_box_filter_chips/distribution_box_filter_chips_row.
 import 'widgets/distribution_box_list/distribution_box_list.dart';
 import 'widgets/distribution_box_toolbar/distribution_box_toolbar.dart';
 
-class DistributionBoxScreen extends ConsumerWidget {
+class DistributionBoxScreen extends ConsumerStatefulWidget {
   const DistributionBoxScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DistributionBoxScreen> createState() =>
+      _DistributionBoxScreenState();
+}
+
+class _DistributionBoxScreenState extends ConsumerState<DistributionBoxScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(milliseconds: 100));
+      if (mounted) {
+        ref.read(distributionBoxFilterProvider.notifier).clear();
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final boxesAsync = ref.watch(distributionBoxProvider);
 
     return boxesAsync.when(
