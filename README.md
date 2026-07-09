@@ -47,9 +47,6 @@
 - [User Roles](#user-roles)
 - [Testing](#testing)
 - [Build &amp; Release](#build--release)
-- [Troubleshooting](#troubleshooting)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
 - [License](#license)
 
 ---
@@ -607,48 +604,6 @@ Configured in `pubspec.yaml` under `flutter_launcher_icons` and `flutter_native_
 dart run flutter_launcher_icons
 dart run flutter_native_splash:create
 ```
-
----
-
-## Troubleshooting
-
-| Problem | Solution |
-|---------|----------|
-| `*.g.dart` / `*.freezed.dart` missing | Run `dart run build_runner build --delete-conflicting-outputs` |
-| `Session expired` on every request | Clear app data; verify token storage; check API clock skew |
-| Cannot reach local API from emulator | Use `10.0.2.2` (Android) or machine LAN IP (physical device) |
-| Certificate errors on local HTTPS | Dev client accepts all certs — verify URL matches `dio_client.dart` |
-| Arabic text not RTL | Confirm locale is `ar` in settings; check `MaterialApp` locale |
-| Analyzer errors in generated files | Generated files are excluded — run build_runner, don't edit them |
-| Riverpod `ref` errors in tests | Wrap test widget in `ProviderScope` |
-
----
-
-## Roadmap
-
-- [ ] Distribution box name filter (backend + provider integration)
-- [ ] Customer fields: building, floor, cable name, box assignment
-- [ ] Area adjustment workflows
-- [ ] Push notifications (payment reminders)
-- [ ] Offline-first sync with Drift local DB
-- [ ] WhatsApp integration UI
-- [ ] Role-based UI visibility (hide Admin actions for User role)
-- [ ] Widget & integration test coverage
-- [ ] CI/CD pipeline (GitHub Actions)
-
----
-
-## Contributing
-
-This repository is **not open source**. If you are an authorized contributor:
-
-1. Read [`AGENTS.md`](./AGENTS.md) and [`.cursor/rules/simple-logic.mdc`](./.cursor/rules/simple-logic.mdc) before making changes
-2. Follow Clean Architecture — smallest correct diff
-3. Use `freezed` for all models, `riverpod_generator` for providers
-4. Never hardcode colors, spacing, or styles in widget files
-5. Run `dart run build_runner build` after model/provider changes
-6. Run `flutter analyze` before opening a PR
-7. Do not commit secrets, API keys, or production credentials
 
 ---
 
