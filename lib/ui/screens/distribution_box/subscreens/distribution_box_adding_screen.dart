@@ -40,9 +40,9 @@ class _DistributionBoxAddingScreenState
   }
 
   Future<void> _onSelectArea() async {
-    final result = await Navigator.of(context).push(
-      openInnerScreen(widget: const AreaSelectingScreen()),
-    );
+    final result = await Navigator.of(
+      context,
+    ).push(openInnerScreen(widget: const AreaSelectingScreen()));
     if (result is Area) _areaFieldKey.currentState?.didChange(result);
   }
 
@@ -140,9 +140,7 @@ class _DistributionBoxAddingScreenState
                 enabled: !_isLoading,
                 textInputAction: TextInputAction.next,
                 validator: _validateName,
-                decoration: const InputDecoration(
-                  hintText: 'Panel 1',
-                ),
+                decoration: const InputDecoration(hintText: 'Panel 1'),
               ),
               SizedBox(height: context.spaceMedium),
               FormField<Area>(
@@ -177,9 +175,7 @@ class _DistributionBoxAddingScreenState
                 textInputAction: TextInputAction.done,
                 onFieldSubmitted: (_) => _onSubmit(),
                 validator: (value) => _validateOptional(value, 1000, 'Notes'),
-                decoration: const InputDecoration(
-                  hintText: 'Optional notes',
-                ),
+                decoration: const InputDecoration(hintText: 'Optional notes'),
               ),
               SizedBox(height: context.spaceExtraLarge),
               SizedBox(
@@ -192,7 +188,7 @@ class _DistributionBoxAddingScreenState
                           width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('Create'),
+                      : Text('Create', style: theme.textTheme.titleMedium),
                 ),
               ),
             ],

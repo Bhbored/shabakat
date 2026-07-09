@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DistributionBoxFilterRequest {
 
- String? get areaId; int get pageNumber; int get pageSize;
+ String? get areaId; String? get name; int get pageNumber; int get pageSize;
 /// Create a copy of DistributionBoxFilterRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $DistributionBoxFilterRequestCopyWith<DistributionBoxFilterRequest> get copyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DistributionBoxFilterRequest&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.pageNumber, pageNumber) || other.pageNumber == pageNumber)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DistributionBoxFilterRequest&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.name, name) || other.name == name)&&(identical(other.pageNumber, pageNumber) || other.pageNumber == pageNumber)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,areaId,pageNumber,pageSize);
+int get hashCode => Object.hash(runtimeType,areaId,name,pageNumber,pageSize);
 
 @override
 String toString() {
-  return 'DistributionBoxFilterRequest(areaId: $areaId, pageNumber: $pageNumber, pageSize: $pageSize)';
+  return 'DistributionBoxFilterRequest(areaId: $areaId, name: $name, pageNumber: $pageNumber, pageSize: $pageSize)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $DistributionBoxFilterRequestCopyWith<$Res>  {
   factory $DistributionBoxFilterRequestCopyWith(DistributionBoxFilterRequest value, $Res Function(DistributionBoxFilterRequest) _then) = _$DistributionBoxFilterRequestCopyWithImpl;
 @useResult
 $Res call({
- String? areaId, int pageNumber, int pageSize
+ String? areaId, String? name, int pageNumber, int pageSize
 });
 
 
@@ -65,9 +65,10 @@ class _$DistributionBoxFilterRequestCopyWithImpl<$Res>
 
 /// Create a copy of DistributionBoxFilterRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? areaId = freezed,Object? pageNumber = null,Object? pageSize = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? areaId = freezed,Object? name = freezed,Object? pageNumber = null,Object? pageSize = null,}) {
   return _then(_self.copyWith(
 areaId: freezed == areaId ? _self.areaId : areaId // ignore: cast_nullable_to_non_nullable
+as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,pageNumber: null == pageNumber ? _self.pageNumber : pageNumber // ignore: cast_nullable_to_non_nullable
 as int,pageSize: null == pageSize ? _self.pageSize : pageSize // ignore: cast_nullable_to_non_nullable
 as int,
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? areaId,  int pageNumber,  int pageSize)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? areaId,  String? name,  int pageNumber,  int pageSize)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DistributionBoxFilterRequest() when $default != null:
-return $default(_that.areaId,_that.pageNumber,_that.pageSize);case _:
+return $default(_that.areaId,_that.name,_that.pageNumber,_that.pageSize);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.areaId,_that.pageNumber,_that.pageSize);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? areaId,  int pageNumber,  int pageSize)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? areaId,  String? name,  int pageNumber,  int pageSize)  $default,) {final _that = this;
 switch (_that) {
 case _DistributionBoxFilterRequest():
-return $default(_that.areaId,_that.pageNumber,_that.pageSize);}
+return $default(_that.areaId,_that.name,_that.pageNumber,_that.pageSize);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +191,10 @@ return $default(_that.areaId,_that.pageNumber,_that.pageSize);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? areaId,  int pageNumber,  int pageSize)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? areaId,  String? name,  int pageNumber,  int pageSize)?  $default,) {final _that = this;
 switch (_that) {
 case _DistributionBoxFilterRequest() when $default != null:
-return $default(_that.areaId,_that.pageNumber,_that.pageSize);case _:
+return $default(_that.areaId,_that.name,_that.pageNumber,_that.pageSize);case _:
   return null;
 
 }
@@ -205,10 +206,11 @@ return $default(_that.areaId,_that.pageNumber,_that.pageSize);case _:
 @JsonSerializable()
 
 class _DistributionBoxFilterRequest implements DistributionBoxFilterRequest {
-  const _DistributionBoxFilterRequest({this.areaId, this.pageNumber = 1, this.pageSize = 10});
+  const _DistributionBoxFilterRequest({this.areaId, this.name, this.pageNumber = 1, this.pageSize = 10});
   factory _DistributionBoxFilterRequest.fromJson(Map<String, dynamic> json) => _$DistributionBoxFilterRequestFromJson(json);
 
 @override final  String? areaId;
+@override final  String? name;
 @override@JsonKey() final  int pageNumber;
 @override@JsonKey() final  int pageSize;
 
@@ -225,16 +227,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DistributionBoxFilterRequest&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.pageNumber, pageNumber) || other.pageNumber == pageNumber)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DistributionBoxFilterRequest&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.name, name) || other.name == name)&&(identical(other.pageNumber, pageNumber) || other.pageNumber == pageNumber)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,areaId,pageNumber,pageSize);
+int get hashCode => Object.hash(runtimeType,areaId,name,pageNumber,pageSize);
 
 @override
 String toString() {
-  return 'DistributionBoxFilterRequest(areaId: $areaId, pageNumber: $pageNumber, pageSize: $pageSize)';
+  return 'DistributionBoxFilterRequest(areaId: $areaId, name: $name, pageNumber: $pageNumber, pageSize: $pageSize)';
 }
 
 
@@ -245,7 +247,7 @@ abstract mixin class _$DistributionBoxFilterRequestCopyWith<$Res> implements $Di
   factory _$DistributionBoxFilterRequestCopyWith(_DistributionBoxFilterRequest value, $Res Function(_DistributionBoxFilterRequest) _then) = __$DistributionBoxFilterRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String? areaId, int pageNumber, int pageSize
+ String? areaId, String? name, int pageNumber, int pageSize
 });
 
 
@@ -262,9 +264,10 @@ class __$DistributionBoxFilterRequestCopyWithImpl<$Res>
 
 /// Create a copy of DistributionBoxFilterRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? areaId = freezed,Object? pageNumber = null,Object? pageSize = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? areaId = freezed,Object? name = freezed,Object? pageNumber = null,Object? pageSize = null,}) {
   return _then(_DistributionBoxFilterRequest(
 areaId: freezed == areaId ? _self.areaId : areaId // ignore: cast_nullable_to_non_nullable
+as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,pageNumber: null == pageNumber ? _self.pageNumber : pageNumber // ignore: cast_nullable_to_non_nullable
 as int,pageSize: null == pageSize ? _self.pageSize : pageSize // ignore: cast_nullable_to_non_nullable
 as int,

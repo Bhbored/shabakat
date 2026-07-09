@@ -10,14 +10,7 @@ import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 import '../../subscreens/distribution_box_search_screen.dart';
 
 class DistributionBoxFilterChipsRow extends ConsumerWidget {
-  final String? nameQuery;
-  final ValueChanged<String?> onNameQueryChanged;
-
-  const DistributionBoxFilterChipsRow({
-    super.key,
-    required this.nameQuery,
-    required this.onNameQueryChanged,
-  });
+  const DistributionBoxFilterChipsRow({super.key});
 
   String? _areaNameForId(List<Area>? areas, String? areaId) {
     if (areaId == null || areas == null) return null;
@@ -27,17 +20,6 @@ class DistributionBoxFilterChipsRow extends ConsumerWidget {
     return null;
   }
 
-  Future<void> _openSearch(BuildContext context) async {
-    final result = await Navigator.of(context).push(
-      openInnerScreen(
-        widget: DistributionBoxSearchScreen(initialNameQuery: nameQuery),
-      ),
-    );
-    if (result is String) {
-      onNameQueryChanged(result.isEmpty ? null : result);
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final filter = ref.watch(distributionBoxFilterProvider);
@@ -45,8 +27,8 @@ class DistributionBoxFilterChipsRow extends ConsumerWidget {
     final areaName = _areaNameForId(areas, filter.areaId);
     final chips = <Widget>[];
 
-    if (nameQuery != null && nameQuery!.trim().isNotEmpty) {
-      chips.add(_FilterChip(label: 'Name: $nameQuery'));
+    if (filter.name != null && filter.name!.trim().isNotEmpty) {
+      chips.add(_FilterChip(label: 'Name: ${filter.name}'));
     }
     if (areaName != null) {
       chips.add(_FilterChip(label: 'Area: $areaName'));
@@ -78,7 +60,13 @@ class DistributionBoxFilterChipsRow extends ConsumerWidget {
           ),
           IconButton(
             icon: const Icon(Icons.tune),
-            onPressed: () => _openSearch(context),
+            onPressed: () {
+              Navigator.of(context).push(
+                openInnerScreen(
+                  widget: const DistributionBoxSearchScreen(),
+                ),
+              );
+            },
           ),
         ],
       ),

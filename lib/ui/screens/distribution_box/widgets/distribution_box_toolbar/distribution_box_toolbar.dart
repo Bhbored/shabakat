@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/network/dto/request/distribution_box/distribution_box_filter_request.dart';
 import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/data/providers/distribution_box/distribution_box_filter_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
@@ -9,37 +10,19 @@ import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 import '../../subscreens/distribution_box_search_screen.dart';
 
 class DistributionBoxToolbar extends ConsumerWidget {
-  final String? nameQuery;
   final int totalCount;
-  final ValueChanged<String?> onNameQueryChanged;
 
-  const DistributionBoxToolbar({
-    super.key,
-    required this.nameQuery,
-    required this.totalCount,
-    required this.onNameQueryChanged,
-  });
+  const DistributionBoxToolbar({super.key, required this.totalCount});
 
-  String? _activeQuery(String? nameQuery, String? areaId, List<Area>? areas) {
-    if (nameQuery != null && nameQuery.trim().isNotEmpty) return nameQuery;
-    if (areaId != null) {
+  String? _activeQuery(DistributionBoxFilterRequest filter, List<Area>? areas) {
+    if (filter.name != null) return filter.name;
+    if (filter.areaId != null) {
       for (final area in areas ?? const <Area>[]) {
-        if (area.id == areaId) return area.name;
+        if (area.id == filter.areaId) return area.name;
       }
-      return areaId;
+      return filter.areaId;
     }
     return null;
-  }
-
-  Future<void> _openSearch(BuildContext context) async {
-    final result = await Navigator.of(context).push(
-      openInnerScreen(
-        widget: DistributionBoxSearchScreen(initialNameQuery: nameQuery),
-      ),
-    );
-    if (result is String) {
-      onNameQueryChanged(result.isEmpty ? null : result);
-    }
   }
 
   @override
@@ -56,7 +39,7 @@ class DistributionBoxToolbar extends ConsumerWidget {
     final borderSide = enabledBorder is OutlineInputBorder
         ? enabledBorder.borderSide
         : BorderSide(color: colorScheme.outline);
-    final activeQuery = _activeQuery(nameQuery, filter.areaId, areas);
+    final activeQuery = _activeQuery(filter, areas);
 
     return Padding(
       padding: EdgeInsets.all(context.paddingMedium),
@@ -64,7 +47,13 @@ class DistributionBoxToolbar extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            onTap: () => _openSearch(context),
+            onTap: () {
+              Navigator.of(context).push(
+                openInnerScreen(
+                  widget: const DistributionBoxSearchScreen(),
+                ),
+              );
+            },
             dense: true,
             visualDensity: VisualDensity.compact,
             contentPadding: EdgeInsets.symmetric(

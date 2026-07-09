@@ -14,7 +14,7 @@ Duration? retry(int _, Object _) => null;
 class DistributionBoxNotifier extends _$DistributionBoxNotifier {
   DistributionBoxService get _distributionBoxService =>
       ref.read(distributionBoxServiceProvider);
-
+  late int _totalCount;
   @override
   FutureOr<List<DistributionBox>> build() async {
     final filter = ref.watch(distributionBoxFilterProvider);
@@ -25,7 +25,12 @@ class DistributionBoxNotifier extends _$DistributionBoxNotifier {
     DistributionBoxFilterRequest filter,
   ) async {
     final response = await _distributionBoxService.getDistributionBoxes(filter);
+    _totalCount = response.totalCount;
     return response.data.map((x) => x.toEntity()).toList();
+  }
+
+  int getTotalCount() {
+    return _totalCount;
   }
 
   Future<void> refresh() async {

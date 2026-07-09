@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
+import 'package:shabakat/core/network/dto/request/distribution_box/distribution_box_filter_request.dart';
 import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/data/providers/distribution_box/distribution_box_filter_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
@@ -11,9 +12,7 @@ import '../../subscribers/widgets/area_select/area_select_list.dart';
 enum _SearchCriteria { name, area }
 
 class DistributionBoxSearchScreen extends ConsumerStatefulWidget {
-  final String? initialNameQuery;
-
-  const DistributionBoxSearchScreen({super.key, this.initialNameQuery});
+  const DistributionBoxSearchScreen({super.key});
 
   @override
   ConsumerState<DistributionBoxSearchScreen> createState() =>
@@ -41,7 +40,7 @@ class _DistributionBoxSearchScreenState
     return null;
   }
 
-  void _syncAreaFieldText() {
+  void _syncAreaFieldText(List<Area>? areas) {
     if (_criteria != _SearchCriteria.area) return;
 
     final areaId = ref.read(distributionBoxFilterProvider).areaId;
@@ -51,7 +50,7 @@ class _DistributionBoxSearchScreenState
     }
     if (areaId == _lastSyncedAreaId) return;
 
-    final name = _areaNameForId(ref.read(areaProvider).asData?.value, areaId);
+    final name = _areaNameForId(areas, areaId);
     if (name == null) return;
 
     _searchController.text = name;
@@ -64,47 +63,69 @@ class _DistributionBoxSearchScreenState
     if (_initialized) return;
 
     final filter = ref.read(distributionBoxFilterProvider);
-    if (filter.areaId != null) {
-      _criteria = _SearchCriteria.area;
-      _syncAreaFieldText();
-    } else if (widget.initialNameQuery != null &&
-        widget.initialNameQuery!.isNotEmpty) {
-      _criteria = _SearchCriteria.name;
-      _searchController.text = widget.initialNameQuery!;
+    _criteria = _criteriaFromFilter(filter);
+    if (_criteria == _SearchCriteria.area) {
+      _syncAreaFieldText(ref.read(areaProvider).asData?.value);
+    } else {
+      _searchController.text = filter.name ?? '';
     }
     _initialized = true;
   }
 
-  void _updateFilterArea(String? areaId) {
-    final current = ref.read(distributionBoxFilterProvider);
-    ref.read(distributionBoxFilterProvider.notifier).update(
-      current.copyWith(areaId: areaId, pageNumber: 1),
-    );
+  _SearchCriteria _criteriaFromFilter(DistributionBoxFilterRequest filter) {
+    if (filter.areaId != null) return _SearchCriteria.area;
+    return _SearchCriteria.name;
+  }
+
+  DistributionBoxFilterRequest _currentFilter() =>
+      ref.read(distributionBoxFilterProvider);
+
+  void _updateFilter(DistributionBoxFilterRequest filter) {
+    ref.read(distributionBoxFilterProvider.notifier).update(filter);
   }
 
   void _applyNameSearch() {
-    // Backend box name filter not available yet — name is applied at UI level.
-    Navigator.of(context).pop(_searchController.text.trim());
+    if (_criteria == _SearchCriteria.area) return;
+
+    final q = _searchController.text.trim();
+    final value = q.isEmpty ? null : q;
+
+    _updateFilter(
+      _currentFilter().copyWith(
+        name: value,
+        areaId: null,
+        pageNumber: 1,
+      ),
+    );
+    Navigator.of(context).pop();
   }
 
   void _selectArea(Area area) {
     _searchController.text = area.name;
     _lastSyncedAreaId = area.id;
-    _updateFilterArea(area.id);
+    _updateFilter(
+      _currentFilter().copyWith(
+        name: null,
+        areaId: area.id,
+        pageNumber: 1,
+      ),
+    );
     Navigator.of(context).pop();
   }
 
   void _clearSearch() {
     _searchController.clear();
     _lastSyncedAreaId = null;
+    final current = _currentFilter();
 
-    if (_criteria == _SearchCriteria.area) {
-      _updateFilterArea(null);
-      Navigator.of(context).pop();
-      return;
-    }
-
-    Navigator.of(context).pop('');
+    _updateFilter(
+      current.copyWith(
+        name: _criteria == _SearchCriteria.name ? null : current.name,
+        areaId: _criteria == _SearchCriteria.area ? null : current.areaId,
+        pageNumber: 1,
+      ),
+    );
+    setState(() {});
   }
 
   List<Area> _filterAreas(List<Area> areas) {
@@ -116,12 +137,10 @@ class _DistributionBoxSearchScreenState
   @override
   Widget build(BuildContext context) {
     final isArea = _criteria == _SearchCriteria.area;
+    final areasAsync = ref.watch(areaProvider);
 
     if (isArea) {
-      ref.listen(areaProvider, (_, _) {
-        _syncAreaFieldText();
-        if (mounted) setState(() {});
-      });
+      _syncAreaFieldText(areasAsync.asData?.value);
     }
 
     return Scaffold(
@@ -178,7 +197,8 @@ class _DistributionBoxSearchScreenState
                     setState(() {
                       _criteria = _SearchCriteria.name;
                       _lastSyncedAreaId = null;
-                      _searchController.text = widget.initialNameQuery ?? '';
+                      _searchController.text =
+                          ref.read(distributionBoxFilterProvider).name ?? '';
                     });
                   },
                 ),
@@ -188,7 +208,9 @@ class _DistributionBoxSearchScreenState
                   onSelected: (_) {
                     setState(() {
                       _criteria = _SearchCriteria.area;
-                      _syncAreaFieldText();
+                      _syncAreaFieldText(
+                        ref.read(areaProvider).asData?.value,
+                      );
                     });
                   },
                 ),
@@ -197,7 +219,7 @@ class _DistributionBoxSearchScreenState
             if (isArea) ...[
               SizedBox(height: context.spaceMedium),
               Expanded(
-                child: ref.watch(areaProvider).when(
+                child: areasAsync.when(
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                   error: (err, _) {

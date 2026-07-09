@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:awesome_dio_interceptor/awesome_dio_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/interceptors/auth_interceptor.dart';
 import 'package:shabakat/core/network/interceptors/retry_interceptor.dart';
@@ -60,7 +61,7 @@ class DioClient {
     if (tokenStore != null) {
       dio.interceptors.add(AuthInterceptor(tokenStore!));
       dio.interceptors.add(RetryInterceptor(dio: dio, maxRetries: 2));
-      if (enableLogging) {
+      if (enableLogging && kDebugMode) {
         dio.interceptors.add(
           AwesomeDioInterceptor(
             logRequestHeaders: true,

@@ -7,6 +7,7 @@ part 'distribution_box_filter_request.g.dart';
 sealed class DistributionBoxFilterRequest with _$DistributionBoxFilterRequest {
   const factory DistributionBoxFilterRequest({
     String? areaId,
+    String? name,
     @Default(1) int pageNumber,
     @Default(10) int pageSize,
   }) = _DistributionBoxFilterRequest;

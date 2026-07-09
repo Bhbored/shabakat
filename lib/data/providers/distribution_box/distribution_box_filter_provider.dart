@@ -13,6 +13,7 @@ class DistributionBoxFilterNotifier extends _$DistributionBoxFilterNotifier {
   void update(DistributionBoxFilterRequest next) {
     state = state.copyWith(
       areaId: next.areaId,
+      name: next.name,
       pageNumber: next.pageNumber,
       pageSize: next.pageSize,
     );
