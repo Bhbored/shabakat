@@ -77,7 +77,7 @@ The app connects to the **Electro API** — a multi-tenant REST backend where ea
 
 ## Screenshots
 
-Drop PNG captures into [`docs/screenshots/`](./docs/screenshots/). Recommended export size: **1080×2340** (phone) or **1280×800** (desktop).
+
 
 <table>
   <tr>
