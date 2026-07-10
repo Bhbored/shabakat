@@ -92,4 +92,20 @@ class DistributionBoxService {
       },
     );
   }
+
+  Future<void> deleteDistributionBox(String boxId) async {
+    final response = await _apiExecutor.execute(
+      ApiRequest(path: 'distribution-boxes/$boxId', method: HttpMethod.delete),
+    );
+    return response.when(
+      success: (data, statusCode, meta) {
+        _logger.i('Distribution box deleted successfully: $data');
+        return;
+      },
+      failure: (error, statusCode) {
+        _logger.e('Failed to delete distribution box: ${error.toString()}');
+        throw error;
+      },
+    );
+  }
 }

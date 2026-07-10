@@ -1,12 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/data/providers/distribution_box/distribution_box_filter_provider.dart';
 import 'package:shabakat/data/providers/distribution_box/distribution_box_provider.dart';
 import 'package:shabakat/ui/shared/error/dynamic_error.dart';
+import 'package:shabakat/ui/shared/skeletons/distribution_boxes_skeleton.dart';
 
 import 'widgets/distribution_box_filter_chips/distribution_box_filter_chips_row.dart';
-import 'widgets/distribution_box_list/distribution_box_list.dart';
+import 'widgets/distribution_box_card/distribution_box_list.dart';
 import 'widgets/distribution_box_toolbar/distribution_box_toolbar.dart';
 
 class DistributionBoxScreen extends ConsumerStatefulWidget {
@@ -35,11 +37,11 @@ class _DistributionBoxScreenState extends ConsumerState<DistributionBoxScreen> {
 
     return boxesAsync.when(
       skipLoadingOnRefresh: true,
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const DistributionBoxesSkeleton(),
       error: (err, _) => DynamicError(
         text: err is ApiException
             ? err.userMessage
-            : 'Failed to load distribution boxes.',
+            : 'distribution_boxes.load_failed'.tr(),
         onTryAgain: () => ref.read(distributionBoxProvider.notifier).refresh(),
       ),
       data: (data) => _DistributionBoxLayout(

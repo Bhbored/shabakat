@@ -112,7 +112,16 @@
     "subscribers": "Subscribers",
     "invoices": "Invoices",
     "expenses": "Expenses",
-    "areas": "Areas"
+    "areas": "Areas",
+    "distribution_boxes": "Distribution Boxes",
+    "nav": {
+      "dashboard": "Home",
+      "subscribers": "Subs",
+      "invoices": "Invoices",
+      "expenses": "Expenses",
+      "areas": "Areas",
+      "distribution_boxes": "Boxes"
+    }
   },
   "settings": {
     "title": "Settings",
@@ -314,6 +323,8 @@
     "subscribers": "subscribers",
     "subscriber_count_one": "1 subscriber",
     "subscriber_count": "{} subscribers",
+    "box_count_one": "1 box",
+    "box_count": "{} boxes",
     "add": {
       "title": "Add Area",
       "submit": "Add Area",
@@ -327,9 +338,15 @@
       "created": "Created",
       "updated": "Updated",
       "subscribers": "Subscribers",
+      "boxes": "Boxes",
       "subscribers_section": "Subscribers",
+      "boxes_section": "Distribution Boxes",
       "no_subscribers": "No subscribers in this area",
-      "load_subscribers_failed": "Failed to load subscribers."
+      "no_boxes": "No distribution boxes in this area",
+      "load_subscribers_failed": "Failed to load subscribers.",
+      "load_boxes_failed": "Failed to load distribution boxes.",
+      "switch_subscribers": "Subscribers",
+      "switch_boxes": "Boxes"
     },
     "edit": {
       "title": "Edit Area",
@@ -347,6 +364,77 @@
       "required": "Required",
       "name_required": "Enter area name",
       "max_characters": "Max {} characters"
+    }
+  },
+  "distribution_boxes": {
+    "load_failed": "Failed to load distribution boxes.",
+    "empty_list": "No distribution boxes found",
+    "created": "Created {}",
+    "subscriber_count_one": "1 subscriber",
+    "subscriber_count": "{} subscribers",
+    "cable_count_one": "1 cable",
+    "cable_count": "{} cables",
+    "box_count_one": "1 box",
+    "box_count": "{} boxes",
+    "search": {
+      "title": "Search boxes",
+      "hint": "Search boxes...",
+      "hint_name": "Search by box name...",
+      "hint_areas": "Search areas...",
+      "criteria": {
+        "name": "Name",
+        "area": "Area"
+      },
+      "filter_name": "Name: {}",
+      "filter_area": "Area: {}"
+    },
+    "add": {
+      "title": "Add distribution box",
+      "submit": "Create",
+      "success": "Distribution box created.",
+      "failed": "Failed to create distribution box."
+    },
+    "details": {
+      "title": "Box Details",
+      "created": "Created",
+      "area": "Area",
+      "subscribers": "Subscribers",
+      "cables": "Cables",
+      "subscribers_section": "Subscribers",
+      "cables_section": "Cables",
+      "no_subscribers": "No subscribers in this box",
+      "no_cables": "No cables in this box",
+      "load_subscribers_failed": "Failed to load subscribers.",
+      "load_cables_failed": "Failed to load cables.",
+      "switch_subscribers": "Subscribers",
+      "switch_cables": "Cables"
+    },
+    "form": {
+      "name": "Name",
+      "name_hint": "Panel 1",
+      "area": "Area",
+      "location_note": "Location note",
+      "location_note_hint": "Building entrance",
+      "notes": "Notes",
+      "notes_hint": "Optional notes"
+    },
+    "edit": {
+      "title": "Edit distribution box",
+      "success": "Distribution box updated",
+      "failed": "Failed to update distribution box. Please try again."
+    },
+    "delete": {
+      "title": "Delete distribution box",
+      "message": "Are you sure you want to delete \"{}\"? This action cannot be undone.",
+      "confirm": "Delete",
+      "success": "Distribution box deleted",
+      "failed": "Failed to delete distribution box. Please try again."
+    },
+    "validation": {
+      "name_required": "Enter box name",
+      "area_required": "Area is required",
+      "max_characters": "Max {} characters",
+      "field_max_characters": "{} must be at most {} characters"
     }
   },
   "subscribers": {
@@ -447,8 +535,10 @@
       "load_failed": "Failed to load subscriber details.",
       "section": {
         "location": "Location",
+        "box_cable": "Distribution",
         "subscription": "Subscription",
         "plan": "Plan",
+        "ampere_schedule": "Ampere Schedule",
         "billing_summary": "Billing Summary",
         "pricing_overrides": "Pricing Overrides"
       },

@@ -112,7 +112,16 @@
     "subscribers": "المشتركون",
     "invoices": "الفواتير",
     "expenses": "المصاريف",
-    "areas": "المناطق"
+    "areas": "المناطق",
+    "distribution_boxes": "صناديق التوزيع",
+    "nav": {
+      "dashboard": "الرئيسية",
+      "subscribers": "مشتركون",
+      "invoices": "الفواتير",
+      "expenses": "المصاريف",
+      "areas": "المناطق",
+      "distribution_boxes": "صناديق"
+    }
   },
   "settings": {
     "title": "الإعدادات",
@@ -314,6 +323,8 @@
     "subscribers": "مشتركون",
     "subscriber_count_one": "مشترك واحد",
     "subscriber_count": "{} مشترك",
+    "box_count_one": "صندوق واحد",
+    "box_count": "{} صناديق",
     "add": {
       "title": "إضافة منطقة",
       "submit": "إضافة منطقة",
@@ -327,9 +338,15 @@
       "created": "تاريخ الإنشاء",
       "updated": "تاريخ التحديث",
       "subscribers": "المشتركون",
+      "boxes": "الصناديق",
       "subscribers_section": "المشتركون",
+      "boxes_section": "صناديق التوزيع",
       "no_subscribers": "لا يوجد مشتركون في هذه المنطقة",
-      "load_subscribers_failed": "فشل تحميل المشتركين."
+      "no_boxes": "لا توجد صناديق توزيع في هذه المنطقة",
+      "load_subscribers_failed": "فشل تحميل المشتركين.",
+      "load_boxes_failed": "فشل تحميل صناديق التوزيع.",
+      "switch_subscribers": "مشتركون",
+      "switch_boxes": "صناديق"
     },
     "edit": {
       "title": "تعديل المنطقة",
@@ -347,6 +364,77 @@
       "required": "مطلوب",
       "name_required": "أدخل اسم المنطقة",
       "max_characters": "الحد الأقصى {} حرفاً"
+    }
+  },
+  "distribution_boxes": {
+    "load_failed": "فشل تحميل صناديق التوزيع.",
+    "empty_list": "لم يتم العثور على صناديق توزيع",
+    "created": "أُنشئ {}",
+    "subscriber_count_one": "مشترك واحد",
+    "subscriber_count": "{} مشترك",
+    "cable_count_one": "كابل واحد",
+    "cable_count": "{} كابلات",
+    "box_count_one": "صندوق واحد",
+    "box_count": "{} صناديق",
+    "search": {
+      "title": "البحث في الصناديق",
+      "hint": "البحث في الصناديق...",
+      "hint_name": "البحث باسم الصندوق...",
+      "hint_areas": "البحث في المناطق...",
+      "criteria": {
+        "name": "الاسم",
+        "area": "المنطقة"
+      },
+      "filter_name": "الاسم: {}",
+      "filter_area": "المنطقة: {}"
+    },
+    "add": {
+      "title": "إضافة صندوق توزيع",
+      "submit": "إنشاء",
+      "success": "تم إنشاء صندوق التوزيع.",
+      "failed": "فشل إنشاء صندوق التوزيع."
+    },
+    "details": {
+      "title": "تفاصيل الصندوق",
+      "created": "تاريخ الإنشاء",
+      "area": "المنطقة",
+      "subscribers": "المشتركون",
+      "cables": "الكابلات",
+      "subscribers_section": "المشتركون",
+      "cables_section": "الكابلات",
+      "no_subscribers": "لا يوجد مشتركون في هذا الصندوق",
+      "no_cables": "لا توجد كابلات في هذا الصندوق",
+      "load_subscribers_failed": "فشل تحميل المشتركين.",
+      "load_cables_failed": "فشل تحميل الكابلات.",
+      "switch_subscribers": "مشتركون",
+      "switch_cables": "كابلات"
+    },
+    "form": {
+      "name": "الاسم",
+      "name_hint": "لوحة 1",
+      "area": "المنطقة",
+      "location_note": "ملاحظة الموقع",
+      "location_note_hint": "مدخل المبنى",
+      "notes": "ملاحظات",
+      "notes_hint": "ملاحظات اختيارية"
+    },
+    "edit": {
+      "title": "تعديل صندوق التوزيع",
+      "success": "تم تحديث صندوق التوزيع",
+      "failed": "فشل تحديث صندوق التوزيع. يرجى المحاولة مرة أخرى."
+    },
+    "delete": {
+      "title": "حذف صندوق التوزيع",
+      "message": "هل أنت متأكد من حذف \"{}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حذف",
+      "success": "تم حذف صندوق التوزيع",
+      "failed": "فشل حذف صندوق التوزيع. يرجى المحاولة مرة أخرى."
+    },
+    "validation": {
+      "name_required": "أدخل اسم الصندوق",
+      "area_required": "المنطقة مطلوبة",
+      "max_characters": "الحد الأقصى {} حرفاً",
+      "field_max_characters": "يجب ألا يتجاوز {} {} حرفاً"
     }
   },
   "subscribers": {
@@ -447,8 +535,10 @@
       "load_failed": "فشل تحميل تفاصيل المشترك.",
       "section": {
         "location": "الموقع",
+        "box_cable": "التوزيع",
         "subscription": "الاشتراك",
         "plan": "الخطة",
+        "ampere_schedule": "جدول الأمبير",
         "billing_summary": "ملخص الفوترة",
         "pricing_overrides": "تجاوزات التسعير"
       },

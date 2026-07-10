@@ -26,10 +26,9 @@ class AreaCustomersSection extends ConsumerWidget {
           );
     }
 
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
           Padding(
             padding: EdgeInsets.fromLTRB(
               context.paddingMedium,
@@ -82,7 +81,6 @@ class AreaCustomersSection extends ConsumerWidget {
               onLastPage: filterNotifier.lastPage,
             ),
         ],
-      ),
     );
   }
 }

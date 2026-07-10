@@ -63,4 +63,9 @@ class DistributionBoxNotifier extends _$DistributionBoxNotifier {
     await _distributionBoxService.updateDistributionBox(boxId, request);
     await refresh();
   }
+
+  Future<void> deleteDistributionBox(String boxId) async {
+    await _distributionBoxService.deleteDistributionBox(boxId);
+    await refresh();
+  }
 }

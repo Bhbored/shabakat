@@ -2,9 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
+import 'package:shabakat/domain/entities/ampere_schedule/ampere_schedule.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
+import 'package:shabakat/domain/entities/distribution_box/distribution_box.dart';
 
 import 'subscriber_edit_area_field.dart';
+import 'subscriber_edit_box_field.dart';
 import 'subscriber_edit_dropdown.dart';
 import 'subscriber_edit_form_field.dart';
 import 'subscriber_edit_pricing_section.dart';
@@ -16,6 +19,9 @@ class SubscriberEditForm extends StatelessWidget {
   final TextEditingController nameController;
   final TextEditingController phoneController;
   final TextEditingController addressController;
+  final TextEditingController buildingController;
+  final TextEditingController floorController;
+  final TextEditingController cableNameController;
   final TextEditingController planValueController;
   final TextEditingController priceOverrideController;
   final TextEditingController fixedChargeOverrideController;
@@ -26,13 +32,19 @@ class SubscriberEditForm extends StatelessWidget {
   final CustomerRelation? customerRelation;
   final String? selectedAreaId;
   final String? selectedAreaName;
+  final String? selectedBoxName;
+  final AmpereSchedule? ampereSchedule;
+  final List<AmpereSchedule> ampereSchedules;
+  final bool showAmpereSchedule;
   final bool hasPricingOverride;
   final bool isSaving;
   final ValueChanged<CustomerType> onCustomerTypeChanged;
   final ValueChanged<PlanType> onPlanChanged;
   final ValueChanged<CustomerStatus> onCustomerStatusChanged;
   final ValueChanged<CustomerRelation?> onCustomerRelationChanged;
+  final ValueChanged<AmpereSchedule?> onAmpereScheduleChanged;
   final ValueChanged<Area> onAreaSelected;
+  final ValueChanged<DistributionBox> onBoxSelected;
   final ValueChanged<bool> onPricingOverrideChanged;
   final VoidCallback onSave;
 
@@ -42,6 +54,9 @@ class SubscriberEditForm extends StatelessWidget {
     required this.nameController,
     required this.phoneController,
     required this.addressController,
+    required this.buildingController,
+    required this.floorController,
+    required this.cableNameController,
     required this.planValueController,
     required this.priceOverrideController,
     required this.fixedChargeOverrideController,
@@ -52,13 +67,19 @@ class SubscriberEditForm extends StatelessWidget {
     required this.customerRelation,
     required this.selectedAreaId,
     required this.selectedAreaName,
+    required this.selectedBoxName,
+    required this.ampereSchedule,
+    required this.ampereSchedules,
+    required this.showAmpereSchedule,
     required this.hasPricingOverride,
     required this.isSaving,
     required this.onCustomerTypeChanged,
     required this.onPlanChanged,
     required this.onCustomerStatusChanged,
     required this.onCustomerRelationChanged,
+    required this.onAmpereScheduleChanged,
     required this.onAreaSelected,
+    required this.onBoxSelected,
     required this.onPricingOverrideChanged,
     required this.onSave,
   });
@@ -97,7 +118,39 @@ class SubscriberEditForm extends StatelessWidget {
               label: 'subscribers.form.address'.tr(),
               controller: addressController,
               hint: 'subscribers.form.address_hint'.tr(),
-              validator: SubscriberEditValidators.address,
+              validator: (value) =>
+                  SubscriberEditValidators.optionalMax(value, 500),
+            ),
+            SizedBox(height: context.spaceMedium),
+            SubscriberEditFormField(
+              label: 'subscribers.form.building'.tr(),
+              controller: buildingController,
+              hint: 'subscribers.form.optional'.tr(),
+              validator: (value) =>
+                  SubscriberEditValidators.optionalMax(value, 100),
+            ),
+            SizedBox(height: context.spaceMedium),
+            SubscriberEditFormField(
+              label: 'subscribers.form.floor'.tr(),
+              controller: floorController,
+              hint: 'subscribers.form.optional'.tr(),
+              validator: (value) =>
+                  SubscriberEditValidators.optionalMax(value, 50),
+            ),
+            SizedBox(height: context.spaceMedium),
+            SubscriberEditFormField(
+              label: 'subscribers.form.cable_name'.tr(),
+              controller: cableNameController,
+              hint: 'subscribers.form.optional'.tr(),
+              validator: (value) =>
+                  SubscriberEditValidators.optionalMax(value, 100),
+            ),
+            SizedBox(height: context.spaceMedium),
+            SubscriberEditBoxField(
+              areaId: selectedAreaId,
+              boxName: selectedBoxName,
+              enabled: !isSaving,
+              onBoxSelected: onBoxSelected,
             ),
             SizedBox(height: context.spaceMedium),
             SubscriberEditDropdown<CustomerType>(
@@ -115,6 +168,16 @@ class SubscriberEditForm extends StatelessWidget {
               itemLabel: (e) => e.label,
               onChanged: isSaving ? null : (v) => onPlanChanged(v!),
             ),
+            if (showAmpereSchedule) ...[
+              SizedBox(height: context.spaceMedium),
+              SubscriberEditDropdown<AmpereSchedule?>(
+                label: 'subscribers.form.ampere_schedule'.tr(),
+                value: ampereSchedule,
+                items: [null, ...ampereSchedules],
+                itemLabel: (e) => e?.name ?? 'subscribers.form.none'.tr(),
+                onChanged: isSaving ? null : onAmpereScheduleChanged,
+              ),
+            ],
             SizedBox(height: context.spaceMedium),
             SubscriberEditFormField(
               label: 'subscribers.form.plan_value'.tr(),

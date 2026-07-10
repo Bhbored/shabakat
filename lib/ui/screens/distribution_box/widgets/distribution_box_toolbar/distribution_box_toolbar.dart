@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -71,7 +72,7 @@ class DistributionBoxToolbar extends ConsumerWidget {
               color: colorScheme.onSurface.withValues(alpha: 0.6),
             ),
             title: Text(
-              activeQuery ?? 'Search boxes...',
+              activeQuery ?? 'distribution_boxes.search.hint'.tr(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodyMedium?.copyWith(
@@ -83,7 +84,11 @@ class DistributionBoxToolbar extends ConsumerWidget {
           ),
           SizedBox(height: context.spaceSmall),
           Text(
-            totalCount == 1 ? '1 box' : '$totalCount boxes',
+            totalCount == 1
+                ? 'distribution_boxes.box_count_one'.tr()
+                : 'distribution_boxes.box_count'.tr(
+                    args: [totalCount.toString()],
+                  ),
             style: theme.textTheme.bodySmall?.copyWith(
               color: colorScheme.onSurface.withValues(alpha: 0.6),
             ),

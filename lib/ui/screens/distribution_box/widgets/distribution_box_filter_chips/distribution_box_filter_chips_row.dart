@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -28,10 +29,20 @@ class DistributionBoxFilterChipsRow extends ConsumerWidget {
     final chips = <Widget>[];
 
     if (filter.name != null && filter.name!.trim().isNotEmpty) {
-      chips.add(_FilterChip(label: 'Name: ${filter.name}'));
+      chips.add(
+        _FilterChip(
+          label: 'distribution_boxes.search.filter_name'.tr(
+            args: [filter.name!.trim()],
+          ),
+        ),
+      );
     }
     if (areaName != null) {
-      chips.add(_FilterChip(label: 'Area: $areaName'));
+      chips.add(
+        _FilterChip(
+          label: 'distribution_boxes.search.filter_area'.tr(args: [areaName]),
+        ),
+      );
     }
 
     if (chips.isEmpty) return const SizedBox.shrink();

@@ -204,7 +204,7 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
       case 5:
         return AppBar(
           title: Text(
-            'Distribution Boxes',
+            'tabs.distribution_boxes'.tr(),
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: colorScheme.onSecondary,

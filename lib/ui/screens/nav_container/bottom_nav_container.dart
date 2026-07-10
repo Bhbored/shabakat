@@ -28,37 +28,37 @@ class BottomNavContainer extends StatelessWidget {
         children: [
           BottomNavItem(
             icon: LucideIcons.layoutDashboard,
-            label: 'tabs.dashboard'.tr(),
+            label: 'tabs.nav.dashboard'.tr(),
             isActive: currentIndex == 0,
             onTap: () => onTabChanged(0),
           ),
           BottomNavItem(
             icon: LucideIcons.users,
-            label: 'tabs.subscribers'.tr(),
+            label: 'tabs.nav.subscribers'.tr(),
             isActive: currentIndex == 1,
             onTap: () => onTabChanged(1),
           ),
           BottomNavItem(
             icon: LucideIcons.fileText,
-            label: 'tabs.invoices'.tr(),
+            label: 'tabs.nav.invoices'.tr(),
             isActive: currentIndex == 2,
             onTap: () => onTabChanged(2),
           ),
           BottomNavItem(
             icon: LucideIcons.wallet,
-            label: 'tabs.expenses'.tr(),
+            label: 'tabs.nav.expenses'.tr(),
             isActive: currentIndex == 3,
             onTap: () => onTabChanged(3),
           ),
           BottomNavItem(
             icon: LucideIcons.mapPin,
-            label: 'tabs.areas'.tr(),
+            label: 'tabs.nav.areas'.tr(),
             isActive: currentIndex == 4,
             onTap: () => onTabChanged(4),
           ),
           BottomNavItem(
             icon: LucideIcons.box,
-            label: 'Boxes',
+            label: 'tabs.nav.distribution_boxes'.tr(),
             isActive: currentIndex == 5,
             onTap: () => onTabChanged(5),
           ),

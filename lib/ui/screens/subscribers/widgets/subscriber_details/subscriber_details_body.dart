@@ -31,6 +31,48 @@ class SubscriberDetailsBody extends StatelessWidget {
       customer.fixedChargeOverride != null ||
       customer.tvaOverride != null;
 
+  bool _hasValue(String? value) {
+    final trimmed = value?.trim();
+    return trimmed != null && trimmed.isNotEmpty;
+  }
+
+  bool get _hasBoxOrCable =>
+      _hasValue(customer.boxName) || _hasValue(customer.cableName);
+
+  bool get _hasAmpereSchedule => _hasValue(customer.ampereScheduleName);
+
+  List<String> _addressValues() {
+    final values = <String>[];
+    final area = customer.areaName?.trim();
+
+    if (area != null && area.isNotEmpty) {
+      values.add(area);
+    }
+
+    final parts = <String>[];
+    final address = customer.address?.trim();
+
+    if (address != null && address.isNotEmpty) {
+      parts.add(address);
+    }
+
+    final building = customer.building?.trim();
+    final floor = customer.floor?.trim();
+
+    if (building != null && building.isNotEmpty) {
+      parts.add('subscribers.card.building'.tr(args: [building]));
+    }
+    if (floor != null && floor.isNotEmpty) {
+      parts.add('subscribers.card.floor'.tr(args: [floor]));
+    }
+
+    if (parts.isNotEmpty) {
+      values.add(parts.join(' · '));
+    }
+
+    return values.isEmpty ? ['subscribers.empty_value'.tr()] : values;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -50,16 +92,37 @@ class SubscriberDetailsBody extends StatelessWidget {
                   children: [
                     SubscriberDetailRow(
                       icon: LucideIcons.mapPin,
-                      label: 'subscribers.form.area'.tr(),
-                      value: customer.areaName ?? 'subscribers.empty_value'.tr(),
-                    ),
-                    SubscriberDetailRow(
-                      icon: LucideIcons.home,
                       label: 'subscribers.form.address'.tr(),
-                      value: customer.address ?? 'subscribers.empty_value'.tr(),
+                      value: _addressValues().join('\n'),
                     ),
                   ],
                 ),
+                _hasBoxOrCable
+                    ? Column(
+                        children: [
+                          SizedBox(height: context.spaceMedium),
+                          SubscriberDetailSection(
+                            title: 'subscribers.details.section.box_cable'
+                                .tr(),
+                            children: [
+                              if (_hasValue(customer.boxName))
+                                SubscriberDetailRow(
+                                  icon: LucideIcons.box,
+                                  label: 'subscribers.form.distribution_box'
+                                      .tr(),
+                                  value: customer.boxName!.trim(),
+                                ),
+                              if (_hasValue(customer.cableName))
+                                SubscriberDetailRow(
+                                  icon: LucideIcons.link2,
+                                  label: 'subscribers.form.cable_name'.tr(),
+                                  value: customer.cableName!.trim(),
+                                ),
+                            ],
+                          ),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
                 SizedBox(height: context.spaceMedium),
                 SubscriberDetailSection(
                   title: 'subscribers.details.section.subscription'.tr(),
@@ -99,6 +162,24 @@ class SubscriberDetailsBody extends StatelessWidget {
                     ),
                   ],
                 ),
+                _hasAmpereSchedule
+                    ? Column(
+                        children: [
+                          SizedBox(height: context.spaceMedium),
+                          SubscriberDetailSection(
+                            title: 'subscribers.details.section.ampere_schedule'
+                                .tr(),
+                            children: [
+                              SubscriberDetailRow(
+                                icon: LucideIcons.gauge,
+                                label: 'subscribers.form.ampere_schedule'.tr(),
+                                value: customer.ampereScheduleName!.trim(),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
                 SizedBox(height: context.spaceMedium),
                 SubscriberDetailSection(
                   title: 'subscribers.details.section.billing_summary'.tr(),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
@@ -149,7 +150,7 @@ class _DistributionBoxSearchScreenState
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('Search boxes'),
+        title: Text('distribution_boxes.search.title'.tr()),
       ),
       body: Padding(
         padding: EdgeInsets.all(context.paddingMedium),
@@ -168,8 +169,8 @@ class _DistributionBoxSearchScreenState
                     onChanged: (_) => setState(() {}),
                     decoration: InputDecoration(
                       hintText: isArea
-                          ? 'Search areas...'
-                          : 'Search by box name...',
+                          ? 'distribution_boxes.search.hint_areas'.tr()
+                          : 'distribution_boxes.search.hint_name'.tr(),
                       prefixIcon: IconButton(
                         icon: const Icon(Icons.search, size: 20),
                         onPressed: isArea ? null : _applyNameSearch,
@@ -191,7 +192,7 @@ class _DistributionBoxSearchScreenState
               runSpacing: context.paddingSmall,
               children: [
                 FilterChip(
-                  label: const Text('Name'),
+                  label: Text('distribution_boxes.search.criteria.name'.tr()),
                   selected: _criteria == _SearchCriteria.name,
                   onSelected: (_) {
                     setState(() {
@@ -203,7 +204,7 @@ class _DistributionBoxSearchScreenState
                   },
                 ),
                 FilterChip(
-                  label: const Text('Area'),
+                  label: Text('distribution_boxes.search.criteria.area'.tr()),
                   selected: _criteria == _SearchCriteria.area,
                   onSelected: (_) {
                     setState(() {
@@ -225,7 +226,7 @@ class _DistributionBoxSearchScreenState
                   error: (err, _) {
                     final message = err is ApiException
                         ? err.userMessage
-                        : 'Failed to load areas.';
+                        : 'areas.load_failed'.tr();
                     return Center(
                       child: Text(message, textAlign: TextAlign.center),
                     );
