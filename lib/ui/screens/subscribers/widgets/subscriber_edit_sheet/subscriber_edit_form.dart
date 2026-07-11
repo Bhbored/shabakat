@@ -134,6 +134,7 @@ class SubscriberEditForm extends StatelessWidget {
               label: 'subscribers.form.floor'.tr(),
               controller: floorController,
               hint: 'subscribers.form.optional'.tr(),
+              keyboardType: TextInputType.number,
               validator: (value) =>
                   SubscriberEditValidators.optionalMax(value, 50),
             ),

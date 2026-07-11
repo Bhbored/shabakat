@@ -134,6 +134,7 @@ class _SubscriberAddingScreenState
                 label: 'subscribers.form.floor'.tr(),
                 controller: _floorController,
                 hint: 'subscribers.form.optional'.tr(),
+                keyboardType: TextInputType.number,
                 validator: (value) =>
                     SubscriberEditValidators.optionalMax(value, 50),
               ),
