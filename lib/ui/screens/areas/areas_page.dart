@@ -42,6 +42,9 @@ class _AreasPageState extends ConsumerState<AreasPage> {
       await Future.delayed(const Duration(milliseconds: 100));
       if (mounted) {
         ref.read(customerFilterProvider.notifier).clearFilter();
+        // for (var area in DataSeeder.areas()) {
+        //   await ref.read(areaProvider.notifier).createArea(area);
+        // }
       }
     });
     super.initState();

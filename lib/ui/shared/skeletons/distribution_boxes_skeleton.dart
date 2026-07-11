@@ -38,22 +38,31 @@ class DistributionBoxesSkeleton extends StatelessWidget {
           children: [
             const _DistributionBoxesToolbarSkeleton(),
             SizedBox(height: context.spaceSmall),
-            Expanded(
-              child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: context.paddingMedium),
-                itemCount: _mockBoxes.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: context.spaceSmall),
-                    child: DistributionBoxCard(box: _mockBoxes[index]),
-                  );
-                },
-              ),
-            ),
+            const Expanded(child: DistributionBoxesListSkeleton()),
           ],
         ),
       ),
+    );
+  }
+}
+
+class DistributionBoxesListSkeleton extends StatelessWidget {
+  const DistributionBoxesListSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: context.paddingMedium),
+      itemCount: DistributionBoxesSkeleton._itemCount,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: context.spaceSmall),
+          child: DistributionBoxCard(
+            box: DistributionBoxesSkeleton._mockBoxes[index],
+          ),
+        );
+      },
     );
   }
 }
