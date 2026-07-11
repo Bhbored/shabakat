@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/domain/entities/audit/audit_log.dart';
-import 'package:shabakat/ui/screens/audit/widgets/audit_log_card/audit_log_labels.dart';
 import 'package:shabakat/ui/screens/audit/widgets/audit_log_details/audit_log_details_context_grid.dart';
 import 'package:shabakat/ui/screens/audit/widgets/audit_log_details/audit_log_details_hero.dart';
 import 'package:shabakat/ui/screens/audit/widgets/audit_log_details/audit_log_event_data_section.dart';
@@ -15,7 +15,7 @@ class AuditLogDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final statusColor = AuditLogLabels.statusColor(log.status, colorScheme);
+    final statusColor = log.status.statusColor;
 
     return Scaffold(
       body: CustomScrollView(
@@ -37,7 +37,7 @@ class AuditLogDetailsScreen extends StatelessWidget {
                 bottom: context.paddingSmall,
               ),
               title: Text(
-                AuditLogLabels.actionLabel(log.action),
+                log.action.label,
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: colorScheme.onSurface,

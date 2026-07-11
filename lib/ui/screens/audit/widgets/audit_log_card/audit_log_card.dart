@@ -7,8 +7,6 @@ import 'package:shabakat/domain/entities/audit/audit_log.dart';
 import 'package:shabakat/ui/screens/audit/subscreens/audit_log_details_screen.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
-import 'audit_log_labels.dart';
-
 class AuditLogCard extends StatelessWidget {
   final AuditLog log;
 
@@ -26,8 +24,8 @@ class AuditLogCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final statusColor = AuditLogLabels.statusColor(log.status, colorScheme);
-    final entityLabel = AuditLogLabels.entityTypeLabel(log.entityType);
+    final statusColor = log.status.statusColor;
+    final entityLabel = log.entityType?.label;
     final email = log.userEmail?.trim();
 
     final footerParts = <String>[
@@ -55,7 +53,7 @@ class AuditLogCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _ActionIcon(
-                        icon: AuditLogLabels.actionIcon(log.action),
+                        icon: log.action.icon,
                         color: colorScheme.primary,
                       ),
                       SizedBox(width: context.paddingSmall),
@@ -78,15 +76,13 @@ class AuditLogCard extends StatelessWidget {
                               runSpacing: context.paddingSmall * 0.5,
                               children: [
                                 _CompactChip(
-                                  label: AuditLogLabels.actionLabel(log.action),
+                                  label: log.action.label,
                                   color: colorScheme.primary,
                                 ),
                                 _CompactChip(
-                                  label: AuditLogLabels.statusLabel(log.status),
+                                  label: log.status.label,
                                   color: statusColor,
-                                  icon: log.status == AuditLogStatus.success
-                                      ? LucideIcons.checkCircle2
-                                      : LucideIcons.xCircle,
+                                  icon: log.status.icon,
                                 ),
                               ],
                             ),

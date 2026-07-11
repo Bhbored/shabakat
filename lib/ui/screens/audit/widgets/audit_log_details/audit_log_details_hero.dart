@@ -4,7 +4,6 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/themes/controls_themes.dart';
 import 'package:shabakat/domain/entities/audit/audit_log.dart';
-import 'package:shabakat/ui/screens/audit/widgets/audit_log_card/audit_log_labels.dart';
 
 class AuditLogDetailsHeroBackground extends StatelessWidget {
   final Color statusColor;
@@ -82,14 +81,11 @@ class AuditLogDetailsSummary extends StatelessWidget {
             runSpacing: context.paddingSmall * 0.5,
             children: [
               _AuditLogDetailsChip(
-                label: AuditLogLabels.statusLabel(log.status),
+                label: log.status.label,
                 color: statusColor,
-                icon: log.status == AuditLogStatus.success
-                    ? LucideIcons.checkCircle2
-                    : LucideIcons.xCircle,
+                icon: log.status.icon,
               ),
-              if (AuditLogLabels.entityTypeLabel(log.entityType)
-                  case final label?)
+              if (log.entityType?.label case final label?)
                 _AuditLogDetailsChip(
                   label: label,
                   color: colorScheme.primary,

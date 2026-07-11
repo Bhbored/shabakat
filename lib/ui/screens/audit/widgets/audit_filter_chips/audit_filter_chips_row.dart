@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/network/dto/request/audit/audit_log_filter_request.dart';
 import 'package:shabakat/data/providers/audit/audit_log_filter_provider.dart';
-import 'package:shabakat/ui/screens/audit/widgets/audit_log_card/audit_log_labels.dart';
 
 import 'audit_filter_chip.dart';
 
@@ -37,8 +37,8 @@ class AuditFilterChipsRow extends ConsumerWidget {
     if (filter.action != null) {
       chips.add(
         AuditFilterChip(
-          icon: AuditLogLabels.actionIcon(filter.action!),
-          label: AuditLogLabels.actionLabel(filter.action!),
+          icon: filter.action!.icon,
+          label: filter.action!.label,
           color: colorScheme.primary,
         ),
       );
@@ -46,9 +46,9 @@ class AuditFilterChipsRow extends ConsumerWidget {
     if (filter.status != null) {
       chips.add(
         AuditFilterChip(
-          icon: AuditLogLabels.statusIcon(filter.status!),
-          label: AuditLogLabels.statusLabel(filter.status!),
-          color: AuditLogLabels.statusColor(filter.status!, colorScheme),
+          icon: filter.status!.icon,
+          label: filter.status!.label,
+          color: filter.status!.statusColor,
         ),
       );
     }
