@@ -1,559 +1,342 @@
 # Offline Mode Migration Plan
 
-> Living document — update as decisions are made and phases complete.
+> **Scope:** Read-only offline using the Drift tables already in `lib/infrastructor/`.
 > Last updated: 2026-07-11
 
 ---
 
-## 1. Goals & Non-Goals
+## 1. What you decided
 
-### Goals (v1)
-
-- [ ] **Read offline** — core screens show last-synced data when there is no network
-- [ ] **Write queue** — create/update/delete operations are queued locally and flushed on reconnect
-- [ ] **Transparent repo layer** — providers call repositories; repositories choose local vs remote
-- [ ] **Filter parity (partial)** — existing filter providers keep working; offline supports a documented subset
-- [ ] **Stale-data UX** — user can tell when data is cached and when last sync happened
-
-### Non-Goals (v1)
-
-- Real-time multi-device sync or conflict UI
-- Full offline dashboard aggregates (cache last response only)
-- Offline audit log browsing beyond cached pages
-- Offline auth for new users (login still requires network)
-- Migrating every entity in one release
-
-### Open decisions
-
-| # | Question | Options | Decision |
-|---|----------|---------|----------|
-| D1 | Offline write scope | Read-only first vs queued writes from day one | _TBD_ |
-| D2 | Conflict resolution | Server-wins / local-wins / last-write-wins | _TBD_ — recommend **server-wins** for v1 |
-| D3 | Auth grace period | Block app when token expired offline vs allow read-only | _TBD_ |
-| D4 | Bulk ops offline (suspend customers) | Queue / online-only | _TBD_ — recommend **online-only** for v1 |
-| D5 | paymentFilter offline | Denormalize columns / online-only | _TBD_ — recommend **online-only** for v1 |
-
----
-
-## 2. Current Architecture (Baseline)
-
-```
-UI (ConsumerWidget)
-  → Riverpod AsyncNotifier          lib/data/providers/
-    → Service                       lib/core/network/services/
-      → ApiExecutor → DioClient     lib/core/network/client/
-        → REST API
-          → Response DTO → Mapper → Domain Entity
-```
-
-**What exists today:**
-
-| Piece | Status |
+| Topic | Choice |
 |-------|--------|
-| Domain entities + DTO mappers | ✅ |
-| Riverpod list/filter/pagination providers | ✅ |
-| Drift schema (`infrastructor/`) | ⚠️ Scaffolded, not wired |
-| Repository layer | ❌ |
-| Local data sources / DAOs | ❌ |
-| Sync engine / outbox | ❌ |
-| Connectivity gating reads | ❌ — snackbar only via `internetConnectionProvider` |
+| Offline mode | **Read-only** — browse cached data; all writes need network |
+| Cache strategy | **Snapshot-on-fetch** — upsert to Drift after successful API reads |
+| Writes offline | Block in UI + keep calling `*Service` only when online |
+| Filter DTOs | **Unchanged** — repo translates same `*FilterRequest` to Drift when offline |
 
-**Target architecture:**
+---
+
+## 2. What is in the database today
+
+Registered in `AppDatabase` (`schemaVersion: 1`):
+
+| Drift table | File | Maps to domain |
+|-------------|------|----------------|
+| `Areas` | `area_table.dart` | `Area` |
+| `DistributionBoxes` | `distribution_box_table.dart` | `DistributionBox` |
+| `Customers` | `customer_table.dart` | `Customer` (no nested `invoices`) |
+| `Invoices` | `invoice_table.dart` | `Invoice` (no nested `payments`) |
+| `Payments` | `payment_table.dart` | `Payment` |
+| `ExpensesTable` | `expenses_table.dart` | `Expense` |
+| `MeterReadings` | `meter_reading_table.dart` | `MeterReading` + `customerId` for local queries |
+
+**Not cached (no table — online only in v1):**
+
+- `AmpereSchedule`, `AuditLog`, `Company`, `CompanyPreferences`, `Dashboard`
+
+---
+
+## 3. Table reference (as built)
+
+### `Areas`
+
+| Column | Type | Index |
+|--------|------|-------|
+| `id` | PK | |
+| `createdAt`, `updatedAt` | DateTime | |
+| `name` | text | `idx_area_name` |
+| `customerCount` | int, default 0 | |
+
+> Domain also has `companyId` — not on table; OK for read-only cache if single-tenant.
+
+---
+
+### `DistributionBoxes`
+
+| Column | Type | Index |
+|--------|------|-------|
+| `id` | PK | |
+| `name` | text | |
+| `areaId` | text → `Areas.id` | `idx_distribution_box_area_id` |
+| `areaName` | text | |
+| `locationNote`, `notes` | text? | |
+| `customerCount` | int, default 0 | |
+| `createdAt` | DateTime | |
+
+---
+
+### `Customers`
+
+| Column | Type | Index |
+|--------|------|-------|
+| `id` | PK | |
+| `createdAt`, `updatedAt` | DateTime | |
+| `name` | text | `idx_customer_name` |
+| `totalBilled`, `totalPaid`, `totalOutstanding` | real? | |
+| `phone` | text? | `idx_customer_phone` |
+| `address`, `building`, `floor`, `cableName` | text? | |
+| `boxId` | text? → `DistributionBoxes.id` | `idx_customer_box_id` |
+| `boxName` | text? | |
+| `ampereScheduleId`, `ampereScheduleName` | text? | |
+| `areaName` | text? | |
+| `areaId` | text? → `Areas.id` | `idx_customer_area_id` |
+| `customerType` | text | |
+| `customerRelation` | text? | `idx_customer_customer_relation` |
+| `subscriptionDate` | DateTime | |
+| `priceOverride`, `fixedChargeOverride`, `tvaOverride` | real? | |
+| `hasPricingOverride` | bool, default false | |
+| `customerStatus` | text, default `'active'` | `idx_customer_customer_status` |
+| `plan` | text | `idx_customer_plan` |
+| `planValue` | real | |
+
+**Filter note:** `CustomerFilterRequest.paymentFilter` has **no column** — treat as **online-only** or filter via `totalOutstanding` heuristics later.
+
+---
+
+### `Invoices`
+
+| Column | Type | Index |
+|--------|------|-------|
+| `id` | PK | |
+| `createdAt`, `updatedAt` | DateTime | |
+| `customerId` | text → `Customers.id` | `idx_invoice_customer_id` |
+| `customerName` | text? | |
+| `invoiceNumber` | int | |
+| `issueDate` | DateTime | `idx_invoice_issue_date` |
+| `dueDate` | DateTime | `idx_invoice_due_date` |
+| `fixedCharge`, `tva`, `totalAmount`, `paidAmount`, `amountDue` | real | |
+| `billedConsumption` | real? | |
+| `invoiceStatus` | text, default `'unpaid'` | `idx_invoice_invoice_status` |
+
+---
+
+### `Payments`
+
+| Column | Type | Index |
+|--------|------|-------|
+| `id` | PK | |
+| `createdAt`, `updatedAt` | DateTime | |
+| `customerId` | text → `Customers.id` | `idx_payment_customer_id` |
+| `invoiceId` | text → `Invoices.id` | `idx_payment_invoice_id` |
+| `amount` | real | |
+| `paymentMethod` | text | |
+| `paymentDate` | DateTime | `idx_payment_payment_date` |
+| `notes` | text? | |
+
+> Domain has `companyId` — not on table.
+
+---
+
+### `ExpensesTable`
+
+| Column | Type | Index |
+|--------|------|-------|
+| `id` | PK | |
+| `createdAt`, `updatedAt` | DateTime | |
+| `expenseType` | text | `idx_expense_expense_type` |
+| `expenseDate` | DateTime | `idx_expense_expense_date` |
+| `amount` | real | |
+| `label`, `notes` | text? | |
+
+---
+
+### `MeterReadings`
+
+| Column | Type | Index |
+|--------|------|-------|
+| `id` | PK | |
+| `customerId` | text → `Customers.id` | `idx_meter_reading_customer_id` |
+| `readingValue` | real | |
+| `consumption` | real? | |
+| `createdAt` | DateTime | `idx_meter_reading_created_at` |
+
+> `customerId` is for local storage; domain `MeterReading` omits it — set in row mapper from provider arg.
+
+---
+
+## 4. FK order (create / upsert)
 
 ```
-UI + Filter Providers (unchanged contract)
-  → Riverpod Notifiers
-    → Repository (domain interface)
-      ├── RemoteDataSource  (wraps existing *Service)
-      ├── LocalDataSource   (Drift DAOs)
-      └── SyncCoordinator   (snapshot upsert + outbox flush)
+Areas
+  └── DistributionBoxes
+        └── Customers
+              ├── Invoices
+              │     └── Payments
+              └── MeterReadings
+ExpensesTable  (standalone)
 ```
 
----
-
-## 3. Entity Sync Matrix
-
-| Entity | Provider(s) | Drift table | Schema complete? | Tier | Offline read | Offline write | Snapshot trigger |
-|--------|-------------|-------------|-------------------|------|--------------|---------------|------------------|
-| **Area** | `areaProvider` | ❌ missing | — | 1 Reference | ✅ target | ❌ v1 | Login + reconnect |
-| **DistributionBox** | `distributionBoxProvider` | ❌ missing | — | 1 Reference | ✅ target | ❌ v1 | Login + reconnect |
-| **AmpereSchedule** | `ampereScheduleProvider` | ❌ missing | — | 1 Reference | ✅ target | ❌ v1 | Login + reconnect |
-| **Company / preferences** | `companyProvider` | `CompanyPreferencesTable` | ⚠️ partial | 1 Reference | ✅ target | ❌ v1 | Login |
-| **Customer** | `customerProvider`, `singleCustomerProvider` | `Customers` | ⚠️ partial | 2 Core | ✅ target | ✅ target | Cache-on-fetch + reconnect |
-| **Invoice** | `invoiceProvider`, `singleInvoiceProvider` | `Invoices` | ⚠️ partial | 2 Core | ✅ target | ✅ target | Cache-on-fetch |
-| **Payment** | via invoice service | `Payments` | ⚠️ partial | 2 Core | ✅ target | ⚠️ via invoice pay | With invoice sync |
-| **Expense** | `expenseProvider`, `singleExpenseProvider` | `ExpensesTable` | ❌ **mismatch** | 2 Core | ✅ target | ✅ target | Cache-on-fetch |
-| **OtherExpenses** | nested in expense | `OtherExpensesTable` | ⚠️ legacy? | — | Review | — | May deprecate |
-| **MeterReading** | `meterReadingProvider` | ❌ missing | — | 2 Core | ✅ target | ✅ target | With customer detail |
-| **AuditLog** | `auditLogProvider` | ❌ missing | — | 3 Optional | ⚠️ cached pages | ❌ | Cache-on-fetch only |
-| **Dashboard** | `dashboardProvider` | ❌ | — | 3 Optional | ⚠️ last snapshot | ❌ | Last successful API response |
-
-**Tier legend:**
-
-- **Tier 1 — Reference:** small, rarely changes, needed for forms/dropdowns
-- **Tier 2 — Core transactional:** main business data, paginated lists
-- **Tier 3 — Derived / heavy:** aggregates or append-only logs
+Upsert reference data before customers: **Areas → DistributionBoxes → Customers**.
 
 ---
 
-## 4. Drift Schema Plan
+## 5. Provider → table coverage
 
-### 4.1 Conventions
-
-- Drift row classes use `@DataClassName('XxxRow')` — **never** collide with domain entity names (fix existing `Customer`, `Invoice`, `Expenses` collisions)
-- Every cached table gets sync metadata columns (see §4.3)
-- Enums stored as `TEXT` matching API string values (same as JSON serialization)
-- Denormalized display fields allowed (`areaName`, `boxName`, `customerName`) for offline list rendering without joins to uncached tables
-- Migrations: bump `schemaVersion`, implement `onUpgrade` — never rely on `onCreate` only after v1 ships
-
-### 4.2 Existing tables — gaps vs domain
-
-#### `Customers` → domain `Customer`
-
-| Domain field | Drift today | Action |
-|--------------|-------------|--------|
-| id, createdAt, updatedAt, companyId, name, phone, address | ✅ | keep |
-| customerType, subscriptionDate, customerStatus, plan, planValue | ✅ (as `plan`) | keep |
-| building, floor, cableName | ❌ | **add** |
-| boxId, boxName, areaId, areaName | ❌ | **add** + index |
-| ampereScheduleId, ampereScheduleName | ❌ | **add** |
-| customerRelation | ❌ | **add** |
-| priceOverride, fixedChargeOverride, tvaOverride, hasPricingOverride | ❌ | **add** |
-| totalBilled, totalPaid, totalOutstanding | ❌ | **add** (denormalized for lists) |
-| paymentFilter helpers | ❌ | **add** if D5 chooses denormalize: `hasUnpaidInvoice`, `lastPaymentDate` |
-| invoices (nested) | ❌ | separate `Invoices` table, not embedded |
-
-#### `Invoices` → domain `Invoice`
-
-| Domain field | Drift today | Action |
-|--------------|-------------|--------|
-| id, createdAt, updatedAt, companyId, customerId, dates, amounts, invoiceStatus | ✅ mostly | keep |
-| invoiceNumber | ❌ | **add** |
-| customerName | ❌ | **add** (denormalized) |
-| billedConsumption | ❌ | **add** |
-| payments (nested) | ❌ | separate `Payments` table |
-
-#### `ExpensesTable` → domain `Expense`
-
-| Domain field | Drift today | Action |
-|--------------|-------------|--------|
-| id, createdAt, updatedAt, expenseDate, notes | ✅ | keep |
-| expenseType, amount, label | ❌ | **add** — current table has legacy `fuelExpense` / `maintenanceExpenses` / `employeesExpenses` columns that **do not match** domain model; **replace schema** |
-
-#### New tables required
-
-| Table | Key columns | FK |
-|-------|-------------|-----|
-| `Areas` | id, companyId, name, customerCount, sync cols | → AppUsers |
-| `DistributionBoxes` | id, name, areaId, areaName, locationNote, notes, customerCount, sync cols | → Areas |
-| `AmpereSchedules` | id, name, hoursPerDay, pricePerAmp, customerCount, sync cols | — |
-| `MeterReadings` | id, customerId, readingValue, consumption, createdAt, sync cols | → Customers |
-| `AuditLogs` | id, action, status, summary, entityType, entityId, detailsJson, userEmail, createdAt, sync cols | — |
-| `DashboardSnapshots` | id, fetchedAt, summaryJson | — |
-| `Outbox` | id, entityType, operation, payloadJson, createdAt, retryCount, lastError | — |
-| `SyncState` | entityType, lastSyncedAt, cursor/page | — |
-
-### 4.3 Sync metadata columns (all cached entity tables)
-
-```dart
-// Add to every entity table
-DateTimeColumn get remoteUpdatedAt => dateTime().nullable()();
-DateTimeColumn get syncedAt => dateTime().nullable()();
-BoolColumn get isDirty => boolean().withDefault(const Constant(false))();
-DateTimeColumn get deletedAt => dateTime().nullable()(); // tombstone for server deletes
-```
-
-### 4.4 Outbox table
-
-| Column | Purpose |
-|--------|---------|
-| `id` | Local UUID |
-| `entityType` | e.g. `customer`, `invoice` |
-| `entityId` | Remote ID if known, local temp ID otherwise |
-| `operation` | `create` / `update` / `delete` |
-| `payloadJson` | Serialized request DTO |
-| `createdAt` | Queue time |
-| `retryCount` | Flush retries |
-| `lastError` | Last failure message |
+| Provider | Offline read from | Online-only when no cache |
+|----------|-------------------|---------------------------|
+| `areaProvider` | `Areas` | empty state |
+| `distributionBoxProvider` | `DistributionBoxes` | empty state |
+| `customerProvider` / `singleCustomerProvider` | `Customers` | empty state |
+| `invoiceProvider` / `singleInvoiceProvider` | `Invoices` (+ optional join `Payments`) | empty state |
+| `expenseProvider` / `singleExpenseProvider` | `ExpensesTable` | empty state |
+| `meterReadingProvider` | `MeterReadings` WHERE `customerId` | empty state |
+| `ampereScheduleProvider` | — | always needs network |
+| `auditLogProvider` | — | always needs network |
+| `dashboardProvider` | — | always needs network |
+| `companyProvider` / `companyProfileProvider` | — | always needs network |
 
 ---
 
-## 5. Repository Layer
-
-### 5.1 File layout (proposed)
+## 6. Architecture (minimal)
 
 ```
-lib/
-  domain/
-    repositories/
-      customer_repository.dart      # abstract interface
-      invoice_repository.dart
-      ...
-  data/
-    repositories/
-      customer_repository_impl.dart
-    sources/
-      remote/
-        customer_remote_source.dart   # wraps CustomerService
-      local/
-        customer_local_source.dart    # Drift DAO queries
-    sync/
-      sync_coordinator.dart
-      outbox_processor.dart
+List/detail provider
+  → Repository.getX(filter)
+       if online  → Service → DTO → Entity → upsert Drift → return
+       if offline → Drift DAO → row mapper → Entity → return (isFromCache: true)
+
+Mutation on notifier
+  → if offline: show message, return
+  → if online:  Service → refresh() (which re-caches via repo read path)
 ```
 
-### 5.2 Repository contract example
+**Still TODO (not in schema yet):**
 
-```dart
-abstract class CustomerRepository {
-  Future<PagedResult<Customer>> getCustomers(CustomerFilterRequest filter);
-  Future<Customer?> getById(String id);
-  Future<void> create(CreateCustomerRequest request);
-  Future<void> update(String id, UpdateCustomerRequest request);
-  Future<void> delete(String id);
-  Future<SuspendCustomersResponse> suspend(SuspendCustomersRequest request);
-}
-```
+- Wire `AppDatabase` Riverpod provider
+- DAOs / local sources per table above
+- Row mappers (`Customer` drift row ↔ domain `Customer`) — rename `@DataClassName` to `*Row` to avoid collisions
+- `CacheCoordinator.upsertAll()` after each online fetch
 
-`PagedResult<T>` replaces raw `List<T>` + separate pagination provider updates inside the repo impl (notifier still updates pagination provider from the result).
-
-### 5.3 Read path
-
-**Online:**
-
-1. Call remote source with filter
-2. Upsert response rows into Drift (snapshot)
-3. Update `SyncState` for entity
-4. Return `PagedResult` to provider
-
-**Offline:**
-
-1. Translate `CustomerFilterRequest` → Drift query (see §6)
-2. `COUNT(*)` for pagination meta
-3. Return `PagedResult` with `isFromCache: true`
-
-### 5.4 Write path
-
-**Online:** remote call → upsert local → return
-
-**Offline:**
-
-1. Apply optimistic update to local DB (`isDirty = true`)
-2. Insert outbox row
-3. Provider refreshes from local
-4. On reconnect: `OutboxProcessor` flushes FIFO, server response replaces local row, clears `isDirty`
-
-### 5.5 Provider wiring change
-
-Minimal diff per list provider:
-
-```dart
-// Before
-CustomerService get _service => ref.read(customerServiceProvider);
-
-// After
-CustomerRepository get _repo => ref.read(customerRepositoryProvider);
-```
-
-Filter providers, pagination providers, and UI filter screens **stay unchanged**.
+**Skip for v1:** `Outbox`, `SyncState`, `isDirty`, cache metadata columns — add only if you need `lastSyncedAt` UI later.
 
 ---
 
-## 6. Snapshot Policy
+## 7. Offline filters (only for tables you have)
 
-### 6.1 Triggers
+### Customer → `Customers`
 
-| Trigger | Action |
-|---------|--------|
-| **Login success (online)** | Bootstrap Tier 1: areas, boxes, ampere schedules, company preferences |
-| **App resume (online)** | If last sync > N minutes, refresh Tier 1 |
-| **Connectivity restored** | Flush outbox → refresh active list filters → bootstrap Tier 1 |
-| **Successful API list fetch** | Upsert returned page into local DB (cache-as-you-go) |
-| **Successful API detail fetch** | Upsert single entity + related rows (e.g. customer + meter readings) |
-| **Manual pull-to-refresh** | Force remote fetch + upsert (same as online read path) |
+| Filter field | Offline | Drift |
+|--------------|---------|-------|
+| `name` | ✅ | `LIKE` on `name` |
+| `phone` | ✅ | `LIKE` on `phone` |
+| `areaId` | ✅ | `areaId = ?` |
+| `boxId` | ✅ | `boxId = ?` |
+| `planType` | ✅ | `plan = ?` |
+| `customerRelation` | ✅ | `customerRelation = ?` |
+| `customerStatus` | ✅ | `customerStatus = ?` |
+| `paymentFilter` | ❌ | no column — online-only |
+| pagination | ✅ | `COUNT` + `LIMIT/OFFSET` |
 
-### 6.2 What is NOT a full snapshot
+### Invoice → `Invoices`
 
-Do **not** attempt to download the entire server database on login. Paginated cache-as-you-go matches current UX and scales better.
+| Filter field | Offline | Drift |
+|--------------|---------|-------|
+| `customerId` | ✅ | `customerId = ?` |
+| `invoiceStatus` | ✅ | `invoiceStatus = ?` |
+| `issueDateFrom` / `issueDateTo` | ✅ | range on `issueDate` |
+| pagination | ✅ | `COUNT` + `LIMIT/OFFSET` |
 
-Optional warm sync: prefetch page 1 of customers/invoices with default filter on login.
+### Expense → `ExpensesTable`
 
-### 6.3 Stale data UX
+| Filter field | Offline | Drift |
+|--------------|---------|-------|
+| `dateFrom` / `dateTo` | ✅ | range on `expenseDate` |
+| `expenseType` | ✅ | `expenseType = ?` |
+| pagination | ✅ | `COUNT` + `LIMIT/OFFSET` |
 
-- Global or per-screen banner when `internetConnectionProvider == false`
-- Show `lastSyncedAt` from `SyncState` on list screens
-- Detail screens: indicate if entity has pending outbox writes (`isDirty`)
+### DistributionBox → `DistributionBoxes`
 
----
+| Filter field | Offline | Drift |
+|--------------|---------|-------|
+| `areaId` | ✅ | `areaId = ?` |
+| `name` | ✅ | `LIKE` on `name` |
+| pagination | ✅ | `COUNT` + `LIMIT/OFFSET` |
 
-## 7. Filter Strategy
+### Area / MeterReading
 
-**Principle:** keep existing `*FilterRequest` DTOs as the query contract. Repository translates to API params (online) or Drift queries (offline).
-
-Implement per entity: `lib/data/sources/local/queries/customer_filter_query.dart`
-
-Legend: ✅ supported offline · ⚠️ degraded · ❌ online-only
-
-### 7.1 Customer (`CustomerFilterRequest`)
-
-| Field | Online | Offline v1 | Drift approach |
-|-------|--------|------------|----------------|
-| `name` | API | ✅ | `WHERE name LIKE '%?%'` |
-| `phone` | API | ✅ | `WHERE phone LIKE '%?%'` |
-| `areaId` | API | ✅ | `WHERE areaId = ?` (needs column) |
-| `boxId` | API | ✅ | `WHERE boxId = ?` (needs column) |
-| `planType` | API | ✅ | `WHERE plan = ?` |
-| `customerRelation` | API | ✅ | `WHERE customerRelation = ?` |
-| `customerStatus` | API | ✅ | `WHERE customerStatus = ?` |
-| `paymentFilter` | API | ❌ | Requires denormalized columns — defer (D5) |
-| `pageNumber` / `pageSize` | API meta | ✅ | `LIMIT/OFFSET` + local `COUNT(*)` |
-
-**UI when offline + paymentFilter active:** clear filter or show "requires connection" chip.
-
-### 7.2 Invoice (`InvoiceFilterRequest`)
-
-| Field | Online | Offline v1 | Drift approach |
-|-------|--------|------------|----------------|
-| `customerId` | API | ✅ | `WHERE customerId = ?` |
-| `invoiceStatus` | API | ✅ | `WHERE invoiceStatus = ?` |
-| `issueDateFrom` | API | ✅ | `WHERE issueDate >= ?` |
-| `issueDateTo` | API | ✅ | `WHERE issueDate <= ?` |
-| pagination | API meta | ✅ | local COUNT + LIMIT/OFFSET |
-
-### 7.3 Expense (`ExpenseFilterRequest`)
-
-| Field | Online | Offline v1 | Drift approach |
-|-------|--------|------------|----------------|
-| `dateFrom` | API | ✅ | `WHERE expenseDate >= ?` |
-| `dateTo` | API | ✅ | `WHERE expenseDate <= ?` |
-| `expenseType` | API | ✅ | `WHERE expenseType = ?` |
-| pagination | API meta | ✅ | local COUNT + LIMIT/OFFSET |
-
-### 7.4 DistributionBox (`DistributionBoxFilterRequest`)
-
-| Field | Online | Offline v1 | Drift approach |
-|-------|--------|------------|----------------|
-| `areaId` | API | ✅ | `WHERE areaId = ?` |
-| `name` | API | ✅ | `WHERE name LIKE '%?%'` |
-| pagination | API meta | ✅ | local COUNT + LIMIT/OFFSET |
-
-### 7.5 AuditLog (`AuditLogFilterRequest`)
-
-| Field | Online | Offline v1 | Drift approach |
-|-------|--------|------------|----------------|
-| `action` | API | ⚠️ | Only on cached pages |
-| `status` | API | ⚠️ | Only on cached pages |
-| `createdFrom` / `createdTo` | API | ⚠️ | Drift query on cached rows |
-| pagination | API infinite scroll | ⚠️ | Return cached pages; no fetch beyond cache offline |
-
-**Note:** `auditLogProvider` uses append/load-more — offline returns what is cached; no new pages.
-
-### 7.6 Non-paginated lists
-
-| Provider | Offline v1 |
-|----------|------------|
-| `areaProvider` | ✅ full local table |
-| `ampereScheduleProvider` | ✅ full local table |
-| `meterReadingProvider` | ✅ by customerId from local |
-
-### 7.7 Client-side search today
-
-| Screen | Current behavior | Offline v1 |
-|--------|------------------|------------|
-| `area_selecting_screen` | Client filter on loaded list | ✅ works if areas cached |
-| `box_selecting_screen` | Debounced server search | ✅ local LIKE on cached boxes |
-| `subscribers_search_screen` | Server via filter provider | ✅ via repo offline branch |
+- **Area:** full table read (no filter DTO today)
+- **MeterReading:** `WHERE customerId = ?` ORDER BY `createdAt` DESC
 
 ---
 
-## 8. Sync & Conflict Rules
+## 8. Snapshot triggers
 
-### 8.1 v1 defaults (recommended)
+| When | What to upsert |
+|------|----------------|
+| Login (online) | `Areas`, `DistributionBoxes` |
+| Any successful list API call | That entity's returned page |
+| Customer detail fetch | `Customers` row + `MeterReadings` for that id |
+| Invoice detail fetch | `Invoices` row + related `Payments` |
+| Connectivity restored | Re-fetch current screen's provider |
 
-| Scenario | Rule |
-|----------|------|
-| Server delete while offline | On sync, apply tombstone (`deletedAt`) locally |
-| Local edit + server edit same entity | **Server wins** — overwrite local, notify user if `isDirty` was true |
-| Local create offline | Temp local ID → replace with server ID on flush |
-| Flush failure | Keep in outbox, increment `retryCount`, surface error after N retries |
-| Partial page cache | Acceptable — offline shows "partial data" if `totalCount` > cached count |
-
-### 8.2 Connectivity source
-
-Use existing `internetConnectionProvider` / `InternetConnectionHelper` — repository reads connectivity via injected `Ref` or dedicated `ConnectivityService`.
+No full-database download — cache-as-you-go only.
 
 ---
 
-## 9. Migration Phases
+## 9. UI rules (read-only)
 
-### Phase 0 — Planning & decisions ✅ (this doc)
-
-- [x] Document baseline architecture
-- [ ] Resolve open decisions D1–D5
-- [ ] Review with team / self
-
-**Acceptance:** all open decisions have a row in §1 filled in.
+- Banner when offline: **"Showing saved data"**
+- Disable: add/edit/delete subscriber, pay invoice, add expense, meter reading CRUD
+- `ampereScheduleProvider` screens: show online-required message
+- Pull-to-refresh: online only
 
 ---
 
-### Phase 1 — Drift infrastructure
+## 10. Implementation order
 
-- [ ] Wire `AppDatabase` via `@Riverpod` provider
-- [ ] Rename Drift data classes (`CustomerRow`, etc.)
-- [ ] Align schema with domain (§4.2) — schema version 2
-- [ ] Implement `onUpgrade` migration from v1
-- [ ] Add sync metadata columns + `Outbox` + `SyncState` tables
-- [ ] Row mappers: `CustomerRow ↔ Customer` (separate from DTO mappers)
+### Step 1 — Wire DB
+- [ ] `appDatabaseProvider` → `AppDatabase()`
+- [ ] Run / verify `database.g.dart` codegen
 
-**Acceptance:** app opens DB, migrations run, unit test inserts/reads one row.
+### Step 2 — Row mappers
+- [ ] One mapper file per table: drift row → domain entity
+- [ ] Rename `@DataClassName('Customer')` → `'CustomerRow'` (etc.) when ready
 
----
+### Step 3 — Local DAOs
+- [ ] `CustomerLocalSource.watch/get/query(filter)`
+- [ ] Same pattern for Areas, Boxes, Invoices, Expenses, MeterReadings, Payments
 
-### Phase 2 — First vertical slice: Reference data
+### Step 4 — Repositories (reads only)
+- [ ] Start with **Areas + DistributionBoxes** (smallest)
+- [ ] Then **Customers** + filter translator
+- [ ] Then **Invoices**, **Expenses**, **MeterReadings**
 
-**Entities:** Area, DistributionBox, AmpereSchedule
+### Step 5 — Swap providers
+- [ ] Replace `Service` calls in `build()` / read methods with `Repository`
+- [ ] Keep mutations on `Service`; guard with `internetConnectionProvider`
 
-- [ ] Add Drift tables + DAOs
-- [ ] `AreaRepository`, `DistributionBoxRepository`, `AmpereScheduleRepository`
-- [ ] Bootstrap sync on login / reconnect
-- [ ] Swap `areaProvider`, `distributionBoxProvider`, `ampereScheduleProvider` to repos
-- [ ] Offline: selecting screens work from cache
-
-**Acceptance:** enable airplane mode → area/box pickers still populate from cache.
-
----
-
-### Phase 3 — Customers (core read path)
-
-- [ ] Complete `Customers` schema
-- [ ] `CustomerRepository` read methods + filter query translator
-- [ ] Cache-on-fetch on online reads
-- [ ] Swap `customerProvider`, `singleCustomerProvider`
-- [ ] Stale banner + last synced timestamp on subscribers list
-
-**Acceptance:** browse/filter customers offline with cached data; pagination works locally.
+### Step 6 — UX
+- [ ] Offline banner (reuse `internetConnectionProvider`)
+- [ ] Disable write actions when offline
 
 ---
 
-### Phase 4 — Customer writes + outbox
+## 11. Quick test checklist
 
-- [ ] Outbox processor on reconnect
-- [ ] Optimistic local create/update/delete
-- [ ] Swap mutation methods on `CustomerNotifier`
-- [ ] Handle temp IDs on create
-
-**Acceptance:** create customer offline → reconnect → appears on server; list consistent.
-
----
-
-### Phase 5 — Invoices & payments
-
-- [ ] Complete `Invoices` / `Payments` schema
-- [ ] Invoice repository + filter translator
-- [ ] Pay invoice: online or queued per D1
-
-**Acceptance:** invoice list/filter offline; pay queues or blocks gracefully.
+- [ ] Online: open subscribers → data in SQLite (inspect `db.sqlite`)
+- [ ] Airplane mode: subscribers list still shows last fetch
+- [ ] Airplane mode: customer filters (name, area, status) work locally
+- [ ] Airplane mode: add subscriber button disabled / shows message
+- [ ] Airplane mode: dashboard / audit / ampere schedule → online message or empty
 
 ---
 
-### Phase 6 — Expenses & meter readings
+## 12. File map
 
-- [ ] Replace legacy expense Drift schema
-- [ ] Expense + meter reading repos
-- [ ] Customer detail meter readings from local
-
-**Acceptance:** expense CRUD offline; meter readings visible on cached customer.
-
----
-
-### Phase 7 — Polish & optional
-
-- [ ] Dashboard last-snapshot cache
-- [ ] Audit log cached-page offline browsing
-- [ ] Background sync on connectivity stream
-- [ ] Integration tests for offline flows
-
----
-
-## 10. Index Plan (Drift)
-
-Add indexes for filter columns:
-
-```sql
--- Customers
-CREATE INDEX idx_customers_area ON customers(area_id);
-CREATE INDEX idx_customers_box ON customers(box_id);
-CREATE INDEX idx_customers_name ON customers(name);
-CREATE INDEX idx_customers_status ON customers(customer_status);
-
--- Invoices
-CREATE INDEX idx_invoices_customer ON invoices(customer_id);
-CREATE INDEX idx_invoices_issue_date ON invoices(issue_date);
-CREATE INDEX idx_invoices_status ON invoices(invoice_status);
-
--- DistributionBoxes
-CREATE INDEX idx_boxes_area ON distribution_boxes(area_id);
-CREATE INDEX idx_boxes_name ON distribution_boxes(name);
-
--- Outbox
-CREATE INDEX idx_outbox_created ON outbox(created_at);
-```
-
----
-
-## 11. Risks & Mitigations
-
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Drift/domain name collision | Build errors, confusion | Rename all `@DataClassName` now (Phase 1) |
-| Expense schema mismatch | Wrong offline data | Replace table in migration, don't patch legacy columns |
-| paymentFilter complexity | Blocks customer offline parity | Mark online-only in v1 (D5) |
-| Pagination totalCount offline | Misleading page counts | Use local COUNT; show "cached results" when offline |
-| Large outbox on long offline | Sync storm on reconnect | Batch flush with backoff; cap retries |
-| Token expiry offline | User locked out | Read-only grace or cached session policy (D3) |
-| Provider refactor scope | Regression | One vertical slice at a time; keep service layer until repo proven |
-
----
-
-## 12. Testing Checklist
-
-### Per phase
-
-- [ ] Unit: filter DTO → Drift query produces expected SQL
-- [ ] Unit: row mapper round-trip domain ↔ Drift
-- [ ] Unit: outbox serialize/deserialize request DTOs
-- [ ] Widget: offline banner visible when disconnected
-- [ ] Integration: online fetch → airplane mode → list still renders
-- [ ] Integration: offline create → online → data on server
-
-### Manual QA screens
-
-- [ ] Subscribers list + filters + search
-- [ ] Subscriber add/edit
-- [ ] Invoices list + filters
-- [ ] Expenses list
-- [ ] Area/box/schedule pickers in add subscriber flow
-- [ ] Dashboard (degraded expectations documented)
-
----
-
-## 13. Key File References
-
-| Area | Path |
+| What | Path |
 |------|------|
-| Drift DB | `lib/infrastructor/db/database.dart` |
-| Drift tables | `lib/infrastructor/tables/` |
-| List providers | `lib/data/providers/` |
-| Filter providers | `lib/data/providers/*/*_filter_provider.dart` |
+| DB entry | `lib/infrastructor/db/database.dart` |
+| Tables | `lib/infrastructor/tables/` |
+| Providers to migrate | `lib/data/providers/` |
 | Filter DTOs | `lib/core/network/dto/request/*/*_filter_request.dart` |
-| Services | `lib/core/network/services/` |
-| Domain entities | `lib/domain/entities/` |
 | Connectivity | `lib/data/providers/network/internet_connection_provider.dart` |
 
 ---
 
-## 14. Changelog
+## 13. Changelog
 
-| Date | Author | Change |
-|------|--------|--------|
-| 2026-07-11 | — | Initial plan from codebase audit |
+| Date | Change |
+|------|--------|
+| 2026-07-11 | Initial plan |
+| 2026-07-11 | Read-only scope |
+| 2026-07-11 | **Trimmed to 7 registered tables only** — removed AmpereSchedule, AuditLog, Company, SyncState, Outbox, and hypothetical schema gaps |
