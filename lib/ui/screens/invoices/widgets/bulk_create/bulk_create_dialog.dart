@@ -8,8 +8,10 @@ import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/response/invoice/bulk_create_invoice_response.dart';
 import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
 import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
+import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
+import '../../subscreens/bulk_create_skipped_screen.dart';
 import 'bulk_create_confirm_content.dart';
 import 'bulk_create_error_content.dart';
 import 'bulk_create_success_content.dart';
@@ -102,6 +104,15 @@ class _BulkCreateInvoicesDialogState
           ),
         ],
         _BulkCreateStep.success => [
+          if (_response!.skipped > 0)
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  openInnerScreen(widget: const BulkCreateSkippedScreen()),
+                );
+              },
+              child: Text('invoices.bulk_create.see_details'.tr()),
+            ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text('invoices.bulk_create.done'.tr()),

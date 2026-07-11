@@ -730,7 +730,11 @@
       "failed": "Bulk invoice creation failed. Please try again.",
       "success_snackbar": "{} invoices created successfully.",
       "created": "Created",
-      "skipped": "Skipped"
+      "skipped": "Skipped",
+      "see_details": "See details",
+      "skipped_details_title": "Skipped details",
+      "skipped_load_failed": "Failed to load skipped invoices.",
+      "skipped_empty": "No skipped invoices."
     }
   },
   "audit": {

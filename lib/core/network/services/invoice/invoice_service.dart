@@ -13,6 +13,7 @@ import 'package:shabakat/core/network/dto/request/invoice/update_invoice_request
 import 'package:shabakat/core/network/dto/response/invoice/bulk_create_invoice_response.dart';
 import 'package:shabakat/core/network/dto/response/invoice/fixed_kilowatt_calculate_response.dart';
 import 'package:shabakat/core/network/dto/response/invoice/invoice_response.dart';
+import 'package:shabakat/core/network/dto/response/invoice/invoice_skipped_response.dart';
 import 'package:shabakat/core/network/dto/response/invoice/list_invoice_summery_response.dart';
 import 'package:shabakat/core/network/dto/response/payment/payment_response.dart';
 import 'package:shabakat/core/network/executor/api_executor.dart';
@@ -71,6 +72,25 @@ class InvoiceService {
       },
       failure: (error, statusCode) {
         _logger.e('Failed to retrieve invoice: ${error.toString()}');
+        throw error;
+      },
+    );
+  }
+
+  Future<List<InvoiceSkippedResponse>> getInvoiceSkipped() async {
+    final response = await _apiExecutor.execute(
+      ApiRequest(path: 'invoices/skipped', method: HttpMethod.get),
+    );
+    return response.when(
+      success: (data, statusCode, meta) {
+        _logger.i('Invoice skipped retrieved successfully: $data');
+        final skipped = (data as List)
+            .map((x) => InvoiceSkippedResponse.fromJson(x))
+            .toList();
+        return skipped;
+      },
+      failure: (error, statusCode) {
+        _logger.e('Failed to retrieve invoice skipped: ${error.toString()}');
         throw error;
       },
     );

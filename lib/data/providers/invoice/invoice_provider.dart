@@ -4,6 +4,7 @@ import 'package:shabakat/core/network/dto/request/invoice/create_invoice_request
 import 'package:shabakat/core/network/dto/request/invoice/invoice_filter_request.dart';
 import 'package:shabakat/core/network/dto/request/invoice/update_invoice_request.dart';
 import 'package:shabakat/core/network/dto/response/invoice/bulk_create_invoice_response.dart';
+import 'package:shabakat/core/network/dto/response/invoice/invoice_skipped_response.dart';
 import 'package:shabakat/core/network/services/invoice/invoice_service.dart';
 import 'package:shabakat/data/providers/invoice/invoice_filter_provider.dart';
 import 'package:shabakat/data/providers/invoice/invoice_pagination_provider.dart';
@@ -64,6 +65,10 @@ class InvoiceNotifier extends _$InvoiceNotifier {
       state = previous;
       Error.throwWithStackTrace(e, st);
     }
+  }
+
+  Future<List<InvoiceSkippedResponse>> getInvoiceSkipped() async {
+    return await _invoiceService.getInvoiceSkipped();
   }
 
   Future<void> updateInvoice(
