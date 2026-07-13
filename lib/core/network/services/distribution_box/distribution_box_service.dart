@@ -48,6 +48,25 @@ class DistributionBoxService {
     );
   }
 
+  Future<List<DistributionBoxResponse>> getAllDistributionBoxesUnpaged() async {
+    final response = await _apiExecutor.execute(
+      ApiRequest(path: 'distribution-boxes/all', method: HttpMethod.get),
+    );
+    return response.when(
+      success: (data, statusCode, meta) {
+        _logger.i('All distribution boxes retrieved successfully: $data');
+        final dataList = data as List<dynamic>;
+        return dataList.map((x) => DistributionBoxResponse.fromJson(x)).toList();
+      },
+      failure: (error, statusCode) {
+        _logger.e(
+          'Failed to retrieve all distribution boxes: ${error.toString()}',
+        );
+        throw error;
+      },
+    );
+  }
+
   Future<DistributionBoxResponse> createDistributionBox(
     CreateDistributionBoxRequest request,
   ) async {

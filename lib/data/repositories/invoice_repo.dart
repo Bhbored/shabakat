@@ -158,6 +158,37 @@ class InvoiceRepo {
     });
   }
 
+  Future<void> addPayment(String invoiceId, Payment payment) async {
+    try {
+      final invoice = await (_db.select(_db.invoices)
+            ..where((i) => i.id.equals(invoiceId)))
+          .getSingleOrNull();
+      if (invoice == null) {
+        throw StateError('Invoice not found: $invoiceId');
+      }
+
+      await _db.into(_db.payments).insert(
+            payment
+                .copyWith(
+                  invoiceId: invoiceId,
+                  customerId: payment.customerId.isNotEmpty
+                      ? payment.customerId
+                      : invoice.customerId,
+                )
+                .toCompanion(),
+            mode: InsertMode.insertOrReplace,
+          );
+      _logger.i('Payment added to local DB for invoice $invoiceId: ${payment.id}');
+    } catch (e, st) {
+      _logger.e(
+        'Failed to add payment to local DB for invoice $invoiceId: $e',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow;
+    }
+  }
+
   Future<int> getTotalInvoicesCount() async {
     try {
       final count = _db.invoices.id.count();

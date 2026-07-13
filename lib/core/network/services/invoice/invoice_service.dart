@@ -61,6 +61,23 @@ class InvoiceService {
     );
   }
 
+  Future<List<InvoiceResponse>> getAllInvoicesUnpaged() async {
+    final response = await _apiExecutor.execute(
+      ApiRequest(path: 'invoices/all', method: HttpMethod.get),
+    );
+    return response.when(
+      success: (data, statusCode, meta) {
+        _logger.i('All invoices retrieved successfully: $data');
+        final dataList = data as List<dynamic>;
+        return dataList.map((x) => InvoiceResponse.fromJson(x)).toList();
+      },
+      failure: (error, statusCode) {
+        _logger.e('Failed to retrieve all invoices: ${error.toString()}');
+        throw error;
+      },
+    );
+  }
+
   Future<InvoiceResponse> getInvoiceById(String id) async {
     final response = await _apiExecutor.execute(
       ApiRequest(path: 'invoices/$id', method: HttpMethod.get),
