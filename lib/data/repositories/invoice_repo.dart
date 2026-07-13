@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:shabakat/core/enums/invoice_status.dart';
 import 'package:shabakat/domain/entities/invoices/invoice.dart';
 import 'package:shabakat/domain/mappers/invoice/invoice_mapper.dart';
+import 'package:shabakat/domain/mappers/payment/payment_mapper.dart';
 import 'package:shabakat/infrastructor/db/database.dart' as drift;
 
 class InvoiceRepo {
@@ -61,11 +62,22 @@ class InvoiceRepo {
 
   Future<Invoice?> getInvoiceByIdWithPayments(String id) async {
     try {
-      final row = await (_db.select(
-        _db.invoices,
-      )..where((i) => i.id.equals(id))).getSingleOrNull();
-      _logger.i('Invoice retrieved from local DB by id: $id');
-      return row?.toEntity();
+      final row = await (_db.select(_db.invoices)..where((i) => i.id.equals(id)))
+          .getSingleOrNull();
+      if (row == null) return null;
+
+      final paymentRows = await (_db.select(_db.payments)
+            ..where((p) => p.invoiceId.equals(id))
+            ..orderBy([(p) => OrderingTerm.desc(p.paymentDate)]))
+          .get();
+
+      final invoice = row.toEntity().copyWith(
+        payments: paymentRows.map((e) => e.toEntity()).toList(),
+      );
+      _logger.i(
+        'Invoice with payments retrieved from local DB by id: $id (${paymentRows.length} payments)',
+      );
+      return invoice;
     } catch (e, st) {
       _logger.e(
         'Failed to retrieve invoice from local DB by id $id: $e',
@@ -78,9 +90,30 @@ class InvoiceRepo {
 
   Future<void> addInvoice(Invoice invoice) async {
     try {
-      await _db
-          .into(_db.invoices)
-          .insert(invoice.toCompanion(), mode: InsertMode.insertOrReplace);
+      await _db.transaction(() async {
+        await _db.into(_db.invoices).insert(
+              invoice.toCompanion(),
+              mode: InsertMode.insertOrReplace,
+            );
+
+        final payments = invoice.payments;
+        if (payments != null) {
+          await (_db.delete(_db.payments)
+                ..where((p) => p.invoiceId.equals(invoice.id)))
+              .go();
+          if (payments.isNotEmpty) {
+            await _db.batch((b) {
+              for (final payment in payments) {
+                b.insert(
+                  _db.payments,
+                  payment.toCompanion(),
+                  mode: InsertMode.insertOrReplace,
+                );
+              }
+            });
+          }
+        }
+      });
       _logger.i('Invoice added to local DB: ${invoice.id}');
     } catch (e, st) {
       _logger.e(
@@ -134,9 +167,8 @@ class InvoiceRepo {
 
   Future<int> deleteInvoiceById(String id) async {
     try {
-      final deleted = await (_db.delete(
-        _db.invoices,
-      )..where((i) => i.id.equals(id))).go();
+      final deleted =
+          await (_db.delete(_db.invoices)..where((i) => i.id.equals(id))).go();
       _logger.i('Deleted invoice from local DB by id: $id ($deleted rows)');
       return deleted;
     } catch (e, st) {

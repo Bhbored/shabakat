@@ -6,7 +6,8 @@ import 'area_table.dart';
 class DistributionBoxes extends Table {
   TextColumn get id => text()();
   TextColumn get name => text()();
-  TextColumn get areaId => text().references(Areas, #id)();
+  TextColumn get areaId =>
+      text().references(Areas, #id, onDelete: KeyAction.cascade)();
   TextColumn get areaName => text()();
   TextColumn get locationNote => text().nullable()();
   TextColumn get notes => text().nullable()();

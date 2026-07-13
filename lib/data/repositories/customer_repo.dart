@@ -65,8 +65,9 @@ class CustomerRepo {
 
   Future<Customer?> getCustomerById(String id) async {
     try {
-      final row = await (_db.select(_db.customers)..where((c) => c.id.equals(id)))
-          .getSingleOrNull();
+      final row = await (_db.select(
+        _db.customers,
+      )..where((c) => c.id.equals(id))).getSingleOrNull();
       _logger.i('Customer retrieved from local DB by id: $id');
       return row?.toEntity();
     } catch (e, st) {
@@ -81,10 +82,9 @@ class CustomerRepo {
 
   Future<void> addCustomer(Customer customer) async {
     try {
-      await _db.into(_db.customers).insert(
-            customer.toCompanion(),
-            mode: InsertMode.insertOrReplace,
-          );
+      await _db
+          .into(_db.customers)
+          .insert(customer.toCompanion(), mode: InsertMode.insertOrReplace);
       _logger.i('Customer added to local DB: ${customer.id}');
     } catch (e, st) {
       _logger.e(
@@ -136,11 +136,32 @@ class CustomerRepo {
     }
   }
 
+  Future<List<String>> getCustomerIds() async {
+    try {
+      final idColumn = _db.customers.id;
+      final rows = await (_db.selectOnly(_db.customers)..addColumns([idColumn]))
+          .get();
+      final ids = rows
+          .map((row) => row.read(idColumn))
+          .whereType<String>()
+          .toList();
+      _logger.i('Customer ids retrieved from local DB: ${ids.length}');
+      return ids;
+    } catch (e, st) {
+      _logger.e(
+        'Failed to get customer ids from local DB: $e',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow;
+    }
+  }
+
   Future<int> deleteCustomerById(String id) async {
     try {
-      final deleted = await (_db.delete(_db.customers)
-            ..where((c) => c.id.equals(id)))
-          .go();
+      final deleted = await (_db.delete(
+        _db.customers,
+      )..where((c) => c.id.equals(id))).go();
       _logger.i('Deleted customer from local DB by id: $id ($deleted rows)');
       return deleted;
     } catch (e, st) {
@@ -155,9 +176,9 @@ class CustomerRepo {
 
   Future<int> deleteCustomers(List<Customer> customers) async {
     try {
-      final deleted = await (_db.delete(_db.customers)
-            ..where((c) => c.id.isIn(customers.map((e) => e.id))))
-          .go();
+      final deleted = await (_db.delete(
+        _db.customers,
+      )..where((c) => c.id.isIn(customers.map((e) => e.id)))).go();
       _logger.i(
         'Deleted customers from local DB: ${customers.length} ($deleted rows)',
       );

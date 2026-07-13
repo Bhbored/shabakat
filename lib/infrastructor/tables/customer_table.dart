@@ -26,13 +26,16 @@ class Customers extends Table {
   TextColumn get building => text().nullable()();
   TextColumn get floor => text().nullable()();
   TextColumn get cableName => text().nullable()();
-  TextColumn get boxId =>
-      text().nullable().references(DistributionBoxes, #id)();
+  TextColumn get boxId => text()
+      .nullable()
+      .references(DistributionBoxes, #id, onDelete: KeyAction.cascade)();
   TextColumn get boxName => text().nullable()();
   TextColumn get ampereScheduleId => text().nullable()();
   TextColumn get ampereScheduleName => text().nullable()();
   TextColumn get areaName => text().nullable()();
-  TextColumn get areaId => text().nullable().references(Areas, #id)();
+  TextColumn get areaId => text()
+      .nullable()
+      .references(Areas, #id, onDelete: KeyAction.cascade)();
   TextColumn get customerType => text()();
   TextColumn get customerRelation => text().nullable()();
   DateTimeColumn get subscriptionDate => dateTime()();

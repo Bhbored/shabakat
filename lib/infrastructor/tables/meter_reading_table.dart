@@ -6,7 +6,8 @@ import 'customer_table.dart';
 @DataClassName('MeterReading')
 class MeterReadings extends Table {
   TextColumn get id => text()();
-  TextColumn get customerId => text().references(Customers, #id)();
+  TextColumn get customerId =>
+      text().references(Customers, #id, onDelete: KeyAction.cascade)();
   RealColumn get readingValue => real()();
   RealColumn get consumption => real().nullable()();
   DateTimeColumn get createdAt => dateTime()();

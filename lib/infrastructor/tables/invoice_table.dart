@@ -10,7 +10,8 @@ class Invoices extends Table {
   TextColumn get id => text()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
-  TextColumn get customerId => text().references(Customers, #id)();
+  TextColumn get customerId =>
+      text().references(Customers, #id, onDelete: KeyAction.cascade)();
   TextColumn get customerName => text().nullable()();
   IntColumn get invoiceNumber => integer()();
   DateTimeColumn get issueDate => dateTime()();

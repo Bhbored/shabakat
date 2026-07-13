@@ -10,8 +10,10 @@ class Payments extends Table {
   TextColumn get id => text()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
-  TextColumn get customerId => text().references(Customers, #id)();
-  TextColumn get invoiceId => text().references(Invoices, #id)();
+  TextColumn get customerId =>
+      text().references(Customers, #id, onDelete: KeyAction.cascade)();
+  TextColumn get invoiceId =>
+      text().references(Invoices, #id, onDelete: KeyAction.cascade)();
   RealColumn get amount => real()();
   TextColumn get paymentMethod => text()();
   DateTimeColumn get paymentDate => dateTime()();

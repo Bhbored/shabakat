@@ -399,7 +399,7 @@ class $DistributionBoxesTable extends DistributionBoxes
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES areas (id)',
+      'REFERENCES areas (id) ON DELETE CASCADE',
     ),
   );
   static const VerificationMeta _areaNameMeta = const VerificationMeta(
@@ -1024,7 +1024,7 @@ class $CustomersTable extends Customers
     type: DriftSqlType.string,
     requiredDuringInsert: false,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES distribution_boxes (id)',
+      'REFERENCES distribution_boxes (id) ON DELETE CASCADE',
     ),
   );
   static const VerificationMeta _boxNameMeta = const VerificationMeta(
@@ -1080,7 +1080,7 @@ class $CustomersTable extends Customers
     type: DriftSqlType.string,
     requiredDuringInsert: false,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES areas (id)',
+      'REFERENCES areas (id) ON DELETE CASCADE',
     ),
   );
   static const VerificationMeta _customerTypeMeta = const VerificationMeta(
@@ -2496,7 +2496,7 @@ class $InvoicesTable extends Invoices with TableInfo<$InvoicesTable, Invoice> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES customers (id)',
+      'REFERENCES customers (id) ON DELETE CASCADE',
     ),
   );
   static const VerificationMeta _customerNameMeta = const VerificationMeta(
@@ -3383,7 +3383,7 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES customers (id)',
+      'REFERENCES customers (id) ON DELETE CASCADE',
     ),
   );
   static const VerificationMeta _invoiceIdMeta = const VerificationMeta(
@@ -3397,7 +3397,7 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES invoices (id)',
+      'REFERENCES invoices (id) ON DELETE CASCADE',
     ),
   );
   static const VerificationMeta _amountMeta = const VerificationMeta('amount');
@@ -4454,7 +4454,7 @@ class $MeterReadingsTable extends MeterReadings
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES customers (id)',
+      'REFERENCES customers (id) ON DELETE CASCADE',
     ),
   );
   static const VerificationMeta _readingValueMeta = const VerificationMeta(
@@ -4931,6 +4931,58 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     idxMeterReadingCustomerId,
     idxMeterReadingCreatedAt,
   ];
+  @override
+  StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'areas',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('distribution_boxes', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'distribution_boxes',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('customers', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'areas',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('customers', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'customers',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('invoices', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'customers',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('payments', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'invoices',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('payments', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'customers',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('meter_readings', kind: UpdateKind.delete)],
+    ),
+  ]);
 }
 
 typedef $$AreasTableCreateCompanionBuilder =
