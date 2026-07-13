@@ -139,8 +139,9 @@ class CustomerRepo {
   Future<List<String>> getCustomerIds() async {
     try {
       final idColumn = _db.customers.id;
-      final rows = await (_db.selectOnly(_db.customers)..addColumns([idColumn]))
-          .get();
+      final rows = await (_db.selectOnly(
+        _db.customers,
+      )..addColumns([idColumn])).get();
       final ids = rows
           .map((row) => row.read(idColumn))
           .whereType<String>()

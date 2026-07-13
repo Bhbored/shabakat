@@ -32,11 +32,12 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-    beforeOpen: (details) async {
-      await customStatement('PRAGMA foreign_keys = ON;');
-    },
     onCreate: (m) async {
       await m.createAll();
+    },
+    onUpgrade: (Migrator m, int from, int to) async {},
+    beforeOpen: (details) async {
+      await customStatement('PRAGMA foreign_keys = ON;');
     },
   );
 }

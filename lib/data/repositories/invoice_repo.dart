@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:logger/logger.dart';
 import 'package:shabakat/core/enums/invoice_status.dart';
 import 'package:shabakat/domain/entities/invoices/invoice.dart';
+import 'package:shabakat/domain/entities/payments/payment.dart';
 import 'package:shabakat/domain/mappers/invoice/invoice_mapper.dart';
 import 'package:shabakat/domain/mappers/payment/payment_mapper.dart';
 import 'package:shabakat/infrastructor/db/database.dart' as drift;
@@ -95,24 +96,7 @@ class InvoiceRepo {
               invoice.toCompanion(),
               mode: InsertMode.insertOrReplace,
             );
-
-        final payments = invoice.payments;
-        if (payments != null) {
-          await (_db.delete(_db.payments)
-                ..where((p) => p.invoiceId.equals(invoice.id)))
-              .go();
-          if (payments.isNotEmpty) {
-            await _db.batch((b) {
-              for (final payment in payments) {
-                b.insert(
-                  _db.payments,
-                  payment.toCompanion(),
-                  mode: InsertMode.insertOrReplace,
-                );
-              }
-            });
-          }
-        }
+        await _cacheInvoicePayments(invoice.id, invoice.payments);
       });
       _logger.i('Invoice added to local DB: ${invoice.id}');
     } catch (e, st) {
@@ -127,13 +111,18 @@ class InvoiceRepo {
 
   Future<void> bulkAddInvoices(List<Invoice> invoices) async {
     try {
-      await _db.batch((b) {
+      await _db.transaction(() async {
+        await _db.batch((b) {
+          for (final invoice in invoices) {
+            b.insert(
+              _db.invoices,
+              invoice.toCompanion(),
+              mode: InsertMode.insertOrReplace,
+            );
+          }
+        });
         for (final invoice in invoices) {
-          b.insert(
-            _db.invoices,
-            invoice.toCompanion(),
-            mode: InsertMode.insertOrReplace,
-          );
+          await _cacheInvoicePayments(invoice.id, invoice.payments);
         }
       });
       _logger.i('Bulk added invoices to local DB: ${invoices.length}');
@@ -145,6 +134,28 @@ class InvoiceRepo {
       );
       rethrow;
     }
+  }
+
+  Future<void> _cacheInvoicePayments(
+    String invoiceId,
+    List<Payment>? payments,
+  ) async {
+    if (payments == null) return;
+
+    await (_db.delete(_db.payments)
+          ..where((p) => p.invoiceId.equals(invoiceId)))
+        .go();
+    if (payments.isEmpty) return;
+
+    await _db.batch((b) {
+      for (final payment in payments) {
+        b.insert(
+          _db.payments,
+          payment.toCompanion(),
+          mode: InsertMode.insertOrReplace,
+        );
+      }
+    });
   }
 
   Future<int> getTotalInvoicesCount() async {
