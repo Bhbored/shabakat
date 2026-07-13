@@ -1,26 +1,189 @@
+import 'package:drift/drift.dart';
+import 'package:logger/logger.dart';
+import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/domain/entities/customers/customer.dart';
 import 'package:shabakat/domain/mappers/customer/customer_mapper.dart';
 import 'package:shabakat/infrastructor/db/database.dart' as drift;
 
 class CustomerRepo {
   late final drift.AppDatabase _db;
+  final _logger = Logger();
 
   CustomerRepo(this._db);
 
-  Future<void> addCustomer(Customer customer) async {
-    await _db.into(_db.customers).insert(customer.toCompanion());
-  }
+  Future<List<Customer>> getAllCustomers(
+    String? name,
+    String? phone,
+    String? areaId,
+    String? boxId,
+    PlanType? planType,
+    CustomerRelation? customerRelation,
+    CustomerStatus? customerStatus, {
+    int pageNumber = 1,
+    int pageSize = 10,
+  }) async {
+    try {
+      final select = _db.select(_db.customers);
 
-  Future<List<Customer>> getAllCustomers() async {
-    return await _db
-        .select(_db.customers)
-        .get()
-        .then((value) => value.map((e) => e.toEntity()).toList());
+      final expressions = <Expression<bool>>[];
+      if (name != null) expressions.add(_db.customers.name.equals(name));
+      if (phone != null) expressions.add(_db.customers.phone.equals(phone));
+      if (areaId != null) expressions.add(_db.customers.areaId.equals(areaId));
+      if (boxId != null) expressions.add(_db.customers.boxId.equals(boxId));
+      if (planType != null) {
+        expressions.add(_db.customers.plan.equals(planType.name));
+      }
+      if (customerRelation != null) {
+        expressions.add(
+          _db.customers.customerRelation.equals(customerRelation.name),
+        );
+      }
+      if (customerStatus != null) {
+        expressions.add(
+          _db.customers.customerStatus.equals(customerStatus.name),
+        );
+      }
+      if (expressions.isNotEmpty) {
+        select.where((c) => expressions.reduce((a, b) => a & b));
+      }
+      final query = select
+        ..orderBy([(c) => OrderingTerm.desc(c.createdAt)])
+        ..limit(pageSize, offset: (pageNumber - 1) * pageSize);
+      final rows = await query.get();
+      final customers = rows.map((e) => e.toEntity()).toList();
+      _logger.i('Customers retrieved from local DB: ${customers.length}');
+      return customers;
+    } catch (e, st) {
+      _logger.e(
+        'Failed to retrieve customers from local DB: $e',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow;
+    }
   }
 
   Future<Customer?> getCustomerById(String id) async {
-    return await (_db.select(_db.customers)..where((c) => c.id.equals(id)))
-        .getSingleOrNull()
-        .then((value) => value?.toEntity());
+    try {
+      final row = await (_db.select(_db.customers)..where((c) => c.id.equals(id)))
+          .getSingleOrNull();
+      _logger.i('Customer retrieved from local DB by id: $id');
+      return row?.toEntity();
+    } catch (e, st) {
+      _logger.e(
+        'Failed to retrieve customer from local DB by id $id: $e',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow;
+    }
+  }
+
+  Future<void> addCustomer(Customer customer) async {
+    try {
+      await _db.into(_db.customers).insert(
+            customer.toCompanion(),
+            mode: InsertMode.insertOrReplace,
+          );
+      _logger.i('Customer added to local DB: ${customer.id}');
+    } catch (e, st) {
+      _logger.e(
+        'Failed to add customer to local DB: $e',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow;
+    }
+  }
+
+  Future<void> bulkAddCustomers(List<Customer> customers) async {
+    try {
+      await _db.batch((b) {
+        for (final customer in customers) {
+          b.insert(
+            _db.customers,
+            customer.toCompanion(),
+            mode: InsertMode.insertOrReplace,
+          );
+        }
+      });
+      _logger.i('Bulk added customers to local DB: ${customers.length}');
+    } catch (e, st) {
+      _logger.e(
+        'Failed to bulk add customers to local DB: $e',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow;
+    }
+  }
+
+  Future<int> getTotalCustomersCount() async {
+    try {
+      final count = _db.customers.id.count();
+      final query = _db.selectOnly(_db.customers)..addColumns([count]);
+      final row = await query.getSingle();
+      final total = row.read(count) ?? 0;
+      _logger.i('Total customers count from local DB: $total');
+      return total;
+    } catch (e, st) {
+      _logger.e(
+        'Failed to get total customers count from local DB: $e',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow;
+    }
+  }
+
+  Future<int> deleteCustomerById(String id) async {
+    try {
+      final deleted = await (_db.delete(_db.customers)
+            ..where((c) => c.id.equals(id)))
+          .go();
+      _logger.i('Deleted customer from local DB by id: $id ($deleted rows)');
+      return deleted;
+    } catch (e, st) {
+      _logger.e(
+        'Failed to delete customer from local DB by id $id: $e',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow;
+    }
+  }
+
+  Future<int> deleteCustomers(List<Customer> customers) async {
+    try {
+      final deleted = await (_db.delete(_db.customers)
+            ..where((c) => c.id.isIn(customers.map((e) => e.id))))
+          .go();
+      _logger.i(
+        'Deleted customers from local DB: ${customers.length} ($deleted rows)',
+      );
+      return deleted;
+    } catch (e, st) {
+      _logger.e(
+        'Failed to delete customers from local DB: $e',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow;
+    }
+  }
+
+  Future<int> bulkDeleteCustomers() async {
+    try {
+      final deleted = await (_db.delete(_db.customers)).go();
+      _logger.i('Bulk deleted all customers from local DB: $deleted rows');
+      return deleted;
+    } catch (e, st) {
+      _logger.e(
+        'Failed to bulk delete customers from local DB: $e',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow;
+    }
   }
 }

@@ -1,8 +1,10 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:shabakat/core/enums/invoice_status.dart';
 import 'package:shabakat/core/network/dto/response/invoice/invoice_response.dart';
 import 'package:shabakat/core/network/dto/response/invoice/invoice_summary_response.dart';
 import 'package:shabakat/domain/entities/invoices/invoice.dart';
 import 'package:shabakat/domain/mappers/payment/payment_mapper.dart';
+import 'package:shabakat/infrastructor/db/database.dart' as drift;
 
 extension InvoiceResponseMapper on InvoiceResponse {
   Invoice toEntity() => Invoice(
@@ -53,3 +55,44 @@ InvoiceStatus toInvoiceStatus(String value) => switch (value.toLowerCase()) {
   'unpaid' => InvoiceStatus.unpaid,
   _ => InvoiceStatus.unpaid,
 };
+
+extension InvoiceEntityMapper on Invoice {
+  drift.InvoicesCompanion toCompanion() => drift.InvoicesCompanion(
+    id: Value(id),
+    createdAt: Value(createdAt),
+    updatedAt: Value(updatedAt),
+    customerId: Value(customerId),
+    customerName: Value(customerName),
+    invoiceNumber: Value(invoiceNumber),
+    issueDate: Value(issueDate),
+    dueDate: Value(dueDate),
+    fixedCharge: Value(fixedCharge),
+    tva: Value(tva),
+    totalAmount: Value(totalAmount),
+    paidAmount: Value(paidAmount),
+    amountDue: Value(amountDue),
+    billedConsumption: Value(billedConsumption),
+    invoiceStatus: Value(invoiceStatus.name),
+  );
+}
+
+extension InvoiceDriftMapper on drift.Invoice {
+  Invoice toEntity() => Invoice(
+    id: id,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+    companyId: '',
+    customerId: customerId,
+    customerName: customerName,
+    invoiceNumber: invoiceNumber,
+    issueDate: issueDate,
+    dueDate: dueDate,
+    fixedCharge: fixedCharge,
+    tva: tva,
+    totalAmount: totalAmount,
+    paidAmount: paidAmount,
+    amountDue: amountDue,
+    billedConsumption: billedConsumption,
+    invoiceStatus: toInvoiceStatus(invoiceStatus),
+  );
+}
