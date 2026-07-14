@@ -15,7 +15,9 @@ import '../../subscreens/subscribers_search_screen.dart';
 import '../subscriber_selection_actions/subscriber_selection_actions.dart';
 
 class SubscribersToolbar extends ConsumerWidget {
-  const SubscribersToolbar({super.key});
+  final bool readOnly;
+
+  const SubscribersToolbar({super.key, this.readOnly = false});
 
   String? _activeQuery(CustomerFilterRequest filter, List<Area>? areas) {
     if (filter.name != null) return filter.name;
@@ -104,7 +106,7 @@ class SubscribersToolbar extends ConsumerWidget {
             children: [
               Expanded(
                 child: Text(
-                  selection.isSelectionMode
+                  !readOnly && selection.isSelectionMode
                       ? 'subscribers.selection.count_selected'.tr(
                           args: [selection.selectedCustomerIds.length.toString()],
                         )
@@ -118,7 +120,7 @@ class SubscribersToolbar extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SubscriberSelectionActions(),
+              if (!readOnly) const SubscriberSelectionActions(),
             ],
           ),
         ],

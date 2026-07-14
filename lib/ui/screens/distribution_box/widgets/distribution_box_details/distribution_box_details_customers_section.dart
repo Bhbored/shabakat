@@ -9,10 +9,12 @@ import 'package:shabakat/ui/screens/subscribers/widgets/subscriber_list/subscrib
 
 class DistributionBoxDetailsCustomersSection extends ConsumerWidget {
   final String boxId;
+  final bool readOnly;
 
   const DistributionBoxDetailsCustomersSection({
     super.key,
     required this.boxId,
+    this.readOnly = false,
   });
 
   @override
@@ -70,7 +72,7 @@ class DistributionBoxDetailsCustomersSection extends ConsumerWidget {
                   ),
                 );
               }
-              return SubscriberList(customers: customers);
+              return SubscriberList(customers: customers, readOnly: readOnly);
             },
           ),
         ),

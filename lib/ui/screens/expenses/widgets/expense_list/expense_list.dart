@@ -7,8 +7,13 @@ import '../expense_card/expense_card.dart';
 
 class ExpenseList extends StatelessWidget {
   final List<Expense> expenses;
+  final bool readOnly;
 
-  const ExpenseList({super.key, required this.expenses});
+  const ExpenseList({
+    super.key,
+    required this.expenses,
+    this.readOnly = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +47,10 @@ class ExpenseList extends StatelessWidget {
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.only(bottom: context.spaceSmall),
-          child: ExpenseCard(expense: expenses[index]),
+          child: ExpenseCard(
+            expense: expenses[index],
+            readOnly: readOnly,
+          ),
         );
       },
     );

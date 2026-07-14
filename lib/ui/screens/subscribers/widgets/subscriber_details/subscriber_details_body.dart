@@ -14,8 +14,13 @@ import 'subscriber_meter_readings_section.dart';
 
 class SubscriberDetailsBody extends StatelessWidget {
   final Customer customer;
+  final bool readOnly;
 
-  const SubscriberDetailsBody({super.key, required this.customer});
+  const SubscriberDetailsBody({
+    super.key,
+    required this.customer,
+    this.readOnly = false,
+  });
 
   String _formatDate(DateTime date) {
     final month = date.month.toString().padLeft(2, '0');
@@ -237,6 +242,7 @@ class SubscriberDetailsBody extends StatelessWidget {
                     customerName: customer.name,
                     customerStatus: customer.customerStatus,
                     plan: customer.plan,
+                    readOnly: readOnly,
                   ),
                 ],
                 SizedBox(height: context.spaceMedium),
@@ -245,6 +251,7 @@ class SubscriberDetailsBody extends StatelessWidget {
                   customerName: customer.name,
                   customerStatus: customer.customerStatus,
                   plan: customer.plan,
+                  readOnly: readOnly,
                 ),
               ],
             ),

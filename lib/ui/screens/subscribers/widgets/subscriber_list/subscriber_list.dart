@@ -8,8 +8,13 @@ import '../subscriber_card/subscriber_card.dart';
 
 class SubscriberList extends ConsumerStatefulWidget {
   final List<Customer> customers;
+  final bool readOnly;
 
-  const SubscriberList({super.key, required this.customers});
+  const SubscriberList({
+    super.key,
+    required this.customers,
+    this.readOnly = false,
+  });
 
   @override
   ConsumerState<SubscriberList> createState() => _SubscriberListState();
@@ -43,44 +48,49 @@ class _SubscriberListState extends ConsumerState<SubscriberList> {
           padding: EdgeInsets.only(bottom: context.spaceSmall),
           child: SubscriberCard(
             customer: customer,
-            selectionMode: selection.isSelectionMode,
-            isSelected: isSelected,
-            onLongPress: () {
-              final current = ref.read(customerSelectionProvider);
-              final selectedIds = List<String>.from(
-                current.selectedCustomerIds,
-              );
-              if (!selectedIds.contains(customer.id)) {
-                selectedIds.add(customer.id);
-              }
-              _selectionNotifier.update(
-                current.copyWith(
-                  isSelectionMode: true,
-                  selectedCustomerIds: selectedIds,
-                ),
-              );
-            },
-            onSelectionChanged: (selected) {
-              final current = ref.read(customerSelectionProvider);
-              final selectedIds = List<String>.from(
-                current.selectedCustomerIds,
-              );
+            readOnly: widget.readOnly,
+            selectionMode: widget.readOnly ? false : selection.isSelectionMode,
+            isSelected: widget.readOnly ? false : isSelected,
+            onLongPress: widget.readOnly
+                ? null
+                : () {
+                    final current = ref.read(customerSelectionProvider);
+                    final selectedIds = List<String>.from(
+                      current.selectedCustomerIds,
+                    );
+                    if (!selectedIds.contains(customer.id)) {
+                      selectedIds.add(customer.id);
+                    }
+                    _selectionNotifier.update(
+                      current.copyWith(
+                        isSelectionMode: true,
+                        selectedCustomerIds: selectedIds,
+                      ),
+                    );
+                  },
+            onSelectionChanged: widget.readOnly
+                ? null
+                : (selected) {
+                    final current = ref.read(customerSelectionProvider);
+                    final selectedIds = List<String>.from(
+                      current.selectedCustomerIds,
+                    );
 
-              if (selected) {
-                if (!selectedIds.contains(customer.id)) {
-                  selectedIds.add(customer.id);
-                }
-              } else {
-                selectedIds.remove(customer.id);
-              }
+                    if (selected) {
+                      if (!selectedIds.contains(customer.id)) {
+                        selectedIds.add(customer.id);
+                      }
+                    } else {
+                      selectedIds.remove(customer.id);
+                    }
 
-              _selectionNotifier.update(
-                current.copyWith(
-                  isSelectionMode: selectedIds.isNotEmpty,
-                  selectedCustomerIds: selectedIds,
-                ),
-              );
-            },
+                    _selectionNotifier.update(
+                      current.copyWith(
+                        isSelectionMode: selectedIds.isNotEmpty,
+                        selectedCustomerIds: selectedIds,
+                      ),
+                    );
+                  },
           ),
         );
       },

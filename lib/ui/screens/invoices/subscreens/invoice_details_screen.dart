@@ -16,8 +16,13 @@ import '../widgets/invoice_pay_dialog/invoice_pay_button.dart';
 
 class InvoiceDetailsScreen extends ConsumerStatefulWidget {
   final String invoiceId;
+  final bool readOnly;
 
-  const InvoiceDetailsScreen({super.key, required this.invoiceId});
+  const InvoiceDetailsScreen({
+    super.key,
+    required this.invoiceId,
+    this.readOnly = false,
+  });
 
   @override
   ConsumerState<InvoiceDetailsScreen> createState() =>
@@ -78,15 +83,15 @@ class _InvoiceDetailsScreenState extends ConsumerState<InvoiceDetailsScreen> {
             args: [invoice.invoiceNumber.toString()],
           ),
           isShareLoading: _isSharing,
-          onShare: () => _shareInvoice(customerName),
-          onEdit: isUnpaid
+          onShare: widget.readOnly ? null : () => _shareInvoice(customerName),
+          onEdit: !widget.readOnly && isUnpaid
               ? () => InvoiceEditSheet.show(
                   context,
                   invoiceId: widget.invoiceId,
                   invoice: invoice,
                 )
               : null,
-          onDelete: isUnpaid
+          onDelete: !widget.readOnly && isUnpaid
               ? () => showInvoiceDeleteDialog(
                   context: context,
                   invoiceId: widget.invoiceId,
@@ -103,7 +108,7 @@ class _InvoiceDetailsScreenState extends ConsumerState<InvoiceDetailsScreen> {
                       .refresh(),
                 ),
               ),
-              if (invoice.amountDue > 0) ...[
+              if (!widget.readOnly && invoice.amountDue > 0) ...[
                 InvoicePayButton(
                   invoiceId: widget.invoiceId,
                   amountDue: invoice.amountDue,

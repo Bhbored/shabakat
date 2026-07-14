@@ -10,7 +10,12 @@ import 'package:shabakat/ui/screens/distribution_box/widgets/distribution_box_ca
 import 'package:shabakat/ui/screens/subscribers/widgets/subscribers_pagination/subscribers_pagination.dart';
 
 class AreaBoxesSection extends ConsumerWidget {
-  const AreaBoxesSection({super.key});
+  final bool readOnly;
+
+  const AreaBoxesSection({
+    super.key,
+    this.readOnly = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -68,7 +73,7 @@ class AreaBoxesSection extends ConsumerWidget {
                   ),
                 );
               }
-              return DistributionBoxList(boxes: boxes);
+              return DistributionBoxList(boxes: boxes, readOnly: readOnly);
             },
           ),
         ),

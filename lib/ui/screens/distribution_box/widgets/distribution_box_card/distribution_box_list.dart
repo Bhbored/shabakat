@@ -9,8 +9,13 @@ import 'distribution_box_card.dart';
 
 class DistributionBoxList extends StatelessWidget {
   final List<DistributionBox> boxes;
+  final bool readOnly;
 
-  const DistributionBoxList({super.key, required this.boxes});
+  const DistributionBoxList({
+    super.key,
+    required this.boxes,
+    this.readOnly = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +49,10 @@ class DistributionBoxList extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 openInnerScreen(
-                  widget: DistributionBoxDetailsScreen(box: box),
+                  widget: DistributionBoxDetailsScreen(
+                    box: box,
+                    readOnly: readOnly,
+                  ),
                 ),
               );
             },

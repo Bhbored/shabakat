@@ -7,9 +7,15 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
 import 'package:shabakat/core/themes/app_colors.dart';
+import 'package:shabakat/data/providers/area/area_provider.dart';
+import 'package:shabakat/data/providers/customer/customer_provider.dart';
+import 'package:shabakat/data/providers/distribution_box/distribution_box_provider.dart';
+import 'package:shabakat/data/providers/expense/expense_provider.dart';
+import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
 import 'package:shabakat/data/providers/network/internet_connection_provider.dart';
 import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
+import 'package:shabakat/ui/offline_mode/shared/navigation_container.dart';
 import 'app_drawer.dart';
 import 'bottom_nav_container.dart';
 import '../dashboard/dashboard_screen.dart';
@@ -246,8 +252,17 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
     }
   }
 
-  void _onEnterOfflineMode() {
-    ref.read(sharedPreferencesHandlerProvider).setOfflineMode(true);
+  Future<void> _onEnterOfflineMode() async {
+    await ref.read(sharedPreferencesHandlerProvider).setOfflineMode(true);
+    ref.invalidate(areaProvider);
+    ref.invalidate(customerProvider);
+    ref.invalidate(distributionBoxProvider);
+    ref.invalidate(invoiceProvider);
+    ref.invalidate(expenseProvider);
+    if (!mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => const OfflineNavigationContainer()),
+    );
   }
 
   void _onOpenAudit() {

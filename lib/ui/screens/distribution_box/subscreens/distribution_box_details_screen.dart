@@ -22,8 +22,13 @@ import '../widgets/distribution_box_details/distribution_box_details_header.dart
 
 class DistributionBoxDetailsScreen extends ConsumerStatefulWidget {
   final DistributionBox box;
+  final bool readOnly;
 
-  const DistributionBoxDetailsScreen({super.key, required this.box});
+  const DistributionBoxDetailsScreen({
+    super.key,
+    required this.box,
+    this.readOnly = false,
+  });
 
   @override
   ConsumerState<DistributionBoxDetailsScreen> createState() =>
@@ -161,15 +166,17 @@ class _DistributionBoxDetailsScreenState
             ),
           ),
           actions: [
-            if (currentBox.customerCount == 0)
+            if (!widget.readOnly) ...[
+              if (currentBox.customerCount == 0)
+                IconButton(
+                  icon: const Icon(Icons.delete_outline),
+                  onPressed: () => _showDeleteDialog(currentBox),
+                ),
               IconButton(
-                icon: const Icon(Icons.delete_outline),
-                onPressed: () => _showDeleteDialog(currentBox),
+                icon: const Icon(Icons.edit_outlined),
+                onPressed: () => _openEditScreen(currentBox),
               ),
-            IconButton(
-              icon: const Icon(Icons.edit_outlined),
-              onPressed: () => _openEditScreen(currentBox),
-            ),
+            ],
           ],
         ),
         body: Column(
@@ -205,6 +212,7 @@ class _DistributionBoxDetailsScreenState
                       : DistributionBoxDetailsCustomersSection(
                           key: const ValueKey('box_subscribers'),
                           boxId: widget.box.id,
+                          readOnly: widget.readOnly,
                         ),
                 ),
               ),

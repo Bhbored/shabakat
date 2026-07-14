@@ -19,8 +19,13 @@ import '../widgets/area_edit_dialog/area_edit_dialog.dart';
 
 class AreaDetailsScreen extends ConsumerStatefulWidget {
   final Area area;
+  final bool readOnly;
 
-  const AreaDetailsScreen({super.key, required this.area});
+  const AreaDetailsScreen({
+    super.key,
+    required this.area,
+    this.readOnly = false,
+  });
 
   @override
   ConsumerState<AreaDetailsScreen> createState() => _AreaDetailsScreenState();
@@ -205,15 +210,17 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
             ),
           ),
           actions: [
-            if (currentArea.customerCount == 0)
+            if (!widget.readOnly) ...[
+              if (currentArea.customerCount == 0)
+                IconButton(
+                  icon: const Icon(Icons.delete_outline),
+                  onPressed: () => _showAreaDeleteDialog(currentArea),
+                ),
               IconButton(
-                icon: const Icon(Icons.delete_outline),
-                onPressed: () => _showAreaDeleteDialog(currentArea),
+                icon: const Icon(Icons.edit_outlined),
+                onPressed: () => _showAreaEditDialog(currentArea),
               ),
-            IconButton(
-              icon: const Icon(Icons.edit_outlined),
-              onPressed: () => _showAreaEditDialog(currentArea),
-            ),
+            ],
           ],
         ),
         body: Column(
@@ -243,9 +250,13 @@ class _AreaDetailsScreenState extends ConsumerState<AreaDetailsScreen> {
                   );
                 },
                 child: _showBoxes
-                    ? const AreaBoxesSection(key: ValueKey('area_boxes'))
-                    : const AreaCustomersSection(
-                        key: ValueKey('area_subscribers'),
+                    ? AreaBoxesSection(
+                        key: const ValueKey('area_boxes'),
+                        readOnly: widget.readOnly,
+                      )
+                    : AreaCustomersSection(
+                        key: const ValueKey('area_subscribers'),
+                        readOnly: widget.readOnly,
                       ),
               ),
             ),

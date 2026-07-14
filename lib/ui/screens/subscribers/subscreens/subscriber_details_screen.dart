@@ -18,8 +18,13 @@ import '../widgets/subscriber_edit_sheet/subscriber_edit_sheet.dart';
 
 class SubscriberDetailsScreen extends ConsumerStatefulWidget {
   final String customerId;
+  final bool readOnly;
 
-  const SubscriberDetailsScreen({super.key, required this.customerId});
+  const SubscriberDetailsScreen({
+    super.key,
+    required this.customerId,
+    this.readOnly = false,
+  });
 
   @override
   ConsumerState<SubscriberDetailsScreen> createState() =>
@@ -135,29 +140,34 @@ class _SubscriberDetailsScreenState
           return Scaffold(
             appBar: _appBar(
               theme,
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.edit_outlined),
-                  onPressed: () => SubscriberEditSheet.show(
-                    context,
-                    customerId: widget.customerId,
-                    customer: customer,
-                  ),
-                ),
-                if (canDelete)
-                  IconButton(
-                    icon: const Icon(Icons.delete_outline),
-                    onPressed: () => showSubscriberDeleteDialog(
-                      context: context,
-                      customerId: widget.customerId,
-                      customerName: customer.name,
-                    ),
-                  ),
-              ],
+              actions: widget.readOnly
+                  ? null
+                  : [
+                      IconButton(
+                        icon: const Icon(Icons.edit_outlined),
+                        onPressed: () => SubscriberEditSheet.show(
+                          context,
+                          customerId: widget.customerId,
+                          customer: customer,
+                        ),
+                      ),
+                      if (canDelete)
+                        IconButton(
+                          icon: const Icon(Icons.delete_outline),
+                          onPressed: () => showSubscriberDeleteDialog(
+                            context: context,
+                            customerId: widget.customerId,
+                            customerName: customer.name,
+                          ),
+                        ),
+                    ],
             ),
             body: RefreshIndicator(
               onRefresh: _onRefresh,
-              child: SubscriberDetailsBody(customer: customer),
+              child: SubscriberDetailsBody(
+                customer: customer,
+                readOnly: widget.readOnly,
+              ),
             ),
           );
         },

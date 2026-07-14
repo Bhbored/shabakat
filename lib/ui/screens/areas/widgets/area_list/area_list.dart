@@ -7,8 +7,13 @@ import '../area_card/area_card.dart';
 
 class AreaList extends StatelessWidget {
   final List<Area> areas;
+  final bool readOnly;
 
-  const AreaList({super.key, required this.areas});
+  const AreaList({
+    super.key,
+    required this.areas,
+    this.readOnly = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +36,7 @@ class AreaList extends StatelessWidget {
         final area = areas[index];
         return Padding(
           padding: EdgeInsets.only(bottom: context.spaceSmall),
-          child: AreaCard(area: area),
+          child: AreaCard(area: area, readOnly: readOnly),
         );
       },
     );
