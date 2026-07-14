@@ -70,7 +70,7 @@ class _OfflineNavigationContainerState
           TextButton.icon(
             onPressed: _exitOfflineMode,
             icon: const Icon(LucideIcons.wifi, size: 18),
-            label: const Text('Go online'),
+            label: Text('common.offline_mode.go_online'.tr()),
           ),
           SizedBox(width: context.paddingSmall),
         ],
@@ -94,7 +94,7 @@ class _OfflineNavigationContainerState
                   SizedBox(width: context.spaceSmall),
                   Expanded(
                     child: Text(
-                      'Showing saved data',
+                      'common.offline_mode.banner'.tr(),
                       style: theme.textTheme.labelMedium?.copyWith(
                         color: colorScheme.onSecondaryContainer,
                         fontWeight: FontWeight.w600,
@@ -133,6 +133,6 @@ class _OfflineNavigationContainerState
     2 => 'tabs.expenses'.tr(),
     3 => 'tabs.areas'.tr(),
     4 => 'tabs.distribution_boxes'.tr(),
-    _ => 'Offline',
+    _ => 'common.offline_mode.title'.tr(),
   };
 }

@@ -108,6 +108,11 @@
       "message": "No internet connection. Do you want to enter offline mode?",
       "yes": "Yes",
       "no": "No"
+    },
+    "offline_mode": {
+      "banner": "Showing saved data",
+      "go_online": "Go online",
+      "title": "Offline"
     }
   },
   "errors": {
