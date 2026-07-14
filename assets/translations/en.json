@@ -49,7 +49,21 @@
     "settings": "Settings",
     "calculator": "Calculator",
     "help_support": "Help & Support",
-    "logout": "Logout"
+    "logout": "Logout",
+    "offline_sync": {
+      "menu": "Offline sync",
+      "title": "Offline sync",
+      "description": "Download your data for offline use. This may take a moment.",
+      "start": "Start sync",
+      "cancel": "Cancel",
+      "syncing": "Syncing data…",
+      "success": "Sync complete. Offline mode is now enabled.",
+      "success_snackbar": "Offline sync completed",
+      "failed": "Sync failed. Check your connection and try again.",
+      "done": "Done",
+      "close": "Close",
+      "try_again": "Try again"
+    }
   },
   "calculator": {
     "title": "Fixed kW Calculator",

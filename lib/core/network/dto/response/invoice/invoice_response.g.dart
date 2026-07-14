@@ -10,6 +10,7 @@ _InvoiceResponse _$InvoiceResponseFromJson(Map<String, dynamic> json) =>
     _InvoiceResponse(
       id: json['id'] as String,
       invoiceNumber: (json['invoiceNumber'] as num).toInt(),
+      customerId: json['customerId'] as String? ?? '',
       customerName: json['customerName'] as String,
       issueDate: _dateOnlyFromJson(json['issueDate'] as String),
       dueDate: _dateOnlyFromJson(json['dueDate'] as String),
@@ -31,6 +32,7 @@ Map<String, dynamic> _$InvoiceResponseToJson(_InvoiceResponse instance) =>
     <String, dynamic>{
       'id': instance.id,
       'invoiceNumber': instance.invoiceNumber,
+      'customerId': instance.customerId,
       'customerName': instance.customerName,
       'issueDate': _dateOnlyToJson(instance.issueDate),
       'dueDate': _dateOnlyToJson(instance.dueDate),

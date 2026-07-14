@@ -99,21 +99,36 @@ class OfflineSyncer {
       updateSyncProgress(0.45);
 
       final customers = await _customerService.getAllCustomersUnpaged();
-      await _customerRepo.bulkAddCustomers(
-        customers.map((e) => e.toEntity()).toList(),
-      );
+      final customerEntities = customers.map((e) => e.toEntity()).toList();
+      await _customerRepo.bulkAddCustomers(customerEntities);
       updateSyncProgress(0.6);
 
+      final customersById = {
+        for (final customer in customerEntities) customer.id: customer,
+      };
+      final customersByName = <String, String>{};
+      for (final customer in customerEntities) {
+        customersByName.putIfAbsent(customer.name, () => customer.id);
+      }
+
       final invoices = await _invoiceService.getAllInvoicesUnpaged();
-      await _invoiceRepo.bulkAddInvoices(
-        invoices.map((e) {
-          final invoice = e.toEntity();
-          final customerId = invoice.customerId.isNotEmpty
-              ? invoice.customerId
-              : (e.payments.isNotEmpty ? e.payments.first.customerId : '');
-          return invoice.copyWith(customerId: customerId);
-        }).toList(),
-      );
+      final invoiceEntities = invoices
+          .map((e) {
+            final invoice = e.toEntity();
+            final customerId = invoice.customerId.isNotEmpty
+                ? invoice.customerId
+                : (invoice.customerName != null
+                      ? customersByName[invoice.customerName!] ?? ''
+                      : '');
+            return invoice.copyWith(customerId: customerId);
+          })
+          .where(
+            (invoice) =>
+                invoice.customerId.isNotEmpty &&
+                customersById.containsKey(invoice.customerId),
+          )
+          .toList();
+      await _invoiceRepo.bulkAddInvoices(invoiceEntities);
       updateSyncProgress(0.75);
 
       final expenses = await _expenseService.getAllExpensesUnpaged();

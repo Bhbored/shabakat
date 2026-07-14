@@ -7,25 +7,31 @@ import 'package:shabakat/domain/mappers/payment/payment_mapper.dart';
 import 'package:shabakat/infrastructor/db/database.dart' as drift;
 
 extension InvoiceResponseMapper on InvoiceResponse {
-  Invoice toEntity() => Invoice(
-    id: id,
-    createdAt: createdAt,
-    updatedAt: updatedAt,
-    companyId: '',
-    customerId: '',
-    invoiceNumber: invoiceNumber,
-    customerName: customerName,
-    issueDate: issueDate,
-    dueDate: dueDate,
-    fixedCharge: fixedCharge,
-    tva: tva,
-    totalAmount: totalAmount,
-    paidAmount: paidAmount,
-    amountDue: amountDue,
-    billedConsumption: billedConsumption,
-    invoiceStatus: toInvoiceStatus(invoiceStatus),
-    payments: payments.map((p) => p.toEntity()).toList(),
-  );
+  Invoice toEntity() {
+    final resolvedCustomerId = customerId.isNotEmpty
+        ? customerId
+        : (payments.isNotEmpty ? payments.first.customerId : '');
+
+    return Invoice(
+      id: id,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      companyId: '',
+      customerId: resolvedCustomerId,
+      invoiceNumber: invoiceNumber,
+      customerName: customerName,
+      issueDate: issueDate,
+      dueDate: dueDate,
+      fixedCharge: fixedCharge,
+      tva: tva,
+      totalAmount: totalAmount,
+      paidAmount: paidAmount,
+      amountDue: amountDue,
+      billedConsumption: billedConsumption,
+      invoiceStatus: toInvoiceStatus(invoiceStatus),
+      payments: payments.map((p) => p.toEntity()).toList(),
+    );
+  }
 }
 
 extension InvoiceSummaryResponseMapper on InvoiceSummaryResponse {

@@ -15,6 +15,7 @@ sealed class InvoiceResponse with _$InvoiceResponse {
   const factory InvoiceResponse({
     required String id,
     required int invoiceNumber,
+    @Default('') String customerId,
     required String customerName,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
     required DateTime issueDate,

@@ -9,6 +9,7 @@ import 'package:shabakat/ui/screens/calculator/fixed_kilowatt_calculator_screen.
 import 'package:shabakat/ui/screens/dashboard/widgets/common/dashboard_avatar.dart';
 import 'package:shabakat/ui/settings/settings_screen.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
+import 'package:shabakat/ui/shared/widgets/offline_sync_dialog.dart';
 
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
@@ -83,6 +84,14 @@ class AppDrawer extends ConsumerWidget {
                           widget: const FixedKilowattCalculatorScreen(),
                         ),
                       );
+                    },
+                  ),
+                  _DrawerItem(
+                    icon: LucideIcons.refreshCw,
+                    label: 'drawer.offline_sync.menu'.tr(),
+                    onTap: () {
+                      Navigator.pop(context);
+                      showOfflineSyncDialog(context: context);
                     },
                   ),
                   _DrawerItem(
