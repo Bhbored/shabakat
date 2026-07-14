@@ -41,14 +41,17 @@ class InvoiceNotifier extends _$InvoiceNotifier {
         pageSize: _filter.pageSize,
       );
       final totalCount = await _invoiceRepo.getTotalInvoicesCount();
+      final totalPages = totalCount == 0
+          ? 0
+          : (totalCount / _filter.pageSize).ceil();
       pagination.updatePagination(
         InvoicePagination(
           totalCount: totalCount,
           pageNumber: _filter.pageNumber,
           pageSize: _filter.pageSize,
-          totalPages: totalCount ~/ _filter.pageSize,
+          totalPages: totalPages,
           hasPreviousPage: _filter.pageNumber > 1,
-          hasNextPage: _filter.pageNumber < totalCount ~/ _filter.pageSize,
+          hasNextPage: _filter.pageNumber < totalPages,
         ),
       );
       return invoices;

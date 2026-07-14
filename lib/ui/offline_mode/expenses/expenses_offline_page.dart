@@ -48,7 +48,13 @@ class ExpensesOfflinePage extends ConsumerWidget {
           ),
           const ExpenseFilterChipsRow(),
           Expanded(
-            child: ExpenseList(expenses: expenses, readOnly: true),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                ref.read(expenseFilterProvider.notifier).clearFilter();
+                ref.invalidate(expenseProvider);
+              },
+              child: ExpenseList(expenses: expenses, readOnly: true),
+            ),
           ),
           if (pagination.totalPages > 1)
             SubscribersPagination(

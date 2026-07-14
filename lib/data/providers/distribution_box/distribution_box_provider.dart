@@ -36,13 +36,16 @@ class DistributionBoxNotifier extends _$DistributionBoxNotifier {
     if (isOfflineMode) {
       final distributionBoxes = await _distributionBoxRepo
           .getAllDistributionBoxes(
-            filter.name,
             filter.areaId,
+            filter.name,
             pageNumber: filter.pageNumber,
             pageSize: filter.pageSize,
           );
 
       _totalCount = await _distributionBoxRepo.getTotalDistributionBoxesCount();
+      final totalPages = _totalCount == 0
+          ? 0
+          : (_totalCount / filter.pageSize).ceil();
       ref
           .read(distributionBoxPaginationProvider.notifier)
           .updatePagination(
@@ -50,9 +53,9 @@ class DistributionBoxNotifier extends _$DistributionBoxNotifier {
               totalCount: _totalCount,
               pageNumber: filter.pageNumber,
               pageSize: filter.pageSize,
-              totalPages: _totalCount ~/ filter.pageSize,
+              totalPages: totalPages,
               hasPreviousPage: filter.pageNumber > 1,
-              hasNextPage: filter.pageNumber < _totalCount ~/ filter.pageSize,
+              hasNextPage: filter.pageNumber < totalPages,
             ),
           );
       return distributionBoxes;

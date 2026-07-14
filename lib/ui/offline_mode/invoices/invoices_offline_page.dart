@@ -61,7 +61,13 @@ class _InvoicesOfflinePageState extends ConsumerState<InvoicesOfflinePage> {
           const InvoicesToolbar(),
           const InvoiceFilterChipsRow(),
           Expanded(
-            child: InvoiceList(invoices: invoices, readOnly: true),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                ref.read(invoiceFilterProvider.notifier).clearFilter();
+                ref.invalidate(invoiceProvider);
+              },
+              child: InvoiceList(invoices: invoices, readOnly: true),
+            ),
           ),
           if (pagination.totalPages > 1)
             SubscribersPagination(

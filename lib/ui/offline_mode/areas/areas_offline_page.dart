@@ -58,7 +58,12 @@ class _AreasOfflinePageState extends ConsumerState<AreasOfflinePage> {
           ),
           SizedBox(height: context.spaceSmall),
           Expanded(
-            child: AreaList(areas: filtered, readOnly: true),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                ref.invalidate(areaProvider);
+              },
+              child: AreaList(areas: filtered, readOnly: true),
+            ),
           ),
         ],
       ),

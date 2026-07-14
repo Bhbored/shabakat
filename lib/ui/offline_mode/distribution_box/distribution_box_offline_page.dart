@@ -70,9 +70,15 @@ class _DistributionBoxOfflinePageState
               onTryAgain: () =>
                   ref.read(distributionBoxProvider.notifier).refresh(),
             ),
-            data: (boxes) => DistributionBoxList(
-              boxes: boxes,
-              readOnly: true,
+            data: (boxes) => RefreshIndicator(
+              onRefresh: () async {
+                ref.read(distributionBoxFilterProvider.notifier).clear();
+                ref.invalidate(distributionBoxProvider);
+              },
+              child: DistributionBoxList(
+                boxes: boxes,
+                readOnly: true,
+              ),
             ),
           ),
         ),

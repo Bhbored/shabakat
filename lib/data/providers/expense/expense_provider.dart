@@ -38,14 +38,17 @@ class ExpenseNotifier extends _$ExpenseNotifier {
       );
 
       final totalCount = await _expenseRepo.getTotalExpensesCount();
+      final totalPages = totalCount == 0
+          ? 0
+          : (totalCount / _filter.pageSize).ceil();
       pagination.updatePagination(
         ExpensePagination(
           totalCount: totalCount,
           pageNumber: _filter.pageNumber,
           pageSize: _filter.pageSize,
-          totalPages: totalCount ~/ _filter.pageSize,
+          totalPages: totalPages,
           hasPreviousPage: _filter.pageNumber > 1,
-          hasNextPage: _filter.pageNumber < totalCount ~/ _filter.pageSize,
+          hasNextPage: _filter.pageNumber < totalPages,
         ),
       );
       return expenses;

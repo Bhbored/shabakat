@@ -24,25 +24,15 @@ class CustomerRepo {
   }) async {
     try {
       final select = _db.select(_db.customers);
-
-      final expressions = <Expression<bool>>[];
-      if (name != null) expressions.add(_db.customers.name.equals(name));
-      if (phone != null) expressions.add(_db.customers.phone.equals(phone));
-      if (areaId != null) expressions.add(_db.customers.areaId.equals(areaId));
-      if (boxId != null) expressions.add(_db.customers.boxId.equals(boxId));
-      if (planType != null) {
-        expressions.add(_db.customers.plan.equals(planType.name));
-      }
-      if (customerRelation != null) {
-        expressions.add(
-          _db.customers.customerRelation.equals(customerRelation.name),
-        );
-      }
-      if (customerStatus != null) {
-        expressions.add(
-          _db.customers.customerStatus.equals(customerStatus.name),
-        );
-      }
+      final expressions = await _customerFilterExpressions(
+        name: name,
+        phone: phone,
+        areaId: areaId,
+        boxId: boxId,
+        planType: planType,
+        customerRelation: customerRelation,
+        customerStatus: customerStatus,
+      );
       if (expressions.isNotEmpty) {
         select.where((c) => expressions.reduce((a, b) => a & b));
       }
@@ -61,6 +51,49 @@ class CustomerRepo {
       );
       rethrow;
     }
+  }
+
+  Future<List<Expression<bool>>> _customerFilterExpressions({
+    String? name,
+    String? phone,
+    String? areaId,
+    String? boxId,
+    PlanType? planType,
+    CustomerRelation? customerRelation,
+    CustomerStatus? customerStatus,
+  }) async {
+    final expressions = <Expression<bool>>[];
+    if (name != null) expressions.add(_db.customers.name.equals(name));
+    if (phone != null) expressions.add(_db.customers.phone.equals(phone));
+    if (areaId != null) {
+      final area = await (_db.select(
+        _db.areas,
+      )..where((a) => a.id.equals(areaId))).getSingleOrNull();
+      if (area != null) {
+        expressions.add(
+          _db.customers.areaId.equals(areaId) |
+              (_db.customers.areaId.isNull() &
+                  _db.customers.areaName.equals(area.name)),
+        );
+      } else {
+        expressions.add(_db.customers.areaId.equals(areaId));
+      }
+    }
+    if (boxId != null) expressions.add(_db.customers.boxId.equals(boxId));
+    if (planType != null) {
+      expressions.add(_db.customers.plan.equals(planType.name));
+    }
+    if (customerRelation != null) {
+      expressions.add(
+        _db.customers.customerRelation.equals(customerRelation.name),
+      );
+    }
+    if (customerStatus != null) {
+      expressions.add(
+        _db.customers.customerStatus.equals(customerStatus.name),
+      );
+    }
+    return expressions;
   }
 
   Future<Customer?> getCustomerById(String id) async {
@@ -118,10 +151,30 @@ class CustomerRepo {
     }
   }
 
-  Future<int> getTotalCustomersCount() async {
+  Future<int> getTotalCustomersCount({
+    String? name,
+    String? phone,
+    String? areaId,
+    String? boxId,
+    PlanType? planType,
+    CustomerRelation? customerRelation,
+    CustomerStatus? customerStatus,
+  }) async {
     try {
       final count = _db.customers.id.count();
       final query = _db.selectOnly(_db.customers)..addColumns([count]);
+      final expressions = await _customerFilterExpressions(
+        name: name,
+        phone: phone,
+        areaId: areaId,
+        boxId: boxId,
+        planType: planType,
+        customerRelation: customerRelation,
+        customerStatus: customerStatus,
+      );
+      if (expressions.isNotEmpty) {
+        query.where(expressions.reduce((a, b) => a & b));
+      }
       final row = await query.getSingle();
       final total = row.read(count) ?? 0;
       _logger.i('Total customers count from local DB: $total');

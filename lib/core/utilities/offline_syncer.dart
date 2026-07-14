@@ -88,7 +88,11 @@ class OfflineSyncer {
       updateSyncProgress(0.15);
 
       final areas = await _areaService.getAreas();
-      await _areaRepo.bulkAddAreas(areas.map((e) => e.toEntity()).toList());
+      final areaEntities = areas.map((e) => e.toEntity()).toList();
+      await _areaRepo.bulkAddAreas(areaEntities);
+      final areasByName = <String, String>{
+        for (final area in areaEntities) area.name: area.id,
+      };
       updateSyncProgress(0.3);
 
       final boxes = await _distributionBoxService
@@ -99,7 +103,15 @@ class OfflineSyncer {
       updateSyncProgress(0.45);
 
       final customers = await _customerService.getAllCustomersUnpaged();
-      final customerEntities = customers.map((e) => e.toEntity()).toList();
+      final customerEntities = customers.map((e) {
+        final customer = e.toEntity();
+        final resolvedAreaId =
+            customer.areaId ??
+            (customer.areaName != null
+                ? areasByName[customer.areaName!]
+                : null);
+        return customer.copyWith(areaId: resolvedAreaId);
+      }).toList();
       await _customerRepo.bulkAddCustomers(customerEntities);
       updateSyncProgress(0.6);
 

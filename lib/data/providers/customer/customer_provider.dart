@@ -42,16 +42,27 @@ class CustomerNotifier extends _$CustomerNotifier {
         pageNumber: filter.pageNumber,
         pageSize: filter.pageSize,
       );
-      final totalCount = await _customerRepo.getTotalCustomersCount();
+      final totalCount = await _customerRepo.getTotalCustomersCount(
+        name: filter.name,
+        phone: filter.phone,
+        areaId: filter.areaId,
+        boxId: filter.boxId,
+        planType: filter.planType,
+        customerRelation: filter.customerRelation,
+        customerStatus: filter.customerStatus,
+      );
+      final totalPages = totalCount == 0
+          ? 0
+          : (totalCount / filter.pageSize).ceil();
       final pagination = ref.read(customerPaginationProvider.notifier);
       pagination.updatePagination(
         CustomerPagination(
           totalCount: totalCount,
           pageNumber: filter.pageNumber,
           pageSize: filter.pageSize,
-          totalPages: totalCount ~/ filter.pageSize,
+          totalPages: totalPages,
           hasPreviousPage: filter.pageNumber > 1,
-          hasNextPage: filter.pageNumber < totalCount ~/ filter.pageSize,
+          hasNextPage: filter.pageNumber < totalPages,
         ),
       );
       return customers;

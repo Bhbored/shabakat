@@ -44,7 +44,13 @@ class CustomersOfflinePage extends ConsumerWidget {
           const SubscribersToolbar(readOnly: true),
           SizedBox(height: context.spaceSmall),
           Expanded(
-            child: SubscriberList(customers: customers, readOnly: true),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                ref.read(customerFilterProvider.notifier).clearFilter();
+                ref.invalidate(customerProvider);
+              },
+              child: SubscriberList(customers: customers, readOnly: true),
+            ),
           ),
           if (pagination.totalPages > 1)
             SubscribersPagination(
