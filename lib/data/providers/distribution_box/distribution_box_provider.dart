@@ -42,7 +42,10 @@ class DistributionBoxNotifier extends _$DistributionBoxNotifier {
             pageSize: filter.pageSize,
           );
 
-      _totalCount = await _distributionBoxRepo.getTotalDistributionBoxesCount();
+      _totalCount = await _distributionBoxRepo.getTotalDistributionBoxesCount(
+        areaId: filter.areaId,
+        name: filter.name,
+      );
       final totalPages = _totalCount == 0
           ? 0
           : (_totalCount / filter.pageSize).ceil();

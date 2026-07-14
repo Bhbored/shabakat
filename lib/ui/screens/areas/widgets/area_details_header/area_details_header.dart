@@ -2,7 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/data/providers/distribution_box/distribution_box_filter_provider.dart';
 import 'package:shabakat/data/providers/distribution_box/distribution_box_pagination_provider.dart';
+import 'package:shabakat/data/providers/distribution_box/distribution_box_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
 import 'package:shabakat/ui/screens/dashboard/widgets/common/dashboard_avatar.dart';
 
@@ -24,16 +26,29 @@ class AreaDetailsHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final boxCount = ref.watch(distributionBoxPaginationProvider).totalCount;
+    final filter = ref.watch(distributionBoxFilterProvider);
+    final boxesAsync = ref.watch(distributionBoxProvider);
+    final pagination = ref.watch(distributionBoxPaginationProvider);
+
+    final boxCountReady =
+        showBoxes &&
+        filter.areaId == area.id &&
+        boxesAsync.hasValue &&
+        !boxesAsync.isLoading &&
+        !boxesAsync.isRefreshing;
+    final boxCount = boxCountReady ? pagination.totalCount : null;
+
     final countLabel = showBoxes
-        ? (boxCount == 1
-            ? 'areas.box_count_one'.tr()
-            : 'areas.box_count'.tr(args: [boxCount.toString()]))
+        ? (boxCount == null
+              ? 'areas.box_count'.tr(args: ['…'])
+              : boxCount == 1
+              ? 'areas.box_count_one'.tr()
+              : 'areas.box_count'.tr(args: [boxCount.toString()]))
         : (area.customerCount == 1
-            ? 'areas.subscriber_count_one'.tr()
-            : 'areas.subscriber_count'.tr(
-                args: [area.customerCount.toString()],
-              ));
+              ? 'areas.subscriber_count_one'.tr()
+              : 'areas.subscriber_count'.tr(
+                  args: [area.customerCount.toString()],
+                ));
 
     return Container(
       width: double.infinity,
@@ -127,7 +142,7 @@ class AreaDetailsHeader extends ConsumerWidget {
                       ? 'areas.details.boxes'.tr()
                       : 'areas.details.subscribers'.tr(),
                   value: showBoxes
-                      ? boxCount.toString()
+                      ? (boxCount?.toString() ?? '…')
                       : area.customerCount.toString(),
                 ),
               ],

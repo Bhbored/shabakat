@@ -18,14 +18,10 @@ class DistributionBoxRepo {
   }) async {
     try {
       final select = _db.select(_db.distributionBoxes);
-
-      final expressions = <Expression<bool>>[];
-      if (areaId != null) {
-        expressions.add(_db.distributionBoxes.areaId.equals(areaId));
-      }
-      if (name != null) {
-        expressions.add(_db.distributionBoxes.name.like('%$name%'));
-      }
+      final expressions = _distributionBoxFilterExpressions(
+        areaId: areaId,
+        name: name,
+      );
       if (expressions.isNotEmpty) {
         select.where((b) => expressions.reduce((a, b) => a & b));
       }
@@ -44,6 +40,20 @@ class DistributionBoxRepo {
       );
       rethrow;
     }
+  }
+
+  List<Expression<bool>> _distributionBoxFilterExpressions({
+    String? areaId,
+    String? name,
+  }) {
+    final expressions = <Expression<bool>>[];
+    if (areaId != null) {
+      expressions.add(_db.distributionBoxes.areaId.equals(areaId));
+    }
+    if (name != null) {
+      expressions.add(_db.distributionBoxes.name.like('%$name%'));
+    }
+    return expressions;
   }
 
   Future<DistributionBox?> getDistributionBoxById(String id) async {
@@ -102,10 +112,20 @@ class DistributionBoxRepo {
     }
   }
 
-  Future<int> getTotalDistributionBoxesCount() async {
+  Future<int> getTotalDistributionBoxesCount({
+    String? areaId,
+    String? name,
+  }) async {
     try {
       final count = _db.distributionBoxes.id.count();
       final query = _db.selectOnly(_db.distributionBoxes)..addColumns([count]);
+      final expressions = _distributionBoxFilterExpressions(
+        areaId: areaId,
+        name: name,
+      );
+      if (expressions.isNotEmpty) {
+        query.where(expressions.reduce((a, b) => a & b));
+      }
       final row = await query.getSingle();
       final total = row.read(count) ?? 0;
       _logger.i('Total distribution boxes count from local DB: $total');
