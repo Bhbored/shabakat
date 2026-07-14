@@ -48,4 +48,4 @@ final class OfflineSyncerProvider
   }
 }
 
-String _$offlineSyncerHash() => r'db07de0f03354ed43dc4f6614c0e2007b7cc672a';
+String _$offlineSyncerHash() => r'1ddb4a3ee6d08d5d193a112cf93b74cf1d569ab6';

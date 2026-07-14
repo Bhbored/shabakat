@@ -21,7 +21,7 @@ final class SyncingProgressProvider
         argument: null,
         retry: null,
         name: r'syncingProgressProvider',
-        isAutoDispose: false,
+        isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -40,4 +40,4 @@ final class SyncingProgressProvider
   }
 }
 
-String _$syncingProgressHash() => r'3cae3b6b6ce42d50cf2584ba0a63ee67624b48d7';
+String _$syncingProgressHash() => r'472f144fa0679771f07930f8cfa32b1f896aeeb8';

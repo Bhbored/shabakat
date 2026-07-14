@@ -3,7 +3,7 @@ import 'package:shabakat/core/utilities/offline_syncer.dart';
 
 part 'syncing_progress.g.dart';
 
-@Riverpod(keepAlive: true)
+@Riverpod(keepAlive: false)
 Stream<double> syncingProgress(Ref ref) {
   final syncer = ref.watch(offlineSyncerProvider);
   return syncer.progressStream;
