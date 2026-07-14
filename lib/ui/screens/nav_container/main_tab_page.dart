@@ -109,7 +109,7 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
 
     return Scaffold(
       appBar: _buildAppBar(theme, colorScheme),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(onEnterOfflineMode: _onEnterOfflineMode),
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) => setState(() => _currentIndex = index),

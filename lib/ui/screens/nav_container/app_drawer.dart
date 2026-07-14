@@ -12,7 +12,9 @@ import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 import 'package:shabakat/ui/shared/widgets/offline_sync_dialog.dart';
 
 class AppDrawer extends ConsumerWidget {
-  const AppDrawer({super.key});
+  final Future<void> Function()? onEnterOfflineMode;
+
+  const AppDrawer({super.key, this.onEnterOfflineMode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -94,6 +96,15 @@ class AppDrawer extends ConsumerWidget {
                       showOfflineSyncDialog(context: context);
                     },
                   ),
+                  if (onEnterOfflineMode != null)
+                    _DrawerItem(
+                      icon: LucideIcons.cloudOff,
+                      label: 'drawer.offline_mode'.tr(),
+                      onTap: () {
+                        Navigator.pop(context);
+                        onEnterOfflineMode!();
+                      },
+                    ),
                   _DrawerItem(
                     icon: LucideIcons.helpCircle,
                     label: 'drawer.help_support'.tr(),

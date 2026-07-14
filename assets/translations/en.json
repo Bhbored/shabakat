@@ -50,6 +50,7 @@
     "calculator": "Calculator",
     "help_support": "Help & Support",
     "logout": "Logout",
+    "offline_mode": "Offline mode",
     "offline_sync": {
       "menu": "Offline sync",
       "title": "Offline sync",
