@@ -102,7 +102,13 @@
   },
   "common": {
     "all": "All",
-    "back_online": "You are back online"
+    "back_online": "You are back online",
+    "enter_offline_mode": {
+      "title": "Enter offline mode?",
+      "message": "No internet connection. Do you want to enter offline mode?",
+      "yes": "Yes",
+      "no": "No"
+    }
   },
   "errors": {
     "try_again": "Try Again"

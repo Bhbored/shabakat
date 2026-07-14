@@ -5,8 +5,10 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/api_errors.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
+import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
 import 'package:shabakat/core/themes/app_colors.dart';
 import 'package:shabakat/data/providers/network/internet_connection_provider.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 import 'app_drawer.dart';
 import 'bottom_nav_container.dart';
@@ -74,6 +76,27 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
           context,
           message: ApiErrors.noInternet,
           variant: AppSnackBarVariant.error,
+        );
+        showAppDialog<void>(
+          context: context,
+          animated: true,
+          builder: (dialogContext) => AppAlertDialog(
+            title: Text('common.enter_offline_mode.title'.tr()),
+            content: Text('common.enter_offline_mode.message'.tr()),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text('common.enter_offline_mode.no'.tr()),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  _onEnterOfflineMode();
+                },
+                child: Text('common.enter_offline_mode.yes'.tr()),
+              ),
+            ],
+          ),
         );
       }
     });
@@ -223,6 +246,10 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
     }
   }
 
+  void _onEnterOfflineMode() {
+    ref.read(sharedPreferencesHandlerProvider).setOfflineMode(true);
+  }
+
   void _onOpenAudit() {
     Navigator.of(context).push(openInnerScreen(widget: const AuditScreen()));
   }
@@ -246,8 +273,8 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
   }
 
   void _onAddDistributionBox() {
-    Navigator.of(context).push(
-      openInnerScreen(widget: const DistributionBoxAddingScreen()),
-    );
+    Navigator.of(
+      context,
+    ).push(openInnerScreen(widget: const DistributionBoxAddingScreen()));
   }
 }
