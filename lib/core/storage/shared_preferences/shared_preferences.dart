@@ -5,7 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 part 'shared_preferences.g.dart';
 
-@riverpod
+Duration? retry(int _, Object _) => null;
+
+@Riverpod(keepAlive: true, retry: retry)
 SharedPreferencesHandler sharedPreferencesHandler(Ref ref) {
   return SharedPreferencesHandler();
 }
@@ -56,6 +58,26 @@ class SharedPreferencesHandler {
     } on Exception catch (e) {
       log.e('Failed to load theme preference: $e');
       return ThemeMode.system;
+    }
+  }
+
+  Future<void> setOfflineMode(bool value) async {
+    try {
+      await asyncPrefs.setBool('offlineMode', value);
+      log.i('Offline mode status saved: $value');
+    } on Exception catch (e) {
+      log.e('Failed to save offline mode status: $e');
+    }
+  }
+
+  Future<bool> isOfflineMode() async {
+    try {
+      final value = await asyncPrefs.getBool('offlineMode');
+      log.i('Offline mode status loaded: $value');
+      return value ?? false;
+    } on Exception catch (e) {
+      log.e('Failed to load offline mode status: $e');
+      return false;
     }
   }
 

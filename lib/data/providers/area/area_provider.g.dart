@@ -33,7 +33,7 @@ final class AreaNotifierProvider
   AreaNotifier create() => AreaNotifier();
 }
 
-String _$areaNotifierHash() => r'5c1eddc29db6ea95cde936f79e7abe7bf4e17fae';
+String _$areaNotifierHash() => r'87d2b035f99d69a558d6e3f197559e1c5a131c90';
 
 abstract class _$AreaNotifier extends $AsyncNotifier<List<Area>> {
   FutureOr<List<Area>> build();

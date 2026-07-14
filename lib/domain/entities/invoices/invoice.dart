@@ -27,6 +27,23 @@ sealed class Invoice with _$Invoice {
     List<Payment>? payments,
   }) = _Invoice;
 
+  factory Invoice.empty() => Invoice(
+    id: '',
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+    companyId: '',
+    customerId: '',
+    invoiceNumber: 0,
+    issueDate: DateTime.now(),
+    dueDate: DateTime.now(),
+    fixedCharge: 0,
+    tva: 0,
+    totalAmount: 0,
+    paidAmount: 0,
+    amountDue: 0,
+    invoiceStatus: InvoiceStatus.unpaid,
+  );
+
   factory Invoice.fromJson(Map<String, dynamic> json) =>
       _$InvoiceFromJson(json);
 }

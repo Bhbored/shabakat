@@ -21,7 +21,7 @@ final class AppDatabaseProvider
         argument: null,
         retry: retry,
         name: r'appDatabaseProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -48,7 +48,7 @@ final class AppDatabaseProvider
   }
 }
 
-String _$appDatabaseHash() => r'6a99b538ba33a1280a8a3f26d9dc443bdfaba89b';
+String _$appDatabaseHash() => r'1275c06d656588fdb57e5e7958cf4f272f1878e7';
 
 @ProviderFor(areaRepo)
 final areaRepoProvider = AreaRepoProvider._();
@@ -62,7 +62,7 @@ final class AreaRepoProvider
         argument: null,
         retry: retry,
         name: r'areaRepoProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -89,7 +89,7 @@ final class AreaRepoProvider
   }
 }
 
-String _$areaRepoHash() => r'51465e296af77e9389fe690d5d95d2f168ab931d';
+String _$areaRepoHash() => r'550f8bcd7b8e64a2cf0535d0d7f67c5b94b5c28c';
 
 @ProviderFor(customerRepo)
 final customerRepoProvider = CustomerRepoProvider._();
@@ -103,7 +103,7 @@ final class CustomerRepoProvider
         argument: null,
         retry: retry,
         name: r'customerRepoProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -130,7 +130,7 @@ final class CustomerRepoProvider
   }
 }
 
-String _$customerRepoHash() => r'38ab92850e38de50707216df9238252c89690f92';
+String _$customerRepoHash() => r'8e3082b5e01581bb81f1bc13d33ba1eeff29b2d8';
 
 @ProviderFor(distributionBoxRepo)
 final distributionBoxRepoProvider = DistributionBoxRepoProvider._();
@@ -149,7 +149,7 @@ final class DistributionBoxRepoProvider
         argument: null,
         retry: retry,
         name: r'distributionBoxRepoProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -178,7 +178,7 @@ final class DistributionBoxRepoProvider
 }
 
 String _$distributionBoxRepoHash() =>
-    r'cffddbe8d39c371e36bcb319591013b2942d6a86';
+    r'4ce3d7d6b3392541270fca05363a4bf1171992c5';
 
 @ProviderFor(expenseRepo)
 final expenseRepoProvider = ExpenseRepoProvider._();
@@ -192,7 +192,7 @@ final class ExpenseRepoProvider
         argument: null,
         retry: retry,
         name: r'expenseRepoProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -219,7 +219,7 @@ final class ExpenseRepoProvider
   }
 }
 
-String _$expenseRepoHash() => r'2a61b6af913829dec877d90c2ce1e0e45ed5612a';
+String _$expenseRepoHash() => r'8a316462c2ce0c57878cc7ff35a6684f4a531072';
 
 @ProviderFor(invoiceRepo)
 final invoiceRepoProvider = InvoiceRepoProvider._();
@@ -233,7 +233,7 @@ final class InvoiceRepoProvider
         argument: null,
         retry: retry,
         name: r'invoiceRepoProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -260,7 +260,7 @@ final class InvoiceRepoProvider
   }
 }
 
-String _$invoiceRepoHash() => r'ed55478b6f73fceac332f3c3525d374afd82abae';
+String _$invoiceRepoHash() => r'b05d84a97c700dd29f79746190d1c0323af8da02';
 
 @ProviderFor(meterReadingRepo)
 final meterReadingRepoProvider = MeterReadingRepoProvider._();
@@ -279,7 +279,7 @@ final class MeterReadingRepoProvider
         argument: null,
         retry: retry,
         name: r'meterReadingRepoProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -306,4 +306,4 @@ final class MeterReadingRepoProvider
   }
 }
 
-String _$meterReadingRepoHash() => r'0b5601445d7b42a12d02b5260f42e6b55ac38725';
+String _$meterReadingRepoHash() => r'f3c05de93d84f52235b62de1496bbb576d653257';

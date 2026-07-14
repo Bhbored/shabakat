@@ -3,10 +3,13 @@ import 'package:shabakat/core/network/dto/request/distribution_box/create_distri
 import 'package:shabakat/core/network/dto/request/distribution_box/distribution_box_filter_request.dart';
 import 'package:shabakat/core/network/dto/request/distribution_box/update_distribution_box_request.dart';
 import 'package:shabakat/core/network/services/distribution_box/distribution_box_service.dart';
+import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
 import 'package:shabakat/data/providers/distribution_box/distribution_box_filter_provider.dart';
 import 'package:shabakat/data/providers/distribution_box/distribution_box_pagination_provider.dart';
 import 'package:shabakat/domain/entities/distribution_box/distribution_box.dart';
 import 'package:shabakat/domain/mappers/distribution_box/distribution_box_mapper.dart';
+
+import '../../repositories/repositories.dart';
 part 'distribution_box_provider.g.dart';
 
 Duration? retry(int _, Object _) => null;
@@ -15,6 +18,10 @@ Duration? retry(int _, Object _) => null;
 class DistributionBoxNotifier extends _$DistributionBoxNotifier {
   DistributionBoxService get _distributionBoxService =>
       ref.read(distributionBoxServiceProvider);
+  SharedPreferencesHandler get _sharedPreferencesHandler =>
+      ref.read(sharedPreferencesHandlerProvider);
+  DistributionBoxRepo get _distributionBoxRepo =>
+      ref.read(distributionBoxRepoProvider);
   late int _totalCount;
   @override
   FutureOr<List<DistributionBox>> build() async {
@@ -25,19 +32,49 @@ class DistributionBoxNotifier extends _$DistributionBoxNotifier {
   Future<List<DistributionBox>> _loadDistributionBoxes(
     DistributionBoxFilterRequest filter,
   ) async {
-    final response = await _distributionBoxService.getDistributionBoxes(filter);
-    _totalCount = response.totalCount;
-    ref.read(distributionBoxPaginationProvider.notifier).updatePagination(
-      DistributionBoxPagination(
-        totalCount: response.totalCount,
-        pageNumber: response.pageNumber,
-        pageSize: response.pageSize,
-        totalPages: response.totalPages,
-        hasPreviousPage: response.hasPreviousPage,
-        hasNextPage: response.hasNextPage,
-      ),
-    );
-    return response.data.map((x) => x.toEntity()).toList();
+    final isOfflineMode = await _sharedPreferencesHandler.isOfflineMode();
+    if (isOfflineMode) {
+      final distributionBoxes = await _distributionBoxRepo
+          .getAllDistributionBoxes(
+            filter.name,
+            filter.areaId,
+            pageNumber: filter.pageNumber,
+            pageSize: filter.pageSize,
+          );
+
+      _totalCount = await _distributionBoxRepo.getTotalDistributionBoxesCount();
+      ref
+          .read(distributionBoxPaginationProvider.notifier)
+          .updatePagination(
+            DistributionBoxPagination(
+              totalCount: _totalCount,
+              pageNumber: filter.pageNumber,
+              pageSize: filter.pageSize,
+              totalPages: _totalCount ~/ filter.pageSize,
+              hasPreviousPage: filter.pageNumber > 1,
+              hasNextPage: filter.pageNumber < _totalCount ~/ filter.pageSize,
+            ),
+          );
+      return distributionBoxes;
+    } else {
+      final response = await _distributionBoxService.getDistributionBoxes(
+        filter,
+      );
+      _totalCount = response.totalCount;
+      ref
+          .read(distributionBoxPaginationProvider.notifier)
+          .updatePagination(
+            DistributionBoxPagination(
+              totalCount: response.totalCount,
+              pageNumber: response.pageNumber,
+              pageSize: response.pageSize,
+              totalPages: response.totalPages,
+              hasPreviousPage: response.hasPreviousPage,
+              hasNextPage: response.hasNextPage,
+            ),
+          );
+      return response.data.map((x) => x.toEntity()).toList();
+    }
   }
 
   int getTotalCount() {

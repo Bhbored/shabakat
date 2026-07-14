@@ -11,16 +11,13 @@ class MeterReadingRepo {
   MeterReadingRepo(this._db);
 
   Future<List<MeterReading>> getMeterReadingsByCustomerId(
-    String customerId, {
-    int pageNumber = 1,
-    int pageSize = 10,
-  }) async {
+    String customerId,
+  ) async {
     try {
       final rows =
           await (_db.select(_db.meterReadings)
                 ..where((r) => r.customerId.equals(customerId))
-                ..orderBy([(r) => OrderingTerm.desc(r.createdAt)])
-                ..limit(pageSize, offset: (pageNumber - 1) * pageSize))
+                ..orderBy([(r) => OrderingTerm.desc(r.createdAt)]))
               .get();
       final readings = rows.map((e) => e.toEntity()).toList();
       _logger.i(
