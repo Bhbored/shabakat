@@ -260,8 +260,9 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
     ref.invalidate(invoiceProvider);
     ref.invalidate(expenseProvider);
     if (!mounted) return;
-    await Navigator.of(context).push(
+    await Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => const OfflineNavigationContainer()),
+      (_) => false,
     );
   }
 

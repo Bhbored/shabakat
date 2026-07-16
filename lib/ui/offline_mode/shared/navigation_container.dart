@@ -10,6 +10,7 @@ import 'package:shabakat/ui/offline_mode/distribution_box/distribution_box_offli
 import 'package:shabakat/ui/offline_mode/expenses/expenses_offline_page.dart';
 import 'package:shabakat/ui/offline_mode/invoices/invoices_offline_page.dart';
 import 'package:shabakat/ui/offline_mode/shared/offline_bottom_nav_container.dart';
+import 'package:shabakat/ui/screens/nav_container/main_tab_page.dart';
 
 class OfflineNavigationContainer extends ConsumerStatefulWidget {
   const OfflineNavigationContainer({super.key});
@@ -48,7 +49,10 @@ class _OfflineNavigationContainerState
   Future<void> _exitOfflineMode() async {
     await ref.read(sharedPreferencesHandlerProvider).setOfflineMode(false);
     if (!mounted) return;
-    Navigator.of(context).pop();
+    await Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const MainTabPage()),
+      (_) => false,
+    );
   }
 
   @override
@@ -56,7 +60,9 @@ class _OfflineNavigationContainerState
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
@@ -124,6 +130,7 @@ class _OfflineNavigationContainerState
         currentIndex: _currentIndex,
         onTabChanged: _onTabChanged,
       ),
+    ),
     );
   }
 

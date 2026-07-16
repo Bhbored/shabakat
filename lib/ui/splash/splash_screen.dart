@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
 import 'package:shabakat/data/providers/auth/auth_provider.dart';
 import 'package:shabakat/ui/screens/auth/login/login_screen.dart';
 import 'package:shabakat/ui/screens/nav_container/main_tab_page.dart';
@@ -126,12 +127,20 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     authState.whenOrNull(
       data: (isAuthenticated) {
         _hasNavigated = true;
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
           if (!context.mounted) return;
-          Navigator.of(context).pushReplacement(
+          await Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (_) =>
-                  isAuthenticated ? const MainTabPage() : const LoginScreen(),
+              builder: (_) {
+                if (isAuthenticated) {
+                  ref
+                      .read(sharedPreferencesHandlerProvider)
+                      .setOfflineMode(false);
+                  return const MainTabPage();
+                } else {
+                  return const LoginScreen();
+                }
+              },
             ),
           );
         });
