@@ -811,6 +811,39 @@
       "expense_updated": "Expense updated",
       "expense_deleted": "Expense deleted"
     },
+    "customer": {
+      "created": "Customer {name} created",
+      "updated": "Customer {name} updated",
+      "deleted": "Customer {name} deleted"
+    },
+    "invoice": {
+      "created": "Invoice #{invoiceNumber} created for {customerName}",
+      "bulk_created": "{created} invoices created, {skipped} skipped",
+      "payment_recorded": "Payment recorded for invoice #{invoiceNumber}",
+      "fixed_kilowatt_charge": "Fixed kilowatt charge applied for {customerName}"
+    },
+    "expense": {
+      "created": "Expense created",
+      "updated": "Expense updated",
+      "deleted": "Expense deleted"
+    },
+    "parameters": {
+      "name": "Name",
+      "phone": "Phone",
+      "plan": "Plan",
+      "customerType": "Customer type",
+      "customerName": "Customer",
+      "invoiceNumber": "Invoice number",
+      "issueDate": "Issue date",
+      "dueDate": "Due date",
+      "totalAmount": "Total amount",
+      "created": "Created",
+      "skipped": "Skipped",
+      "amount": "Amount",
+      "description": "Description",
+      "expenseType": "Expense type",
+      "paymentMethod": "Payment method"
+    },
     "entity_types": {
       "customer": "Customer",
       "invoice": "Invoice",

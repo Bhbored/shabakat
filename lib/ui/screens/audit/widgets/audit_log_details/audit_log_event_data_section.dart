@@ -6,9 +6,9 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 import 'audit_log_detail_formatters.dart';
 
 class AuditLogEventDataSection extends StatelessWidget {
-  final Map<String, dynamic>? details;
+  final Map<String, dynamic> parameters;
 
-  const AuditLogEventDataSection({super.key, required this.details});
+  const AuditLogEventDataSection({super.key, required this.parameters});
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +32,11 @@ class AuditLogEventDataSection extends StatelessWidget {
             ),
             SizedBox(width: context.spaceMedium),
             Expanded(child: Divider(color: colorScheme.outline)),
-            if (details != null && details!.isNotEmpty)
+            if (parameters.isNotEmpty)
               Padding(
                 padding: EdgeInsets.only(left: context.paddingSmall),
                 child: Text(
-                  '${details!.length}',
+                  '${parameters.length}',
                   style: theme.textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: colorScheme.primary,
@@ -46,17 +46,20 @@ class AuditLogEventDataSection extends StatelessWidget {
           ],
         ),
         SizedBox(height: context.spaceMedium),
-        if (details == null || details!.isEmpty)
+        if (parameters.isEmpty)
           const _AuditLogEmptyEventData()
         else
           Card(
             child: Column(
               children: [
-                for (var i = 0; i < details!.length; i++)
+                for (var i = 0; i < parameters.length; i++)
                   _AuditLogEventDataRow(
-                    label: formatAuditDetailKey(details!.keys.elementAt(i)),
-                    value: formatAuditDetailValue(details!.values.elementAt(i)),
-                    isLast: i == details!.length - 1,
+                    label: formatAuditDetailKey(parameters.keys.elementAt(i)),
+                    value: formatAuditDetailValue(
+                      parameters.keys.elementAt(i),
+                      parameters.values.elementAt(i),
+                    ),
+                    isLast: i == parameters.length - 1,
                   ),
               ],
             ),

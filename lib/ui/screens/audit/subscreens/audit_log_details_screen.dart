@@ -58,7 +58,7 @@ class AuditLogDetailsScreen extends StatelessWidget {
                 SizedBox(height: context.spaceMedium),
                 AuditLogDetailsContextGrid(log: log),
                 SizedBox(height: context.spaceMedium),
-                AuditLogEventDataSection(details: log.details),
+                AuditLogEventDataSection(parameters: log.parameters),
               ]),
             ),
           ),

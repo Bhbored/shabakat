@@ -10,11 +10,12 @@ sealed class AuditLog with _$AuditLog {
     required String id,
     required AuditAction action,
     required AuditLogStatus status,
-    required String summary,
+    required String messageKey,
+    @Default({}) Map<String, dynamic> parameters,
     AuditEntityType? entityType,
     String? entityId,
-    Map<String, dynamic>? details,
     String? userEmail,
+    String? errorMessage,
     required DateTime createdAt,
   }) = _AuditLog;
 

@@ -811,6 +811,39 @@
       "expense_updated": "تحديث مصروف",
       "expense_deleted": "حذف مصروف"
     },
+    "customer": {
+      "created": "تم إنشاء العميل {name}",
+      "updated": "تم تحديث العميل {name}",
+      "deleted": "تم حذف العميل {name}"
+    },
+    "invoice": {
+      "created": "تم إنشاء الفاتورة #{invoiceNumber} للعميل {customerName}",
+      "bulk_created": "تم إنشاء {created} فاتورة، وتخطي {skipped}",
+      "payment_recorded": "تم تسجيل دفعة للفاتورة #{invoiceNumber}",
+      "fixed_kilowatt_charge": "تم تطبيق رسوم كيلوواط ثابتة للعميل {customerName}"
+    },
+    "expense": {
+      "created": "تم إنشاء مصروف",
+      "updated": "تم تحديث مصروف",
+      "deleted": "تم حذف مصروف"
+    },
+    "parameters": {
+      "name": "الاسم",
+      "phone": "الهاتف",
+      "plan": "الخطة",
+      "customerType": "نوع العميل",
+      "customerName": "العميل",
+      "invoiceNumber": "رقم الفاتورة",
+      "issueDate": "تاريخ الإصدار",
+      "dueDate": "تاريخ الاستحقاق",
+      "totalAmount": "المبلغ الإجمالي",
+      "created": "تم الإنشاء",
+      "skipped": "تم التخطي",
+      "amount": "المبلغ",
+      "description": "الوصف",
+      "expenseType": "نوع المصروف",
+      "paymentMethod": "طريقة الدفع"
+    },
     "entity_types": {
       "customer": "عميل",
       "invoice": "فاتورة",

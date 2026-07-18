@@ -5,6 +5,7 @@ import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/themes/controls_themes.dart';
 import 'package:shabakat/domain/entities/audit/audit_log.dart';
 import 'package:shabakat/ui/screens/audit/subscreens/audit_log_details_screen.dart';
+import 'package:shabakat/ui/screens/audit/widgets/audit_log_details/audit_log_detail_formatters.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
 class AuditLogCard extends StatelessWidget {
@@ -62,7 +63,10 @@ class AuditLogCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              log.summary,
+                              formatAuditMessage(
+                                log.messageKey,
+                                log.parameters,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: theme.textTheme.bodyLarge?.copyWith(
