@@ -15,12 +15,11 @@ sealed class InvoiceResponse with _$InvoiceResponse {
   const factory InvoiceResponse({
     required String id,
     required int invoiceNumber,
-    @Default('') String customerId,
     required String customerName,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
-    required DateTime issueDate,
+    required DateTime consumptionStart,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
-    required DateTime dueDate,
+    required DateTime consumptionEnd,
     required double fixedCharge,
     required double tva,
     required double totalAmount,

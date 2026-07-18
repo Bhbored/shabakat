@@ -9,13 +9,13 @@ part of 'update_invoice_request.dart';
 _UpdateInvoiceRequest _$UpdateInvoiceRequestFromJson(
   Map<String, dynamic> json,
 ) => _UpdateInvoiceRequest(
-  issueDate: _dateOnlyFromJson(json['issueDate'] as String?),
-  dueDate: _dateOnlyFromJson(json['dueDate'] as String?),
+  consumptionStart: _dateOnlyFromJson(json['consumptionStart'] as String?),
+  consumptionEnd: _dateOnlyFromJson(json['consumptionEnd'] as String?),
 );
 
 Map<String, dynamic> _$UpdateInvoiceRequestToJson(
   _UpdateInvoiceRequest instance,
 ) => <String, dynamic>{
-  'issueDate': _dateOnlyToJson(instance.issueDate),
-  'dueDate': _dateOnlyToJson(instance.dueDate),
+  'consumptionStart': _dateOnlyToJson(instance.consumptionStart),
+  'consumptionEnd': _dateOnlyToJson(instance.consumptionEnd),
 };

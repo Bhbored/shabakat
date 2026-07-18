@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/dto/request/area/create_area_request.dart';
 import 'package:shabakat/core/network/dto/request/area/update_area_request.dart';
 import 'package:shabakat/core/network/services/area/area_service.dart';
-import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
+import 'package:shabakat/data/providers/offline/offline_mode_provider.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
 import 'package:shabakat/domain/mappers/area/area_mapper.dart';
 
@@ -14,15 +14,15 @@ Duration? retry(int _, Object _) => null;
 @Riverpod(keepAlive: true, retry: retry)
 class AreaNotifier extends _$AreaNotifier {
   AreaService get _areaService => ref.read(areaServiceProvider);
-  SharedPreferencesHandler get _sharedPreferencesHandler =>
-      ref.read(sharedPreferencesHandlerProvider);
   AreaRepo get _areaRepo => ref.read(areaRepoProvider);
 
   @override
-  FutureOr<List<Area>> build() async => await _loadAreas();
+  FutureOr<List<Area>> build() async {
+    final isOfflineMode = await ref.watch(offlineModeProvider.future);
+    return _loadAreas(isOfflineMode);
+  }
 
-  Future<List<Area>> _loadAreas() async {
-    final isOfflineMode = await _sharedPreferencesHandler.isOfflineMode();
+  Future<List<Area>> _loadAreas(bool isOfflineMode) async {
     if (isOfflineMode) {
       return await _areaRepo.getAllAreas();
     } else {

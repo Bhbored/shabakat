@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/dto/request/meter/create_meter_reading_request.dart';
 import 'package:shabakat/core/network/services/meter/meter_reading_service.dart';
-import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
+import 'package:shabakat/data/providers/offline/offline_mode_provider.dart';
 import 'package:shabakat/domain/entities/meter/meter_reading.dart';
 import 'package:shabakat/domain/mappers/meter/meter_reading_mapper.dart';
 
@@ -15,15 +15,14 @@ Duration? retry(int _, Object _) => null;
 class MeterReadingNotifier extends _$MeterReadingNotifier {
   MeterReadingService get _meterReadingService =>
       ref.read(meterReadingServiceProvider);
-  SharedPreferencesHandler get _sharedPreferencesHandler =>
-      ref.read(sharedPreferencesHandlerProvider);
   MeterReadingRepo get _meterReadingRepo => ref.read(meterReadingRepoProvider);
   @override
-  FutureOr<List<MeterReading>> build(String customerId) async =>
-      await _loadMeterReadings();
+  FutureOr<List<MeterReading>> build(String customerId) async {
+    final isOfflineMode = await ref.watch(offlineModeProvider.future);
+    return _loadMeterReadings(isOfflineMode);
+  }
 
-  Future<List<MeterReading>> _loadMeterReadings() async {
-    final isOfflineMode = await _sharedPreferencesHandler.isOfflineMode();
+  Future<List<MeterReading>> _loadMeterReadings(bool isOfflineMode) async {
     if (isOfflineMode) {
       final readings = await _meterReadingRepo.getMeterReadingsByCustomerId(
         customerId,

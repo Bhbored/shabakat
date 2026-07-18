@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
-import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
+import 'package:shabakat/data/providers/offline/offline_mode_provider.dart';
 import 'package:shabakat/ui/offline_mode/areas/areas_offline_page.dart';
 import 'package:shabakat/ui/offline_mode/customers/customers_offline_page.dart';
 import 'package:shabakat/ui/offline_mode/distribution_box/distribution_box_offline_page.dart';
@@ -47,7 +47,7 @@ class _OfflineNavigationContainerState
   }
 
   Future<void> _exitOfflineMode() async {
-    await ref.read(sharedPreferencesHandlerProvider).setOfflineMode(false);
+    await ref.read(offlineModeProvider.notifier).set(false);
     if (!mounted) return;
     await Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => const MainTabPage()),

@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/services/expense/expense_service.dart';
-import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
+import 'package:shabakat/data/providers/offline/offline_mode_provider.dart';
 import 'package:shabakat/domain/entities/expenses/expenses.dart';
 import 'package:shabakat/domain/mappers/expense/expense_mapper.dart';
 
@@ -13,12 +13,10 @@ Duration? retry(int _, Object _) => null;
 @Riverpod(keepAlive: false, retry: retry)
 class SingleExpenseNotifier extends _$SingleExpenseNotifier {
   ExpenseService get _expenseService => ref.read(expenseServiceProvider);
-  SharedPreferencesHandler get _sharedPreferencesHandler =>
-      ref.read(sharedPreferencesHandlerProvider);
   ExpenseRepo get _expenseRepo => ref.read(expenseRepoProvider);
   @override
   FutureOr<Expense> build(String expenseId) async {
-    final isOfflineMode = await _sharedPreferencesHandler.isOfflineMode();
+    final isOfflineMode = await ref.watch(offlineModeProvider.future);
     if (isOfflineMode) {
       return await _expenseRepo.getExpenseById(expenseId) ?? Expense.empty();
     } else {

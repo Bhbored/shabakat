@@ -6,9 +6,9 @@ import 'package:shabakat/core/network/dto/request/invoice/update_invoice_request
 import 'package:shabakat/core/network/dto/response/invoice/bulk_create_invoice_response.dart';
 import 'package:shabakat/core/network/dto/response/invoice/invoice_skipped_response.dart';
 import 'package:shabakat/core/network/services/invoice/invoice_service.dart';
-import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
 import 'package:shabakat/data/providers/invoice/invoice_filter_provider.dart';
 import 'package:shabakat/data/providers/invoice/invoice_pagination_provider.dart';
+import 'package:shabakat/data/providers/offline/offline_mode_provider.dart';
 import 'package:shabakat/domain/entities/invoices/invoice.dart';
 import 'package:shabakat/domain/mappers/invoice/invoice_mapper.dart';
 
@@ -20,43 +20,46 @@ Duration? retry(int _, Object _) => null;
 @Riverpod(keepAlive: true, retry: retry)
 class InvoiceNotifier extends _$InvoiceNotifier {
   InvoiceService get _invoiceService => ref.read(invoiceServiceProvider);
-  InvoiceFilterRequest get _filter => ref.watch(invoiceFilterProvider);
-  SharedPreferencesHandler get _sharedPreferencesHandler =>
-      ref.read(sharedPreferencesHandlerProvider);
   InvoiceRepo get _invoiceRepo => ref.read(invoiceRepoProvider);
   @override
-  FutureOr<List<Invoice>> build() async => await _loadInvoices();
+  FutureOr<List<Invoice>> build() async {
+    final filter = ref.watch(invoiceFilterProvider);
+    final isOfflineMode = await ref.watch(offlineModeProvider.future);
+    return _loadInvoices(filter, isOfflineMode);
+  }
 
-  Future<List<Invoice>> _loadInvoices() async {
+  Future<List<Invoice>> _loadInvoices(
+    InvoiceFilterRequest filter,
+    bool isOfflineMode,
+  ) async {
     final pagination = ref.read(invoicePaginationProvider.notifier);
 
-    final isOfflineMode = await _sharedPreferencesHandler.isOfflineMode();
     if (isOfflineMode) {
       final invoices = await _invoiceRepo.getAllInvoices(
-        _filter.customerId,
-        _filter.invoiceStatus,
-        _filter.issueDateFrom,
-        _filter.issueDateTo,
-        pageNumber: _filter.pageNumber,
-        pageSize: _filter.pageSize,
+        filter.customerId,
+        filter.invoiceStatus,
+        filter.consumptionStartFrom,
+        filter.consumptionStartTo,
+        pageNumber: filter.pageNumber,
+        pageSize: filter.pageSize,
       );
       final totalCount = await _invoiceRepo.getTotalInvoicesCount();
       final totalPages = totalCount == 0
           ? 0
-          : (totalCount / _filter.pageSize).ceil();
+          : (totalCount / filter.pageSize).ceil();
       pagination.updatePagination(
         InvoicePagination(
           totalCount: totalCount,
-          pageNumber: _filter.pageNumber,
-          pageSize: _filter.pageSize,
+          pageNumber: filter.pageNumber,
+          pageSize: filter.pageSize,
           totalPages: totalPages,
-          hasPreviousPage: _filter.pageNumber > 1,
-          hasNextPage: _filter.pageNumber < totalPages,
+          hasPreviousPage: filter.pageNumber > 1,
+          hasNextPage: filter.pageNumber < totalPages,
         ),
       );
       return invoices;
     } else {
-      final invoices = await _invoiceService.getInvoices(_filter);
+      final invoices = await _invoiceService.getInvoices(filter);
       pagination.updatePagination(
         InvoicePagination(
           totalCount: invoices.totalCount,

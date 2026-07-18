@@ -51,7 +51,7 @@ final class SingleExpenseNotifierProvider
 }
 
 String _$singleExpenseNotifierHash() =>
-    r'dffd34c9ed08035748c252f4fe12ddc72758f483';
+    r'e656a69bba32b5ccaa2eb9508f685bb93f7dae8b';
 
 final class SingleExpenseNotifierFamily extends $Family
     with

@@ -120,8 +120,8 @@ class _InvoiceEditSheetState extends ConsumerState<InvoiceEditSheet> {
     setState(() => _isSaving = true);
 
     final request = UpdateInvoiceRequest(
-      issueDate: _issueDate,
-      dueDate: _dueDate,
+      consumptionStart: _issueDate,
+      consumptionEnd: _dueDate,
     );
 
     try {

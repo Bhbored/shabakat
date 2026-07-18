@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$InvoiceFilterRequest {
 
- String? get customerId; InvoiceStatus? get invoiceStatus;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? get issueDateFrom;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? get issueDateTo; int get pageNumber; int get pageSize;
+ String? get customerId; InvoiceStatus? get invoiceStatus;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? get consumptionStartFrom;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? get consumptionStartTo; int get pageNumber; int get pageSize;
 /// Create a copy of InvoiceFilterRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $InvoiceFilterRequestCopyWith<InvoiceFilterRequest> get copyWith => _$InvoiceFil
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is InvoiceFilterRequest&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.invoiceStatus, invoiceStatus) || other.invoiceStatus == invoiceStatus)&&(identical(other.issueDateFrom, issueDateFrom) || other.issueDateFrom == issueDateFrom)&&(identical(other.issueDateTo, issueDateTo) || other.issueDateTo == issueDateTo)&&(identical(other.pageNumber, pageNumber) || other.pageNumber == pageNumber)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is InvoiceFilterRequest&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.invoiceStatus, invoiceStatus) || other.invoiceStatus == invoiceStatus)&&(identical(other.consumptionStartFrom, consumptionStartFrom) || other.consumptionStartFrom == consumptionStartFrom)&&(identical(other.consumptionStartTo, consumptionStartTo) || other.consumptionStartTo == consumptionStartTo)&&(identical(other.pageNumber, pageNumber) || other.pageNumber == pageNumber)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,customerId,invoiceStatus,issueDateFrom,issueDateTo,pageNumber,pageSize);
+int get hashCode => Object.hash(runtimeType,customerId,invoiceStatus,consumptionStartFrom,consumptionStartTo,pageNumber,pageSize);
 
 @override
 String toString() {
-  return 'InvoiceFilterRequest(customerId: $customerId, invoiceStatus: $invoiceStatus, issueDateFrom: $issueDateFrom, issueDateTo: $issueDateTo, pageNumber: $pageNumber, pageSize: $pageSize)';
+  return 'InvoiceFilterRequest(customerId: $customerId, invoiceStatus: $invoiceStatus, consumptionStartFrom: $consumptionStartFrom, consumptionStartTo: $consumptionStartTo, pageNumber: $pageNumber, pageSize: $pageSize)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $InvoiceFilterRequestCopyWith<$Res>  {
   factory $InvoiceFilterRequestCopyWith(InvoiceFilterRequest value, $Res Function(InvoiceFilterRequest) _then) = _$InvoiceFilterRequestCopyWithImpl;
 @useResult
 $Res call({
- String? customerId, InvoiceStatus? invoiceStatus,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? issueDateFrom,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? issueDateTo, int pageNumber, int pageSize
+ String? customerId, InvoiceStatus? invoiceStatus,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? consumptionStartFrom,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? consumptionStartTo, int pageNumber, int pageSize
 });
 
 
@@ -65,12 +65,12 @@ class _$InvoiceFilterRequestCopyWithImpl<$Res>
 
 /// Create a copy of InvoiceFilterRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? customerId = freezed,Object? invoiceStatus = freezed,Object? issueDateFrom = freezed,Object? issueDateTo = freezed,Object? pageNumber = null,Object? pageSize = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? customerId = freezed,Object? invoiceStatus = freezed,Object? consumptionStartFrom = freezed,Object? consumptionStartTo = freezed,Object? pageNumber = null,Object? pageSize = null,}) {
   return _then(_self.copyWith(
 customerId: freezed == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable
 as String?,invoiceStatus: freezed == invoiceStatus ? _self.invoiceStatus : invoiceStatus // ignore: cast_nullable_to_non_nullable
-as InvoiceStatus?,issueDateFrom: freezed == issueDateFrom ? _self.issueDateFrom : issueDateFrom // ignore: cast_nullable_to_non_nullable
-as DateTime?,issueDateTo: freezed == issueDateTo ? _self.issueDateTo : issueDateTo // ignore: cast_nullable_to_non_nullable
+as InvoiceStatus?,consumptionStartFrom: freezed == consumptionStartFrom ? _self.consumptionStartFrom : consumptionStartFrom // ignore: cast_nullable_to_non_nullable
+as DateTime?,consumptionStartTo: freezed == consumptionStartTo ? _self.consumptionStartTo : consumptionStartTo // ignore: cast_nullable_to_non_nullable
 as DateTime?,pageNumber: null == pageNumber ? _self.pageNumber : pageNumber // ignore: cast_nullable_to_non_nullable
 as int,pageSize: null == pageSize ? _self.pageSize : pageSize // ignore: cast_nullable_to_non_nullable
 as int,
@@ -155,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? customerId,  InvoiceStatus? invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? issueDateFrom, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? issueDateTo,  int pageNumber,  int pageSize)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? customerId,  InvoiceStatus? invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? consumptionStartFrom, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? consumptionStartTo,  int pageNumber,  int pageSize)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _InvoiceFilterRequest() when $default != null:
-return $default(_that.customerId,_that.invoiceStatus,_that.issueDateFrom,_that.issueDateTo,_that.pageNumber,_that.pageSize);case _:
+return $default(_that.customerId,_that.invoiceStatus,_that.consumptionStartFrom,_that.consumptionStartTo,_that.pageNumber,_that.pageSize);case _:
   return orElse();
 
 }
@@ -176,10 +176,10 @@ return $default(_that.customerId,_that.invoiceStatus,_that.issueDateFrom,_that.i
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? customerId,  InvoiceStatus? invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? issueDateFrom, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? issueDateTo,  int pageNumber,  int pageSize)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? customerId,  InvoiceStatus? invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? consumptionStartFrom, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? consumptionStartTo,  int pageNumber,  int pageSize)  $default,) {final _that = this;
 switch (_that) {
 case _InvoiceFilterRequest():
-return $default(_that.customerId,_that.invoiceStatus,_that.issueDateFrom,_that.issueDateTo,_that.pageNumber,_that.pageSize);}
+return $default(_that.customerId,_that.invoiceStatus,_that.consumptionStartFrom,_that.consumptionStartTo,_that.pageNumber,_that.pageSize);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -193,10 +193,10 @@ return $default(_that.customerId,_that.invoiceStatus,_that.issueDateFrom,_that.i
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? customerId,  InvoiceStatus? invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? issueDateFrom, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? issueDateTo,  int pageNumber,  int pageSize)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? customerId,  InvoiceStatus? invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? consumptionStartFrom, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? consumptionStartTo,  int pageNumber,  int pageSize)?  $default,) {final _that = this;
 switch (_that) {
 case _InvoiceFilterRequest() when $default != null:
-return $default(_that.customerId,_that.invoiceStatus,_that.issueDateFrom,_that.issueDateTo,_that.pageNumber,_that.pageSize);case _:
+return $default(_that.customerId,_that.invoiceStatus,_that.consumptionStartFrom,_that.consumptionStartTo,_that.pageNumber,_that.pageSize);case _:
   return null;
 
 }
@@ -208,13 +208,13 @@ return $default(_that.customerId,_that.invoiceStatus,_that.issueDateFrom,_that.i
 @JsonSerializable()
 
 class _InvoiceFilterRequest implements InvoiceFilterRequest {
-  const _InvoiceFilterRequest({this.customerId, this.invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.issueDateFrom, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.issueDateTo, this.pageNumber = 1, this.pageSize = 10});
+  const _InvoiceFilterRequest({this.customerId, this.invoiceStatus, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.consumptionStartFrom, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.consumptionStartTo, this.pageNumber = 1, this.pageSize = 10});
   factory _InvoiceFilterRequest.fromJson(Map<String, dynamic> json) => _$InvoiceFilterRequestFromJson(json);
 
 @override final  String? customerId;
 @override final  InvoiceStatus? invoiceStatus;
-@override@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) final  DateTime? issueDateFrom;
-@override@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) final  DateTime? issueDateTo;
+@override@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) final  DateTime? consumptionStartFrom;
+@override@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) final  DateTime? consumptionStartTo;
 @override@JsonKey() final  int pageNumber;
 @override@JsonKey() final  int pageSize;
 
@@ -231,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _InvoiceFilterRequest&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.invoiceStatus, invoiceStatus) || other.invoiceStatus == invoiceStatus)&&(identical(other.issueDateFrom, issueDateFrom) || other.issueDateFrom == issueDateFrom)&&(identical(other.issueDateTo, issueDateTo) || other.issueDateTo == issueDateTo)&&(identical(other.pageNumber, pageNumber) || other.pageNumber == pageNumber)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _InvoiceFilterRequest&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.invoiceStatus, invoiceStatus) || other.invoiceStatus == invoiceStatus)&&(identical(other.consumptionStartFrom, consumptionStartFrom) || other.consumptionStartFrom == consumptionStartFrom)&&(identical(other.consumptionStartTo, consumptionStartTo) || other.consumptionStartTo == consumptionStartTo)&&(identical(other.pageNumber, pageNumber) || other.pageNumber == pageNumber)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,customerId,invoiceStatus,issueDateFrom,issueDateTo,pageNumber,pageSize);
+int get hashCode => Object.hash(runtimeType,customerId,invoiceStatus,consumptionStartFrom,consumptionStartTo,pageNumber,pageSize);
 
 @override
 String toString() {
-  return 'InvoiceFilterRequest(customerId: $customerId, invoiceStatus: $invoiceStatus, issueDateFrom: $issueDateFrom, issueDateTo: $issueDateTo, pageNumber: $pageNumber, pageSize: $pageSize)';
+  return 'InvoiceFilterRequest(customerId: $customerId, invoiceStatus: $invoiceStatus, consumptionStartFrom: $consumptionStartFrom, consumptionStartTo: $consumptionStartTo, pageNumber: $pageNumber, pageSize: $pageSize)';
 }
 
 
@@ -251,7 +251,7 @@ abstract mixin class _$InvoiceFilterRequestCopyWith<$Res> implements $InvoiceFil
   factory _$InvoiceFilterRequestCopyWith(_InvoiceFilterRequest value, $Res Function(_InvoiceFilterRequest) _then) = __$InvoiceFilterRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String? customerId, InvoiceStatus? invoiceStatus,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? issueDateFrom,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? issueDateTo, int pageNumber, int pageSize
+ String? customerId, InvoiceStatus? invoiceStatus,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? consumptionStartFrom,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? consumptionStartTo, int pageNumber, int pageSize
 });
 
 
@@ -268,12 +268,12 @@ class __$InvoiceFilterRequestCopyWithImpl<$Res>
 
 /// Create a copy of InvoiceFilterRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? customerId = freezed,Object? invoiceStatus = freezed,Object? issueDateFrom = freezed,Object? issueDateTo = freezed,Object? pageNumber = null,Object? pageSize = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? customerId = freezed,Object? invoiceStatus = freezed,Object? consumptionStartFrom = freezed,Object? consumptionStartTo = freezed,Object? pageNumber = null,Object? pageSize = null,}) {
   return _then(_InvoiceFilterRequest(
 customerId: freezed == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable
 as String?,invoiceStatus: freezed == invoiceStatus ? _self.invoiceStatus : invoiceStatus // ignore: cast_nullable_to_non_nullable
-as InvoiceStatus?,issueDateFrom: freezed == issueDateFrom ? _self.issueDateFrom : issueDateFrom // ignore: cast_nullable_to_non_nullable
-as DateTime?,issueDateTo: freezed == issueDateTo ? _self.issueDateTo : issueDateTo // ignore: cast_nullable_to_non_nullable
+as InvoiceStatus?,consumptionStartFrom: freezed == consumptionStartFrom ? _self.consumptionStartFrom : consumptionStartFrom // ignore: cast_nullable_to_non_nullable
+as DateTime?,consumptionStartTo: freezed == consumptionStartTo ? _self.consumptionStartTo : consumptionStartTo // ignore: cast_nullable_to_non_nullable
 as DateTime?,pageNumber: null == pageNumber ? _self.pageNumber : pageNumber // ignore: cast_nullable_to_non_nullable
 as int,pageSize: null == pageSize ? _self.pageSize : pageSize // ignore: cast_nullable_to_non_nullable
 as int,

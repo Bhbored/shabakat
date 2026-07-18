@@ -35,7 +35,7 @@ final class DistributionBoxNotifierProvider
 }
 
 String _$distributionBoxNotifierHash() =>
-    r'c8b09b246d0a57815e1c4c9fa41f48227f32cce3';
+    r'dd098824bfca6754d1e7db293ac85088725eebcc';
 
 abstract class _$DistributionBoxNotifier
     extends $AsyncNotifier<List<DistributionBox>> {

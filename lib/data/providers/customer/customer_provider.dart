@@ -5,9 +5,9 @@ import 'package:shabakat/core/network/dto/request/customer/suspend_customers_req
 import 'package:shabakat/core/network/dto/request/customer/update_customer_request.dart';
 import 'package:shabakat/core/network/dto/response/customer/suspend_customers_response.dart';
 import 'package:shabakat/core/network/services/customer/customer_service.dart';
-import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_pagination_provider.dart';
+import 'package:shabakat/data/providers/offline/offline_mode_provider.dart';
 import 'package:shabakat/domain/entities/customers/customer.dart';
 import 'package:shabakat/domain/mappers/customer/customer_mapper.dart';
 
@@ -19,17 +19,18 @@ Duration? retry(int _, Object _) => null;
 @Riverpod(keepAlive: true, retry: retry)
 class CustomerNotifier extends _$CustomerNotifier {
   CustomerService get _customerService => ref.read(customerServiceProvider);
-  SharedPreferencesHandler get _sharedPreferencesHandler =>
-      ref.read(sharedPreferencesHandlerProvider);
   CustomerRepo get _customerRepo => ref.read(customerRepoProvider);
   @override
   FutureOr<List<Customer>> build() async {
     final filter = ref.watch(customerFilterProvider);
-    return _loadCustomers(filter);
+    final isOfflineMode = await ref.watch(offlineModeProvider.future);
+    return _loadCustomers(filter, isOfflineMode);
   }
 
-  Future<List<Customer>> _loadCustomers(CustomerFilterRequest filter) async {
-    final isOfflineMode = await _sharedPreferencesHandler.isOfflineMode();
+  Future<List<Customer>> _loadCustomers(
+    CustomerFilterRequest filter,
+    bool isOfflineMode,
+  ) async {
     if (isOfflineMode) {
       final customers = await _customerRepo.getAllCustomers(
         filter.name,

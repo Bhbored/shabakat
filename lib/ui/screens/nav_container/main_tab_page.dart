@@ -5,14 +5,9 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/api_errors.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
-import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
 import 'package:shabakat/core/themes/app_colors.dart';
-import 'package:shabakat/data/providers/area/area_provider.dart';
-import 'package:shabakat/data/providers/customer/customer_provider.dart';
-import 'package:shabakat/data/providers/distribution_box/distribution_box_provider.dart';
-import 'package:shabakat/data/providers/expense/expense_provider.dart';
-import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
 import 'package:shabakat/data/providers/network/internet_connection_provider.dart';
+import 'package:shabakat/data/providers/offline/offline_mode_provider.dart';
 import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 import 'package:shabakat/ui/offline_mode/shared/navigation_container.dart';
@@ -42,11 +37,17 @@ class MainTabPage extends ConsumerStatefulWidget {
 class _MainTabPageState extends ConsumerState<MainTabPage> {
   late final PageController _pageController;
   int _currentIndex = 0;
+  var _isEnteringOffline = false;
+  var _offlinePromptVisible = false;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      await ref.read(offlineModeProvider.notifier).set(false);
+    });
   }
 
   @override
@@ -70,6 +71,7 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
     final colorScheme = theme.colorScheme;
     ref.listen(internetConnectionProvider, (previous, next) {
       if (previous == null || previous == next) return;
+      if (_isEnteringOffline) return;
 
       if (next) {
         AppSnackBar.show(
@@ -83,6 +85,8 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
           message: ApiErrors.noInternet,
           variant: AppSnackBarVariant.error,
         );
+        if (_offlinePromptVisible) return;
+        _offlinePromptVisible = true;
         showAppDialog<void>(
           context: context,
           animated: true,
@@ -103,7 +107,7 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
               ),
             ],
           ),
-        );
+        ).whenComplete(() => _offlinePromptVisible = false);
       }
     });
 
@@ -253,17 +257,18 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
   }
 
   Future<void> _onEnterOfflineMode() async {
-    await ref.read(sharedPreferencesHandlerProvider).setOfflineMode(true);
-    ref.invalidate(areaProvider);
-    ref.invalidate(customerProvider);
-    ref.invalidate(distributionBoxProvider);
-    ref.invalidate(invoiceProvider);
-    ref.invalidate(expenseProvider);
-    if (!mounted) return;
-    await Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const OfflineNavigationContainer()),
-      (_) => false,
-    );
+    if (_isEnteringOffline) return;
+    _isEnteringOffline = true;
+    try {
+      await ref.read(offlineModeProvider.notifier).set(true);
+      if (!mounted) return;
+      await Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const OfflineNavigationContainer()),
+        (_) => false,
+      );
+    } finally {
+      if (mounted) _isEnteringOffline = false;
+    }
   }
 
   void _onOpenAudit() {

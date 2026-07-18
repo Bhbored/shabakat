@@ -3,9 +3,9 @@ import 'package:shabakat/core/network/dto/request/distribution_box/create_distri
 import 'package:shabakat/core/network/dto/request/distribution_box/distribution_box_filter_request.dart';
 import 'package:shabakat/core/network/dto/request/distribution_box/update_distribution_box_request.dart';
 import 'package:shabakat/core/network/services/distribution_box/distribution_box_service.dart';
-import 'package:shabakat/core/storage/shared_preferences/shared_preferences.dart';
 import 'package:shabakat/data/providers/distribution_box/distribution_box_filter_provider.dart';
 import 'package:shabakat/data/providers/distribution_box/distribution_box_pagination_provider.dart';
+import 'package:shabakat/data/providers/offline/offline_mode_provider.dart';
 import 'package:shabakat/domain/entities/distribution_box/distribution_box.dart';
 import 'package:shabakat/domain/mappers/distribution_box/distribution_box_mapper.dart';
 
@@ -18,21 +18,20 @@ Duration? retry(int _, Object _) => null;
 class DistributionBoxNotifier extends _$DistributionBoxNotifier {
   DistributionBoxService get _distributionBoxService =>
       ref.read(distributionBoxServiceProvider);
-  SharedPreferencesHandler get _sharedPreferencesHandler =>
-      ref.read(sharedPreferencesHandlerProvider);
   DistributionBoxRepo get _distributionBoxRepo =>
       ref.read(distributionBoxRepoProvider);
   late int _totalCount;
   @override
   FutureOr<List<DistributionBox>> build() async {
     final filter = ref.watch(distributionBoxFilterProvider);
-    return _loadDistributionBoxes(filter);
+    final isOfflineMode = await ref.watch(offlineModeProvider.future);
+    return _loadDistributionBoxes(filter, isOfflineMode);
   }
 
   Future<List<DistributionBox>> _loadDistributionBoxes(
     DistributionBoxFilterRequest filter,
+    bool isOfflineMode,
   ) async {
-    final isOfflineMode = await _sharedPreferencesHandler.isOfflineMode();
     if (isOfflineMode) {
       final distributionBoxes = await _distributionBoxRepo
           .getAllDistributionBoxes(
