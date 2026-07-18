@@ -672,6 +672,8 @@
     "card": {
       "issued": "تاريخ الإصدار",
       "due": "تاريخ الاستحقاق",
+      "from": "من",
+      "to": "إلى",
       "total": "الإجمالي"
     },
     "details": {
@@ -683,6 +685,9 @@
       "due": "المستحق",
       "timeline": "الجدول الزمني",
       "issued": "تاريخ الإصدار",
+      "consumption_period": "فترة الاستهلاك",
+      "consumption_start": "بداية الاستهلاك",
+      "consumption_end": "نهاية الاستهلاك",
       "breakdown": "التفصيل",
       "charge": "الرسوم",
       "fixed_charge": "الرسوم الثابتة",

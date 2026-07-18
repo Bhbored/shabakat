@@ -84,14 +84,14 @@ class InvoiceCard extends StatelessWidget {
                   Expanded(
                     child: _MetaLine(
                       icon: LucideIcons.calendar,
-                      label: 'invoices.card.issued'.tr(),
+                      label: 'invoices.card.from'.tr(),
                       value: _formatDate(invoice.issueDate),
                     ),
                   ),
                   Expanded(
                     child: _MetaLine(
                       icon: LucideIcons.calendarClock,
-                      label: 'invoices.card.due'.tr(),
+                      label: 'invoices.card.to'.tr(),
                       value: _formatDate(invoice.dueDate),
                     ),
                   ),

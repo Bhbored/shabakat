@@ -87,13 +87,16 @@ class InvoiceDetailsBody extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: context.spaceMedium),
-                  Text('invoices.details.timeline'.tr(), style: mutedLabel),
+                  Text(
+                    'invoices.details.consumption_period'.tr(),
+                    style: mutedLabel,
+                  ),
                   SizedBox(height: context.spaceSmall),
                   Row(
                     children: [
                       Expanded(
                         child: InvoiceDetailMetaTile(
-                          label: 'invoices.details.issued'.tr(),
+                          label: 'invoices.details.consumption_start'.tr(),
                           value: _formatDate(invoice.issueDate),
                           icon: LucideIcons.calendar,
                           accentColor: colorScheme.primary,
@@ -102,7 +105,7 @@ class InvoiceDetailsBody extends StatelessWidget {
                       SizedBox(width: context.paddingSmall),
                       Expanded(
                         child: InvoiceDetailMetaTile(
-                          label: 'invoices.details.due'.tr(),
+                          label: 'invoices.details.consumption_end'.tr(),
                           value: _formatDate(invoice.dueDate),
                           icon: LucideIcons.calendarClock,
                           accentColor: AppColors.warning,

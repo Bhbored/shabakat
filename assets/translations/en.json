@@ -672,6 +672,8 @@
     "card": {
       "issued": "Issued",
       "due": "Due",
+      "from": "From",
+      "to": "To",
       "total": "Total"
     },
     "details": {
@@ -683,6 +685,9 @@
       "due": "Due",
       "timeline": "TIMELINE",
       "issued": "Issued",
+      "consumption_period": "CONSUMPTION PERIOD",
+      "consumption_start": "Consumption start",
+      "consumption_end": "Consumption end",
       "breakdown": "BREAKDOWN",
       "charge": "Charge",
       "fixed_charge": "Fixed charge",
