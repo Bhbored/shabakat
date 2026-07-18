@@ -40,6 +40,8 @@ _GetPreferencesResponse _$GetPreferencesResponseFromJson(
   triggerMessage: json['triggerMessage'] as String?,
   ampereSchedulePricingEnabled:
       json['ampereSchedulePricingEnabled'] as bool? ?? false,
+  ampereProrateByDaysEnabled:
+      json['ampereProrateByDaysEnabled'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$GetPreferencesResponseToJson(
@@ -66,4 +68,5 @@ Map<String, dynamic> _$GetPreferencesResponseToJson(
   'triggerDate': instance.triggerDate,
   'triggerMessage': instance.triggerMessage,
   'ampereSchedulePricingEnabled': instance.ampereSchedulePricingEnabled,
+  'ampereProrateByDaysEnabled': instance.ampereProrateByDaysEnabled,
 };

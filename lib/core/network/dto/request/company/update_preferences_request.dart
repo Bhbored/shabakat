@@ -27,6 +27,7 @@ sealed class UpdatePreferencesRequest with _$UpdatePreferencesRequest {
     required int triggerDate,
     String? triggerMessage,
     required bool ampereSchedulePricingEnabled,
+    required bool ampereProrateByDaysEnabled,
   }) = _UpdatePreferencesRequest;
 
   factory UpdatePreferencesRequest.fromJson(Map<String, dynamic> json) =>

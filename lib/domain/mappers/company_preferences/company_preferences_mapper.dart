@@ -25,6 +25,7 @@ extension GetPreferencesResponseMapper on GetPreferencesResponse {
     triggerDate: triggerDate,
     triggerMessage: triggerMessage,
     ampereSchedulePricingEnabled: ampereSchedulePricingEnabled,
+    ampereProrateByDaysEnabled: ampereProrateByDaysEnabled,
   );
 }
 
@@ -51,5 +52,6 @@ extension CompanyPreferencesMapper on CompanyPreferences {
     triggerDate: triggerDate,
     triggerMessage: triggerMessage,
     ampereSchedulePricingEnabled: ampereSchedulePricingEnabled,
+    ampereProrateByDaysEnabled: ampereProrateByDaysEnabled,
   );
 }

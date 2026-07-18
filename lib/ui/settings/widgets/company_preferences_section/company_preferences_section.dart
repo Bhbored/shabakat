@@ -11,6 +11,7 @@ import 'package:shabakat/ui/settings/widgets/preference_tile/preference_tile.dar
 import 'package:shabakat/ui/shared/dialogs/preference_day_picker_dialog.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 
+import 'package:shabakat/ui/settings/subscreens/ampere_prorate_by_days_preference_screen.dart';
 import 'package:shabakat/ui/settings/subscreens/ampere_schedule_pricing_preference_screen.dart';
 import 'package:shabakat/ui/settings/subscreens/trigger_message_preference_screen.dart';
 import 'package:shabakat/ui/settings/subscreens/fixed_charge_preference_screen.dart';
@@ -129,6 +130,23 @@ class CompanyPreferencesSection extends ConsumerWidget {
             onTap: () => Navigator.of(context).push(
               openInnerScreen(
                 widget: const AmpereSchedulePricingPreferenceScreen(),
+              ),
+            ),
+          ),
+          _divider(context, colorScheme),
+          PreferenceTile(
+            label: 'settings.ampere_prorate.title'.tr(),
+            value: preferencesAsync.when(
+              data: (preferences) => preferences.ampereProrateByDaysEnabled
+                  ? 'settings.ampere_prorate.enabled'.tr()
+                  : 'settings.ampere_prorate.disabled'.tr(),
+              loading: () => null,
+              error: (_, _) => null,
+            ),
+            icon: LucideIcons.calendarDays,
+            onTap: () => Navigator.of(context).push(
+              openInnerScreen(
+                widget: const AmpereProrateByDaysPreferenceScreen(),
               ),
             ),
           ),

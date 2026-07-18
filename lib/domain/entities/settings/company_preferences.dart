@@ -27,6 +27,7 @@ sealed class CompanyPreferences with _$CompanyPreferences {
     @Default(1) int triggerDate,
     String? triggerMessage,
     @Default(false) bool ampereSchedulePricingEnabled,
+    @Default(false) bool ampereProrateByDaysEnabled,
   }) = _CompanyPreferences;
 
   factory CompanyPreferences.fromJson(Map<String, dynamic> json) =>

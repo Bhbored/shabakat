@@ -202,7 +202,8 @@
       "due_date": "Due Date",
       "trigger_date": "Trigger Date",
       "trigger_message": "Trigger Message",
-      "ampere_schedule_pricing": "Ampere Schedule Pricing"
+      "ampere_schedule_pricing": "Ampere Schedule Pricing",
+      "ampere_prorate_by_days": "Ampere Proration by Days"
     },
     "due_date_description": "Day of the month when invoices are due.",
     "trigger_date_description": "Day of the month when invoice reminders are sent to customers.",
@@ -264,6 +265,14 @@
         "invalid_number": "Enter a valid number",
         "price_range": "Must be between 0.0001 and 9999999"
       }
+    },
+    "ampere_prorate": {
+      "title": "Ampere Proration",
+      "toggle_title": "Prorate by Days",
+      "toggle_subtitle": "Scale ampere charges by days in the billing period.",
+      "description": "When enabled, ampere pricing is prorated based on the number of days in the billing cycle.",
+      "enabled": "Enabled",
+      "disabled": "Disabled"
     }
   },
   "expenses": {

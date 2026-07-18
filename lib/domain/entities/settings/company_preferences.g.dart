@@ -39,6 +39,8 @@ _CompanyPreferences _$CompanyPreferencesFromJson(Map<String, dynamic> json) =>
       triggerMessage: json['triggerMessage'] as String?,
       ampereSchedulePricingEnabled:
           json['ampereSchedulePricingEnabled'] as bool? ?? false,
+      ampereProrateByDaysEnabled:
+          json['ampereProrateByDaysEnabled'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$CompanyPreferencesToJson(_CompanyPreferences instance) =>
@@ -64,4 +66,5 @@ Map<String, dynamic> _$CompanyPreferencesToJson(_CompanyPreferences instance) =>
       'triggerDate': instance.triggerDate,
       'triggerMessage': instance.triggerMessage,
       'ampereSchedulePricingEnabled': instance.ampereSchedulePricingEnabled,
+      'ampereProrateByDaysEnabled': instance.ampereProrateByDaysEnabled,
     };

@@ -33,6 +33,7 @@ _UpdatePreferencesRequest _$UpdatePreferencesRequestFromJson(
   triggerDate: (json['triggerDate'] as num).toInt(),
   triggerMessage: json['triggerMessage'] as String?,
   ampereSchedulePricingEnabled: json['ampereSchedulePricingEnabled'] as bool,
+  ampereProrateByDaysEnabled: json['ampereProrateByDaysEnabled'] as bool,
 );
 
 Map<String, dynamic> _$UpdatePreferencesRequestToJson(
@@ -59,4 +60,5 @@ Map<String, dynamic> _$UpdatePreferencesRequestToJson(
   'triggerDate': instance.triggerDate,
   'triggerMessage': instance.triggerMessage,
   'ampereSchedulePricingEnabled': instance.ampereSchedulePricingEnabled,
+  'ampereProrateByDaysEnabled': instance.ampereProrateByDaysEnabled,
 };

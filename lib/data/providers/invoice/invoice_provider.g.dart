@@ -33,7 +33,7 @@ final class InvoiceNotifierProvider
   InvoiceNotifier create() => InvoiceNotifier();
 }
 
-String _$invoiceNotifierHash() => r'f2729265f2b6df61bd3cd75588eb8a68247748a5';
+String _$invoiceNotifierHash() => r'e2b418e71592e98b41907ef09212fbe2943513e0';
 
 abstract class _$InvoiceNotifier extends $AsyncNotifier<List<Invoice>> {
   FutureOr<List<Invoice>> build();
