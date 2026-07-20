@@ -666,7 +666,8 @@
     "print": {
       "export_success": "تم حفظ الفاتورة في Downloads/invoices.",
       "export_failed": "تعذر حفظ ملف PDF للفاتورة.",
-      "share_failed": "تعذر مشاركة ملف PDF للفاتورة."
+      "share_failed": "تعذر مشاركة ملف PDF للفاتورة.",
+      "whatsapp_phone_missing": "لا يوجد رقم هاتف للزبون لإرسال واتساب."
     },
     "empty_list": "لا توجد فواتير",
     "count_one": "فاتورة واحدة",

@@ -666,7 +666,8 @@
     "print": {
       "export_success": "Invoice saved to Downloads/invoices.",
       "export_failed": "Failed to save invoice PDF.",
-      "share_failed": "Failed to share invoice PDF."
+      "share_failed": "Failed to share invoice PDF.",
+      "whatsapp_phone_missing": "Customer has no phone number for WhatsApp."
     },
     "empty_list": "No invoices found",
     "count_one": "1 invoice",
