@@ -9,9 +9,9 @@ part of 'invoice_response.dart';
 _InvoiceResponse _$InvoiceResponseFromJson(Map<String, dynamic> json) =>
     _InvoiceResponse(
       id: json['id'] as String,
-      customerId: json['customerId'] as String?,
       invoiceNumber: (json['invoiceNumber'] as num).toInt(),
       customerName: json['customerName'] as String,
+      customerPhone: json['customerPhone'] as String?,
       consumptionStart: _dateOnlyFromJson(json['consumptionStart'] as String),
       consumptionEnd: _dateOnlyFromJson(json['consumptionEnd'] as String),
       fixedCharge: (json['fixedCharge'] as num).toDouble(),
@@ -31,9 +31,9 @@ _InvoiceResponse _$InvoiceResponseFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$InvoiceResponseToJson(_InvoiceResponse instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'customerId': instance.customerId,
       'invoiceNumber': instance.invoiceNumber,
       'customerName': instance.customerName,
+      'customerPhone': instance.customerPhone,
       'consumptionStart': _dateOnlyToJson(instance.consumptionStart),
       'consumptionEnd': _dateOnlyToJson(instance.consumptionEnd),
       'fixedCharge': instance.fixedCharge,

@@ -7,7 +7,6 @@ import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/services/invoice/invoice_service.dart';
 import 'package:shabakat/core/utilities/invoice_pdf_exporter.dart';
 import 'package:shabakat/core/utilities/whatsapp_share_service.dart';
-import 'package:shabakat/data/providers/customer/single_customer_provider.dart';
 import 'package:shabakat/data/providers/invoice/single_invoice_provider.dart';
 
 import '../widgets/invoice_delete_dialog/invoice_delete_dialog.dart';
@@ -63,17 +62,14 @@ class _InvoiceDetailsScreenState extends ConsumerState<InvoiceDetailsScreen> {
   }
 
   Future<void> _shareInvoiceToWhatsApp({
-    required String customerId,
     required String customerName,
+    required String phoneNumber,
   }) async {
     if (_isSharing || _isWhatsAppSharing) return;
 
     setState(() => _isWhatsAppSharing = true);
 
     try {
-      final customer = await ref.read(
-        singleCustomerProvider(customerId).future,
-      );
       final pdfBytes = await _loadInvoicePdfBytes();
       if (!mounted) return;
 
@@ -83,7 +79,7 @@ class _InvoiceDetailsScreenState extends ConsumerState<InvoiceDetailsScreen> {
             context: context,
             pdfBytes: pdfBytes,
             customerName: customerName,
-            phoneNumber: customer.phone ?? '',
+            phoneNumber: phoneNumber,
           );
     } finally {
       if (mounted) {
@@ -124,8 +120,8 @@ class _InvoiceDetailsScreenState extends ConsumerState<InvoiceDetailsScreen> {
           onWhatsAppShare: widget.readOnly
               ? null
               : () => _shareInvoiceToWhatsApp(
-                  customerId: invoice.customerId,
                   customerName: customerName,
+                  phoneNumber: invoice.customerPhone ?? '',
                 ),
           onShare: widget.readOnly ? null : () => _shareInvoice(customerName),
           onEdit: !widget.readOnly && isUnpaid

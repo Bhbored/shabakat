@@ -10,7 +10,6 @@ _InvoiceSummaryResponse _$InvoiceSummaryResponseFromJson(
   Map<String, dynamic> json,
 ) => _InvoiceSummaryResponse(
   id: json['id'] as String,
-  customerId: json['customerId'] as String?,
   invoiceNumber: (json['invoiceNumber'] as num).toInt(),
   customerName: json['customerName'] as String,
   invoiceStatus: json['invoiceStatus'] as String,
@@ -27,7 +26,6 @@ Map<String, dynamic> _$InvoiceSummaryResponseToJson(
   _InvoiceSummaryResponse instance,
 ) => <String, dynamic>{
   'id': instance.id,
-  'customerId': instance.customerId,
   'invoiceNumber': instance.invoiceNumber,
   'customerName': instance.customerName,
   'invoiceStatus': instance.invoiceStatus,

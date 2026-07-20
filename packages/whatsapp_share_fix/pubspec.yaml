@@ -1,0 +1,19 @@
+name: whatsapp_share_fix
+description: Share PDF files to a WhatsApp contact on Android.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.11.5
+  flutter: ">=3.35.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.example.shabakat.whatsapp_share_fix
+        pluginClass: WhatsAppShareFixPlugin

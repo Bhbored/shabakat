@@ -20,6 +20,7 @@ extension InvoiceResponseMapper on InvoiceResponse {
       customerId: resolvedCustomerId,
       invoiceNumber: invoiceNumber,
       customerName: customerName,
+      customerPhone: customerPhone,
       issueDate: consumptionStart,
       dueDate: consumptionEnd,
       fixedCharge: fixedCharge,

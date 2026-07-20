@@ -14,6 +14,7 @@ sealed class Invoice with _$Invoice {
     required String companyId,
     required String customerId,
     String? customerName,
+    String? customerPhone,
     required int invoiceNumber,
     required DateTime issueDate,
     required DateTime dueDate,

@@ -1,11 +1,13 @@
-import 'package:android_intent_plus/android_intent.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/enums/app_snack_bar_variant.dart';
 import 'package:shabakat/core/utilities/invoice_pdf_exporter.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
+import 'package:whatsapp_share_fix/whatsapp_share_fix.dart';
+
 part 'whatsapp_share_service.g.dart';
 
 Duration? retry(int _, Object _) => null;
@@ -44,7 +46,7 @@ class WhatsAppShareService {
     }
 
     try {
-      final directory = await _pdfExporter.ensureInvoicesDownloadFolder();
+      final directory = await getTemporaryDirectory();
       final file = await _pdfExporter.savePdfFile(
         directory: directory,
         pdfBytes: pdfBytes,
@@ -52,7 +54,8 @@ class WhatsAppShareService {
       );
       _logger.d('PDF ready for WhatsApp share: ${file.path}');
 
-      if (!await _isWhatsAppInstalled()) {
+      final whatsAppPackage = await _resolveWhatsAppPackage();
+      if (whatsAppPackage == null) {
         _logger.w('WhatsApp is not installed; aborting share');
         if (context.mounted) {
           AppSnackBar.show(
@@ -64,12 +67,19 @@ class WhatsAppShareService {
         return;
       }
 
-      await _openWhatsAppWithFile(
-        phoneNumber: cleanNumber,
-        filePath: file.path,
-        customerName: customerName,
+      _logger.d(
+        'Opening WhatsApp share '
+        '(phone digits: ${cleanNumber.length}, file: ${file.path})',
       );
-      _logger.i('WhatsApp share intent launched for "$customerName"');
+
+      await WhatsAppShareFix.sharePdf(
+        phone: cleanNumber,
+        filePath: file.path,
+        text: 'Invoice for $customerName',
+        package: whatsAppPackage,
+      );
+
+      _logger.i('WhatsApp share launched for "$customerName"');
     } catch (e, stackTrace) {
       _logger.e(
         'WhatsApp invoice share failed for "$customerName"',
@@ -86,48 +96,24 @@ class WhatsAppShareService {
     }
   }
 
-  Future<bool> _isWhatsAppInstalled() async {
-    try {
-      final intent = AndroidIntent(
-        action: 'android.intent.action.VIEW',
-        package: 'com.whatsapp',
-      );
-      final result = await intent.canResolveActivity();
-      final installed = result ?? false;
-      _logger.d('WhatsApp installed check: $installed');
-      return installed;
-    } catch (e, stackTrace) {
-      _logger.e(
-        'WhatsApp installed check failed',
-        error: e,
-        stackTrace: stackTrace,
-      );
-      return false;
+  Future<WhatsAppPackage?> _resolveWhatsAppPackage() async {
+    for (final package in [
+      WhatsAppPackage.consumer,
+      WhatsAppPackage.business,
+    ]) {
+      try {
+        final isInstalled = await WhatsAppShareFix.isInstalled(package: package);
+        _logger.d('WhatsApp package check ($package): $isInstalled');
+        if (isInstalled) return package;
+      } catch (e, stackTrace) {
+        _logger.e(
+          'WhatsApp package check failed for $package',
+          error: e,
+          stackTrace: stackTrace,
+        );
+      }
     }
-  }
-
-  Future<void> _openWhatsAppWithFile({
-    required String phoneNumber,
-    required String filePath,
-    required String customerName,
-  }) async {
-    _logger.d(
-      'Opening WhatsApp SEND intent '
-      '(phone digits: ${phoneNumber.length}, file: $filePath)',
-    );
-
-    final intent = AndroidIntent(
-      action: 'android.intent.action.SEND',
-      type: 'application/pdf',
-      package: 'com.whatsapp',
-      data: 'whatsapp://send?phone=$phoneNumber',
-      arguments: {
-        'android.intent.extra.STREAM': 'file://$filePath',
-        'android.intent.extra.TEXT': 'Invoice for $customerName',
-      },
-    );
-
-    await intent.launch();
+    return null;
   }
 
   String _cleanPhoneNumber(String phoneNumber) {

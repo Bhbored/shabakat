@@ -35,7 +35,8 @@ dependencies:
   share_plus: ^13.2.0
   cached_network_image: ^3.4.1
   image_picker: ^1.1.2
-  android_intent_plus: ^6.0.0
+  whatsapp_share_fix:
+    path: packages/whatsapp_share_fix
   font_awesome_flutter: ^11.0.0
 
 dev_dependencies:
