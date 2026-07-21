@@ -5,6 +5,7 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/request/invoice/create_invoice_request.dart';
+import 'package:shabakat/data/providers/company/company_provider.dart';
 import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
 import 'package:shabakat/ui/screens/invoices/widgets/invoice_pay_dialog/invoice_pay_dialog_content.dart';
 import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
@@ -62,11 +63,22 @@ class _SubscriberCreateInvoiceDialogState
   PaymentMethod _paymentMethod = PaymentMethod.cash;
   bool _isKilowattMode = false;
 
+  late final DateTime _monthStart;
+  late final DateTime _monthEnd;
+  late DateTime _fromDate;
+  late DateTime _toDate;
+
   @override
   void initState() {
     super.initState();
     _amountController = TextEditingController();
     _notesController = TextEditingController();
+
+    final now = DateTime.now();
+    _monthStart = DateTime(now.year, now.month, 1);
+    _monthEnd = DateTime(now.year, now.month + 1, 0);
+    _fromDate = DateTime(now.year, now.month, now.day);
+    _toDate = _monthEnd;
   }
 
   @override
@@ -108,18 +120,73 @@ class _SubscriberCreateInvoiceDialogState
     );
   }
 
-  Future<void> _onCreate() async {
-    if (widget._isFixedKilowatt && !_formKey.currentState!.validate()) {
-      return;
-    }
+  int get _billedDays {
+    final from = DateTime(_fromDate.year, _fromDate.month, _fromDate.day);
+    final to = DateTime(_toDate.year, _toDate.month, _toDate.day);
+    final safeTo = to.isBefore(from) ? from : to;
+    return safeTo.difference(from).inDays + 1;
+  }
 
+  bool _ampereProrationByDaysEnabled({
+    required bool companyPreferenceLoaded,
+    required bool companyPreferenceEnabled,
+  }) {
+    return widget.plan == PlanType.ampere &&
+        companyPreferenceLoaded &&
+        companyPreferenceEnabled;
+  }
+
+  Future<void> _pickDateRange() async {
+    final initialRange = DateTimeRange(start: _fromDate, end: _toDate);
+
+    final pickedRange = await showDateRangePicker(
+      context: context,
+      firstDate: _monthStart,
+      lastDate: _monthEnd,
+      initialDateRange: initialRange,
+    );
+
+    if (pickedRange == null || !mounted) return;
+
+    setState(() {
+      _fromDate = DateTime(
+        pickedRange.start.year,
+        pickedRange.start.month,
+        pickedRange.start.day,
+      );
+      _toDate = DateTime(
+        pickedRange.end.year,
+        pickedRange.end.month,
+        pickedRange.end.day,
+      );
+    });
+  }
+
+  Future<void> _onCreate() async {
     try {
+      final companyPreferencesAsync = ref.read(companyProvider);
+      final companyPreferenceEnabled =
+          companyPreferencesAsync.value?.ampereProrateByDaysEnabled == true;
+      final shouldProrateByDays = _ampereProrationByDaysEnabled(
+        companyPreferenceLoaded: companyPreferencesAsync.hasValue,
+        companyPreferenceEnabled: companyPreferenceEnabled,
+      );
+
+      if (widget._isFixedKilowatt) {
+        if (!(_formKey.currentState?.validate() ?? true)) return;
+      }
+
       await ref
           .read(invoiceProvider.notifier)
           .createInvoice(
             widget._isFixedKilowatt
                 ? _buildRequest()
-                : CreateInvoiceRequest(customerId: widget.customerId),
+                : shouldProrateByDays
+                    ? CreateInvoiceRequest(
+                        customerId: widget.customerId,
+                        billedDays: _billedDays,
+                      )
+                    : CreateInvoiceRequest(customerId: widget.customerId),
           );
 
       if (!mounted) return;
@@ -148,36 +215,68 @@ class _SubscriberCreateInvoiceDialogState
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isCreating = ref.watch(invoiceProvider).isLoading;
+    final companyPreferencesAsync = ref.watch(companyProvider);
+
+    final companyPreferenceLoaded = companyPreferencesAsync.hasValue;
+    final companyPreferenceEnabled =
+        companyPreferencesAsync.value?.ampereProrateByDaysEnabled == true;
+    final shouldProrateByDays = _ampereProrationByDaysEnabled(
+      companyPreferenceLoaded: companyPreferenceLoaded,
+      companyPreferenceEnabled: companyPreferenceEnabled,
+    );
+    final isCompanyPreferenceLoadingForAmpere = widget.plan == PlanType.ampere &&
+        companyPreferencesAsync.isLoading &&
+        !companyPreferencesAsync.hasValue;
+
+    final Widget content;
+    if (widget._isFixedKilowatt) {
+      content = _FixedKilowattContent(
+        formKey: _formKey,
+        targetLabel: widget._targetLabel,
+        amountController: _amountController,
+        notesController: _notesController,
+        paymentMethod: _paymentMethod,
+        isKilowattMode: _isKilowattMode,
+        enabled: !isCreating,
+        amountValidator: _amountValidator,
+        onPaymentMethodChanged: isCreating ? (_) {} : (value) {
+          if (value != null) {
+            setState(() => _paymentMethod = value);
+          }
+        },
+        onKilowattModeChanged:
+            isCreating ? null : (value) => setState(() => _isKilowattMode = value),
+      );
+    } else if (widget.plan == PlanType.ampere) {
+      if (isCompanyPreferenceLoadingForAmpere) {
+        content = const Center(child: CircularProgressIndicator(strokeWidth: 2));
+      } else if (shouldProrateByDays) {
+        content = _AmpereProrateByDaysContent(
+          targetLabel: widget._targetLabel,
+          monthStart: _monthStart,
+          fromDate: _fromDate,
+          toDate: _toDate,
+          enabled: !isCreating,
+          onPickDateRange: _pickDateRange,
+        );
+      } else {
+        content = Text(
+          'subscribers.invoices.create_confirm'.tr(args: [widget._targetLabel]),
+          style: theme.textTheme.bodyMedium,
+        );
+      }
+    } else {
+      content = Text(
+        'subscribers.invoices.create_confirm'.tr(args: [widget._targetLabel]),
+        style: theme.textTheme.bodyMedium,
+      );
+    }
 
     return AppAlertDialog(
       title: Text('subscribers.invoices.create_title'.tr()),
       content: SizedBox(
         width: double.maxFinite,
-        child: widget._isFixedKilowatt
-            ? _FixedKilowattContent(
-                formKey: _formKey,
-                targetLabel: widget._targetLabel,
-                amountController: _amountController,
-                notesController: _notesController,
-                paymentMethod: _paymentMethod,
-                isKilowattMode: _isKilowattMode,
-                enabled: !isCreating,
-                amountValidator: _amountValidator,
-                onPaymentMethodChanged: isCreating
-                    ? (_) {}
-                    : (value) {
-                        if (value != null) {
-                          setState(() => _paymentMethod = value);
-                        }
-                      },
-                onKilowattModeChanged: isCreating
-                    ? null
-                    : (value) => setState(() => _isKilowattMode = value),
-              )
-            : Text(
-                'subscribers.invoices.create_confirm'.tr(args: [widget._targetLabel]),
-                style: theme.textTheme.bodyMedium,
-              ),
+        child: content,
       ),
       actions: [
         TextButton(
@@ -185,7 +284,9 @@ class _SubscriberCreateInvoiceDialogState
           child: Text('settings.cancel'.tr()),
         ),
         ElevatedButton(
-          onPressed: isCreating ? null : _onCreate,
+          onPressed: (isCreating || isCompanyPreferenceLoadingForAmpere)
+              ? null
+              : _onCreate,
           child: isCreating
               ? const SizedBox(
                   height: 18,
@@ -193,6 +294,130 @@ class _SubscriberCreateInvoiceDialogState
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
               : Text('subscribers.invoices.create_submit'.tr()),
+        ),
+      ],
+    );
+  }
+}
+
+class _AmpereProrateByDaysContent extends StatelessWidget {
+  final String targetLabel;
+  final DateTime monthStart;
+  final DateTime fromDate;
+  final DateTime toDate;
+  final bool enabled;
+  final Future<void> Function() onPickDateRange;
+
+  const _AmpereProrateByDaysContent({
+    required this.targetLabel,
+    required this.monthStart,
+    required this.fromDate,
+    required this.toDate,
+    required this.enabled,
+    required this.onPickDateRange,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final monthLabel = DateFormat.yMMMM(context.locale.toString()).format(
+      monthStart,
+    );
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'subscribers.invoices.create_description'.tr(args: [targetLabel]),
+          style: theme.textTheme.bodyMedium,
+        ),
+        SizedBox(height: context.spaceMedium),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                monthLabel,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: enabled ? onPickDateRange : null,
+              icon: Icon(
+                Icons.calendar_today_outlined,
+                color: colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: context.spaceSmall),
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('invoices.filter.from'.tr(), style: theme.textTheme.titleSmall),
+                  SizedBox(height: context.spaceSmall),
+                  InkWell(
+                    onTap: enabled ? onPickDateRange : null,
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: context.paddingMedium,
+                        vertical: context.spaceSmall,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(context.borderRadiusMedium),
+                        border: Border.all(color: colorScheme.outline),
+                      ),
+                      child: Text(
+                        '${fromDate.day}',
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: context.paddingMedium),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('invoices.filter.to'.tr(), style: theme.textTheme.titleSmall),
+                  SizedBox(height: context.spaceSmall),
+                  InkWell(
+                    onTap: enabled ? onPickDateRange : null,
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: context.paddingMedium,
+                        vertical: context.spaceSmall,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(context.borderRadiusMedium),
+                        border: Border.all(color: colorScheme.outline),
+                      ),
+                      child: Text(
+                        '${toDate.day}',
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );

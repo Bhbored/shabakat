@@ -638,7 +638,9 @@
       "payment": "الدفع",
       "amount": "المبلغ",
       "validation": {
-        "amount_positive": "يجب أن يكون المبلغ أكبر من 0"
+        "amount_positive": "يجب أن يكون المبلغ أكبر من 0",
+        "day_range": "يجب أن يكون بين {} و {}",
+        "from_before_to": "يجب أن يكون يوم البداية قبل يوم النهاية أو مساوياً له"
       }
     },
     "meter_readings": {

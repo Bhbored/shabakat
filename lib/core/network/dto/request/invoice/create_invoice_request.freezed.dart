@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CreateInvoiceRequest {
 
- String get customerId; double? get paymentAmount; double? get kilowattAmount; PaymentMethod? get paymentMethod; String? get notes;
+ String get customerId; int? get billedDays; double? get paymentAmount; double? get kilowattAmount; PaymentMethod? get paymentMethod; String? get notes;
 /// Create a copy of CreateInvoiceRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CreateInvoiceRequestCopyWith<CreateInvoiceRequest> get copyWith => _$CreateInvo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateInvoiceRequest&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.paymentAmount, paymentAmount) || other.paymentAmount == paymentAmount)&&(identical(other.kilowattAmount, kilowattAmount) || other.kilowattAmount == kilowattAmount)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateInvoiceRequest&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.billedDays, billedDays) || other.billedDays == billedDays)&&(identical(other.paymentAmount, paymentAmount) || other.paymentAmount == paymentAmount)&&(identical(other.kilowattAmount, kilowattAmount) || other.kilowattAmount == kilowattAmount)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.notes, notes) || other.notes == notes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,customerId,paymentAmount,kilowattAmount,paymentMethod,notes);
+int get hashCode => Object.hash(runtimeType,customerId,billedDays,paymentAmount,kilowattAmount,paymentMethod,notes);
 
 @override
 String toString() {
-  return 'CreateInvoiceRequest(customerId: $customerId, paymentAmount: $paymentAmount, kilowattAmount: $kilowattAmount, paymentMethod: $paymentMethod, notes: $notes)';
+  return 'CreateInvoiceRequest(customerId: $customerId, billedDays: $billedDays, paymentAmount: $paymentAmount, kilowattAmount: $kilowattAmount, paymentMethod: $paymentMethod, notes: $notes)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CreateInvoiceRequestCopyWith<$Res>  {
   factory $CreateInvoiceRequestCopyWith(CreateInvoiceRequest value, $Res Function(CreateInvoiceRequest) _then) = _$CreateInvoiceRequestCopyWithImpl;
 @useResult
 $Res call({
- String customerId, double? paymentAmount, double? kilowattAmount, PaymentMethod? paymentMethod, String? notes
+ String customerId, int? billedDays, double? paymentAmount, double? kilowattAmount, PaymentMethod? paymentMethod, String? notes
 });
 
 
@@ -65,10 +65,11 @@ class _$CreateInvoiceRequestCopyWithImpl<$Res>
 
 /// Create a copy of CreateInvoiceRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? customerId = null,Object? paymentAmount = freezed,Object? kilowattAmount = freezed,Object? paymentMethod = freezed,Object? notes = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? customerId = null,Object? billedDays = freezed,Object? paymentAmount = freezed,Object? kilowattAmount = freezed,Object? paymentMethod = freezed,Object? notes = freezed,}) {
   return _then(_self.copyWith(
 customerId: null == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable
-as String,paymentAmount: freezed == paymentAmount ? _self.paymentAmount : paymentAmount // ignore: cast_nullable_to_non_nullable
+as String,billedDays: freezed == billedDays ? _self.billedDays : billedDays // ignore: cast_nullable_to_non_nullable
+as int?,paymentAmount: freezed == paymentAmount ? _self.paymentAmount : paymentAmount // ignore: cast_nullable_to_non_nullable
 as double?,kilowattAmount: freezed == kilowattAmount ? _self.kilowattAmount : kilowattAmount // ignore: cast_nullable_to_non_nullable
 as double?,paymentMethod: freezed == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
 as PaymentMethod?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String customerId,  double? paymentAmount,  double? kilowattAmount,  PaymentMethod? paymentMethod,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String customerId,  int? billedDays,  double? paymentAmount,  double? kilowattAmount,  PaymentMethod? paymentMethod,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateInvoiceRequest() when $default != null:
-return $default(_that.customerId,_that.paymentAmount,_that.kilowattAmount,_that.paymentMethod,_that.notes);case _:
+return $default(_that.customerId,_that.billedDays,_that.paymentAmount,_that.kilowattAmount,_that.paymentMethod,_that.notes);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.customerId,_that.paymentAmount,_that.kilowattAmount,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String customerId,  double? paymentAmount,  double? kilowattAmount,  PaymentMethod? paymentMethod,  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String customerId,  int? billedDays,  double? paymentAmount,  double? kilowattAmount,  PaymentMethod? paymentMethod,  String? notes)  $default,) {final _that = this;
 switch (_that) {
 case _CreateInvoiceRequest():
-return $default(_that.customerId,_that.paymentAmount,_that.kilowattAmount,_that.paymentMethod,_that.notes);}
+return $default(_that.customerId,_that.billedDays,_that.paymentAmount,_that.kilowattAmount,_that.paymentMethod,_that.notes);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -192,10 +193,10 @@ return $default(_that.customerId,_that.paymentAmount,_that.kilowattAmount,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String customerId,  double? paymentAmount,  double? kilowattAmount,  PaymentMethod? paymentMethod,  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String customerId,  int? billedDays,  double? paymentAmount,  double? kilowattAmount,  PaymentMethod? paymentMethod,  String? notes)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateInvoiceRequest() when $default != null:
-return $default(_that.customerId,_that.paymentAmount,_that.kilowattAmount,_that.paymentMethod,_that.notes);case _:
+return $default(_that.customerId,_that.billedDays,_that.paymentAmount,_that.kilowattAmount,_that.paymentMethod,_that.notes);case _:
   return null;
 
 }
@@ -207,10 +208,11 @@ return $default(_that.customerId,_that.paymentAmount,_that.kilowattAmount,_that.
 @JsonSerializable()
 
 class _CreateInvoiceRequest implements CreateInvoiceRequest {
-  const _CreateInvoiceRequest({required this.customerId, this.paymentAmount, this.kilowattAmount, this.paymentMethod, this.notes});
+  const _CreateInvoiceRequest({required this.customerId, this.billedDays, this.paymentAmount, this.kilowattAmount, this.paymentMethod, this.notes});
   factory _CreateInvoiceRequest.fromJson(Map<String, dynamic> json) => _$CreateInvoiceRequestFromJson(json);
 
 @override final  String customerId;
+@override final  int? billedDays;
 @override final  double? paymentAmount;
 @override final  double? kilowattAmount;
 @override final  PaymentMethod? paymentMethod;
@@ -229,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateInvoiceRequest&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.paymentAmount, paymentAmount) || other.paymentAmount == paymentAmount)&&(identical(other.kilowattAmount, kilowattAmount) || other.kilowattAmount == kilowattAmount)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateInvoiceRequest&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.billedDays, billedDays) || other.billedDays == billedDays)&&(identical(other.paymentAmount, paymentAmount) || other.paymentAmount == paymentAmount)&&(identical(other.kilowattAmount, kilowattAmount) || other.kilowattAmount == kilowattAmount)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.notes, notes) || other.notes == notes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,customerId,paymentAmount,kilowattAmount,paymentMethod,notes);
+int get hashCode => Object.hash(runtimeType,customerId,billedDays,paymentAmount,kilowattAmount,paymentMethod,notes);
 
 @override
 String toString() {
-  return 'CreateInvoiceRequest(customerId: $customerId, paymentAmount: $paymentAmount, kilowattAmount: $kilowattAmount, paymentMethod: $paymentMethod, notes: $notes)';
+  return 'CreateInvoiceRequest(customerId: $customerId, billedDays: $billedDays, paymentAmount: $paymentAmount, kilowattAmount: $kilowattAmount, paymentMethod: $paymentMethod, notes: $notes)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$CreateInvoiceRequestCopyWith<$Res> implements $CreateInvo
   factory _$CreateInvoiceRequestCopyWith(_CreateInvoiceRequest value, $Res Function(_CreateInvoiceRequest) _then) = __$CreateInvoiceRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String customerId, double? paymentAmount, double? kilowattAmount, PaymentMethod? paymentMethod, String? notes
+ String customerId, int? billedDays, double? paymentAmount, double? kilowattAmount, PaymentMethod? paymentMethod, String? notes
 });
 
 
@@ -266,10 +268,11 @@ class __$CreateInvoiceRequestCopyWithImpl<$Res>
 
 /// Create a copy of CreateInvoiceRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? customerId = null,Object? paymentAmount = freezed,Object? kilowattAmount = freezed,Object? paymentMethod = freezed,Object? notes = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? customerId = null,Object? billedDays = freezed,Object? paymentAmount = freezed,Object? kilowattAmount = freezed,Object? paymentMethod = freezed,Object? notes = freezed,}) {
   return _then(_CreateInvoiceRequest(
 customerId: null == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable
-as String,paymentAmount: freezed == paymentAmount ? _self.paymentAmount : paymentAmount // ignore: cast_nullable_to_non_nullable
+as String,billedDays: freezed == billedDays ? _self.billedDays : billedDays // ignore: cast_nullable_to_non_nullable
+as int?,paymentAmount: freezed == paymentAmount ? _self.paymentAmount : paymentAmount // ignore: cast_nullable_to_non_nullable
 as double?,kilowattAmount: freezed == kilowattAmount ? _self.kilowattAmount : kilowattAmount // ignore: cast_nullable_to_non_nullable
 as double?,paymentMethod: freezed == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
 as PaymentMethod?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable

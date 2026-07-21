@@ -8,6 +8,7 @@ part 'create_invoice_request.g.dart';
 sealed class CreateInvoiceRequest with _$CreateInvoiceRequest {
   const factory CreateInvoiceRequest({
     required String customerId,
+    int? billedDays,
     double? paymentAmount,
     double? kilowattAmount,
     PaymentMethod? paymentMethod,

@@ -638,7 +638,9 @@
       "payment": "Payment",
       "amount": "Amount",
       "validation": {
-        "amount_positive": "Amount must be greater than 0"
+        "amount_positive": "Amount must be greater than 0",
+        "day_range": "Must be between {} and {}",
+        "from_before_to": "From day must be on or before to day"
       }
     },
     "meter_readings": {
