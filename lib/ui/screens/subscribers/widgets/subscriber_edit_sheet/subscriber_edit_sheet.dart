@@ -68,6 +68,7 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
   String? _selectedBoxName;
   AmpereSchedule? _ampereSchedule;
   bool _hasPricingOverride = false;
+  bool _isSaving = false;
 
   @override
   void initState() {
@@ -220,13 +221,14 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
       clearPricingOverride: !_hasPricingOverride && hadPricingOverride,
     );
 
+    setState(() => _isSaving = true);
     try {
-      await ref
+      final updated = await ref
           .read(customerProvider.notifier)
           .updateCustomer(request, widget.customerId);
-      await ref
+      ref
           .read(singleCustomerProvider(widget.customerId).notifier)
-          .refresh();
+          .set(updated);
       if (!mounted) return;
       AppSnackBar.show(
         context,
@@ -236,6 +238,7 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
       Navigator.of(context).pop();
     } catch (e) {
       if (!mounted) return;
+      setState(() => _isSaving = false);
       final message = e is ApiException
           ? e.userMessage
           : 'subscribers.edit.failed'.tr();
@@ -256,7 +259,7 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
       next.whenData((_) => _syncAmpereSchedule());
     });
 
-    final isSaving = ref.watch(customerProvider).isLoading;
+    final isSaving = _isSaving;
     final preferences = ref.watch(companyProvider);
     final schedules = ref.watch(ampereScheduleProvider).asData?.value ?? [];
     final showAmpereSchedule = preferences.asData?.value

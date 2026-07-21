@@ -30,4 +30,6 @@ class SingleCustomer extends _$SingleCustomer {
     ref.invalidateSelf();
     await future;
   }
+
+  void set(Customer customer) => state = AsyncValue.data(customer);
 }

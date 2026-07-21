@@ -94,12 +94,22 @@ class CustomerNotifier extends _$CustomerNotifier {
     await refresh();
   }
 
-  Future<void> updateCustomer(
+  Future<Customer> updateCustomer(
     UpdateCustomerRequest customer,
     String customerId,
   ) async {
-    await _customerService.updateCustomer(customerId, customer);
-    await refresh();
+    final updated = (await _customerService.updateCustomer(
+      customerId,
+      customer,
+    )).toEntity();
+    final current = state.asData?.value;
+    if (current != null) {
+      state = AsyncValue.data([
+        for (final c in current)
+          if (c.id == customerId) updated else c,
+      ]);
+    }
+    return updated;
   }
 
   Future<void> deleteCustomer(String customerId) async {
