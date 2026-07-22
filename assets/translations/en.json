@@ -43,6 +43,13 @@
       "employees": "Employees",
       "other": "Other",
       "pending": "{} pending"
+    },
+    "filter": {
+      "all_time": "All time",
+      "this_month": "This month",
+      "this_year": "This year",
+      "custom": "Custom",
+      "pick_month": "Select month"
     }
   },
   "drawer": {

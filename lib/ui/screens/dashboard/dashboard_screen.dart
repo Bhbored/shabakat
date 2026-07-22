@@ -4,10 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/response/dashboard/dashboard_summary_response.dart';
+import 'package:shabakat/data/providers/dashboard/dashboard_filter_provider.dart';
 import 'package:shabakat/data/providers/dashboard/dashboard_provider.dart';
 import 'package:shabakat/ui/shared/error/dynamic_error.dart';
 import 'package:shabakat/ui/shared/skeletons/dashboard_skeleton.dart';
 
+import 'widgets/dashboard_period_filter/dashboard_period_filter.dart';
 import 'widgets/recent_payments/recent_payments_list.dart';
 import 'widgets/revenue_chart/revenue_chart.dart';
 import 'widgets/stat_grid/stat_grid.dart';
@@ -22,21 +24,33 @@ class DashboardScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final summaryAsync = ref.watch(dashboardProvider);
 
-    return summaryAsync.when(
-      skipLoadingOnRefresh: true,
-      loading: () => const DashboardSkeleton(),
-      error: (err, _) => DynamicError(
-        text: err is ApiException
-            ? err.userMessage
-            : 'dashboard.load_error'.tr(),
-        onTryAgain: () => ref.read(dashboardProvider.notifier).refresh(),
-      ),
-      data: (summary) => RefreshIndicator(
-        onRefresh: () async {
-          ref.invalidate(dashboardProvider);
-        },
-        child: _DashboardBody(summary: summary, onViewInvoices: onViewInvoices),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const DashboardPeriodFilter(),
+        Expanded(
+          child: summaryAsync.when(
+            skipLoadingOnRefresh: true,
+            loading: () => const DashboardSkeleton(includeFilter: false),
+            error: (err, _) => DynamicError(
+              text: err is ApiException
+                  ? err.userMessage
+                  : 'dashboard.load_error'.tr(),
+              onTryAgain: () => ref.read(dashboardProvider.notifier).refresh(),
+            ),
+            data: (summary) => RefreshIndicator(
+              onRefresh: () async {
+                ref.invalidate(dashboardProvider);
+                ref.read(dashboardFilterProvider.notifier).clear();
+              },
+              child: _DashboardBody(
+                summary: summary,
+                onViewInvoices: onViewInvoices,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

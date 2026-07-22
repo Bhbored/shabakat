@@ -43,6 +43,13 @@
       "employees": "موظفون",
       "other": "أخرى",
       "pending": "{} معلّق"
+    },
+    "filter": {
+      "all_time": "كل الوقت",
+      "this_month": "هذا الشهر",
+      "this_year": "هذه السنة",
+      "custom": "مخصص",
+      "pick_month": "اختر الشهر"
     }
   },
   "drawer": {
