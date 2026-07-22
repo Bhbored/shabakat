@@ -97,7 +97,12 @@ class AiService {
 
             if (payload == _doneSentinel) return;
             if (payload.isEmpty) continue;
-            yield payload;
+
+            final text = _textFromPayload(payload);
+            if (text == null) continue;
+            if (text == _doneSentinel) return;
+            if (text.isEmpty) continue;
+            yield text;
           }
         }
 
@@ -108,6 +113,22 @@ class AiService {
     } catch (e, stackTrace) {
       _logger.e('SSE parse stream error: $e', error: e, stackTrace: stackTrace);
       rethrow;
+    }
+  }
+
+  String? _textFromPayload(String payload) {
+    try {
+      final decoded = jsonDecode(payload);
+      if (decoded is! Map<String, dynamic>) return null;
+      final text = decoded['text'];
+      return text is String ? text : null;
+    } catch (e, stackTrace) {
+      _logger.w(
+        'Skipping invalid AI SSE payload: $payload',
+        error: e,
+        stackTrace: stackTrace,
+      );
+      return null;
     }
   }
 }

@@ -156,6 +156,14 @@
       "distribution_boxes": "Boxes"
     }
   },
+  "ai": {
+    "title": "AI Assistant",
+    "hint": "Ask anything…",
+    "empty": "Ask a question to get started",
+    "error": "Failed to get a response. Try again.",
+    "assistant_name": "Shabakat AI",
+    "you": "You"
+  },
   "settings": {
     "title": "Settings",
     "appearance": "Appearance",

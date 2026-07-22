@@ -38,6 +38,10 @@ dependencies:
   whatsapp_share_fix:
     path: packages/whatsapp_share_fix
   font_awesome_flutter: ^11.0.0
+  flutter_chat_ui: ^2.11.1
+  flutter_chat_core: ^2.9.0
+  uuid: ^4.6.0
+  flutter_markdown_plus: ^1.0.12
 
 dev_dependencies:
   build_runner: ^2.15.0
