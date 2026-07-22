@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/network/dto/request/invoice/add_payment_request.dart';
 import 'package:shabakat/core/network/dto/request/invoice/create_invoice_request.dart';
 import 'package:shabakat/core/network/dto/request/invoice/invoice_filter_request.dart';
@@ -91,11 +92,11 @@ class InvoiceNotifier extends _$InvoiceNotifier {
     }
   }
 
-  Future<BulkCreateInvoiceResponse> bulkCreate() async {
+  Future<BulkCreateInvoiceResponse> bulkCreate({PlanType? planType}) async {
     final previous = state;
     state = const AsyncValue.loading();
     try {
-      final response = await _invoiceService.bulkCreate();
+      final response = await _invoiceService.bulkCreate(planType: planType);
       await refresh();
       return response;
     } catch (e, st) {

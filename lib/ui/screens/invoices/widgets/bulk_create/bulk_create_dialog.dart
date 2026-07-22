@@ -31,10 +31,14 @@ class _BulkCreateInvoicesDialogState
   _BulkCreateStep _step = _BulkCreateStep.confirm;
   BulkCreateInvoiceResponse? _response;
   String? _errorMessage;
+  bool _filterByPlan = false;
+  PlanType _selectedPlan = PlanType.ampere;
 
   Future<void> _onProceed() async {
     try {
-      final response = await ref.read(invoiceProvider.notifier).bulkCreate();
+      final response = await ref
+          .read(invoiceProvider.notifier)
+          .bulkCreate(planType: _filterByPlan ? _selectedPlan : null);
       if (!mounted) return;
       setState(() {
         _response = response;
@@ -78,7 +82,13 @@ class _BulkCreateInvoicesDialogState
         ],
       ),
       content: switch (_step) {
-        _BulkCreateStep.confirm => const BulkCreateConfirmContent(),
+        _BulkCreateStep.confirm => BulkCreateConfirmContent(
+          filterByPlan: _filterByPlan,
+          selectedPlan: _selectedPlan,
+          enabled: !isLoading,
+          onFilterToggled: (value) => setState(() => _filterByPlan = value),
+          onPlanChanged: (value) => setState(() => _selectedPlan = value),
+        ),
         _BulkCreateStep.success => BulkCreateSuccessContent(
           response: _response!,
         ),

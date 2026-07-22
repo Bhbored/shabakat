@@ -766,6 +766,7 @@
       "excluded_suspended": "Suspended customers",
       "excluded_terminated": "Terminated customers",
       "excluded_existing": "Customers who already have an invoice for their period",
+      "plan_filter": "Limit to one plan type",
       "proceed": "Proceed",
       "done": "Done",
       "close": "Close",

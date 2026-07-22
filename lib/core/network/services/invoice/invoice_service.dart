@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/network/client/dio_client.dart';
 import 'package:shabakat/core/network/configs/http_methods.dart';
 import 'package:shabakat/core/network/dto/request/invoice/add_payment_request.dart';
@@ -203,9 +204,13 @@ class InvoiceService {
     );
   }
 
-  Future<BulkCreateInvoiceResponse> bulkCreate() async {
+  Future<BulkCreateInvoiceResponse> bulkCreate({PlanType? planType}) async {
     final response = await _apiExecutor.execute(
-      ApiRequest(path: 'invoices/bulk', method: HttpMethod.post),
+      ApiRequest(
+        path: 'invoices/bulk',
+        method: HttpMethod.post,
+        queryParams: planType == null ? null : {'planType': planType.name},
+      ),
     );
     return response.when(
       success: (data, statusCode, meta) {

@@ -766,6 +766,7 @@
       "excluded_suspended": "العملاء المعلقون",
       "excluded_terminated": "العملاء المنتهون",
       "excluded_existing": "العملاء الذين لديهم فاتورة لفترتهم بالفعل",
+      "plan_filter": "قصر على نوع خطة واحد",
       "proceed": "متابعة",
       "done": "تم",
       "close": "إغلاق",
