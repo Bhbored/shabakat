@@ -162,7 +162,13 @@
     "empty": "Ask a question to get started",
     "error": "Failed to get a response. Try again.",
     "assistant_name": "Shabakat AI",
-    "you": "You"
+    "you": "You",
+    "mic_denied": "Microphone access is required for voice messages.",
+    "recording": "Recording…",
+    "tap_to_cancel": "Cancel",
+    "delete": "Delete",
+    "send": "Send",
+    "audio": "Voice message"
   },
   "settings": {
     "title": "Settings",

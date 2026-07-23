@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
+import 'package:path/path.dart' as p;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shabakat/core/network/client/dio_client.dart';
 import 'package:shabakat/core/network/configs/http_methods.dart';
@@ -29,14 +30,31 @@ class AiService {
   static const _streamTimeout = Duration(minutes: 5);
 
   Stream<String> streamChat({
-    required String prompt,
+    String? prompt,
+    String? audioFilePath,
     CancelToken? cancelToken,
   }) async* {
+    final formData = FormData();
+    if (prompt != null && prompt.trim().isNotEmpty) {
+      formData.fields.add(MapEntry('prompt', prompt.trim()));
+    }
+    if (audioFilePath != null) {
+      formData.files.add(
+        MapEntry(
+          'audioFile',
+          await MultipartFile.fromFile(
+            audioFilePath,
+            filename: p.basename(audioFilePath),
+          ),
+        ),
+      );
+    }
+
     final response = await _apiExecutor.execute<ResponseBody>(
       ApiRequest(
         path: 'chat/stream',
-        method: HttpMethod.get,
-        queryParams: {'prompt': prompt},
+        method: HttpMethod.post,
+        data: formData,
         headers: {
           'Accept': 'text/event-stream',
           'Cache-Control': 'no-cache',
@@ -45,6 +63,7 @@ class AiService {
         options: Options(
           responseType: ResponseType.stream,
           receiveTimeout: _streamTimeout,
+          sendTimeout: const Duration(seconds: 60),
         ),
       ),
     );
@@ -64,7 +83,11 @@ class AiService {
       yield* _parseSse(body.stream);
       _logger.i('AI chat stream completed');
     } catch (e, stackTrace) {
-      _logger.e('AI chat stream interrupted: $e', error: e, stackTrace: stackTrace);
+      _logger.e(
+        'AI chat stream interrupted: $e',
+        error: e,
+        stackTrace: stackTrace,
+      );
       rethrow;
     }
   }
