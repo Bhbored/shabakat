@@ -154,4 +154,40 @@ class AiService {
       return null;
     }
   }
+
+  Future<List<int>> generateTts(
+    String text, {
+    CancelToken? cancelToken,
+  }) async {
+    final trimmed = text.trim();
+    if (trimmed.isEmpty) {
+      throw ArgumentError.value(text, 'text', 'TTS text must not be empty');
+    }
+
+    final response = await _apiExecutor.execute<List<int>>(
+      ApiRequest(
+        path: 'chat/tts',
+        method: HttpMethod.post,
+        data: jsonEncode(trimmed),
+        cancelToken: cancelToken,
+        options: Options(
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.bytes,
+          receiveTimeout: const Duration(seconds: 60),
+          sendTimeout: const Duration(seconds: 30),
+        ),
+      ),
+    );
+
+    return response.when(
+      success: (data, statusCode, meta) {
+        _logger.i('TTS audio received (${data.length} bytes)');
+        return data;
+      },
+      failure: (error, statusCode) {
+        _logger.e('Failed to generate TTS: ${error.toString()}');
+        throw error;
+      },
+    );
+  }
 }
