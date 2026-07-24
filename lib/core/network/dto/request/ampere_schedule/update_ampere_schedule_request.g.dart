@@ -11,7 +11,10 @@ _UpdateAmpereScheduleRequest _$UpdateAmpereScheduleRequestFromJson(
 ) => _UpdateAmpereScheduleRequest(
   name: json['name'] as String,
   hoursPerDay: (json['hoursPerDay'] as num).toInt(),
-  pricePerAmp: (json['pricePerAmp'] as num).toDouble(),
+  pricePerAmp: (json['pricePerAmp'] as num?)?.toDouble(),
+  residentialPricePerAmp: (json['residentialPricePerAmp'] as num?)?.toDouble(),
+  commercialPricePerAmp: (json['commercialPricePerAmp'] as num?)?.toDouble(),
+  industrialPricePerAmp: (json['industrialPricePerAmp'] as num?)?.toDouble(),
 );
 
 Map<String, dynamic> _$UpdateAmpereScheduleRequestToJson(
@@ -20,4 +23,7 @@ Map<String, dynamic> _$UpdateAmpereScheduleRequestToJson(
   'name': instance.name,
   'hoursPerDay': instance.hoursPerDay,
   'pricePerAmp': instance.pricePerAmp,
+  'residentialPricePerAmp': instance.residentialPricePerAmp,
+  'commercialPricePerAmp': instance.commercialPricePerAmp,
+  'industrialPricePerAmp': instance.industrialPricePerAmp,
 };

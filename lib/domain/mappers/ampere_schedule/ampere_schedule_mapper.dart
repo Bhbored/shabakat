@@ -9,7 +9,11 @@ extension AmpereScheduleResponseMapper on AmpereScheduleResponse {
     name: name,
     hoursPerDay: hoursPerDay,
     pricePerAmp: pricePerAmp,
+    residentialPricePerAmp: residentialPricePerAmp,
+    commercialPricePerAmp: commercialPricePerAmp,
+    industrialPricePerAmp: industrialPricePerAmp,
     customerCount: customerCount,
+    canBeDeleted: canBeDeleted,
     createdAt: createdAt,
   );
 }
@@ -19,11 +23,17 @@ extension AmpereScheduleMapper on AmpereSchedule {
     name: name,
     hoursPerDay: hoursPerDay,
     pricePerAmp: pricePerAmp,
+    residentialPricePerAmp: residentialPricePerAmp,
+    commercialPricePerAmp: commercialPricePerAmp,
+    industrialPricePerAmp: industrialPricePerAmp,
   );
 
   UpdateAmpereScheduleRequest toUpdateRequest() => UpdateAmpereScheduleRequest(
     name: name,
     hoursPerDay: hoursPerDay,
     pricePerAmp: pricePerAmp,
+    residentialPricePerAmp: residentialPricePerAmp,
+    commercialPricePerAmp: commercialPricePerAmp,
+    industrialPricePerAmp: industrialPricePerAmp,
   );
 }

@@ -10,7 +10,11 @@ sealed class AmpereScheduleResponse with _$AmpereScheduleResponse {
     required String name,
     required int hoursPerDay,
     required double pricePerAmp,
+    required double residentialPricePerAmp,
+    required double commercialPricePerAmp,
+    required double industrialPricePerAmp,
     required int customerCount,
+    required bool canBeDeleted,
     required DateTime createdAt,
   }) = _AmpereScheduleResponse;
 

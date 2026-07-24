@@ -44,13 +44,14 @@ class AmpereScheduleCardHeader extends StatelessWidget {
             builder: (_) => EditAmpereScheduleDialog(schedule: schedule),
           ),
         ),
-        IconButton(
-          icon: Icon(LucideIcons.trash2, size: 20, color: colorScheme.error),
-          onPressed: () => showAppDialog<void>(
-            context: context,
-            builder: (_) => AmpereScheduleDeleteDialog(schedule: schedule),
+        if (schedule.canBeDeleted)
+          IconButton(
+            icon: Icon(LucideIcons.trash2, size: 20, color: colorScheme.error),
+            onPressed: () => showAppDialog<void>(
+              context: context,
+              builder: (_) => AmpereScheduleDeleteDialog(schedule: schedule),
+            ),
           ),
-        ),
       ],
     );
   }

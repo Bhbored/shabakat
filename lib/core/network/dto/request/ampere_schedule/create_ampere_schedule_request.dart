@@ -8,7 +8,10 @@ sealed class CreateAmpereScheduleRequest with _$CreateAmpereScheduleRequest {
   const factory CreateAmpereScheduleRequest({
     required String name,
     required int hoursPerDay,
-    required double pricePerAmp,
+    double? pricePerAmp,
+    double? residentialPricePerAmp,
+    double? commercialPricePerAmp,
+    double? industrialPricePerAmp,
   }) = _CreateAmpereScheduleRequest;
 
   factory CreateAmpereScheduleRequest.fromJson(Map<String, dynamic> json) =>

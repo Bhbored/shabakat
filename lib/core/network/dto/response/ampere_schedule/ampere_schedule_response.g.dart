@@ -13,7 +13,11 @@ _AmpereScheduleResponse _$AmpereScheduleResponseFromJson(
   name: json['name'] as String,
   hoursPerDay: (json['hoursPerDay'] as num).toInt(),
   pricePerAmp: (json['pricePerAmp'] as num).toDouble(),
+  residentialPricePerAmp: (json['residentialPricePerAmp'] as num).toDouble(),
+  commercialPricePerAmp: (json['commercialPricePerAmp'] as num).toDouble(),
+  industrialPricePerAmp: (json['industrialPricePerAmp'] as num).toDouble(),
   customerCount: (json['customerCount'] as num).toInt(),
+  canBeDeleted: json['canBeDeleted'] as bool,
   createdAt: DateTime.parse(json['createdAt'] as String),
 );
 
@@ -24,6 +28,10 @@ Map<String, dynamic> _$AmpereScheduleResponseToJson(
   'name': instance.name,
   'hoursPerDay': instance.hoursPerDay,
   'pricePerAmp': instance.pricePerAmp,
+  'residentialPricePerAmp': instance.residentialPricePerAmp,
+  'commercialPricePerAmp': instance.commercialPricePerAmp,
+  'industrialPricePerAmp': instance.industrialPricePerAmp,
   'customerCount': instance.customerCount,
+  'canBeDeleted': instance.canBeDeleted,
   'createdAt': instance.createdAt.toIso8601String(),
 };

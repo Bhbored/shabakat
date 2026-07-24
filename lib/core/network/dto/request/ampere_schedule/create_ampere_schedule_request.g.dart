@@ -11,7 +11,10 @@ _CreateAmpereScheduleRequest _$CreateAmpereScheduleRequestFromJson(
 ) => _CreateAmpereScheduleRequest(
   name: json['name'] as String,
   hoursPerDay: (json['hoursPerDay'] as num).toInt(),
-  pricePerAmp: (json['pricePerAmp'] as num).toDouble(),
+  pricePerAmp: (json['pricePerAmp'] as num?)?.toDouble(),
+  residentialPricePerAmp: (json['residentialPricePerAmp'] as num?)?.toDouble(),
+  commercialPricePerAmp: (json['commercialPricePerAmp'] as num?)?.toDouble(),
+  industrialPricePerAmp: (json['industrialPricePerAmp'] as num?)?.toDouble(),
 );
 
 Map<String, dynamic> _$CreateAmpereScheduleRequestToJson(
@@ -20,4 +23,7 @@ Map<String, dynamic> _$CreateAmpereScheduleRequestToJson(
   'name': instance.name,
   'hoursPerDay': instance.hoursPerDay,
   'pricePerAmp': instance.pricePerAmp,
+  'residentialPricePerAmp': instance.residentialPricePerAmp,
+  'commercialPricePerAmp': instance.commercialPricePerAmp,
+  'industrialPricePerAmp': instance.industrialPricePerAmp,
 };

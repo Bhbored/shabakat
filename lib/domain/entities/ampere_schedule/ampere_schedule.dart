@@ -10,7 +10,11 @@ sealed class AmpereSchedule with _$AmpereSchedule {
     required String name,
     required int hoursPerDay,
     required double pricePerAmp,
+    @Default(0) double residentialPricePerAmp,
+    @Default(0) double commercialPricePerAmp,
+    @Default(0) double industrialPricePerAmp,
     @Default(0) int customerCount,
+    @Default(true) bool canBeDeleted,
     required DateTime createdAt,
   }) = _AmpereSchedule;
 
