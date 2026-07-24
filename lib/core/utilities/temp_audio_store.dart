@@ -41,17 +41,6 @@ class TempAudioStore {
     return p.join(dir.path, '${_uuid.v4()}.m4a');
   }
 
-  Future<String> saveBytes(
-    List<int> bytes, {
-    String extension = 'mp3',
-  }) async {
-    final dir = await _audioDir();
-    final path = p.join(dir.path, '${_uuid.v4()}.$extension');
-    await File(path).writeAsBytes(bytes, flush: true);
-    await track(path);
-    return path;
-  }
-
   Future<List<String>> _readPaths() async {
     final raw = await _prefs.getString(_prefsKey);
     if (raw == null || raw.isEmpty) return [];

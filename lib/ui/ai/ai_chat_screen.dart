@@ -14,7 +14,6 @@ import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/services/ai/ai_service.dart';
 import 'package:shabakat/core/utilities/temp_audio_store.dart';
-import 'package:shabakat/core/network/services/tts/text_to_speech_service.dart';
 import 'package:shabakat/ui/ai/widgets/markdown_convertion/markdown_text_message.dart';
 import 'package:shabakat/ui/ai/widgets/recording/audio_message_bubble.dart';
 import 'package:shabakat/ui/ai/widgets/recording/recording_bar.dart';
@@ -52,12 +51,6 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     super.initState();
     _audioStore = ref.read(tempAudioStoreProvider);
     unawaited(_audioStore.clear());
-  }
-
-  @override
-  void deactivate() {
-    unawaited(ref.read(textToSpeechServiceProvider).stop());
-    super.deactivate();
   }
 
   @override

@@ -168,9 +168,7 @@
     "tap_to_cancel": "إلغاء",
     "delete": "حذف",
     "send": "إرسال",
-    "audio": "رسالة صوتية",
-    "speak": "قراءة بصوت عالٍ",
-    "stop_speaking": "إيقاف"
+    "audio": "رسالة صوتية"
   },
   "settings": {
     "title": "الإعدادات",

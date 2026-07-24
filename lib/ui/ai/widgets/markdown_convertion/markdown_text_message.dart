@@ -1,15 +1,9 @@
-import 'dart:async';
-
-import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
-import 'package:shabakat/core/network/services/tts/text_to_speech_service.dart';
 
-class MarkdownTextMessage extends ConsumerWidget {
+class MarkdownTextMessage extends StatelessWidget {
   const MarkdownTextMessage({
     super.key,
     required this.message,
@@ -121,11 +115,8 @@ class MarkdownTextMessage extends ConsumerWidget {
     );
   }
 
-  bool get _canSpeak =>
-      !isSentByMe && !isStreaming && message.text.trim().isNotEmpty;
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textDirection = _textDirection(context);
     final backgroundColor = isSentByMe
@@ -134,7 +125,6 @@ class MarkdownTextMessage extends ConsumerWidget {
     final foreground = isSentByMe
         ? colorScheme.onPrimary
         : colorScheme.onSurface;
-    final tts = ref.watch(textToSpeechServiceProvider);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(context.borderRadiusMedium),
@@ -154,57 +144,14 @@ class MarkdownTextMessage extends ConsumerWidget {
                   color: foreground,
                 ),
               )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Directionality(
-                    textDirection: textDirection,
-                    child: MarkdownBody(
-                      data: message.text,
-                      shrinkWrap: true,
-                      fitContent: true,
-                      styleSheet: _styleSheet(context, foreground: foreground),
-                    ),
-                  ),
-                  if (_canSpeak) ...[
-                    SizedBox(height: context.spaceSmall / 2),
-                    Align(
-                      alignment: AlignmentDirectional.centerStart,
-                      child: ValueListenableBuilder<String?>(
-                        valueListenable: tts.speakingMessageId,
-                        builder: (context, speakingId, _) {
-                          final isThisSpeaking = speakingId == message.id;
-                          return IconButton(
-                            tooltip: isThisSpeaking
-                                ? 'ai.stop_speaking'.tr()
-                                : 'ai.speak'.tr(),
-                            onPressed: () {
-                              unawaited(
-                                tts.speak(
-                                  text: message.text,
-                                  messageId: message.id,
-                                ),
-                              );
-                            },
-                            icon: Icon(
-                              isThisSpeaking
-                                  ? LucideIcons.square
-                                  : LucideIcons.volume2,
-                              color: foreground.withValues(alpha: 0.85),
-                              size: 18,
-                            ),
-                            visualDensity: VisualDensity.compact,
-                            style: IconButton.styleFrom(
-                              minimumSize: Size.square(context.paddingLarge),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ],
+            : Directionality(
+                textDirection: textDirection,
+                child: MarkdownBody(
+                  data: message.text,
+                  shrinkWrap: true,
+                  fitContent: true,
+                  styleSheet: _styleSheet(context, foreground: foreground),
+                ),
               ),
       ),
     );

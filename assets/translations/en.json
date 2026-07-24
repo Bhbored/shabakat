@@ -168,9 +168,7 @@
     "tap_to_cancel": "Cancel",
     "delete": "Delete",
     "send": "Send",
-    "audio": "Voice message",
-    "speak": "Read aloud",
-    "stop_speaking": "Stop"
+    "audio": "Voice message"
   },
   "settings": {
     "title": "Settings",
