@@ -16,9 +16,9 @@ sealed class InvoiceSummaryResponse with _$InvoiceSummaryResponse {
     required String customerName,
     required String invoiceStatus,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
-    required DateTime issueDate,
+    required DateTime consumptionStart,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
-    required DateTime dueDate,
+    required DateTime consumptionEnd,
     required double totalAmount,
     required double paidAmount,
     required double amountDue,

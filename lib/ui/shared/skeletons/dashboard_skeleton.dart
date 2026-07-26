@@ -4,6 +4,7 @@ import 'package:shabakat/core/network/dto/response/dashboard/customer_overview_r
 import 'package:shabakat/core/network/dto/response/dashboard/dashboard_summary_response.dart';
 import 'package:shabakat/core/network/dto/response/dashboard/expenses_by_type_response.dart';
 import 'package:shabakat/core/network/dto/response/dashboard/invoice_overview_response.dart';
+import 'package:shabakat/ui/screens/dashboard/widgets/dashboard_period_filter/dashboard_period_filter.dart';
 import 'package:shabakat/ui/screens/dashboard/widgets/recent_payments/recent_payments_list.dart';
 import 'package:shabakat/ui/screens/dashboard/widgets/revenue_chart/revenue_chart.dart';
 import 'package:shabakat/ui/screens/dashboard/widgets/stat_grid/stat_grid.dart';
@@ -11,7 +12,9 @@ import 'package:shabakat/ui/screens/dashboard/widgets/upcoming_due/upcoming_due_
 import 'package:skeletonizer/skeletonizer.dart';
 
 class DashboardSkeleton extends StatelessWidget {
-  const DashboardSkeleton({super.key});
+  final bool includeFilter;
+
+  const DashboardSkeleton({super.key, this.includeFilter = true});
 
   static const _mockSummary = DashboardSummaryResponse(
     totalBilledAllTime: 12500,
@@ -53,25 +56,33 @@ class DashboardSkeleton extends StatelessWidget {
         baseColor: colorScheme.onSurface.withValues(alpha: 0.08),
         highlightColor: colorScheme.onSurface.withValues(alpha: 0.04),
       ),
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.all(context.paddingMedium),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const StatGrid(summary: _mockSummary),
-            SizedBox(height: context.spaceMedium),
-            const RevenueChart(summary: _mockSummary),
-            SizedBox(height: context.spaceMedium),
-            InvoiceOverviewList(invoices: _mockSummary.invoices),
-            SizedBox(height: context.spaceMedium),
-            CustomerExpensesOverview(
-              customers: _mockSummary.customers,
-              expensesByType: _mockSummary.expensesByType,
-              totalExpensesAllTime: _mockSummary.totalExpensesAllTime,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (includeFilter) const DashboardPeriodFilter(),
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.all(context.paddingMedium),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const StatGrid(summary: _mockSummary),
+                  SizedBox(height: context.spaceMedium),
+                  const RevenueChart(summary: _mockSummary),
+                  SizedBox(height: context.spaceMedium),
+                  InvoiceOverviewList(invoices: _mockSummary.invoices),
+                  SizedBox(height: context.spaceMedium),
+                  CustomerExpensesOverview(
+                    customers: _mockSummary.customers,
+                    expensesByType: _mockSummary.expensesByType,
+                    totalExpensesAllTime: _mockSummary.totalExpensesAllTime,
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

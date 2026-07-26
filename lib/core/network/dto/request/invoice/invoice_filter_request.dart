@@ -17,9 +17,9 @@ sealed class InvoiceFilterRequest with _$InvoiceFilterRequest {
     String? customerId,
     InvoiceStatus? invoiceStatus,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
-    DateTime? issueDateFrom,
+    DateTime? consumptionStartFrom,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
-    DateTime? issueDateTo,
+    DateTime? consumptionStartTo,
     @Default(1) int pageNumber,
     @Default(10) int pageSize,
   }) = _InvoiceFilterRequest;

@@ -30,6 +30,7 @@ class ApiExecutor {
         request.path,
         data: request.data,
         queryParameters: request.queryParams,
+        cancelToken: request.cancelToken,
         options: options,
       );
 

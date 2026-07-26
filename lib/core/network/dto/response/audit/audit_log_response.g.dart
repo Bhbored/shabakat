@@ -11,11 +11,12 @@ _AuditLogResponse _$AuditLogResponseFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       action: json['action'] as String,
       status: json['status'] as String,
-      summary: json['summary'] as String,
+      messageKey: json['messageKey'] as String,
+      parameters: json['parameters'] as Map<String, dynamic>? ?? const {},
       entityType: json['entityType'] as String?,
       entityId: json['entityId'] as String?,
-      details: json['details'] as String?,
       userEmail: json['userEmail'] as String?,
+      errorMessage: json['errorMessage'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
@@ -24,10 +25,11 @@ Map<String, dynamic> _$AuditLogResponseToJson(_AuditLogResponse instance) =>
       'id': instance.id,
       'action': instance.action,
       'status': instance.status,
-      'summary': instance.summary,
+      'messageKey': instance.messageKey,
+      'parameters': instance.parameters,
       'entityType': instance.entityType,
       'entityId': instance.entityId,
-      'details': instance.details,
       'userEmail': instance.userEmail,
+      'errorMessage': instance.errorMessage,
       'createdAt': instance.createdAt.toIso8601String(),
     };

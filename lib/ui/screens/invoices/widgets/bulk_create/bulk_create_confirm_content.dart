@@ -2,9 +2,23 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:shabakat/core/enums/enums.dart';
 
 class BulkCreateConfirmContent extends StatelessWidget {
-  const BulkCreateConfirmContent({super.key});
+  final bool filterByPlan;
+  final PlanType selectedPlan;
+  final bool enabled;
+  final ValueChanged<bool> onFilterToggled;
+  final ValueChanged<PlanType> onPlanChanged;
+
+  const BulkCreateConfirmContent({
+    super.key,
+    required this.filterByPlan,
+    required this.selectedPlan,
+    required this.enabled,
+    required this.onFilterToggled,
+    required this.onPlanChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +51,31 @@ class BulkCreateConfirmContent extends StatelessWidget {
           text: 'invoices.bulk_create.kilowatt_period'.tr(),
         ),
         SizedBox(height: context.spaceMedium),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                'invoices.bulk_create.plan_filter'.tr(),
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            Switch(
+              value: filterByPlan,
+              onChanged: enabled ? onFilterToggled : null,
+            ),
+          ],
+        ),
+        if (filterByPlan) ...[
+          SizedBox(height: context.spaceSmall),
+          _PlanDropdown(
+            value: selectedPlan,
+            enabled: enabled,
+            onChanged: onPlanChanged,
+          ),
+        ],
+        SizedBox(height: context.spaceMedium),
         Text('invoices.bulk_create.excluded'.tr(), style: labelStyle),
         SizedBox(height: context.spaceSmall),
         _Bullet(text: 'invoices.bulk_create.excluded_suspended'.tr()),
@@ -45,6 +84,62 @@ class BulkCreateConfirmContent extends StatelessWidget {
         SizedBox(height: context.spaceSmall * 0.5),
         _Bullet(text: 'invoices.bulk_create.excluded_existing'.tr()),
       ],
+    );
+  }
+}
+
+class _PlanDropdown extends StatelessWidget {
+  static const _options = [PlanType.ampere, PlanType.kilowatt];
+
+  final PlanType value;
+  final bool enabled;
+  final ValueChanged<PlanType> onChanged;
+
+  const _PlanDropdown({
+    required this.value,
+    required this.enabled,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: context.paddingMedium),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+        border: Border.all(color: colorScheme.outline),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<PlanType>(
+          padding: EdgeInsets.zero,
+          isExpanded: true,
+          borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+          dropdownColor: colorScheme.surfaceContainerHigh,
+          elevation: 4,
+          alignment: AlignmentDirectional.centerStart,
+          style: theme.textTheme.bodyMedium,
+          icon: Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: colorScheme.onSurfaceVariant,
+            size: 22,
+          ),
+          value: value,
+          items: _options.map((plan) {
+            return DropdownMenuItem<PlanType>(
+              value: plan,
+              child: Text(plan.label),
+            );
+          }).toList(),
+          onChanged: enabled
+              ? (plan) {
+                  if (plan != null) onChanged(plan);
+                }
+              : null,
+        ),
+      ),
     );
   }
 }

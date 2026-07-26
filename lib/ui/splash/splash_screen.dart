@@ -128,6 +128,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         _hasNavigated = true;
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (!context.mounted) return;
+
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (_) =>

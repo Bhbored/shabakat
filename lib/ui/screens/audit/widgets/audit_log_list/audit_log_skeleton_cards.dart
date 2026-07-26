@@ -23,7 +23,7 @@ class AuditLogSkeletonCards extends StatelessWidget {
       id: 'skeleton-$index',
       action: AuditAction.customerCreated,
       status: AuditLogStatus.success,
-      summary: 'Customer account was created successfully',
+      messageKey: 'audit.customer.created',
       entityType: AuditEntityType.customer,
       userEmail: 'user@example.com',
       createdAt: DateTime(2024, 6, 15, 14, 30),

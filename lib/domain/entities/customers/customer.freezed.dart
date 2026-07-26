@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Customer {
 
- String get id; DateTime get createdAt; DateTime get updatedAt; String get companyId; String get name; double? get totalBilled; double? get totalPaid; double? get totalOutstanding; String? get phone; String? get address; String? get areaName; String? get areaId; CustomerType get customerType; CustomerRelation? get customerRelation; DateTime get subscriptionDate; double? get priceOverride; double? get fixedChargeOverride; double? get tvaOverride; bool get hasPricingOverride; CustomerStatus get customerStatus; PlanType get plan; double get planValue; List<Invoice>? get invoices;
+ String get id; DateTime get createdAt; DateTime get updatedAt; String get companyId; String get name; double? get totalBilled; double? get totalPaid; double? get totalOutstanding; String? get phone; String? get address; String? get building; String? get floor; String? get cableName; String? get boxId; String? get boxName; String? get ampereScheduleId; String? get ampereScheduleName; String? get areaName; String? get areaId; CustomerType get customerType; CustomerRelation? get customerRelation; DateTime get subscriptionDate; double? get priceOverride; double? get fixedChargeOverride; double? get tvaOverride; bool get hasPricingOverride; CustomerStatus get customerStatus; PlanType get plan; double get planValue; List<Invoice>? get invoices;
 /// Create a copy of Customer
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CustomerCopyWith<Customer> get copyWith => _$CustomerCopyWithImpl<Customer>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Customer&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.totalBilled, totalBilled) || other.totalBilled == totalBilled)&&(identical(other.totalPaid, totalPaid) || other.totalPaid == totalPaid)&&(identical(other.totalOutstanding, totalOutstanding) || other.totalOutstanding == totalOutstanding)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.address, address) || other.address == address)&&(identical(other.areaName, areaName) || other.areaName == areaName)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.customerType, customerType) || other.customerType == customerType)&&(identical(other.customerRelation, customerRelation) || other.customerRelation == customerRelation)&&(identical(other.subscriptionDate, subscriptionDate) || other.subscriptionDate == subscriptionDate)&&(identical(other.priceOverride, priceOverride) || other.priceOverride == priceOverride)&&(identical(other.fixedChargeOverride, fixedChargeOverride) || other.fixedChargeOverride == fixedChargeOverride)&&(identical(other.tvaOverride, tvaOverride) || other.tvaOverride == tvaOverride)&&(identical(other.hasPricingOverride, hasPricingOverride) || other.hasPricingOverride == hasPricingOverride)&&(identical(other.customerStatus, customerStatus) || other.customerStatus == customerStatus)&&(identical(other.plan, plan) || other.plan == plan)&&(identical(other.planValue, planValue) || other.planValue == planValue)&&const DeepCollectionEquality().equals(other.invoices, invoices));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Customer&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.totalBilled, totalBilled) || other.totalBilled == totalBilled)&&(identical(other.totalPaid, totalPaid) || other.totalPaid == totalPaid)&&(identical(other.totalOutstanding, totalOutstanding) || other.totalOutstanding == totalOutstanding)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.address, address) || other.address == address)&&(identical(other.building, building) || other.building == building)&&(identical(other.floor, floor) || other.floor == floor)&&(identical(other.cableName, cableName) || other.cableName == cableName)&&(identical(other.boxId, boxId) || other.boxId == boxId)&&(identical(other.boxName, boxName) || other.boxName == boxName)&&(identical(other.ampereScheduleId, ampereScheduleId) || other.ampereScheduleId == ampereScheduleId)&&(identical(other.ampereScheduleName, ampereScheduleName) || other.ampereScheduleName == ampereScheduleName)&&(identical(other.areaName, areaName) || other.areaName == areaName)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.customerType, customerType) || other.customerType == customerType)&&(identical(other.customerRelation, customerRelation) || other.customerRelation == customerRelation)&&(identical(other.subscriptionDate, subscriptionDate) || other.subscriptionDate == subscriptionDate)&&(identical(other.priceOverride, priceOverride) || other.priceOverride == priceOverride)&&(identical(other.fixedChargeOverride, fixedChargeOverride) || other.fixedChargeOverride == fixedChargeOverride)&&(identical(other.tvaOverride, tvaOverride) || other.tvaOverride == tvaOverride)&&(identical(other.hasPricingOverride, hasPricingOverride) || other.hasPricingOverride == hasPricingOverride)&&(identical(other.customerStatus, customerStatus) || other.customerStatus == customerStatus)&&(identical(other.plan, plan) || other.plan == plan)&&(identical(other.planValue, planValue) || other.planValue == planValue)&&const DeepCollectionEquality().equals(other.invoices, invoices));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,createdAt,updatedAt,companyId,name,totalBilled,totalPaid,totalOutstanding,phone,address,areaName,areaId,customerType,customerRelation,subscriptionDate,priceOverride,fixedChargeOverride,tvaOverride,hasPricingOverride,customerStatus,plan,planValue,const DeepCollectionEquality().hash(invoices)]);
+int get hashCode => Object.hashAll([runtimeType,id,createdAt,updatedAt,companyId,name,totalBilled,totalPaid,totalOutstanding,phone,address,building,floor,cableName,boxId,boxName,ampereScheduleId,ampereScheduleName,areaName,areaId,customerType,customerRelation,subscriptionDate,priceOverride,fixedChargeOverride,tvaOverride,hasPricingOverride,customerStatus,plan,planValue,const DeepCollectionEquality().hash(invoices)]);
 
 @override
 String toString() {
-  return 'Customer(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, companyId: $companyId, name: $name, totalBilled: $totalBilled, totalPaid: $totalPaid, totalOutstanding: $totalOutstanding, phone: $phone, address: $address, areaName: $areaName, areaId: $areaId, customerType: $customerType, customerRelation: $customerRelation, subscriptionDate: $subscriptionDate, priceOverride: $priceOverride, fixedChargeOverride: $fixedChargeOverride, tvaOverride: $tvaOverride, hasPricingOverride: $hasPricingOverride, customerStatus: $customerStatus, plan: $plan, planValue: $planValue, invoices: $invoices)';
+  return 'Customer(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, companyId: $companyId, name: $name, totalBilled: $totalBilled, totalPaid: $totalPaid, totalOutstanding: $totalOutstanding, phone: $phone, address: $address, building: $building, floor: $floor, cableName: $cableName, boxId: $boxId, boxName: $boxName, ampereScheduleId: $ampereScheduleId, ampereScheduleName: $ampereScheduleName, areaName: $areaName, areaId: $areaId, customerType: $customerType, customerRelation: $customerRelation, subscriptionDate: $subscriptionDate, priceOverride: $priceOverride, fixedChargeOverride: $fixedChargeOverride, tvaOverride: $tvaOverride, hasPricingOverride: $hasPricingOverride, customerStatus: $customerStatus, plan: $plan, planValue: $planValue, invoices: $invoices)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CustomerCopyWith<$Res>  {
   factory $CustomerCopyWith(Customer value, $Res Function(Customer) _then) = _$CustomerCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String companyId, String name, double? totalBilled, double? totalPaid, double? totalOutstanding, String? phone, String? address, String? areaName, String? areaId, CustomerType customerType, CustomerRelation? customerRelation, DateTime subscriptionDate, double? priceOverride, double? fixedChargeOverride, double? tvaOverride, bool hasPricingOverride, CustomerStatus customerStatus, PlanType plan, double planValue, List<Invoice>? invoices
+ String id, DateTime createdAt, DateTime updatedAt, String companyId, String name, double? totalBilled, double? totalPaid, double? totalOutstanding, String? phone, String? address, String? building, String? floor, String? cableName, String? boxId, String? boxName, String? ampereScheduleId, String? ampereScheduleName, String? areaName, String? areaId, CustomerType customerType, CustomerRelation? customerRelation, DateTime subscriptionDate, double? priceOverride, double? fixedChargeOverride, double? tvaOverride, bool hasPricingOverride, CustomerStatus customerStatus, PlanType plan, double planValue, List<Invoice>? invoices
 });
 
 
@@ -65,7 +65,7 @@ class _$CustomerCopyWithImpl<$Res>
 
 /// Create a copy of Customer
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? companyId = null,Object? name = null,Object? totalBilled = freezed,Object? totalPaid = freezed,Object? totalOutstanding = freezed,Object? phone = freezed,Object? address = freezed,Object? areaName = freezed,Object? areaId = freezed,Object? customerType = null,Object? customerRelation = freezed,Object? subscriptionDate = null,Object? priceOverride = freezed,Object? fixedChargeOverride = freezed,Object? tvaOverride = freezed,Object? hasPricingOverride = null,Object? customerStatus = null,Object? plan = null,Object? planValue = null,Object? invoices = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? companyId = null,Object? name = null,Object? totalBilled = freezed,Object? totalPaid = freezed,Object? totalOutstanding = freezed,Object? phone = freezed,Object? address = freezed,Object? building = freezed,Object? floor = freezed,Object? cableName = freezed,Object? boxId = freezed,Object? boxName = freezed,Object? ampereScheduleId = freezed,Object? ampereScheduleName = freezed,Object? areaName = freezed,Object? areaId = freezed,Object? customerType = null,Object? customerRelation = freezed,Object? subscriptionDate = null,Object? priceOverride = freezed,Object? fixedChargeOverride = freezed,Object? tvaOverride = freezed,Object? hasPricingOverride = null,Object? customerStatus = null,Object? plan = null,Object? planValue = null,Object? invoices = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -77,6 +77,13 @@ as double?,totalPaid: freezed == totalPaid ? _self.totalPaid : totalPaid // igno
 as double?,totalOutstanding: freezed == totalOutstanding ? _self.totalOutstanding : totalOutstanding // ignore: cast_nullable_to_non_nullable
 as double?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as String?,building: freezed == building ? _self.building : building // ignore: cast_nullable_to_non_nullable
+as String?,floor: freezed == floor ? _self.floor : floor // ignore: cast_nullable_to_non_nullable
+as String?,cableName: freezed == cableName ? _self.cableName : cableName // ignore: cast_nullable_to_non_nullable
+as String?,boxId: freezed == boxId ? _self.boxId : boxId // ignore: cast_nullable_to_non_nullable
+as String?,boxName: freezed == boxName ? _self.boxName : boxName // ignore: cast_nullable_to_non_nullable
+as String?,ampereScheduleId: freezed == ampereScheduleId ? _self.ampereScheduleId : ampereScheduleId // ignore: cast_nullable_to_non_nullable
+as String?,ampereScheduleName: freezed == ampereScheduleName ? _self.ampereScheduleName : ampereScheduleName // ignore: cast_nullable_to_non_nullable
 as String?,areaName: freezed == areaName ? _self.areaName : areaName // ignore: cast_nullable_to_non_nullable
 as String?,areaId: freezed == areaId ? _self.areaId : areaId // ignore: cast_nullable_to_non_nullable
 as String?,customerType: null == customerType ? _self.customerType : customerType // ignore: cast_nullable_to_non_nullable
@@ -172,10 +179,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  String name,  double? totalBilled,  double? totalPaid,  double? totalOutstanding,  String? phone,  String? address,  String? areaName,  String? areaId,  CustomerType customerType,  CustomerRelation? customerRelation,  DateTime subscriptionDate,  double? priceOverride,  double? fixedChargeOverride,  double? tvaOverride,  bool hasPricingOverride,  CustomerStatus customerStatus,  PlanType plan,  double planValue,  List<Invoice>? invoices)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  String name,  double? totalBilled,  double? totalPaid,  double? totalOutstanding,  String? phone,  String? address,  String? building,  String? floor,  String? cableName,  String? boxId,  String? boxName,  String? ampereScheduleId,  String? ampereScheduleName,  String? areaName,  String? areaId,  CustomerType customerType,  CustomerRelation? customerRelation,  DateTime subscriptionDate,  double? priceOverride,  double? fixedChargeOverride,  double? tvaOverride,  bool hasPricingOverride,  CustomerStatus customerStatus,  PlanType plan,  double planValue,  List<Invoice>? invoices)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Customer() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.name,_that.totalBilled,_that.totalPaid,_that.totalOutstanding,_that.phone,_that.address,_that.areaName,_that.areaId,_that.customerType,_that.customerRelation,_that.subscriptionDate,_that.priceOverride,_that.fixedChargeOverride,_that.tvaOverride,_that.hasPricingOverride,_that.customerStatus,_that.plan,_that.planValue,_that.invoices);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.name,_that.totalBilled,_that.totalPaid,_that.totalOutstanding,_that.phone,_that.address,_that.building,_that.floor,_that.cableName,_that.boxId,_that.boxName,_that.ampereScheduleId,_that.ampereScheduleName,_that.areaName,_that.areaId,_that.customerType,_that.customerRelation,_that.subscriptionDate,_that.priceOverride,_that.fixedChargeOverride,_that.tvaOverride,_that.hasPricingOverride,_that.customerStatus,_that.plan,_that.planValue,_that.invoices);case _:
   return orElse();
 
 }
@@ -193,10 +200,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.n
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  String name,  double? totalBilled,  double? totalPaid,  double? totalOutstanding,  String? phone,  String? address,  String? areaName,  String? areaId,  CustomerType customerType,  CustomerRelation? customerRelation,  DateTime subscriptionDate,  double? priceOverride,  double? fixedChargeOverride,  double? tvaOverride,  bool hasPricingOverride,  CustomerStatus customerStatus,  PlanType plan,  double planValue,  List<Invoice>? invoices)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  String name,  double? totalBilled,  double? totalPaid,  double? totalOutstanding,  String? phone,  String? address,  String? building,  String? floor,  String? cableName,  String? boxId,  String? boxName,  String? ampereScheduleId,  String? ampereScheduleName,  String? areaName,  String? areaId,  CustomerType customerType,  CustomerRelation? customerRelation,  DateTime subscriptionDate,  double? priceOverride,  double? fixedChargeOverride,  double? tvaOverride,  bool hasPricingOverride,  CustomerStatus customerStatus,  PlanType plan,  double planValue,  List<Invoice>? invoices)  $default,) {final _that = this;
 switch (_that) {
 case _Customer():
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.name,_that.totalBilled,_that.totalPaid,_that.totalOutstanding,_that.phone,_that.address,_that.areaName,_that.areaId,_that.customerType,_that.customerRelation,_that.subscriptionDate,_that.priceOverride,_that.fixedChargeOverride,_that.tvaOverride,_that.hasPricingOverride,_that.customerStatus,_that.plan,_that.planValue,_that.invoices);}
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.name,_that.totalBilled,_that.totalPaid,_that.totalOutstanding,_that.phone,_that.address,_that.building,_that.floor,_that.cableName,_that.boxId,_that.boxName,_that.ampereScheduleId,_that.ampereScheduleName,_that.areaName,_that.areaId,_that.customerType,_that.customerRelation,_that.subscriptionDate,_that.priceOverride,_that.fixedChargeOverride,_that.tvaOverride,_that.hasPricingOverride,_that.customerStatus,_that.plan,_that.planValue,_that.invoices);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -210,10 +217,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.n
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  String name,  double? totalBilled,  double? totalPaid,  double? totalOutstanding,  String? phone,  String? address,  String? areaName,  String? areaId,  CustomerType customerType,  CustomerRelation? customerRelation,  DateTime subscriptionDate,  double? priceOverride,  double? fixedChargeOverride,  double? tvaOverride,  bool hasPricingOverride,  CustomerStatus customerStatus,  PlanType plan,  double planValue,  List<Invoice>? invoices)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String companyId,  String name,  double? totalBilled,  double? totalPaid,  double? totalOutstanding,  String? phone,  String? address,  String? building,  String? floor,  String? cableName,  String? boxId,  String? boxName,  String? ampereScheduleId,  String? ampereScheduleName,  String? areaName,  String? areaId,  CustomerType customerType,  CustomerRelation? customerRelation,  DateTime subscriptionDate,  double? priceOverride,  double? fixedChargeOverride,  double? tvaOverride,  bool hasPricingOverride,  CustomerStatus customerStatus,  PlanType plan,  double planValue,  List<Invoice>? invoices)?  $default,) {final _that = this;
 switch (_that) {
 case _Customer() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.name,_that.totalBilled,_that.totalPaid,_that.totalOutstanding,_that.phone,_that.address,_that.areaName,_that.areaId,_that.customerType,_that.customerRelation,_that.subscriptionDate,_that.priceOverride,_that.fixedChargeOverride,_that.tvaOverride,_that.hasPricingOverride,_that.customerStatus,_that.plan,_that.planValue,_that.invoices);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.name,_that.totalBilled,_that.totalPaid,_that.totalOutstanding,_that.phone,_that.address,_that.building,_that.floor,_that.cableName,_that.boxId,_that.boxName,_that.ampereScheduleId,_that.ampereScheduleName,_that.areaName,_that.areaId,_that.customerType,_that.customerRelation,_that.subscriptionDate,_that.priceOverride,_that.fixedChargeOverride,_that.tvaOverride,_that.hasPricingOverride,_that.customerStatus,_that.plan,_that.planValue,_that.invoices);case _:
   return null;
 
 }
@@ -225,7 +232,7 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.companyId,_that.n
 @JsonSerializable()
 
 class _Customer implements Customer {
-  const _Customer({required this.id, required this.createdAt, required this.updatedAt, required this.companyId, required this.name, this.totalBilled, this.totalPaid, this.totalOutstanding, this.phone, this.address, this.areaName, this.areaId, required this.customerType, this.customerRelation, required this.subscriptionDate, this.priceOverride, this.fixedChargeOverride, this.tvaOverride, this.hasPricingOverride = false, this.customerStatus = CustomerStatus.active, required this.plan, required this.planValue, final  List<Invoice>? invoices}): _invoices = invoices;
+  const _Customer({required this.id, required this.createdAt, required this.updatedAt, required this.companyId, required this.name, this.totalBilled, this.totalPaid, this.totalOutstanding, this.phone, this.address, this.building, this.floor, this.cableName, this.boxId, this.boxName, this.ampereScheduleId, this.ampereScheduleName, this.areaName, this.areaId, required this.customerType, this.customerRelation, required this.subscriptionDate, this.priceOverride, this.fixedChargeOverride, this.tvaOverride, this.hasPricingOverride = false, this.customerStatus = CustomerStatus.active, required this.plan, required this.planValue, final  List<Invoice>? invoices}): _invoices = invoices;
   factory _Customer.fromJson(Map<String, dynamic> json) => _$CustomerFromJson(json);
 
 @override final  String id;
@@ -238,6 +245,13 @@ class _Customer implements Customer {
 @override final  double? totalOutstanding;
 @override final  String? phone;
 @override final  String? address;
+@override final  String? building;
+@override final  String? floor;
+@override final  String? cableName;
+@override final  String? boxId;
+@override final  String? boxName;
+@override final  String? ampereScheduleId;
+@override final  String? ampereScheduleName;
 @override final  String? areaName;
 @override final  String? areaId;
 @override final  CustomerType customerType;
@@ -273,16 +287,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Customer&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.totalBilled, totalBilled) || other.totalBilled == totalBilled)&&(identical(other.totalPaid, totalPaid) || other.totalPaid == totalPaid)&&(identical(other.totalOutstanding, totalOutstanding) || other.totalOutstanding == totalOutstanding)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.address, address) || other.address == address)&&(identical(other.areaName, areaName) || other.areaName == areaName)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.customerType, customerType) || other.customerType == customerType)&&(identical(other.customerRelation, customerRelation) || other.customerRelation == customerRelation)&&(identical(other.subscriptionDate, subscriptionDate) || other.subscriptionDate == subscriptionDate)&&(identical(other.priceOverride, priceOverride) || other.priceOverride == priceOverride)&&(identical(other.fixedChargeOverride, fixedChargeOverride) || other.fixedChargeOverride == fixedChargeOverride)&&(identical(other.tvaOverride, tvaOverride) || other.tvaOverride == tvaOverride)&&(identical(other.hasPricingOverride, hasPricingOverride) || other.hasPricingOverride == hasPricingOverride)&&(identical(other.customerStatus, customerStatus) || other.customerStatus == customerStatus)&&(identical(other.plan, plan) || other.plan == plan)&&(identical(other.planValue, planValue) || other.planValue == planValue)&&const DeepCollectionEquality().equals(other._invoices, _invoices));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Customer&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.totalBilled, totalBilled) || other.totalBilled == totalBilled)&&(identical(other.totalPaid, totalPaid) || other.totalPaid == totalPaid)&&(identical(other.totalOutstanding, totalOutstanding) || other.totalOutstanding == totalOutstanding)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.address, address) || other.address == address)&&(identical(other.building, building) || other.building == building)&&(identical(other.floor, floor) || other.floor == floor)&&(identical(other.cableName, cableName) || other.cableName == cableName)&&(identical(other.boxId, boxId) || other.boxId == boxId)&&(identical(other.boxName, boxName) || other.boxName == boxName)&&(identical(other.ampereScheduleId, ampereScheduleId) || other.ampereScheduleId == ampereScheduleId)&&(identical(other.ampereScheduleName, ampereScheduleName) || other.ampereScheduleName == ampereScheduleName)&&(identical(other.areaName, areaName) || other.areaName == areaName)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.customerType, customerType) || other.customerType == customerType)&&(identical(other.customerRelation, customerRelation) || other.customerRelation == customerRelation)&&(identical(other.subscriptionDate, subscriptionDate) || other.subscriptionDate == subscriptionDate)&&(identical(other.priceOverride, priceOverride) || other.priceOverride == priceOverride)&&(identical(other.fixedChargeOverride, fixedChargeOverride) || other.fixedChargeOverride == fixedChargeOverride)&&(identical(other.tvaOverride, tvaOverride) || other.tvaOverride == tvaOverride)&&(identical(other.hasPricingOverride, hasPricingOverride) || other.hasPricingOverride == hasPricingOverride)&&(identical(other.customerStatus, customerStatus) || other.customerStatus == customerStatus)&&(identical(other.plan, plan) || other.plan == plan)&&(identical(other.planValue, planValue) || other.planValue == planValue)&&const DeepCollectionEquality().equals(other._invoices, _invoices));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,createdAt,updatedAt,companyId,name,totalBilled,totalPaid,totalOutstanding,phone,address,areaName,areaId,customerType,customerRelation,subscriptionDate,priceOverride,fixedChargeOverride,tvaOverride,hasPricingOverride,customerStatus,plan,planValue,const DeepCollectionEquality().hash(_invoices)]);
+int get hashCode => Object.hashAll([runtimeType,id,createdAt,updatedAt,companyId,name,totalBilled,totalPaid,totalOutstanding,phone,address,building,floor,cableName,boxId,boxName,ampereScheduleId,ampereScheduleName,areaName,areaId,customerType,customerRelation,subscriptionDate,priceOverride,fixedChargeOverride,tvaOverride,hasPricingOverride,customerStatus,plan,planValue,const DeepCollectionEquality().hash(_invoices)]);
 
 @override
 String toString() {
-  return 'Customer(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, companyId: $companyId, name: $name, totalBilled: $totalBilled, totalPaid: $totalPaid, totalOutstanding: $totalOutstanding, phone: $phone, address: $address, areaName: $areaName, areaId: $areaId, customerType: $customerType, customerRelation: $customerRelation, subscriptionDate: $subscriptionDate, priceOverride: $priceOverride, fixedChargeOverride: $fixedChargeOverride, tvaOverride: $tvaOverride, hasPricingOverride: $hasPricingOverride, customerStatus: $customerStatus, plan: $plan, planValue: $planValue, invoices: $invoices)';
+  return 'Customer(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, companyId: $companyId, name: $name, totalBilled: $totalBilled, totalPaid: $totalPaid, totalOutstanding: $totalOutstanding, phone: $phone, address: $address, building: $building, floor: $floor, cableName: $cableName, boxId: $boxId, boxName: $boxName, ampereScheduleId: $ampereScheduleId, ampereScheduleName: $ampereScheduleName, areaName: $areaName, areaId: $areaId, customerType: $customerType, customerRelation: $customerRelation, subscriptionDate: $subscriptionDate, priceOverride: $priceOverride, fixedChargeOverride: $fixedChargeOverride, tvaOverride: $tvaOverride, hasPricingOverride: $hasPricingOverride, customerStatus: $customerStatus, plan: $plan, planValue: $planValue, invoices: $invoices)';
 }
 
 
@@ -293,7 +307,7 @@ abstract mixin class _$CustomerCopyWith<$Res> implements $CustomerCopyWith<$Res>
   factory _$CustomerCopyWith(_Customer value, $Res Function(_Customer) _then) = __$CustomerCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String companyId, String name, double? totalBilled, double? totalPaid, double? totalOutstanding, String? phone, String? address, String? areaName, String? areaId, CustomerType customerType, CustomerRelation? customerRelation, DateTime subscriptionDate, double? priceOverride, double? fixedChargeOverride, double? tvaOverride, bool hasPricingOverride, CustomerStatus customerStatus, PlanType plan, double planValue, List<Invoice>? invoices
+ String id, DateTime createdAt, DateTime updatedAt, String companyId, String name, double? totalBilled, double? totalPaid, double? totalOutstanding, String? phone, String? address, String? building, String? floor, String? cableName, String? boxId, String? boxName, String? ampereScheduleId, String? ampereScheduleName, String? areaName, String? areaId, CustomerType customerType, CustomerRelation? customerRelation, DateTime subscriptionDate, double? priceOverride, double? fixedChargeOverride, double? tvaOverride, bool hasPricingOverride, CustomerStatus customerStatus, PlanType plan, double planValue, List<Invoice>? invoices
 });
 
 
@@ -310,7 +324,7 @@ class __$CustomerCopyWithImpl<$Res>
 
 /// Create a copy of Customer
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? companyId = null,Object? name = null,Object? totalBilled = freezed,Object? totalPaid = freezed,Object? totalOutstanding = freezed,Object? phone = freezed,Object? address = freezed,Object? areaName = freezed,Object? areaId = freezed,Object? customerType = null,Object? customerRelation = freezed,Object? subscriptionDate = null,Object? priceOverride = freezed,Object? fixedChargeOverride = freezed,Object? tvaOverride = freezed,Object? hasPricingOverride = null,Object? customerStatus = null,Object? plan = null,Object? planValue = null,Object? invoices = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? companyId = null,Object? name = null,Object? totalBilled = freezed,Object? totalPaid = freezed,Object? totalOutstanding = freezed,Object? phone = freezed,Object? address = freezed,Object? building = freezed,Object? floor = freezed,Object? cableName = freezed,Object? boxId = freezed,Object? boxName = freezed,Object? ampereScheduleId = freezed,Object? ampereScheduleName = freezed,Object? areaName = freezed,Object? areaId = freezed,Object? customerType = null,Object? customerRelation = freezed,Object? subscriptionDate = null,Object? priceOverride = freezed,Object? fixedChargeOverride = freezed,Object? tvaOverride = freezed,Object? hasPricingOverride = null,Object? customerStatus = null,Object? plan = null,Object? planValue = null,Object? invoices = freezed,}) {
   return _then(_Customer(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -322,6 +336,13 @@ as double?,totalPaid: freezed == totalPaid ? _self.totalPaid : totalPaid // igno
 as double?,totalOutstanding: freezed == totalOutstanding ? _self.totalOutstanding : totalOutstanding // ignore: cast_nullable_to_non_nullable
 as double?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as String?,building: freezed == building ? _self.building : building // ignore: cast_nullable_to_non_nullable
+as String?,floor: freezed == floor ? _self.floor : floor // ignore: cast_nullable_to_non_nullable
+as String?,cableName: freezed == cableName ? _self.cableName : cableName // ignore: cast_nullable_to_non_nullable
+as String?,boxId: freezed == boxId ? _self.boxId : boxId // ignore: cast_nullable_to_non_nullable
+as String?,boxName: freezed == boxName ? _self.boxName : boxName // ignore: cast_nullable_to_non_nullable
+as String?,ampereScheduleId: freezed == ampereScheduleId ? _self.ampereScheduleId : ampereScheduleId // ignore: cast_nullable_to_non_nullable
+as String?,ampereScheduleName: freezed == ampereScheduleName ? _self.ampereScheduleName : ampereScheduleName // ignore: cast_nullable_to_non_nullable
 as String?,areaName: freezed == areaName ? _self.areaName : areaName // ignore: cast_nullable_to_non_nullable
 as String?,areaId: freezed == areaId ? _self.areaId : areaId // ignore: cast_nullable_to_non_nullable
 as String?,customerType: null == customerType ? _self.customerType : customerType // ignore: cast_nullable_to_non_nullable

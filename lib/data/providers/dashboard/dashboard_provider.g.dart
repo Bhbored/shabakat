@@ -34,7 +34,7 @@ final class DashboardNotifierProvider
   DashboardNotifier create() => DashboardNotifier();
 }
 
-String _$dashboardNotifierHash() => r'2c5454681af2bc327bf9739fa85fb75db004832a';
+String _$dashboardNotifierHash() => r'915af987303fd1267459c0c861c39be122b3e966';
 
 abstract class _$DashboardNotifier
     extends $AsyncNotifier<DashboardSummaryResponse> {

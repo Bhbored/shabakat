@@ -9,8 +9,13 @@ import 'expense_type_badge.dart';
 
 class ExpenseCard extends StatelessWidget {
   final Expense expense;
+  final bool readOnly;
 
-  const ExpenseCard({super.key, required this.expense});
+  const ExpenseCard({
+    super.key,
+    required this.expense,
+    this.readOnly = false,
+  });
 
   String _formatDate(DateTime date) {
     final month = date.month.toString().padLeft(2, '0');
@@ -30,7 +35,12 @@ class ExpenseCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(
-            openInnerScreen(widget: ExpenseDetailsScreen(expense: expense)),
+            openInnerScreen(
+              widget: ExpenseDetailsScreen(
+                expense: expense,
+                readOnly: readOnly,
+              ),
+            ),
           );
         },
         child: Padding(

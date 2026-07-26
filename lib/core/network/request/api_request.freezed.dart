@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ApiRequest<T> {
 
- String get path; HttpMethod get method; dynamic get data; Map<String, dynamic>? get queryParams; Map<String, dynamic>? get headers; Options? get options;
+ String get path; HttpMethod get method; dynamic get data; Map<String, dynamic>? get queryParams; Map<String, dynamic>? get headers; Options? get options; CancelToken? get cancelToken;
 /// Create a copy of ApiRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ApiRequestCopyWith<T, ApiRequest<T>> get copyWith => _$ApiRequestCopyWithImpl<T
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ApiRequest<T>&&(identical(other.path, path) || other.path == path)&&(identical(other.method, method) || other.method == method)&&const DeepCollectionEquality().equals(other.data, data)&&const DeepCollectionEquality().equals(other.queryParams, queryParams)&&const DeepCollectionEquality().equals(other.headers, headers)&&(identical(other.options, options) || other.options == options));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ApiRequest<T>&&(identical(other.path, path) || other.path == path)&&(identical(other.method, method) || other.method == method)&&const DeepCollectionEquality().equals(other.data, data)&&const DeepCollectionEquality().equals(other.queryParams, queryParams)&&const DeepCollectionEquality().equals(other.headers, headers)&&(identical(other.options, options) || other.options == options)&&(identical(other.cancelToken, cancelToken) || other.cancelToken == cancelToken));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,path,method,const DeepCollectionEquality().hash(data),const DeepCollectionEquality().hash(queryParams),const DeepCollectionEquality().hash(headers),options);
+int get hashCode => Object.hash(runtimeType,path,method,const DeepCollectionEquality().hash(data),const DeepCollectionEquality().hash(queryParams),const DeepCollectionEquality().hash(headers),options,cancelToken);
 
 @override
 String toString() {
-  return 'ApiRequest<$T>(path: $path, method: $method, data: $data, queryParams: $queryParams, headers: $headers, options: $options)';
+  return 'ApiRequest<$T>(path: $path, method: $method, data: $data, queryParams: $queryParams, headers: $headers, options: $options, cancelToken: $cancelToken)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ApiRequestCopyWith<T,$Res>  {
   factory $ApiRequestCopyWith(ApiRequest<T> value, $Res Function(ApiRequest<T>) _then) = _$ApiRequestCopyWithImpl;
 @useResult
 $Res call({
- String path, HttpMethod method, dynamic data, Map<String, dynamic>? queryParams, Map<String, dynamic>? headers, Options? options
+ String path, HttpMethod method, dynamic data, Map<String, dynamic>? queryParams, Map<String, dynamic>? headers, Options? options, CancelToken? cancelToken
 });
 
 
@@ -62,7 +62,7 @@ class _$ApiRequestCopyWithImpl<T,$Res>
 
 /// Create a copy of ApiRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? path = null,Object? method = null,Object? data = freezed,Object? queryParams = freezed,Object? headers = freezed,Object? options = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? path = null,Object? method = null,Object? data = freezed,Object? queryParams = freezed,Object? headers = freezed,Object? options = freezed,Object? cancelToken = freezed,}) {
   return _then(_self.copyWith(
 path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as String,method: null == method ? _self.method : method // ignore: cast_nullable_to_non_nullable
@@ -70,7 +70,8 @@ as HttpMethod,data: freezed == data ? _self.data : data // ignore: cast_nullable
 as dynamic,queryParams: freezed == queryParams ? _self.queryParams : queryParams // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,headers: freezed == headers ? _self.headers : headers // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,options: freezed == options ? _self.options : options // ignore: cast_nullable_to_non_nullable
-as Options?,
+as Options?,cancelToken: freezed == cancelToken ? _self.cancelToken : cancelToken // ignore: cast_nullable_to_non_nullable
+as CancelToken?,
   ));
 }
 
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String path,  HttpMethod method,  dynamic data,  Map<String, dynamic>? queryParams,  Map<String, dynamic>? headers,  Options? options)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String path,  HttpMethod method,  dynamic data,  Map<String, dynamic>? queryParams,  Map<String, dynamic>? headers,  Options? options,  CancelToken? cancelToken)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ApiRequest() when $default != null:
-return $default(_that.path,_that.method,_that.data,_that.queryParams,_that.headers,_that.options);case _:
+return $default(_that.path,_that.method,_that.data,_that.queryParams,_that.headers,_that.options,_that.cancelToken);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.path,_that.method,_that.data,_that.queryParams,_that.heade
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String path,  HttpMethod method,  dynamic data,  Map<String, dynamic>? queryParams,  Map<String, dynamic>? headers,  Options? options)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String path,  HttpMethod method,  dynamic data,  Map<String, dynamic>? queryParams,  Map<String, dynamic>? headers,  Options? options,  CancelToken? cancelToken)  $default,) {final _that = this;
 switch (_that) {
 case _ApiRequest():
-return $default(_that.path,_that.method,_that.data,_that.queryParams,_that.headers,_that.options);}
+return $default(_that.path,_that.method,_that.data,_that.queryParams,_that.headers,_that.options,_that.cancelToken);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +191,10 @@ return $default(_that.path,_that.method,_that.data,_that.queryParams,_that.heade
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String path,  HttpMethod method,  dynamic data,  Map<String, dynamic>? queryParams,  Map<String, dynamic>? headers,  Options? options)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String path,  HttpMethod method,  dynamic data,  Map<String, dynamic>? queryParams,  Map<String, dynamic>? headers,  Options? options,  CancelToken? cancelToken)?  $default,) {final _that = this;
 switch (_that) {
 case _ApiRequest() when $default != null:
-return $default(_that.path,_that.method,_that.data,_that.queryParams,_that.headers,_that.options);case _:
+return $default(_that.path,_that.method,_that.data,_that.queryParams,_that.headers,_that.options,_that.cancelToken);case _:
   return null;
 
 }
@@ -205,7 +206,7 @@ return $default(_that.path,_that.method,_that.data,_that.queryParams,_that.heade
 
 
 class _ApiRequest<T> implements ApiRequest<T> {
-  const _ApiRequest({required this.path, required this.method, this.data, final  Map<String, dynamic>? queryParams, final  Map<String, dynamic>? headers, this.options}): _queryParams = queryParams,_headers = headers;
+  const _ApiRequest({required this.path, required this.method, this.data, final  Map<String, dynamic>? queryParams, final  Map<String, dynamic>? headers, this.options, this.cancelToken}): _queryParams = queryParams,_headers = headers;
   
 
 @override final  String path;
@@ -230,6 +231,7 @@ class _ApiRequest<T> implements ApiRequest<T> {
 }
 
 @override final  Options? options;
+@override final  CancelToken? cancelToken;
 
 /// Create a copy of ApiRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -241,16 +243,16 @@ _$ApiRequestCopyWith<T, _ApiRequest<T>> get copyWith => __$ApiRequestCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ApiRequest<T>&&(identical(other.path, path) || other.path == path)&&(identical(other.method, method) || other.method == method)&&const DeepCollectionEquality().equals(other.data, data)&&const DeepCollectionEquality().equals(other._queryParams, _queryParams)&&const DeepCollectionEquality().equals(other._headers, _headers)&&(identical(other.options, options) || other.options == options));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ApiRequest<T>&&(identical(other.path, path) || other.path == path)&&(identical(other.method, method) || other.method == method)&&const DeepCollectionEquality().equals(other.data, data)&&const DeepCollectionEquality().equals(other._queryParams, _queryParams)&&const DeepCollectionEquality().equals(other._headers, _headers)&&(identical(other.options, options) || other.options == options)&&(identical(other.cancelToken, cancelToken) || other.cancelToken == cancelToken));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,path,method,const DeepCollectionEquality().hash(data),const DeepCollectionEquality().hash(_queryParams),const DeepCollectionEquality().hash(_headers),options);
+int get hashCode => Object.hash(runtimeType,path,method,const DeepCollectionEquality().hash(data),const DeepCollectionEquality().hash(_queryParams),const DeepCollectionEquality().hash(_headers),options,cancelToken);
 
 @override
 String toString() {
-  return 'ApiRequest<$T>(path: $path, method: $method, data: $data, queryParams: $queryParams, headers: $headers, options: $options)';
+  return 'ApiRequest<$T>(path: $path, method: $method, data: $data, queryParams: $queryParams, headers: $headers, options: $options, cancelToken: $cancelToken)';
 }
 
 
@@ -261,7 +263,7 @@ abstract mixin class _$ApiRequestCopyWith<T,$Res> implements $ApiRequestCopyWith
   factory _$ApiRequestCopyWith(_ApiRequest<T> value, $Res Function(_ApiRequest<T>) _then) = __$ApiRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String path, HttpMethod method, dynamic data, Map<String, dynamic>? queryParams, Map<String, dynamic>? headers, Options? options
+ String path, HttpMethod method, dynamic data, Map<String, dynamic>? queryParams, Map<String, dynamic>? headers, Options? options, CancelToken? cancelToken
 });
 
 
@@ -278,7 +280,7 @@ class __$ApiRequestCopyWithImpl<T,$Res>
 
 /// Create a copy of ApiRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? path = null,Object? method = null,Object? data = freezed,Object? queryParams = freezed,Object? headers = freezed,Object? options = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? path = null,Object? method = null,Object? data = freezed,Object? queryParams = freezed,Object? headers = freezed,Object? options = freezed,Object? cancelToken = freezed,}) {
   return _then(_ApiRequest<T>(
 path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as String,method: null == method ? _self.method : method // ignore: cast_nullable_to_non_nullable
@@ -286,7 +288,8 @@ as HttpMethod,data: freezed == data ? _self.data : data // ignore: cast_nullable
 as dynamic,queryParams: freezed == queryParams ? _self._queryParams : queryParams // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,headers: freezed == headers ? _self._headers : headers // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,options: freezed == options ? _self.options : options // ignore: cast_nullable_to_non_nullable
-as Options?,
+as Options?,cancelToken: freezed == cancelToken ? _self.cancelToken : cancelToken // ignore: cast_nullable_to_non_nullable
+as CancelToken?,
   ));
 }
 

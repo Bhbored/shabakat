@@ -24,9 +24,9 @@ final class SharedPreferencesHandlerProvider
     : super(
         from: null,
         argument: null,
-        retry: null,
+        retry: retry,
         name: r'sharedPreferencesHandlerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -55,4 +55,4 @@ final class SharedPreferencesHandlerProvider
 }
 
 String _$sharedPreferencesHandlerHash() =>
-    r'cfdb0d0dc439f2a556fe9280ec015f12853a623c';
+    r'4a3c4a33db35f1340edfa1d0485567aefa176c23';

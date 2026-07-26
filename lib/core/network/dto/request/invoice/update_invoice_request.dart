@@ -15,9 +15,9 @@ DateTime? _dateOnlyFromJson(String? date) =>
 sealed class UpdateInvoiceRequest with _$UpdateInvoiceRequest {
   const factory UpdateInvoiceRequest({
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
-    DateTime? issueDate,
+    DateTime? consumptionStart,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
-    DateTime? dueDate,
+    DateTime? consumptionEnd,
   }) = _UpdateInvoiceRequest;
 
   factory UpdateInvoiceRequest.fromJson(Map<String, dynamic> json) =>

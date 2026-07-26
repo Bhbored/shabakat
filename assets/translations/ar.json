@@ -43,13 +43,35 @@
       "employees": "موظفون",
       "other": "أخرى",
       "pending": "{} معلّق"
+    },
+    "filter": {
+      "all_time": "كل الوقت",
+      "this_month": "هذا الشهر",
+      "this_year": "هذه السنة",
+      "custom": "مخصص",
+      "pick_month": "اختر الشهر"
     }
   },
   "drawer": {
     "settings": "الإعدادات",
     "calculator": "الحاسبة",
     "help_support": "المساعدة والدعم",
-    "logout": "تسجيل الخروج"
+    "logout": "تسجيل الخروج",
+    "offline_mode": "وضع عدم الاتصال",
+    "offline_sync": {
+      "menu": "المزامنة دون اتصال",
+      "title": "المزامنة دون اتصال",
+      "description": "قم بتنزيل بياناتك للاستخدام دون اتصال. قد يستغرق ذلك بعض الوقت.",
+      "start": "بدء المزامنة",
+      "cancel": "إلغاء",
+      "syncing": "جاري مزامنة البيانات…",
+      "success": "اكتملت المزامنة. تم تفعيل وضع عدم الاتصال.",
+      "success_snackbar": "اكتملت المزامنة دون اتصال",
+      "failed": "فشلت المزامنة. تحقق من الاتصال وحاول مرة أخرى.",
+      "done": "تم",
+      "close": "إغلاق",
+      "try_again": "إعادة المحاولة"
+    }
   },
   "calculator": {
     "title": "حاسبة الكيلوواط الثابت",
@@ -88,7 +110,18 @@
   },
   "common": {
     "all": "الكل",
-    "back_online": "عدت متصلاً بالإنترنت"
+    "back_online": "عدت متصلاً بالإنترنت",
+    "enter_offline_mode": {
+      "title": "الدخول إلى وضع عدم الاتصال؟",
+      "message": "لا يوجد اتصال بالإنترنت. هل تريد الدخول إلى وضع عدم الاتصال؟",
+      "yes": "نعم",
+      "no": "لا"
+    },
+    "offline_mode": {
+      "banner": "عرض البيانات المحفوظة",
+      "go_online": "العودة للاتصال",
+      "title": "بدون اتصال"
+    }
   },
   "errors": {
     "try_again": "حاول مرة أخرى"
@@ -112,7 +145,30 @@
     "subscribers": "المشتركون",
     "invoices": "الفواتير",
     "expenses": "المصاريف",
-    "areas": "المناطق"
+    "areas": "المناطق",
+    "distribution_boxes": "صناديق التوزيع",
+    "nav": {
+      "dashboard": "الرئيسية",
+      "subscribers": "مشتركون",
+      "invoices": "الفواتير",
+      "expenses": "المصاريف",
+      "areas": "المناطق",
+      "distribution_boxes": "صناديق"
+    }
+  },
+  "ai": {
+    "title": "المساعد الذكي",
+    "hint": "اسأل أي شيء…",
+    "empty": "اطرح سؤالاً للبدء",
+    "error": "فشل الحصول على رد. حاول مرة أخرى.",
+    "assistant_name": "شبكات AI",
+    "you": "أنت",
+    "mic_denied": "يلزم الوصول إلى الميكروفون لإرسال الرسائل الصوتية.",
+    "recording": "جاري التسجيل…",
+    "tap_to_cancel": "إلغاء",
+    "delete": "حذف",
+    "send": "إرسال",
+    "audio": "رسالة صوتية"
   },
   "settings": {
     "title": "الإعدادات",
@@ -166,7 +222,9 @@
       "language": "اللغة",
       "due_date": "تاريخ الاستحقاق",
       "trigger_date": "تاريخ التذكير",
-      "trigger_message": "رسالة التذكير"
+      "trigger_message": "رسالة التذكير",
+      "ampere_schedule_pricing": "تسعير جدول الأمبير",
+      "ampere_prorate_by_days": "تقسيط الأمبير حسب الأيام"
     },
     "due_date_description": "يوم الشهر الذي تستحق فيه الفواتير.",
     "trigger_date_description": "يوم الشهر الذي تُرسل فيه تذكيرات الفواتير للعملاء.",
@@ -189,6 +247,53 @@
       "description": "رسالة تُرسل للعملاء غير المدفوعين عبر واتساب في تاريخ التذكير.",
       "label": "الرسالة",
       "hint": "أدخل رسالة التذكير..."
+    },
+    "ampere_schedule": {
+      "title": "جدول الأمبير",
+      "pricing_title": "تسعير جدول الأمبير",
+      "pricing_subtitle": "تسعير العملاء بناءً على جدول الأمبير الخاص بهم.",
+      "pricing_description": "استخدم جداول الأمبير لتحديد التسعير بدلاً من السعر الافتراضي لكل أمبير.",
+      "load_failed": "فشل تحميل جداول الأمبير.",
+      "empty": "لا توجد جداول أمبير بعد.",
+      "add": "إضافة جدول أمبير",
+      "add_title": "إضافة جدول أمبير",
+      "edit_title": "تعديل جدول الأمبير",
+      "added": "تمت إضافة جدول الأمبير.",
+      "updated": "تم تحديث جدول الأمبير.",
+      "deleted": "تم حذف جدول الأمبير.",
+      "add_failed": "فشل إضافة جدول الأمبير.",
+      "update_failed": "فشل تحديث جدول الأمبير.",
+      "delete_failed": "فشل حذف جدول الأمبير.",
+      "delete": {
+        "title": "حذف جدول الأمبير",
+        "message": "هل أنت متأكد من حذف \"{}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+        "confirm": "حذف"
+      },
+      "customers": "العملاء",
+      "hours_label": "ساعات/يوم",
+      "price_label": "السعر/أمبير",
+      "hours_price": "{} ساعة/يوم  •  {} لكل أمبير",
+      "name_hint": "الاسم",
+      "hours_hint": "ساعات في اليوم (1-24)",
+      "price_hint": "السعر لكل أمبير",
+      "enabled": "مُفعّل",
+      "disabled": "مُعطّل",
+      "validation": {
+        "required": "مطلوب",
+        "name_max": "يجب ألا يتجاوز 200 حرف",
+        "invalid_int": "أدخل رقماً صحيحاً صالحاً",
+        "hours_range": "يجب أن يكون بين 1 و 24",
+        "invalid_number": "أدخل رقماً صالحاً",
+        "price_range": "يجب أن يكون بين 0 و 9999999"
+      }
+    },
+    "ampere_prorate": {
+      "title": "تقسيط الأمبير",
+      "toggle_title": "تقسيط حسب الأيام",
+      "toggle_subtitle": "تعديل رسوم الأمبير حسب عدد أيام فترة الفوترة.",
+      "description": "عند التفعيل، يتم تقسيط تسعير الأمبير بناءً على عدد أيام دورة الفوترة.",
+      "enabled": "مُفعّل",
+      "disabled": "مُعطّل"
     }
   },
   "expenses": {
@@ -274,6 +379,8 @@
     "subscribers": "مشتركون",
     "subscriber_count_one": "مشترك واحد",
     "subscriber_count": "{} مشترك",
+    "box_count_one": "صندوق واحد",
+    "box_count": "{} صناديق",
     "add": {
       "title": "إضافة منطقة",
       "submit": "إضافة منطقة",
@@ -287,9 +394,15 @@
       "created": "تاريخ الإنشاء",
       "updated": "تاريخ التحديث",
       "subscribers": "المشتركون",
+      "boxes": "الصناديق",
       "subscribers_section": "المشتركون",
+      "boxes_section": "صناديق التوزيع",
       "no_subscribers": "لا يوجد مشتركون في هذه المنطقة",
-      "load_subscribers_failed": "فشل تحميل المشتركين."
+      "no_boxes": "لا توجد صناديق توزيع في هذه المنطقة",
+      "load_subscribers_failed": "فشل تحميل المشتركين.",
+      "load_boxes_failed": "فشل تحميل صناديق التوزيع.",
+      "switch_subscribers": "مشتركون",
+      "switch_boxes": "صناديق"
     },
     "edit": {
       "title": "تعديل المنطقة",
@@ -307,6 +420,77 @@
       "required": "مطلوب",
       "name_required": "أدخل اسم المنطقة",
       "max_characters": "الحد الأقصى {} حرفاً"
+    }
+  },
+  "distribution_boxes": {
+    "load_failed": "فشل تحميل صناديق التوزيع.",
+    "empty_list": "لم يتم العثور على صناديق توزيع",
+    "created": "أُنشئ {}",
+    "subscriber_count_one": "مشترك واحد",
+    "subscriber_count": "{} مشترك",
+    "cable_count_one": "كابل واحد",
+    "cable_count": "{} كابلات",
+    "box_count_one": "صندوق واحد",
+    "box_count": "{} صناديق",
+    "search": {
+      "title": "البحث في الصناديق",
+      "hint": "البحث في الصناديق...",
+      "hint_name": "البحث باسم الصندوق...",
+      "hint_areas": "البحث في المناطق...",
+      "criteria": {
+        "name": "الاسم",
+        "area": "المنطقة"
+      },
+      "filter_name": "الاسم: {}",
+      "filter_area": "المنطقة: {}"
+    },
+    "add": {
+      "title": "إضافة صندوق توزيع",
+      "submit": "إنشاء",
+      "success": "تم إنشاء صندوق التوزيع.",
+      "failed": "فشل إنشاء صندوق التوزيع."
+    },
+    "details": {
+      "title": "تفاصيل الصندوق",
+      "created": "تاريخ الإنشاء",
+      "area": "المنطقة",
+      "subscribers": "المشتركون",
+      "cables": "الكابلات",
+      "subscribers_section": "المشتركون",
+      "cables_section": "الكابلات",
+      "no_subscribers": "لا يوجد مشتركون في هذا الصندوق",
+      "no_cables": "لا توجد كابلات في هذا الصندوق",
+      "load_subscribers_failed": "فشل تحميل المشتركين.",
+      "load_cables_failed": "فشل تحميل الكابلات.",
+      "switch_subscribers": "مشتركون",
+      "switch_cables": "كابلات"
+    },
+    "form": {
+      "name": "الاسم",
+      "name_hint": "لوحة 1",
+      "area": "المنطقة",
+      "location_note": "ملاحظة الموقع",
+      "location_note_hint": "مدخل المبنى",
+      "notes": "ملاحظات",
+      "notes_hint": "ملاحظات اختيارية"
+    },
+    "edit": {
+      "title": "تعديل صندوق التوزيع",
+      "success": "تم تحديث صندوق التوزيع",
+      "failed": "فشل تحديث صندوق التوزيع. يرجى المحاولة مرة أخرى."
+    },
+    "delete": {
+      "title": "حذف صندوق التوزيع",
+      "message": "هل أنت متأكد من حذف \"{}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حذف",
+      "success": "تم حذف صندوق التوزيع",
+      "failed": "فشل حذف صندوق التوزيع. يرجى المحاولة مرة أخرى."
+    },
+    "validation": {
+      "name_required": "أدخل اسم الصندوق",
+      "area_required": "المنطقة مطلوبة",
+      "max_characters": "الحد الأقصى {} حرفاً",
+      "field_max_characters": "يجب ألا يتجاوز {} {} حرفاً"
     }
   },
   "subscribers": {
@@ -344,6 +528,13 @@
       "area_hint": "اختر منطقة",
       "address": "العنوان",
       "address_hint": "أدخل العنوان",
+      "building": "المبنى",
+      "floor": "الطابق",
+      "cable_name": "اسم الكابل",
+      "optional": "اختياري",
+      "distribution_box": "صندوق التوزيع",
+      "distribution_box_hint": "اختر صندوق التوزيع (اختياري)",
+      "ampere_schedule": "جدول الأمبير",
       "customer_type": "نوع العميل",
       "plan": "الخطة",
       "plan_value": "قيمة الخطة",
@@ -367,7 +558,8 @@
       "plan_value_range": "يجب أن تكون بين 1 و 100",
       "invalid_number": "رقم غير صالح",
       "max_characters": "الحد الأقصى {} حرفاً",
-      "subscription_date_future": "لا يمكن أن يكون تاريخ الاشتراك في المستقبل"
+      "subscription_date_future": "لا يمكن أن يكون تاريخ الاشتراك في المستقبل",
+      "select_area_first": "اختر منطقة أولاً."
     },
     "plan": {
       "ampere": "أمبير",
@@ -399,8 +591,10 @@
       "load_failed": "فشل تحميل تفاصيل المشترك.",
       "section": {
         "location": "الموقع",
+        "box_cable": "التوزيع",
         "subscription": "الاشتراك",
         "plan": "الخطة",
+        "ampere_schedule": "جدول الأمبير",
         "billing_summary": "ملخص الفوترة",
         "pricing_overrides": "تجاوزات التسعير"
       },
@@ -443,6 +637,15 @@
     "area_select": {
       "title": "اختر منطقة"
     },
+    "box_select": {
+      "title": "اختر صندوق التوزيع",
+      "load_failed": "فشل تحميل صناديق التوزيع.",
+      "empty": "لا توجد صناديق توزيع في هذه المنطقة."
+    },
+    "card": {
+      "building": "المبنى {}",
+      "floor": "الطابق {}"
+    },
     "invoices": {
       "title": "الفواتير",
       "empty": "لا توجد فواتير",
@@ -456,7 +659,9 @@
       "payment": "الدفع",
       "amount": "المبلغ",
       "validation": {
-        "amount_positive": "يجب أن يكون المبلغ أكبر من 0"
+        "amount_positive": "يجب أن يكون المبلغ أكبر من 0",
+        "day_range": "يجب أن يكون بين {} و {}",
+        "from_before_to": "يجب أن يكون يوم البداية قبل يوم النهاية أو مساوياً له"
       }
     },
     "meter_readings": {
@@ -484,7 +689,8 @@
     "print": {
       "export_success": "تم حفظ الفاتورة في Downloads/invoices.",
       "export_failed": "تعذر حفظ ملف PDF للفاتورة.",
-      "share_failed": "تعذر مشاركة ملف PDF للفاتورة."
+      "share_failed": "تعذر مشاركة ملف PDF للفاتورة.",
+      "whatsapp_phone_missing": "لا يوجد رقم هاتف للزبون لإرسال واتساب."
     },
     "empty_list": "لا توجد فواتير",
     "count_one": "فاتورة واحدة",
@@ -499,6 +705,8 @@
     "card": {
       "issued": "تاريخ الإصدار",
       "due": "تاريخ الاستحقاق",
+      "from": "من",
+      "to": "إلى",
       "total": "الإجمالي"
     },
     "details": {
@@ -510,6 +718,9 @@
       "due": "المستحق",
       "timeline": "الجدول الزمني",
       "issued": "تاريخ الإصدار",
+      "consumption_period": "فترة الاستهلاك",
+      "consumption_start": "بداية الاستهلاك",
+      "consumption_end": "نهاية الاستهلاك",
       "breakdown": "التفصيل",
       "charge": "الرسوم",
       "fixed_charge": "الرسوم الثابتة",
@@ -576,6 +787,7 @@
       "excluded_suspended": "العملاء المعلقون",
       "excluded_terminated": "العملاء المنتهون",
       "excluded_existing": "العملاء الذين لديهم فاتورة لفترتهم بالفعل",
+      "plan_filter": "قصر على نوع خطة واحد",
       "proceed": "متابعة",
       "done": "تم",
       "close": "إغلاق",
@@ -583,7 +795,11 @@
       "failed": "فشل الإنشاء الجماعي للفواتير. يرجى المحاولة مرة أخرى.",
       "success_snackbar": "تم إنشاء {} فاتورة بنجاح.",
       "created": "تم الإنشاء",
-      "skipped": "تم التخطي"
+      "skipped": "تم التخطي",
+      "see_details": "عرض التفاصيل",
+      "skipped_details_title": "تفاصيل المتخطاة",
+      "skipped_load_failed": "فشل تحميل الفواتير المتخطاة.",
+      "skipped_empty": "لا توجد فواتير متخطاة."
     }
   },
   "audit": {
@@ -619,6 +835,40 @@
       "expense_created": "إنشاء مصروف",
       "expense_updated": "تحديث مصروف",
       "expense_deleted": "حذف مصروف"
+    },
+    "customer": {
+      "created": "تم إنشاء العميل {name}",
+      "updated": "تم تحديث العميل {name}",
+      "deleted": "تم حذف العميل {name}"
+    },
+    "invoice": {
+      "created": "تم إنشاء الفاتورة #{invoiceNumber} للعميل {customerName}",
+      "bulk_created": "تم إنشاء {created} فاتورة، وتخطي {skipped}",
+      "payment_recorded": "تم تسجيل دفعة للفاتورة #{invoiceNumber}",
+      "fixed_kilowatt_charge": "تم تطبيق رسوم كيلوواط ثابتة للعميل {customerName}"
+    },
+    "expense": {
+      "created": "تم إنشاء مصروف",
+      "updated": "تم تحديث مصروف",
+      "deleted": "تم حذف مصروف"
+    },
+    "parameters": {
+      "name": "الاسم",
+      "phone": "الهاتف",
+      "plan": "الخطة",
+      "customerType": "نوع العميل",
+      "customerName": "العميل",
+      "invoiceNumber": "رقم الفاتورة",
+      "issueDate": "تاريخ الإصدار",
+      "dueDate": "تاريخ الاستحقاق",
+      "totalAmount": "المبلغ الإجمالي",
+      "paidAmount": "المبلغ المدفوع",
+      "created": "تم الإنشاء",
+      "skipped": "تم التخطي",
+      "amount": "المبلغ",
+      "description": "الوصف",
+      "expenseType": "نوع المصروف",
+      "paymentMethod": "طريقة الدفع"
     },
     "entity_types": {
       "customer": "عميل",

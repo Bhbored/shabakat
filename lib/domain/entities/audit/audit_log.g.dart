@@ -10,11 +10,12 @@ _AuditLog _$AuditLogFromJson(Map<String, dynamic> json) => _AuditLog(
   id: json['id'] as String,
   action: $enumDecode(_$AuditActionEnumMap, json['action']),
   status: $enumDecode(_$AuditLogStatusEnumMap, json['status']),
-  summary: json['summary'] as String,
+  messageKey: json['messageKey'] as String,
+  parameters: json['parameters'] as Map<String, dynamic>? ?? const {},
   entityType: $enumDecodeNullable(_$AuditEntityTypeEnumMap, json['entityType']),
   entityId: json['entityId'] as String?,
-  details: json['details'] as Map<String, dynamic>?,
   userEmail: json['userEmail'] as String?,
+  errorMessage: json['errorMessage'] as String?,
   createdAt: DateTime.parse(json['createdAt'] as String),
 );
 
@@ -22,11 +23,12 @@ Map<String, dynamic> _$AuditLogToJson(_AuditLog instance) => <String, dynamic>{
   'id': instance.id,
   'action': _$AuditActionEnumMap[instance.action]!,
   'status': _$AuditLogStatusEnumMap[instance.status]!,
-  'summary': instance.summary,
+  'messageKey': instance.messageKey,
+  'parameters': instance.parameters,
   'entityType': _$AuditEntityTypeEnumMap[instance.entityType],
   'entityId': instance.entityId,
-  'details': instance.details,
   'userEmail': instance.userEmail,
+  'errorMessage': instance.errorMessage,
   'createdAt': instance.createdAt.toIso8601String(),
 };
 

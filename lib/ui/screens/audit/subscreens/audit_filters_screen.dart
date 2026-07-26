@@ -5,7 +5,6 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/data/providers/audit/audit_log_filter_provider.dart';
 import 'package:shabakat/data/providers/audit/audit_log_provider.dart';
-import 'package:shabakat/ui/screens/audit/widgets/audit_log_card/audit_log_labels.dart';
 import 'package:shabakat/ui/screens/subscribers/widgets/filter_section/filter_section.dart';
 
 class AuditFiltersScreen extends ConsumerStatefulWidget {
@@ -137,7 +136,7 @@ class _AuditFiltersScreenState extends ConsumerState<AuditFiltersScreen> {
               title: 'audit.filter.action'.tr(),
               value: _action,
               items: AuditAction.values,
-              labelBuilder: AuditLogLabels.actionLabel,
+              labelBuilder: (action) => action.label,
               onChanged: (value) => setState(() => _action = value),
             ),
             SizedBox(height: context.spaceMedium),
@@ -145,7 +144,7 @@ class _AuditFiltersScreenState extends ConsumerState<AuditFiltersScreen> {
               title: 'audit.filter.status'.tr(),
               value: _status,
               items: AuditLogStatus.values,
-              labelBuilder: AuditLogLabels.statusLabel,
+              labelBuilder: (status) => status.label,
               onChanged: (value) => setState(() => _status = value),
             ),
             SizedBox(height: context.spaceMedium),

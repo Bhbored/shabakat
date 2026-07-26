@@ -18,6 +18,13 @@ sealed class Customer with _$Customer {
     double? totalOutstanding,
     String? phone,
     String? address,
+    String? building,
+    String? floor,
+    String? cableName,
+    String? boxId,
+    String? boxName,
+    String? ampereScheduleId,
+    String? ampereScheduleName,
     String? areaName,
     String? areaId,
     required CustomerType customerType,
@@ -32,6 +39,17 @@ sealed class Customer with _$Customer {
     required double planValue,
     List<Invoice>? invoices,
   }) = _Customer;
+  factory Customer.empty() => Customer(
+    id: '',
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+    companyId: '',
+    name: '',
+    customerType: CustomerType.residential,
+    subscriptionDate: DateTime.now(),
+    plan: PlanType.ampere,
+    planValue: 0,
+  );
 
   factory Customer.fromJson(Map<String, dynamic> json) =>
       _$CustomerFromJson(json);

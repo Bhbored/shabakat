@@ -50,6 +50,23 @@ class CustomerService {
     );
   }
 
+  Future<List<CustomerResponse>> getAllCustomersUnpaged() async {
+    final response = await _apiExecutor.execute(
+      ApiRequest(path: 'customers/all', method: HttpMethod.get),
+    );
+    return response.when(
+      success: (data, statusCode, meta) {
+        _logger.i('All customers retrieved successfully: $data');
+        final dataList = data as List<dynamic>;
+        return dataList.map((x) => CustomerResponse.fromJson(x)).toList();
+      },
+      failure: (error, statusCode) {
+        _logger.e('Failed to retrieve all customers: ${error.toString()}');
+        throw error;
+      },
+    );
+  }
+
   Future<CustomerResponse> getCustomerByid(String id) async {
     final response = await _apiExecutor.execute(
       ApiRequest(path: 'customers/$id', method: HttpMethod.get),

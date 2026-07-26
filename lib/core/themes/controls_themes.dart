@@ -136,6 +136,22 @@ class ControlsThemes {
     );
   }
 
+  static FloatingActionButtonThemeData floatingActionButtonTheme(
+    ColorScheme colorScheme,
+  ) {
+    return FloatingActionButtonThemeData(
+      backgroundColor: colorScheme.primary,
+      foregroundColor: colorScheme.onPrimary,
+      elevation: 2,
+      focusElevation: 3,
+      hoverElevation: 3,
+      highlightElevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+    );
+  }
+
   static BoxDecoration statCardDecoration(
     ColorScheme colorScheme, {
     bool isAccent = false,

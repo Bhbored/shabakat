@@ -1,14 +1,19 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/network/dto/request/invoice/add_payment_request.dart';
 import 'package:shabakat/core/network/dto/request/invoice/create_invoice_request.dart';
 import 'package:shabakat/core/network/dto/request/invoice/invoice_filter_request.dart';
 import 'package:shabakat/core/network/dto/request/invoice/update_invoice_request.dart';
 import 'package:shabakat/core/network/dto/response/invoice/bulk_create_invoice_response.dart';
+import 'package:shabakat/core/network/dto/response/invoice/invoice_skipped_response.dart';
 import 'package:shabakat/core/network/services/invoice/invoice_service.dart';
 import 'package:shabakat/data/providers/invoice/invoice_filter_provider.dart';
 import 'package:shabakat/data/providers/invoice/invoice_pagination_provider.dart';
+import 'package:shabakat/data/providers/offline/offline_mode_provider.dart';
 import 'package:shabakat/domain/entities/invoices/invoice.dart';
 import 'package:shabakat/domain/mappers/invoice/invoice_mapper.dart';
+
+import '../../repositories/repositories.dart';
 part 'invoice_provider.g.dart';
 
 Duration? retry(int _, Object _) => null;
@@ -16,24 +21,58 @@ Duration? retry(int _, Object _) => null;
 @Riverpod(keepAlive: true, retry: retry)
 class InvoiceNotifier extends _$InvoiceNotifier {
   InvoiceService get _invoiceService => ref.read(invoiceServiceProvider);
-  InvoiceFilterRequest get _filter => ref.watch(invoiceFilterProvider);
+  InvoiceRepo get _invoiceRepo => ref.read(invoiceRepoProvider);
   @override
-  FutureOr<List<Invoice>> build() async => await _loadInvoices();
+  FutureOr<List<Invoice>> build() async {
+    final filter = ref.watch(invoiceFilterProvider);
+    final isOfflineMode = await ref.watch(offlineModeProvider.future);
+    return _loadInvoices(filter, isOfflineMode);
+  }
 
-  Future<List<Invoice>> _loadInvoices() async {
-    final invoices = await _invoiceService.getInvoices(_filter);
+  Future<List<Invoice>> _loadInvoices(
+    InvoiceFilterRequest filter,
+    bool isOfflineMode,
+  ) async {
     final pagination = ref.read(invoicePaginationProvider.notifier);
-    pagination.updatePagination(
-      InvoicePagination(
-        totalCount: invoices.totalCount,
-        pageNumber: invoices.pageNumber,
-        pageSize: invoices.pageSize,
-        totalPages: invoices.totalPages,
-        hasPreviousPage: invoices.hasPreviousPage,
-        hasNextPage: invoices.hasNextPage,
-      ),
-    );
-    return invoices.data.map((x) => x.toEntity()).toList();
+
+    if (isOfflineMode) {
+      final invoices = await _invoiceRepo.getAllInvoices(
+        filter.customerId,
+        filter.invoiceStatus,
+        filter.consumptionStartFrom,
+        filter.consumptionStartTo,
+        pageNumber: filter.pageNumber,
+        pageSize: filter.pageSize,
+      );
+      final totalCount = await _invoiceRepo.getTotalInvoicesCount();
+      final totalPages = totalCount == 0
+          ? 0
+          : (totalCount / filter.pageSize).ceil();
+      pagination.updatePagination(
+        InvoicePagination(
+          totalCount: totalCount,
+          pageNumber: filter.pageNumber,
+          pageSize: filter.pageSize,
+          totalPages: totalPages,
+          hasPreviousPage: filter.pageNumber > 1,
+          hasNextPage: filter.pageNumber < totalPages,
+        ),
+      );
+      return invoices;
+    } else {
+      final invoices = await _invoiceService.getInvoices(filter);
+      pagination.updatePagination(
+        InvoicePagination(
+          totalCount: invoices.totalCount,
+          pageNumber: invoices.pageNumber,
+          pageSize: invoices.pageSize,
+          totalPages: invoices.totalPages,
+          hasPreviousPage: invoices.hasPreviousPage,
+          hasNextPage: invoices.hasNextPage,
+        ),
+      );
+      return invoices.data.map((x) => x.toEntity()).toList();
+    }
   }
 
   Future<void> refresh() async {
@@ -53,17 +92,21 @@ class InvoiceNotifier extends _$InvoiceNotifier {
     }
   }
 
-  Future<BulkCreateInvoiceResponse> bulkCreate() async {
+  Future<BulkCreateInvoiceResponse> bulkCreate({PlanType? planType}) async {
     final previous = state;
     state = const AsyncValue.loading();
     try {
-      final response = await _invoiceService.bulkCreate();
+      final response = await _invoiceService.bulkCreate(planType: planType);
       await refresh();
       return response;
     } catch (e, st) {
       state = previous;
       Error.throwWithStackTrace(e, st);
     }
+  }
+
+  Future<List<InvoiceSkippedResponse>> getInvoiceSkipped() async {
+    return await _invoiceService.getInvoiceSkipped();
   }
 
   Future<void> updateInvoice(

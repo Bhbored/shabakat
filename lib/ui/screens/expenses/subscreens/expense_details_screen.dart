@@ -16,8 +16,13 @@ import '../widgets/expense_edit_sheet/expense_edit_sheet.dart';
 
 class ExpenseDetailsScreen extends ConsumerWidget {
   final Expense expense;
+  final bool readOnly;
 
-  const ExpenseDetailsScreen({super.key, required this.expense});
+  const ExpenseDetailsScreen({
+    super.key,
+    required this.expense,
+    this.readOnly = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,21 +46,23 @@ class ExpenseDetailsScreen extends ConsumerWidget {
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.edit_outlined),
-            onPressed: () => ExpenseEditSheet.show(
-              context,
-              expenseId: currentExpense.id,
-              expense: currentExpense,
+          if (!readOnly) ...[
+            IconButton(
+              icon: const Icon(Icons.edit_outlined),
+              onPressed: () => ExpenseEditSheet.show(
+                context,
+                expenseId: currentExpense.id,
+                expense: currentExpense,
+              ),
             ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete_outline),
-            onPressed: () => _showExpenseDeleteDialog(
-              context: context,
-              expense: currentExpense,
+            IconButton(
+              icon: const Icon(Icons.delete_outline),
+              onPressed: () => _showExpenseDeleteDialog(
+                context: context,
+                expense: currentExpense,
+              ),
             ),
-          ),
+          ],
         ],
       ),
       body: detailAsync.when(

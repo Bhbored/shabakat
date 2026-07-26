@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 @JsonEnum(alwaysCreate: true)
@@ -9,6 +10,13 @@ extension AuditEntityTypeX on AuditEntityType {
     AuditEntityType.invoice => 'Invoice',
     AuditEntityType.payment => 'Payment',
     AuditEntityType.expense => 'Expense',
+  };
+
+  String get label => switch (this) {
+    AuditEntityType.customer => 'audit.entity_types.customer'.tr(),
+    AuditEntityType.invoice => 'audit.entity_types.invoice'.tr(),
+    AuditEntityType.payment => 'audit.entity_types.payment'.tr(),
+    AuditEntityType.expense => 'audit.entity_types.expense'.tr(),
   };
 }
 

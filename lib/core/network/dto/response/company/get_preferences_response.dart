@@ -26,6 +26,8 @@ sealed class GetPreferencesResponse with _$GetPreferencesResponse {
     @Default(1) int dueDate,
     @Default(1) int triggerDate,
     String? triggerMessage,
+    @Default(false) bool ampereSchedulePricingEnabled,
+    @Default(false) bool ampereProrateByDaysEnabled,
   }) = _GetPreferencesResponse;
 
   factory GetPreferencesResponse.fromJson(Map<String, dynamic> json) =>

@@ -7,7 +7,6 @@ import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/request/auth/login_request.dart';
 import 'package:shabakat/data/providers/auth/auth_provider.dart';
-import 'package:shabakat/ui/screens/auth/register/register_screen.dart';
 import 'package:shabakat/ui/screens/nav_container/main_tab_page.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
@@ -205,26 +204,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ],
                       ),
                     ),
-                  ),
-                  SizedBox(height: context.spaceMedium),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'auth.login.no_account'.tr(),
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => const RegisterScreen(),
-                            ),
-                          );
-                        },
-                        child: Text('auth.login.register'.tr()),
-                      ),
-                    ],
                   ),
                 ],
               ),

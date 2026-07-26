@@ -6,14 +6,20 @@ import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/request/customer/create_customer_request.dart';
 import 'package:shabakat/core/network/dto/request/customer/customer_pricing_override_dto.dart';
+import 'package:shabakat/data/providers/ampere_schedule/ampere_schedule_provider.dart';
+import 'package:shabakat/data/providers/company/company_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
+import 'package:shabakat/domain/entities/ampere_schedule/ampere_schedule.dart';
 import 'package:shabakat/domain/entities/area/area.dart';
+import 'package:shabakat/domain/entities/distribution_box/distribution_box.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import '../widgets/area_select/area_select_field.dart';
+import '../widgets/box_select/box_select_field.dart';
 import '../widgets/subscriber_edit_sheet/subscriber_edit_validators.dart';
 import 'area_selecting_screen.dart';
+import 'box_selecting_screen.dart';
 
 class SubscriberAddingScreen extends ConsumerStatefulWidget {
   const SubscriberAddingScreen({super.key});
@@ -27,9 +33,13 @@ class _SubscriberAddingScreenState
     extends ConsumerState<SubscriberAddingScreen> {
   final _formKey = GlobalKey<FormState>();
   final _areaFieldKey = GlobalKey<FormFieldState<Area>>();
+  final _boxFieldKey = GlobalKey<FormFieldState<DistributionBox>>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
+  final _buildingController = TextEditingController();
+  final _floorController = TextEditingController();
+  final _cableNameController = TextEditingController();
   final _planValueController = TextEditingController();
   final _priceOverrideController = TextEditingController();
   final _fixedChargeOverrideController = TextEditingController();
@@ -44,6 +54,7 @@ class _SubscriberAddingScreenState
   );
   String? _dateError;
   CustomerRelation? _customerRelation;
+  AmpereSchedule? _ampereSchedule;
   bool _hasPricingOverride = false;
   bool _isLoading = false;
 
@@ -55,6 +66,9 @@ class _SubscriberAddingScreenState
     _nameController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
+    _buildingController.dispose();
+    _floorController.dispose();
+    _cableNameController.dispose();
     _planValueController.dispose();
     _priceOverrideController.dispose();
     _fixedChargeOverrideController.dispose();
@@ -65,6 +79,8 @@ class _SubscriberAddingScreenState
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final preferences = ref.watch(companyProvider);
+    final schedules = ref.watch(ampereScheduleProvider).asData?.value ?? [];
 
     return Scaffold(
       appBar: AppBar(
@@ -102,8 +118,36 @@ class _SubscriberAddingScreenState
                 label: 'subscribers.form.address'.tr(),
                 controller: _addressController,
                 hint: 'subscribers.form.address_hint'.tr(),
-                validator: SubscriberEditValidators.address,
+                validator: (value) =>
+                    SubscriberEditValidators.optionalMax(value, 500),
               ),
+              SizedBox(height: context.spaceMedium),
+              _buildTextField(
+                label: 'subscribers.form.building'.tr(),
+                controller: _buildingController,
+                hint: 'subscribers.form.optional'.tr(),
+                validator: (value) =>
+                    SubscriberEditValidators.optionalMax(value, 100),
+              ),
+              SizedBox(height: context.spaceMedium),
+              _buildTextField(
+                label: 'subscribers.form.floor'.tr(),
+                controller: _floorController,
+                hint: 'subscribers.form.optional'.tr(),
+                keyboardType: TextInputType.number,
+                validator: (value) =>
+                    SubscriberEditValidators.optionalMax(value, 50),
+              ),
+              SizedBox(height: context.spaceMedium),
+              _buildTextField(
+                label: 'subscribers.form.cable_name'.tr(),
+                controller: _cableNameController,
+                hint: 'subscribers.form.optional'.tr(),
+                validator: (value) =>
+                    SubscriberEditValidators.optionalMax(value, 100),
+              ),
+              SizedBox(height: context.spaceMedium),
+              _buildBoxField(),
               SizedBox(height: context.spaceMedium),
               _buildDropdown(
                 label: 'subscribers.form.customer_type'.tr(),
@@ -118,7 +162,32 @@ class _SubscriberAddingScreenState
                 value: _plan,
                 items: PlanType.values,
                 itemLabel: (e) => e.label,
-                onChanged: (v) => setState(() => _plan = v!),
+                onChanged: (v) => setState(() {
+                  _plan = v!;
+                  if (_plan != PlanType.ampere) _ampereSchedule = null;
+                }),
+              ),
+              ...preferences.when(
+                data: (prefs) {
+                  if (!prefs.ampereSchedulePricingEnabled ||
+                      _plan != PlanType.ampere) {
+                    return <Widget>[];
+                  }
+
+                  return [
+                    SizedBox(height: context.spaceMedium),
+                    _buildDropdown(
+                      label: 'subscribers.form.ampere_schedule'.tr(),
+                      value: _ampereSchedule,
+                      items: [null, ...schedules],
+                      itemLabel: (e) =>
+                          e?.name ?? 'subscribers.form.none'.tr(),
+                      onChanged: (v) => setState(() => _ampereSchedule = v),
+                    ),
+                  ];
+                },
+                loading: () => <Widget>[],
+                error: (_, _) => <Widget>[],
               ),
               SizedBox(height: context.spaceMedium),
               _buildTextField(
@@ -141,7 +210,10 @@ class _SubscriberAddingScreenState
               SizedBox(height: context.spaceMedium),
               Row(
                 children: [
-                  Text('subscribers.form.pricing_override'.tr(), style: theme.textTheme.titleMedium),
+                  Text(
+                    'subscribers.form.pricing_override'.tr(),
+                    style: theme.textTheme.titleMedium,
+                  ),
                   const Spacer(),
                   Switch(
                     value: _hasPricingOverride,
@@ -279,6 +351,24 @@ class _SubscriberAddingScreenState
     );
   }
 
+  Widget _buildBoxField() {
+    return FormField<DistributionBox>(
+      key: _boxFieldKey,
+      builder: (field) {
+        return BoxSelectField(
+          boxName: field.value?.name,
+          enabled: !_isLoading,
+          onTap: _openBoxSelecting,
+        );
+      },
+    );
+  }
+
+  String? _trimOrNull(String value) {
+    final trimmed = value.trim();
+    return trimmed.isEmpty ? null : trimmed;
+  }
+
   String? _validatePlanValue(String? value) =>
       SubscriberEditValidators.planValue(value);
 
@@ -346,7 +436,10 @@ class _SubscriberAddingScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('subscribers.form.subscription_date'.tr(), style: theme.textTheme.titleMedium),
+        Text(
+          'subscribers.form.subscription_date'.tr(),
+          style: theme.textTheme.titleMedium,
+        ),
         SizedBox(height: context.spaceSmall),
         InkWell(
           onTap: () async {
@@ -409,7 +502,31 @@ class _SubscriberAddingScreenState
     final result = await Navigator.of(
       context,
     ).push(openInnerScreen(widget: const AreaSelectingScreen()));
-    if (result is Area) _areaFieldKey.currentState?.didChange(result);
+    if (result is Area) {
+      setState(() {
+        _areaFieldKey.currentState?.didChange(result);
+        _boxFieldKey.currentState?.didChange(null);
+      });
+    }
+  }
+
+  Future<void> _openBoxSelecting() async {
+    final selectedArea = _areaFieldKey.currentState?.value;
+    if (selectedArea == null) {
+      AppSnackBar.show(
+        context,
+        message: 'subscribers.validation.select_area_first'.tr(),
+        variant: AppSnackBarVariant.error,
+      );
+      return;
+    }
+
+    final result = await Navigator.of(context).push(
+      openInnerScreen(widget: BoxSelectingScreen(areaId: selectedArea.id)),
+    );
+    if (result is DistributionBox) {
+      setState(() => _boxFieldKey.currentState?.didChange(result));
+    }
   }
 
   Future<void> _onSubmit() async {
@@ -419,7 +536,10 @@ class _SubscriberAddingScreenState
     if (selectedArea == null) return;
 
     if (_toDateOnly(_subscriptionDate).isAfter(_toDateOnly(DateTime.now()))) {
-      setState(() => _dateError = 'subscribers.validation.subscription_date_future'.tr());
+      setState(
+        () =>
+            _dateError = 'subscribers.validation.subscription_date_future'.tr(),
+      );
       return;
     }
 
@@ -427,10 +547,21 @@ class _SubscriberAddingScreenState
 
     setState(() => _isLoading = true);
 
+    final prefs = ref.read(companyProvider).asData?.value;
+
     final request = CreateCustomerRequest(
       name: _nameController.text.trim(),
       phone: _phoneController.text.trim(),
-      address: _addressController.text.trim(),
+      address: _trimOrNull(_addressController.text),
+      building: _trimOrNull(_buildingController.text),
+      floor: _trimOrNull(_floorController.text),
+      cableName: _trimOrNull(_cableNameController.text),
+      boxId: _boxFieldKey.currentState?.value?.id,
+      ampereScheduleId:
+          prefs?.ampereSchedulePricingEnabled == true &&
+              _plan == PlanType.ampere
+          ? _ampereSchedule?.id
+          : null,
       areaId: selectedArea.id,
       customerType: _customerType,
       plan: _plan,

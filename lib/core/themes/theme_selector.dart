@@ -54,6 +54,9 @@ class ThemeSelector {
       appBarTheme: ControlsThemes.appBarTheme(colorScheme),
       bottomNavigationBarTheme: ControlsThemes.bottomNavigationBarTheme(colorScheme),
       chipTheme: ControlsThemes.chipTheme(colorScheme),
+      floatingActionButtonTheme: ControlsThemes.floatingActionButtonTheme(
+        colorScheme,
+      ),
       dividerTheme: DividerThemeData(
         color: colorScheme.outline,
         thickness: 1,

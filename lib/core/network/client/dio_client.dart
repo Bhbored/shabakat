@@ -1,8 +1,11 @@
 import 'dart:io';
+
 import 'package:awesome_dio_interceptor/awesome_dio_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shabakat/core/network/interceptors/app_version_interceptor.dart';
 import 'package:shabakat/core/network/interceptors/auth_interceptor.dart';
 import 'package:shabakat/core/network/interceptors/retry_interceptor.dart';
 import 'package:shabakat/core/network/services/auth/token_store.dart';
@@ -16,9 +19,8 @@ DioClient dioClient(
   Map<String, String>? headers, {
   required String endpoint,
 }) {
-  final header = <String, dynamic>{'X-Client-Version': '1.0.0'};
+  final header = <String, dynamic>{...?headers};
   final tokenStore = ref.watch(authTokenStoreProvider);
-  header.addAll(headers ?? {});
   return DioClient(headers: header, endpoint: endpoint, tokenStore: tokenStore);
 }
 
@@ -40,7 +42,6 @@ class DioClient {
         // baseUrl: 'https://192.168.1.2:7076/api/v1.0/$endpoint',
         baseUrl:
             'https://electro-production-9f56.up.railway.app/api/v1.0/$endpoint',
-
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
         sendTimeout: const Duration(seconds: 10),
@@ -49,18 +50,21 @@ class DioClient {
         headers: headers,
       ),
     );
-    dio.httpClientAdapter = IOHttpClientAdapter(
-      createHttpClient: () {
-        final client = HttpClient();
-        client.badCertificateCallback =
-            (X509Certificate cert, String host, int port) => true;
-        return client;
-      },
-    );
+    if (kDebugMode) {
+      dio.httpClientAdapter = IOHttpClientAdapter(
+        createHttpClient: () {
+          final client = HttpClient();
+          client.badCertificateCallback =
+              (X509Certificate cert, String host, int port) => true;
+          return client;
+        },
+      );
+    }
+    dio.interceptors.add(AppVersionInterceptor());
     if (tokenStore != null) {
       dio.interceptors.add(AuthInterceptor(tokenStore!));
       dio.interceptors.add(RetryInterceptor(dio: dio, maxRetries: 2));
-      if (enableLogging) {
+      if (enableLogging && kDebugMode) {
         dio.interceptors.add(
           AwesomeDioInterceptor(
             logRequestHeaders: true,

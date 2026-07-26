@@ -10,8 +10,13 @@ import 'invoice_status_badge.dart';
 
 class InvoiceCard extends StatelessWidget {
   final Invoice invoice;
+  final bool readOnly;
 
-  const InvoiceCard({super.key, required this.invoice});
+  const InvoiceCard({
+    super.key,
+    required this.invoice,
+    this.readOnly = false,
+  });
 
   String _formatDate(DateTime date) {
     final month = date.month.toString().padLeft(2, '0');
@@ -30,7 +35,10 @@ class InvoiceCard extends StatelessWidget {
         onTap: () {
           Navigator.of(context).push(
             openInnerScreen(
-              widget: InvoiceDetailsScreen(invoiceId: invoice.id),
+              widget: InvoiceDetailsScreen(
+                invoiceId: invoice.id,
+                readOnly: readOnly,
+              ),
             ),
           );
         },
@@ -76,14 +84,14 @@ class InvoiceCard extends StatelessWidget {
                   Expanded(
                     child: _MetaLine(
                       icon: LucideIcons.calendar,
-                      label: 'invoices.card.issued'.tr(),
+                      label: 'invoices.card.from'.tr(),
                       value: _formatDate(invoice.issueDate),
                     ),
                   ),
                   Expanded(
                     child: _MetaLine(
                       icon: LucideIcons.calendarClock,
-                      label: 'invoices.card.due'.tr(),
+                      label: 'invoices.card.to'.tr(),
                       value: _formatDate(invoice.dueDate),
                     ),
                   ),

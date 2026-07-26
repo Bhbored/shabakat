@@ -43,11 +43,11 @@ class _InvoiceFiltersScreenState extends ConsumerState<InvoiceFiltersScreen> {
     if (_initialized) return;
 
     final filter = ref.read(invoiceFilterProvider);
-    _issueDateFrom = filter.issueDateFrom != null
-        ? _toDateOnly(filter.issueDateFrom!)
+    _issueDateFrom = filter.consumptionStartFrom != null
+        ? _toDateOnly(filter.consumptionStartFrom!)
         : null;
-    _issueDateTo = filter.issueDateTo != null
-        ? _toDateOnly(filter.issueDateTo!)
+    _issueDateTo = filter.consumptionStartTo != null
+        ? _toDateOnly(filter.consumptionStartTo!)
         : null;
     _invoiceStatus = filter.invoiceStatus;
     _initialized = true;
@@ -104,8 +104,8 @@ class _InvoiceFiltersScreenState extends ConsumerState<InvoiceFiltersScreen> {
 
     ref.read(invoiceFilterProvider.notifier).updateFilter(
           ref.read(invoiceFilterProvider).copyWith(
-                issueDateFrom: _issueDateFrom,
-                issueDateTo: normalizedTo,
+                consumptionStartFrom: _issueDateFrom,
+                consumptionStartTo: normalizedTo,
                 invoiceStatus: _invoiceStatus,
                 pageNumber: 1,
               ),

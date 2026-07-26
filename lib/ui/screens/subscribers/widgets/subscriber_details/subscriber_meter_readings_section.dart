@@ -16,6 +16,7 @@ class SubscriberMeterReadingsSection extends ConsumerStatefulWidget {
   final String? customerName;
   final CustomerStatus customerStatus;
   final PlanType plan;
+  final bool readOnly;
 
   const SubscriberMeterReadingsSection({
     super.key,
@@ -23,6 +24,7 @@ class SubscriberMeterReadingsSection extends ConsumerStatefulWidget {
     required this.customerStatus,
     required this.plan,
     this.customerName,
+    this.readOnly = false,
   });
 
   @override
@@ -90,7 +92,8 @@ class _SubscriberMeterReadingsSectionState
                     ),
                   ),
                 ),
-                if (widget.plan != PlanType.fixedKilowatt &&
+                if (!widget.readOnly &&
+                    widget.plan != PlanType.fixedKilowatt &&
                     widget.customerStatus == CustomerStatus.active &&
                     readingsAsync.maybeWhen(
                       data: _canAddReading,
@@ -175,7 +178,8 @@ class _SubscriberMeterReadingsSectionState
                       MeterReadingCard(
                         customerId: widget.customerId,
                         reading: pageReadings[i],
-                        canDelete: widget.plan != PlanType.fixedKilowatt,
+                        canDelete: !widget.readOnly &&
+                            widget.plan != PlanType.fixedKilowatt,
                       ),
                     ],
                   ],

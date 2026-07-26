@@ -51,7 +51,7 @@ final class MeterReadingNotifierProvider
 }
 
 String _$meterReadingNotifierHash() =>
-    r'13d39586123cd1500695275901f27fb6506f618b';
+    r'98fe360c3d3bd1286d2972139ccffeec8f61a8f4';
 
 final class MeterReadingNotifierFamily extends $Family
     with

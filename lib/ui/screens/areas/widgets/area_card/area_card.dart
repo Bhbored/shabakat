@@ -10,8 +10,13 @@ import '../customer_count_badge/customer_count_badge.dart';
 
 class AreaCard extends StatelessWidget {
   final Area area;
+  final bool readOnly;
 
-  const AreaCard({super.key, required this.area});
+  const AreaCard({
+    super.key,
+    required this.area,
+    this.readOnly = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,9 @@ class AreaCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(
-            openInnerScreen(widget: AreaDetailsScreen(area: area)),
+            openInnerScreen(
+              widget: AreaDetailsScreen(area: area, readOnly: readOnly),
+            ),
           );
         },
         child: Padding(

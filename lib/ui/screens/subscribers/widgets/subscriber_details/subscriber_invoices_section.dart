@@ -17,6 +17,7 @@ class SubscriberInvoicesSection extends ConsumerWidget {
   final String? customerName;
   final CustomerStatus customerStatus;
   final PlanType plan;
+  final bool readOnly;
 
   const SubscriberInvoicesSection({
     super.key,
@@ -24,6 +25,7 @@ class SubscriberInvoicesSection extends ConsumerWidget {
     required this.customerStatus,
     required this.plan,
     this.customerName,
+    this.readOnly = false,
   });
 
   @override
@@ -50,7 +52,7 @@ class SubscriberInvoicesSection extends ConsumerWidget {
                     ),
                   ),
                 ),
-                if (customerStatus == CustomerStatus.active)
+                if (!readOnly && customerStatus == CustomerStatus.active)
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: () => showSubscriberCreateInvoiceDialog(
@@ -102,7 +104,10 @@ class SubscriberInvoicesSection extends ConsumerWidget {
                   children: [
                     for (var i = 0; i < invoices.length; i++) ...[
                       if (i > 0) SizedBox(height: context.spaceSmall),
-                      InvoiceCard(invoice: invoices[i]),
+                      InvoiceCard(
+                        invoice: invoices[i],
+                        readOnly: readOnly,
+                      ),
                     ],
                   ],
                 );

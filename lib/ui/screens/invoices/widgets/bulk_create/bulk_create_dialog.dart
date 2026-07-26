@@ -8,8 +8,10 @@ import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/dto/response/invoice/bulk_create_invoice_response.dart';
 import 'package:shabakat/data/providers/invoice/invoice_provider.dart';
 import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
+import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
+import '../../subscreens/bulk_create_skipped_screen.dart';
 import 'bulk_create_confirm_content.dart';
 import 'bulk_create_error_content.dart';
 import 'bulk_create_success_content.dart';
@@ -29,10 +31,14 @@ class _BulkCreateInvoicesDialogState
   _BulkCreateStep _step = _BulkCreateStep.confirm;
   BulkCreateInvoiceResponse? _response;
   String? _errorMessage;
+  bool _filterByPlan = false;
+  PlanType _selectedPlan = PlanType.ampere;
 
   Future<void> _onProceed() async {
     try {
-      final response = await ref.read(invoiceProvider.notifier).bulkCreate();
+      final response = await ref
+          .read(invoiceProvider.notifier)
+          .bulkCreate(planType: _filterByPlan ? _selectedPlan : null);
       if (!mounted) return;
       setState(() {
         _response = response;
@@ -76,7 +82,13 @@ class _BulkCreateInvoicesDialogState
         ],
       ),
       content: switch (_step) {
-        _BulkCreateStep.confirm => const BulkCreateConfirmContent(),
+        _BulkCreateStep.confirm => BulkCreateConfirmContent(
+          filterByPlan: _filterByPlan,
+          selectedPlan: _selectedPlan,
+          enabled: !isLoading,
+          onFilterToggled: (value) => setState(() => _filterByPlan = value),
+          onPlanChanged: (value) => setState(() => _selectedPlan = value),
+        ),
         _BulkCreateStep.success => BulkCreateSuccessContent(
           response: _response!,
         ),
@@ -102,6 +114,15 @@ class _BulkCreateInvoicesDialogState
           ),
         ],
         _BulkCreateStep.success => [
+          if (_response!.skipped > 0)
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  openInnerScreen(widget: const BulkCreateSkippedScreen()),
+                );
+              },
+              child: Text('invoices.bulk_create.see_details'.tr()),
+            ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text('invoices.bulk_create.done'.tr()),

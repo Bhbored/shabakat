@@ -50,7 +50,7 @@ final class SingleCustomerProvider
   }
 }
 
-String _$singleCustomerHash() => r'1d20aacc91396ebbbbc4e5ace0bba87167e5a0ae';
+String _$singleCustomerHash() => r'4d067ca99d57d6771348ab01f8883fdce982f9ae';
 
 final class SingleCustomerFamily extends $Family
     with

@@ -11,16 +11,18 @@ class SubscriberCard extends StatelessWidget {
   final Customer customer;
   final bool selectionMode;
   final bool isSelected;
-  final VoidCallback onLongPress;
-  final ValueChanged<bool> onSelectionChanged;
+  final VoidCallback? onLongPress;
+  final ValueChanged<bool>? onSelectionChanged;
+  final bool readOnly;
 
   const SubscriberCard({
     super.key,
     required this.customer,
     required this.selectionMode,
     required this.isSelected,
-    required this.onLongPress,
-    required this.onSelectionChanged,
+    this.onLongPress,
+    this.onSelectionChanged,
+    this.readOnly = false,
   });
 
   @override
@@ -29,15 +31,18 @@ class SubscriberCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: selectionMode
-            ? () => onSelectionChanged(!isSelected)
+            ? () => onSelectionChanged?.call(!isSelected)
             : () {
                 Navigator.of(context).push(
                   openInnerScreen(
-                    widget: SubscriberDetailsScreen(customerId: customer.id),
+                    widget: SubscriberDetailsScreen(
+                      customerId: customer.id,
+                      readOnly: readOnly,
+                    ),
                   ),
                 );
               },
-        onLongPress: selectionMode ? null : onLongPress,
+        onLongPress: selectionMode || readOnly ? null : onLongPress,
         child: Padding(
           padding: EdgeInsets.all(context.paddingSmall),
           child: Row(
@@ -46,7 +51,8 @@ class SubscriberCard extends StatelessWidget {
               if (selectionMode) ...[
                 Checkbox(
                   value: isSelected,
-                  onChanged: (value) => onSelectionChanged(value ?? false),
+                  onChanged: (value) =>
+                      onSelectionChanged?.call(value ?? false),
                 ),
               ],
               Expanded(

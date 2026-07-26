@@ -44,4 +44,12 @@ class SubscriberEditValidators {
     }
     return null;
   }
+
+  static String? optionalMax(String? value, int maxLength) {
+    if (value == null || value.trim().isEmpty) return null;
+    if (value.trim().length > maxLength) {
+      return 'subscribers.validation.max_characters'.tr(args: ['$maxLength']);
+    }
+    return null;
+  }
 }

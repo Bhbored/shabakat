@@ -14,8 +14,10 @@ _InvoiceFilterRequest _$InvoiceFilterRequestFromJson(
     _$InvoiceStatusEnumMap,
     json['invoiceStatus'],
   ),
-  issueDateFrom: _dateOnlyFromJson(json['issueDateFrom'] as String?),
-  issueDateTo: _dateOnlyFromJson(json['issueDateTo'] as String?),
+  consumptionStartFrom: _dateOnlyFromJson(
+    json['consumptionStartFrom'] as String?,
+  ),
+  consumptionStartTo: _dateOnlyFromJson(json['consumptionStartTo'] as String?),
   pageNumber: (json['pageNumber'] as num?)?.toInt() ?? 1,
   pageSize: (json['pageSize'] as num?)?.toInt() ?? 10,
 );
@@ -25,8 +27,8 @@ Map<String, dynamic> _$InvoiceFilterRequestToJson(
 ) => <String, dynamic>{
   'customerId': instance.customerId,
   'invoiceStatus': _$InvoiceStatusEnumMap[instance.invoiceStatus],
-  'issueDateFrom': _dateOnlyToJson(instance.issueDateFrom),
-  'issueDateTo': _dateOnlyToJson(instance.issueDateTo),
+  'consumptionStartFrom': _dateOnlyToJson(instance.consumptionStartFrom),
+  'consumptionStartTo': _dateOnlyToJson(instance.consumptionStartTo),
   'pageNumber': instance.pageNumber,
   'pageSize': instance.pageSize,
 };

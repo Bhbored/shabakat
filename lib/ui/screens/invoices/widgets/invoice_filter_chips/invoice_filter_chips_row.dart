@@ -18,8 +18,12 @@ class InvoiceFilterChipsRow extends ConsumerWidget {
       DateTime(date.year, date.month, date.day);
 
   DateTime? _effectiveDateTo(InvoiceFilterRequest filter) {
-    if (filter.issueDateTo != null) return _toDateOnly(filter.issueDateTo!);
-    if (filter.issueDateFrom != null) return _toDateOnly(DateTime.now());
+    if (filter.consumptionStartTo != null) {
+      return _toDateOnly(filter.consumptionStartTo!);
+    }
+    if (filter.consumptionStartFrom != null) {
+      return _toDateOnly(DateTime.now());
+    }
     return null;
   }
 
@@ -35,11 +39,11 @@ class InvoiceFilterChipsRow extends ConsumerWidget {
     final effectiveTo = _effectiveDateTo(filter);
     final chips = <Widget>[];
 
-    if (filter.issueDateFrom != null) {
+    if (filter.consumptionStartFrom != null) {
       chips.add(
         InvoiceFilterDateChip(
           label: 'invoices.filter.from'.tr(),
-          date: _formatDate(_toDateOnly(filter.issueDateFrom!)),
+          date: _formatDate(_toDateOnly(filter.consumptionStartFrom!)),
         ),
       );
     }

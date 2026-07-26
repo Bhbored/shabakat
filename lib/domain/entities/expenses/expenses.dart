@@ -17,6 +17,14 @@ sealed class Expense with _$Expense {
     String? notes,
   }) = _Expense;
 
+  factory Expense.empty() => Expense(
+    id: '',
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+    expenseType: ExpenseType.other,
+    expenseDate: DateTime.now(),
+    amount: 0,
+  );
   factory Expense.fromJson(Map<String, dynamic> json) =>
       _$ExpenseFromJson(json);
 }

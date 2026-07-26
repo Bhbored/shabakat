@@ -30,10 +30,7 @@ void main() async {
   runApp(
     ProviderScope(
       child: EasyLocalization(
-        supportedLocales: const [
-          Locale('en'),
-          Locale('ar'),
-        ],
+        supportedLocales: const [Locale('en'), Locale('ar')],
         path: 'assets/translations',
         fallbackLocale: const Locale('en'),
         startLocale: startLocale,
@@ -62,10 +59,7 @@ class MyApp extends ConsumerWidget {
       darkTheme: ThemeSelector.dark(),
       themeMode: themeModeAsync.value ?? ThemeMode.system,
       builder: (context, child) {
-        return SafeArea(
-          top: false,
-          child: child ?? const SizedBox.shrink(),
-        );
+        return SafeArea(top: false, child: child ?? const SizedBox.shrink());
       },
       home: const SplashScreen(),
     );

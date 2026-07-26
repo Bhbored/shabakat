@@ -7,7 +7,11 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/enums.dart';
 import 'package:shabakat/core/themes/app_colors.dart';
 import 'package:shabakat/data/providers/network/internet_connection_provider.dart';
+import 'package:shabakat/data/providers/offline/offline_mode_provider.dart';
+import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
+import 'package:shabakat/ui/shared/widgets/edge_draggable_fab.dart';
+import 'package:shabakat/ui/offline_mode/shared/navigation_container.dart';
 import 'app_drawer.dart';
 import 'bottom_nav_container.dart';
 import '../dashboard/dashboard_screen.dart';
@@ -19,7 +23,10 @@ import '../expenses/subscreens/expense_adding_screen.dart';
 import '../audit/audit_screen.dart';
 import '../areas/areas_page.dart';
 import '../areas/subscreens/area_adding_screen.dart';
+import '../distribution_box/distribution_box_screen.dart';
+import '../distribution_box/subscreens/distribution_box_adding_screen.dart';
 import 'package:shabakat/ui/shared/inner_screens/dynamic_inner_screen.dart';
+import 'package:shabakat/ui/ai/ai_chat_screen.dart';
 import '../subscribers/subscreens/subscriber_adding_screen.dart';
 
 class MainTabPage extends ConsumerStatefulWidget {
@@ -32,11 +39,17 @@ class MainTabPage extends ConsumerStatefulWidget {
 class _MainTabPageState extends ConsumerState<MainTabPage> {
   late final PageController _pageController;
   int _currentIndex = 0;
+  var _isEnteringOffline = false;
+  var _offlinePromptVisible = false;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      await ref.read(offlineModeProvider.notifier).set(false);
+    });
   }
 
   @override
@@ -60,6 +73,7 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
     final colorScheme = theme.colorScheme;
     ref.listen(internetConnectionProvider, (previous, next) {
       if (previous == null || previous == next) return;
+      if (_isEnteringOffline) return;
 
       if (next) {
         AppSnackBar.show(
@@ -73,21 +87,56 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
           message: ApiErrors.noInternet,
           variant: AppSnackBarVariant.error,
         );
+        if (_offlinePromptVisible) return;
+        _offlinePromptVisible = true;
+        showAppDialog<void>(
+          context: context,
+          animated: true,
+          builder: (dialogContext) => AppAlertDialog(
+            title: Text('common.enter_offline_mode.title'.tr()),
+            content: Text('common.enter_offline_mode.message'.tr()),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text('common.enter_offline_mode.no'.tr()),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  _onEnterOfflineMode();
+                },
+                child: Text('common.enter_offline_mode.yes'.tr()),
+              ),
+            ],
+          ),
+        ).whenComplete(() => _offlinePromptVisible = false);
       }
     });
 
     return Scaffold(
       appBar: _buildAppBar(theme, colorScheme),
-      drawer: const AppDrawer(),
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) => setState(() => _currentIndex = index),
+      drawer: AppDrawer(onEnterOfflineMode: _onEnterOfflineMode),
+      body: Stack(
+        fit: StackFit.expand,
         children: [
-          DashboardScreen(onViewInvoices: () => _onTabChanged(2)),
-          const SubscribersScreen(),
-          const InvoicesScreen(),
-          const ExpensesScreen(),
-          const AreasPage(),
+          PageView(
+            controller: _pageController,
+            onPageChanged: (index) => setState(() => _currentIndex = index),
+            children: [
+              DashboardScreen(onViewInvoices: () => _onTabChanged(2)),
+              const SubscribersScreen(),
+              const InvoicesScreen(),
+              const ExpensesScreen(),
+              const AreasPage(),
+              const DistributionBoxScreen(),
+            ],
+          ),
+          EdgeDraggableFab(
+            onPressed: _onOpenAiChat,
+            tooltip: 'ai.title'.tr(),
+            bottomInset: context.spaceMedium,
+            child: const Icon(LucideIcons.brainCircuit),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavContainer(
@@ -98,16 +147,15 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
   }
 
   AppBar? _buildAppBar(ThemeData theme, ColorScheme colorScheme) {
+    TextStyle? titleStyle() => theme.textTheme.titleLarge?.copyWith(
+      fontWeight: FontWeight.bold,
+      color: colorScheme.onSecondary,
+    );
+
     switch (_currentIndex) {
       case 0:
         return AppBar(
-          title: Text(
-            'tabs.dashboard'.tr(),
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onSecondary,
-            ),
-          ),
+          title: Text('tabs.dashboard'.tr(), style: titleStyle()),
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(LucideIcons.search)),
             IconButton(
@@ -138,13 +186,7 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
         );
       case 1:
         return AppBar(
-          title: Text(
-            'tabs.subscribers'.tr(),
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onSecondary,
-            ),
-          ),
+          title: Text('tabs.subscribers'.tr(), style: titleStyle()),
           actions: [
             IconButton(
               onPressed: _onAddSubscriber,
@@ -155,24 +197,12 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
         );
       case 2:
         return AppBar(
-          title: Text(
-            'tabs.invoices'.tr(),
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onSecondary,
-            ),
-          ),
+          title: Text('tabs.invoices'.tr(), style: titleStyle()),
           actions: const [BulkCreateInvoicesAction()],
         );
       case 3:
         return AppBar(
-          title: Text(
-            'tabs.expenses'.tr(),
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onSecondary,
-            ),
-          ),
+          title: Text('tabs.expenses'.tr(), style: titleStyle()),
           actions: [
             IconButton(
               onPressed: _onAddExpense,
@@ -183,13 +213,7 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
         );
       case 4:
         return AppBar(
-          title: Text(
-            'tabs.areas'.tr(),
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onSecondary,
-            ),
-          ),
+          title: Text('tabs.areas'.tr(), style: titleStyle()),
           actions: [
             IconButton(
               onPressed: _onAddArea,
@@ -198,8 +222,38 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
             SizedBox(width: context.paddingSmall),
           ],
         );
+      case 5:
+        return AppBar(
+          title: Text('tabs.distribution_boxes'.tr(), style: titleStyle()),
+          actions: [
+            IconButton(
+              onPressed: _onAddDistributionBox,
+              icon: const Icon(LucideIcons.plus),
+            ),
+            SizedBox(width: context.paddingSmall),
+          ],
+        );
       default:
         return null;
+    }
+  }
+
+  void _onOpenAiChat() {
+    Navigator.of(context).push(openInnerScreen(widget: const AiChatScreen()));
+  }
+
+  Future<void> _onEnterOfflineMode() async {
+    if (_isEnteringOffline) return;
+    _isEnteringOffline = true;
+    try {
+      await ref.read(offlineModeProvider.notifier).set(true);
+      if (!mounted) return;
+      await Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const OfflineNavigationContainer()),
+        (_) => false,
+      );
+    } finally {
+      if (mounted) _isEnteringOffline = false;
     }
   }
 
@@ -223,5 +277,11 @@ class _MainTabPageState extends ConsumerState<MainTabPage> {
     Navigator.of(
       context,
     ).push(openInnerScreen(widget: const AreaAddingScreen()));
+  }
+
+  void _onAddDistributionBox() {
+    Navigator.of(
+      context,
+    ).push(openInnerScreen(widget: const DistributionBoxAddingScreen()));
   }
 }

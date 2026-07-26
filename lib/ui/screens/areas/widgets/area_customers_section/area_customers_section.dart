@@ -10,7 +10,12 @@ import 'package:shabakat/ui/screens/subscribers/widgets/subscriber_list/subscrib
 import 'package:shabakat/ui/screens/subscribers/widgets/subscribers_pagination/subscribers_pagination.dart';
 
 class AreaCustomersSection extends ConsumerWidget {
-  const AreaCustomersSection({super.key});
+  final bool readOnly;
+
+  const AreaCustomersSection({
+    super.key,
+    this.readOnly = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,10 +31,9 @@ class AreaCustomersSection extends ConsumerWidget {
           );
     }
 
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
           Padding(
             padding: EdgeInsets.fromLTRB(
               context.paddingMedium,
@@ -69,7 +73,10 @@ class AreaCustomersSection extends ConsumerWidget {
                     ),
                   );
                 }
-                return SubscriberList(customers: customers);
+                return SubscriberList(
+                  customers: customers,
+                  readOnly: readOnly,
+                );
               },
             ),
           ),
@@ -82,7 +89,6 @@ class AreaCustomersSection extends ConsumerWidget {
               onLastPage: filterNotifier.lastPage,
             ),
         ],
-      ),
     );
   }
 }

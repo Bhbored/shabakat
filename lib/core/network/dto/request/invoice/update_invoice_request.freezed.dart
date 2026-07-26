@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UpdateInvoiceRequest {
 
-@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? get issueDate;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? get dueDate;
+@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? get consumptionStart;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? get consumptionEnd;
 /// Create a copy of UpdateInvoiceRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UpdateInvoiceRequestCopyWith<UpdateInvoiceRequest> get copyWith => _$UpdateInvo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateInvoiceRequest&&(identical(other.issueDate, issueDate) || other.issueDate == issueDate)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateInvoiceRequest&&(identical(other.consumptionStart, consumptionStart) || other.consumptionStart == consumptionStart)&&(identical(other.consumptionEnd, consumptionEnd) || other.consumptionEnd == consumptionEnd));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,issueDate,dueDate);
+int get hashCode => Object.hash(runtimeType,consumptionStart,consumptionEnd);
 
 @override
 String toString() {
-  return 'UpdateInvoiceRequest(issueDate: $issueDate, dueDate: $dueDate)';
+  return 'UpdateInvoiceRequest(consumptionStart: $consumptionStart, consumptionEnd: $consumptionEnd)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UpdateInvoiceRequestCopyWith<$Res>  {
   factory $UpdateInvoiceRequestCopyWith(UpdateInvoiceRequest value, $Res Function(UpdateInvoiceRequest) _then) = _$UpdateInvoiceRequestCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? issueDate,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? dueDate
+@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? consumptionStart,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? consumptionEnd
 });
 
 
@@ -65,10 +65,10 @@ class _$UpdateInvoiceRequestCopyWithImpl<$Res>
 
 /// Create a copy of UpdateInvoiceRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? issueDate = freezed,Object? dueDate = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? consumptionStart = freezed,Object? consumptionEnd = freezed,}) {
   return _then(_self.copyWith(
-issueDate: freezed == issueDate ? _self.issueDate : issueDate // ignore: cast_nullable_to_non_nullable
-as DateTime?,dueDate: freezed == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
+consumptionStart: freezed == consumptionStart ? _self.consumptionStart : consumptionStart // ignore: cast_nullable_to_non_nullable
+as DateTime?,consumptionEnd: freezed == consumptionEnd ? _self.consumptionEnd : consumptionEnd // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }
@@ -151,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? issueDate, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? dueDate)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? consumptionStart, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? consumptionEnd)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UpdateInvoiceRequest() when $default != null:
-return $default(_that.issueDate,_that.dueDate);case _:
+return $default(_that.consumptionStart,_that.consumptionEnd);case _:
   return orElse();
 
 }
@@ -172,10 +172,10 @@ return $default(_that.issueDate,_that.dueDate);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? issueDate, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? dueDate)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? consumptionStart, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? consumptionEnd)  $default,) {final _that = this;
 switch (_that) {
 case _UpdateInvoiceRequest():
-return $default(_that.issueDate,_that.dueDate);}
+return $default(_that.consumptionStart,_that.consumptionEnd);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -189,10 +189,10 @@ return $default(_that.issueDate,_that.dueDate);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? issueDate, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? dueDate)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? consumptionStart, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? consumptionEnd)?  $default,) {final _that = this;
 switch (_that) {
 case _UpdateInvoiceRequest() when $default != null:
-return $default(_that.issueDate,_that.dueDate);case _:
+return $default(_that.consumptionStart,_that.consumptionEnd);case _:
   return null;
 
 }
@@ -204,11 +204,11 @@ return $default(_that.issueDate,_that.dueDate);case _:
 @JsonSerializable()
 
 class _UpdateInvoiceRequest implements UpdateInvoiceRequest {
-  const _UpdateInvoiceRequest({@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.issueDate, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.dueDate});
+  const _UpdateInvoiceRequest({@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.consumptionStart, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.consumptionEnd});
   factory _UpdateInvoiceRequest.fromJson(Map<String, dynamic> json) => _$UpdateInvoiceRequestFromJson(json);
 
-@override@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) final  DateTime? issueDate;
-@override@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) final  DateTime? dueDate;
+@override@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) final  DateTime? consumptionStart;
+@override@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) final  DateTime? consumptionEnd;
 
 /// Create a copy of UpdateInvoiceRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -223,16 +223,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateInvoiceRequest&&(identical(other.issueDate, issueDate) || other.issueDate == issueDate)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateInvoiceRequest&&(identical(other.consumptionStart, consumptionStart) || other.consumptionStart == consumptionStart)&&(identical(other.consumptionEnd, consumptionEnd) || other.consumptionEnd == consumptionEnd));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,issueDate,dueDate);
+int get hashCode => Object.hash(runtimeType,consumptionStart,consumptionEnd);
 
 @override
 String toString() {
-  return 'UpdateInvoiceRequest(issueDate: $issueDate, dueDate: $dueDate)';
+  return 'UpdateInvoiceRequest(consumptionStart: $consumptionStart, consumptionEnd: $consumptionEnd)';
 }
 
 
@@ -243,7 +243,7 @@ abstract mixin class _$UpdateInvoiceRequestCopyWith<$Res> implements $UpdateInvo
   factory _$UpdateInvoiceRequestCopyWith(_UpdateInvoiceRequest value, $Res Function(_UpdateInvoiceRequest) _then) = __$UpdateInvoiceRequestCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? issueDate,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? dueDate
+@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? consumptionStart,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? consumptionEnd
 });
 
 
@@ -260,10 +260,10 @@ class __$UpdateInvoiceRequestCopyWithImpl<$Res>
 
 /// Create a copy of UpdateInvoiceRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? issueDate = freezed,Object? dueDate = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? consumptionStart = freezed,Object? consumptionEnd = freezed,}) {
   return _then(_UpdateInvoiceRequest(
-issueDate: freezed == issueDate ? _self.issueDate : issueDate // ignore: cast_nullable_to_non_nullable
-as DateTime?,dueDate: freezed == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
+consumptionStart: freezed == consumptionStart ? _self.consumptionStart : consumptionStart // ignore: cast_nullable_to_non_nullable
+as DateTime?,consumptionEnd: freezed == consumptionEnd ? _self.consumptionEnd : consumptionEnd // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }

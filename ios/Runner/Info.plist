@@ -70,6 +70,8 @@
 		<string>Allow camera access to take your company logo photo.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Allow photo library access to choose your company logo.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Allow microphone access so you can send voice messages to the AI assistant.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
 	</dict>

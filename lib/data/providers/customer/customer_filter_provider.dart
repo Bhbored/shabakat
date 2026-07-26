@@ -16,6 +16,7 @@ class CustomerFilterNotifier extends _$CustomerFilterNotifier {
       name: filter.name,
       phone: filter.phone,
       areaId: filter.areaId,
+      boxId: filter.boxId,
       planType: filter.planType,
       customerRelation: filter.customerRelation,
       customerStatus: filter.customerStatus,

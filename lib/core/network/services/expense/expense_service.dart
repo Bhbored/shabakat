@@ -49,6 +49,23 @@ class ExpenseService {
     );
   }
 
+  Future<List<ExpenseResponse>> getAllExpensesUnpaged() async {
+    final response = await _apiExecutor.execute(
+      ApiRequest(path: 'expenses/all', method: HttpMethod.get),
+    );
+    return response.when(
+      success: (data, statusCode, meta) {
+        _logger.i('All expenses retrieved successfully: $data');
+        final dataList = data as List<dynamic>;
+        return dataList.map((x) => ExpenseResponse.fromJson(x)).toList();
+      },
+      failure: (error, statusCode) {
+        _logger.e('Failed to retrieve all expenses: ${error.toString()}');
+        throw error;
+      },
+    );
+  }
+
   Future<ExpenseResponse> getExpenseById(String id) async {
     final response = await _apiExecutor.execute(
       ApiRequest(path: 'expenses/$id', method: HttpMethod.get),

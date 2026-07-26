@@ -13,5 +13,6 @@ sealed class ApiRequest<T> with _$ApiRequest<T> {
     Map<String, dynamic>? queryParams,
     Map<String, dynamic>? headers,
     Options? options,
+    CancelToken? cancelToken,
   }) = _ApiRequest<T>;
 }

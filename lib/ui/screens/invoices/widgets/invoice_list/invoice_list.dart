@@ -7,8 +7,13 @@ import '../invoice_card/invoice_card.dart';
 
 class InvoiceList extends StatelessWidget {
   final List<Invoice> invoices;
+  final bool readOnly;
 
-  const InvoiceList({super.key, required this.invoices});
+  const InvoiceList({
+    super.key,
+    required this.invoices,
+    this.readOnly = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,10 @@ class InvoiceList extends StatelessWidget {
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.only(bottom: context.spaceSmall),
-          child: InvoiceCard(invoice: invoices[index]),
+          child: InvoiceCard(
+            invoice: invoices[index],
+            readOnly: readOnly,
+          ),
         );
       },
     );

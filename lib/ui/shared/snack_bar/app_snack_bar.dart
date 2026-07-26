@@ -41,7 +41,9 @@ abstract final class AppSnackBar {
       behavior: SnackBarBehavior.floating,
       backgroundColor: background,
       elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.borderRadiusMedium)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(context.borderRadiusMedium),
+      ),
       margin: EdgeInsets.fromLTRB(
         context.paddingMedium,
         0,

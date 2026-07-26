@@ -9,11 +9,12 @@ sealed class AuditLogResponse with _$AuditLogResponse {
     required String id,
     required String action,
     required String status,
-    required String summary,
+    required String messageKey,
+    @Default({}) Map<String, dynamic> parameters,
     String? entityType,
     String? entityId,
-    String? details,
     String? userEmail,
+    String? errorMessage,
     required DateTime createdAt,
   }) = _AuditLogResponse;
 
