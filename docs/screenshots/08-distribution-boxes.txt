@@ -1,3 +1,0 @@
-Placeholder — replace with: 08-distribution-boxes.png
-Screen: Distribution boxes — physical panels linked to areas
-Recommended size: 1080×2340 (phone) or 1280×800 (desktop)

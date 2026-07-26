@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  English · العربية · Light &amp; Dark themes · Offline-aware · Multi-tenant API
+  English · العربية · Light &amp; Dark themes · Read-only offline mode · AI assistant · Multi-tenant API
 </p>
 
 ---
@@ -87,7 +87,7 @@ The app connects to the **Electro API** — a multi-tenant REST backend where ea
     </td>
     <td align="center" width="33%">
       <img src="docs/screenshots/02-login.png" alt="Login screen" width="220" />
-      <br/><em>Login &amp; company registration</em>
+      <br/><em>Secure account login</em>
     </td>
     <td align="center" width="33%">
       <img src="docs/screenshots/03-dashboard.png" alt="Dashboard" width="220" />
@@ -139,6 +139,18 @@ The app connects to the **Electro API** — a multi-tenant REST backend where ea
       <br/><em>Fixed kilowatt payment ↔ kWh tool</em>
     </td>
   </tr>
+  <tr><td colspan="3"><br/></td></tr>
+  <tr>
+    <td align="center" width="33%">
+      <img src="docs/screenshots/13-ai-assistant.png" alt="AI assistant" width="220" />
+      <br/><em>Streaming AI chat with audio input</em>
+    </td>
+    <td align="center" width="33%">
+      <img src="docs/screenshots/14-offline-mode.png" alt="Offline mode" width="220" />
+      <br/><em>Browse cached operational data offline</em>
+    </td>
+    <td width="33%"></td>
+  </tr>
 </table>
 
 ---
@@ -149,9 +161,9 @@ The app connects to the **Electro API** — a multi-tenant REST backend where ea
 
 - Animated splash screen with session restore
 - Email/password **login**
-- **Company registration** (creates tenant + owner account)
 - JWT stored in **Flutter Secure Storage**
 - Automatic token injection via `AuthInterceptor`
+- App version header injection via `AppVersionInterceptor`
 - Session expiry handling with re-login prompt
 
 ### Dashboard
@@ -160,6 +172,7 @@ The app connects to the **Electro API** — a multi-tenant REST backend where ea
 - **Revenue chart** — billed vs collected vs expenses (fl_chart)
 - **Invoice overview** — paid / partially paid / unpaid breakdown
 - **Customer & expense breakdown** — active/suspended/terminated, ampere vs kilowatt counts, expense by type
+- Custom date-period filtering
 - Pull-to-refresh
 - Skeleton loading states
 
@@ -174,6 +187,7 @@ The app connects to the **Electro API** — a multi-tenant REST backend where ea
 - **Meter readings** for Kilowatt plans (monotonic, one per month)
 - Subscriber detail — invoice history, financial totals, status badges
 - Area assignment via dedicated area-picker inner screen
+- Distribution-box assignment via area-scoped box selector
 
 ### Invoices
 
@@ -182,7 +196,8 @@ The app connects to the **Electro API** — a multi-tenant REST backend where ea
 - **Bulk invoice creation** for all eligible subscribers
 - Record payments (Cash, Bank, etc.)
 - Edit invoice dates
-- **Print HTML** and **download PDF** from API
+- **Download and share PDF** invoices from the API
+- Share invoice PDFs directly to WhatsApp
 - Skipped customers report (missing meter reading, etc.)
 - Invoice detail with payment history
 
@@ -199,13 +214,14 @@ The app connects to the **Electro API** — a multi-tenant REST backend where ea
 - List all geographic areas with subscriber counts
 - Local search toolbar
 - Add / edit / delete areas (delete blocked when subscribers exist)
-- Area detail — subscribers in zone
+- Area detail — subscribers and linked distribution boxes in the zone
 
-### Distribution Boxes *(in development)*
+### Distribution Boxes
 
 - Physical distribution/junction boxes linked to an area
-- List with area filter (API) and name search (UI-level until backend supports it)
-- Add distribution box inner screen
+- Paginated list with name and area filters
+- Add, view, edit, and delete distribution boxes
+- View linked customers and cables
 - Search inner screen with Name / Area chips
 
 ### Settings & company configuration
@@ -216,6 +232,8 @@ The app connects to the **Electro API** — a multi-tenant REST backend where ea
   - Fixed charge & TVA (VAT %)
   - Per customer-type overrides (residential, commercial, industrial)
 - **Ampere schedule tiers** — hours-per-day pricing when schedule pricing is enabled
+- Residential, commercial, and industrial pricing per ampere schedule
+- Optional day-based ampere invoice proration
 - **Due date** & **WhatsApp trigger date** (day-of-month pickers)
 - **Trigger message** — custom Arabic payment reminder text
 - **Invoice language** — English or Arabic RTL templates
@@ -226,8 +244,11 @@ The app connects to the **Electro API** — a multi-tenant REST backend where ea
 
 - **Fixed Kilowatt Calculator** — convert between payment amount and kWh credit
 - **Audit log viewer** — filterable activity trail (Owner/Admin)
-- **Connectivity snackbar** — offline/online notifications
-- **App drawer** — settings, calculator, logout
+- **AI assistant** — streaming Markdown chat with optional recorded audio prompts
+- **Read-only offline mode** — sync and browse cached subscribers, invoices, expenses, areas, and distribution boxes
+- **Connectivity handling** — online/offline notifications and an offline-mode prompt
+- **Offline sync progress** — refresh the local Drift snapshot before disconnecting
+- **App drawer** — settings, calculator, offline sync, offline mode, logout
 
 ---
 
@@ -237,10 +258,10 @@ The app connects to the **Electro API** — a multi-tenant REST backend where ea
 |----------|------------|---------|
 | Framework | Flutter | ≥ 3.35.0 |
 | Language | Dart | ^3.11.5 |
-| State management | flutter_riverpod + riverpod_generator | ^3.3.1 / ^4.0.2 |
+| State management | flutter_riverpod + riverpod_generator | ^3.3.1 / ^4.0.3 |
 | HTTP client | Dio + awesome_dio_interceptor | ^5.9.2 |
 | Immutable models | Freezed + json_serializable | ^3.2.5 |
-| Local DB (scaffold) | Drift + sqlite3 | ^2.20.0 |
+| Local cache | Drift + sqlite3 | ^2.20.0 |
 | Secure storage | flutter_secure_storage | ^10.2.0 |
 | Preferences | shared_preferences | ^2.5.5 |
 | i18n | easy_localization | ^3.0.8 |
@@ -250,7 +271,11 @@ The app connects to the **Electro API** — a multi-tenant REST backend where ea
 | Loading UX | skeletonizer | ^2.1.3 |
 | Images | cached_network_image, image_picker | — |
 | Sharing | share_plus | ^13.2.0 |
+| WhatsApp sharing | Local `whatsapp_share_fix` plugin | — |
+| AI chat | flutter_chat_ui + flutter_markdown_plus | ^2.11.1 / ^1.0.12 |
+| Audio prompts | record + just_audio | ^6.1.2 / ^0.10.4 |
 | Connectivity | connectivity_plus | ^7.2.0 |
+| App metadata | package_info_plus | ^10.2.1 |
 | Logging | logger | ^2.7.0 |
 | Linting | flutter_lints + riverpod_lint | ^6.0.0 |
 
@@ -269,8 +294,8 @@ Shabakat follows **Clean Architecture** with a pragmatic Flutter layout:
                          │ reads / writes
 ┌────────────────────────▼────────────────────────────────┐
 │                     Data Layer                          │
-│  Providers (notifiers) · Services wiring                │
-│  lib/data/providers/                                    │
+│  Providers (notifiers) · Offline repositories           │
+│  lib/data/                                               │
 └────────────────────────┬────────────────────────────────┘
                          │ calls
 ┌────────────────────────▼────────────────────────────────┐
@@ -286,7 +311,7 @@ Shabakat follows **Clean Architecture** with a pragmatic Flutter layout:
 └─────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────┐
-│              Infrastructor (local DB scaffold)          │
+│                 Infrastructor (local cache)              │
 │  Drift tables & migrations · lib/infrastructor/         │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -298,9 +323,9 @@ UI Screen
   → ref.watch(customerProvider)          // AsyncValue<List<Customer>>
     → CustomerNotifier.build()
       → watches customerFilterProvider
-      → CustomerService.getCustomers(filter)
-        → ApiExecutor → Dio → Electro API
-      → CustomerResponse.toEntity()        // mapper
+      → online: CustomerService → ApiExecutor → Dio → Electro API
+      → offline: CustomerRepo → Drift
+      → mapper → Customer entity
 ```
 
 ### Provider conventions
@@ -341,12 +366,15 @@ shabakat/
 │   │   ├── themes/              # AppColors, ControlsThemes, ThemeSelector
 │   │   └── utilities/           # Formatters, PDF exporter, etc.
 │   ├── data/
-│   │   └── providers/           # Riverpod notifiers per feature
+│   │   ├── providers/           # Riverpod notifiers per feature
+│   │   └── repositories/        # Drift-backed offline repositories
 │   ├── domain/
 │   │   ├── entities/            # Business models (Freezed)
 │   │   └── mappers/             # DTO ↔ Entity extensions
-│   ├── infrastructor/           # Drift DB (local scaffold)
+│   ├── infrastructor/           # Drift local cache and migrations
 │   └── ui/
+│       ├── ai/                  # Streaming AI assistant
+│       ├── offline_mode/        # Read-only cached-data navigation
 │       ├── screens/             # Feature screens & subscreens
 │       ├── settings/            # Settings & preferences UI
 │       ├── shared/              # Reusable widgets, dialogs, skeletons
@@ -391,13 +419,14 @@ flutter pub get
 
 ### API Configuration
 
-The backend base URL is configured in `lib/core/network/client/dio_client.dart`. Replace the placeholder with your hosted API domain:
+The backend base URL is configured in `lib/core/network/client/dio_client.dart`. The current production target is:
 
 ```dart
-baseUrl: 'https://your-api-domain.com/api/v1.0/$endpoint',
+baseUrl:
+    'https://electro-production-9f56.up.railway.app/api/v1.0/$endpoint',
 ```
 
-For **local development**, uncomment and adjust one of the commented alternatives:
+For **local development**, swap that for one of the commented alternatives:
 
 ```dart
 // baseUrl: 'https://10.0.2.2:7076/api/v1.0/$endpoint',   // Android emulator
@@ -410,7 +439,7 @@ API documentation for all endpoints lives in [`shabakat_endpoints_documentation.
 
 | Setting | Value |
 |---------|-------|
-| Base path | `/api/v1` |
+| Base path | `/api/v1.0` |
 | Auth | `Authorization: Bearer <JWT>` |
 | Content-Type | `application/json` |
 | Enum format | JSON strings (`"Ampere"`, not `0`) |
@@ -467,6 +496,7 @@ flutter run -d <device-id>
 ```
 DioClient
   ├── AuthInterceptor      → attaches Bearer token
+  ├── AppVersionInterceptor → attaches client version
   ├── RetryInterceptor     → retries failed requests (max 2)
   └── AwesomeDioInterceptor → debug logging
 ```
@@ -523,7 +553,8 @@ Defined in `lib/ui/shared/inner_screens/dynamic_inner_screen.dart`.
 
 | Module | Screen | Provider(s) | Service |
 |--------|--------|-------------|---------|
-| Auth | `login/`, `register/` | `auth_provider` | `auth_service` |
+| Auth | `login/` | `auth_provider` | `auth_service` |
+| AI assistant | `ui/ai/` | `ai_chat_provider` | `ai_service` |
 | Dashboard | `dashboard/` | `dashboard_provider` | `dashboard_service` |
 | Subscribers | `subscribers/` | `customer_provider`, `customer_filter_provider`, `customer_pagination_provider`, `customer_selection_provider`, `single_customer_provider` | `customer_service` |
 | Meter readings | subscriber detail | `meter_reading_provider` | `meter_reading_service` |
@@ -531,6 +562,7 @@ Defined in `lib/ui/shared/inner_screens/dynamic_inner_screen.dart`.
 | Expenses | `expenses/` | `expense_provider`, `expense_filter_provider`, `expense_pagination_provider`, `single_expense_provider` | `expense_service` |
 | Areas | `areas/` | `area_provider` | `area_service` |
 | Distribution boxes | `distribution_box/` | `distribution_box_provider`, `distribution_box_filter_provider` | `distribution_box_service` |
+| Offline mode | `ui/offline_mode/` | `offline_mode_provider`, `syncing_progress` | Drift repositories |
 | Ampere schedules | settings | `ampere_schedule_provider` | `ampere_schedule_service` |
 | Company | settings | `company_provider`, `company_profile_provider` | `company_service` |
 | Audit logs | `audit/` | `audit_log_provider`, `audit_log_filter_provider`, `audit_log_pagination_provider` | `audit_log_service` |
