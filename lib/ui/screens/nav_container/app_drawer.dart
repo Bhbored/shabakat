@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/data/providers/auth/auth_provider.dart';
+import 'package:shabakat/data/providers/company/company_profile_provider.dart';
 import 'package:shabakat/ui/screens/auth/login/login_screen.dart';
 import 'package:shabakat/ui/screens/calculator/fixed_kilowatt_calculator_screen.dart';
 import 'package:shabakat/ui/screens/dashboard/widgets/common/dashboard_avatar.dart';
@@ -21,6 +23,11 @@ class AppDrawer extends ConsumerWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final authState = ref.watch(authStateProvider);
+    final profileAsync = ref.watch(companyProfileProvider);
+    final profile = profileAsync.value;
+    final companyName = profile?.name.trim() ?? '';
+    final logoUrl = profile?.logoUrl?.trim();
+    final avatarSize = context.screenWidth * 0.12;
 
     return Drawer(
       backgroundColor: colorScheme.surface,
@@ -31,9 +38,12 @@ class AppDrawer extends ConsumerWidget {
               padding: EdgeInsets.all(context.paddingMedium),
               child: Row(
                 children: [
-                  DashboardAvatar(
-                    name: 'Admin User',
-                    size: context.screenWidth * 0.12,
+                  _DrawerLogo(
+                    size: avatarSize,
+                    logoUrl: logoUrl,
+                    fallbackName: companyName.isNotEmpty
+                        ? companyName
+                        : 'Shabakat',
                   ),
                   SizedBox(width: context.paddingSmall),
                   Expanded(
@@ -41,17 +51,20 @@ class AppDrawer extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Admin',
+                          'Shabakat',
                           style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        Text(
-                          'El-Nour Generators',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: colorScheme.onSurface.withValues(alpha: 0.6),
+                        if (companyName.isNotEmpty)
+                          Text(
+                            companyName,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurface.withValues(
+                                alpha: 0.6,
+                              ),
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -155,6 +168,53 @@ class AppDrawer extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _DrawerLogo extends StatelessWidget {
+  final double size;
+  final String? logoUrl;
+  final String fallbackName;
+
+  const _DrawerLogo({
+    required this.size,
+    required this.logoUrl,
+    required this.fallbackName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final url = logoUrl?.trim();
+
+    if (url == null || url.isEmpty) {
+      return DashboardAvatar(name: fallbackName, size: size);
+    }
+
+    return ClipOval(
+      child: CachedNetworkImage(
+        imageUrl: url,
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        placeholder: (_, _) => SizedBox(
+          width: size,
+          height: size,
+          child: Center(
+            child: SizedBox(
+              width: size * 0.35,
+              height: size * 0.35,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: colorScheme.primary,
+              ),
+            ),
+          ),
+        ),
+        errorWidget: (_, _, _) =>
+            DashboardAvatar(name: fallbackName, size: size),
       ),
     );
   }

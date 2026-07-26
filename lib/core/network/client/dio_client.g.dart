@@ -66,7 +66,7 @@ final class DioClientProvider
   }
 }
 
-String _$dioClientHash() => r'e703f60f596dbbaea755f3e8869dd3db573fd3b1';
+String _$dioClientHash() => r'a459a68e4dc30831cb14f1b605f492db93f3561d';
 
 final class DioClientFamily extends $Family
     with

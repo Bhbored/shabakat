@@ -44,6 +44,7 @@ dependencies:
   flutter_markdown_plus: ^1.0.12
   record: ^6.1.2
   just_audio: ^0.10.4
+  package_info_plus: ^10.2.1
 
 dev_dependencies:
   build_runner: ^2.15.0

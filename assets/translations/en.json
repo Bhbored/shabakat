@@ -862,6 +862,7 @@
       "issueDate": "Issue date",
       "dueDate": "Due date",
       "totalAmount": "Total amount",
+      "paidAmount": "Paid amount",
       "created": "Created",
       "skipped": "Skipped",
       "amount": "Amount",
