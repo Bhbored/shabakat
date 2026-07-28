@@ -38,7 +38,7 @@ extension CustomerResponseMapper on CustomerResponse {
     customerStatus: toCustomerStatus(customerStatus),
     plan: plan.toPlanType(),
     planValue: planValue,
-    initialMeterReading: null,
+    initialMeterReading: initialMeterReading,
     totalBilled: totalBilled,
     totalPaid: totalPaid,
     totalOutstanding: totalOutstanding,

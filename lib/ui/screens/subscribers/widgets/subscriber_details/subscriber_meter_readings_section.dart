@@ -16,6 +16,7 @@ class SubscriberMeterReadingsSection extends ConsumerStatefulWidget {
   final String? customerName;
   final CustomerStatus customerStatus;
   final PlanType plan;
+  final double? initialMeterReading;
   final bool readOnly;
 
   const SubscriberMeterReadingsSection({
@@ -24,6 +25,7 @@ class SubscriberMeterReadingsSection extends ConsumerStatefulWidget {
     required this.customerStatus,
     required this.plan,
     this.customerName,
+    this.initialMeterReading,
     this.readOnly = false,
   });
 
@@ -65,6 +67,8 @@ class _SubscriberMeterReadingsSectionState
   bool _canAddReading(List<MeterReading> readings) {
     if (readings.isEmpty) return true;
     final latest = readings.first;
+    final initial = widget.initialMeterReading;
+    if (initial != null && latest.readingValue == initial) return true;
     final now = DateTime.now();
     return latest.createdAt.year < now.year ||
         latest.createdAt.month < now.month;

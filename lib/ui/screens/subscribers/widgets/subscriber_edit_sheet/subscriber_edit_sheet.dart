@@ -81,7 +81,9 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
     _addressController = TextEditingController(text: customer.address ?? '');
     _buildingController = TextEditingController(text: customer.building ?? '');
     _floorController = TextEditingController(text: customer.floor ?? '');
-    _cableNameController = TextEditingController(text: customer.cableName ?? '');
+    _cableNameController = TextEditingController(
+      text: customer.cableName ?? '',
+    );
     _planValueController = TextEditingController(
       text: customer.planValue.toStringAsFixed(
         customer.planValue.truncateToDouble() == customer.planValue ? 0 : 2,
@@ -193,8 +195,8 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
         widget.customer.fixedChargeOverride != null ||
         widget.customer.tvaOverride != null;
     final prefs = ref.read(companyProvider).asData?.value;
-    final ampereScheduleId = _plan == PlanType.ampere &&
-            prefs?.ampereSchedulePricingEnabled == true
+    final ampereScheduleId =
+        _plan == PlanType.ampere && prefs?.ampereSchedulePricingEnabled == true
         ? _ampereSchedule?.id
         : null;
 
@@ -240,9 +242,7 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
       final updated = await ref
           .read(customerProvider.notifier)
           .updateCustomer(request, widget.customerId);
-      ref
-          .read(singleCustomerProvider(widget.customerId).notifier)
-          .set(updated);
+      ref.read(singleCustomerProvider(widget.customerId).notifier).set(updated);
       if (!mounted) return;
       AppSnackBar.show(
         context,
@@ -276,11 +276,12 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
     final isSaving = _isSaving;
     final preferences = ref.watch(companyProvider);
     final schedules = ref.watch(ampereScheduleProvider).asData?.value ?? [];
-    final meterReadings =
-        ref.watch(meterReadingProvider(widget.customerId)).asData?.value;
-    final showAmpereSchedule = preferences.asData?.value
-            .ampereSchedulePricingEnabled ==
-        true &&
+    final meterReadings = ref
+        .watch(meterReadingProvider(widget.customerId))
+        .asData
+        ?.value;
+    final showAmpereSchedule =
+        preferences.asData?.value.ampereSchedulePricingEnabled == true &&
         _plan == PlanType.ampere;
     final showInitialMeterReading =
         _plan != PlanType.ampere &&

@@ -107,8 +107,7 @@ class SubscriberDetailsBody extends StatelessWidget {
                         children: [
                           SizedBox(height: context.spaceMedium),
                           SubscriberDetailSection(
-                            title: 'subscribers.details.section.box_cable'
-                                .tr(),
+                            title: 'subscribers.details.section.box_cable'.tr(),
                             children: [
                               if (_hasValue(customer.boxName))
                                 SubscriberDetailRow(
@@ -242,6 +241,7 @@ class SubscriberDetailsBody extends StatelessWidget {
                     customerName: customer.name,
                     customerStatus: customer.customerStatus,
                     plan: customer.plan,
+                    initialMeterReading: customer.initialMeterReading,
                     readOnly: readOnly,
                   ),
                 ],
