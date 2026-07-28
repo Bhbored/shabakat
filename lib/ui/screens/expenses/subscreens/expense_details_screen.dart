@@ -7,6 +7,7 @@ import 'package:shabakat/data/providers/expense/expense_provider.dart';
 import 'package:shabakat/data/providers/expense/single_expense_provider.dart';
 import 'package:shabakat/domain/entities/expenses/expenses.dart';
 import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
+import 'package:shabakat/ui/shared/skeletons/expense_details_skeleton.dart';
 import 'package:shabakat/ui/shared/snack_bar/app_snack_bar.dart';
 
 import '../widgets/expense_card/expense_type_badge.dart';
@@ -66,9 +67,8 @@ class ExpenseDetailsScreen extends ConsumerWidget {
         ],
       ),
       body: detailAsync.when(
-        skipLoadingOnRefresh: true,
-        loading: () =>
-            ExpenseDetailsBody(expense: expense, onRefresh: onRefresh),
+        skipLoadingOnRefresh: false,
+        loading: () => const ExpenseDetailsSkeleton(),
         error: (err, _) {
           final message = err is ApiException
               ? err.userMessage
