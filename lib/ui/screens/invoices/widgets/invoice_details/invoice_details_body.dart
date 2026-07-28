@@ -119,14 +119,12 @@ class InvoiceDetailsBody extends ConsumerWidget {
                   ),
                   SizedBox(height: context.spaceMedium),
                   breakdownParamsAsync.when(
+                    skipLoadingOnRefresh: true,
                     loading: () => InvoiceDetailSection(
                       title: 'invoices.details.breakdown'.tr(),
                       children: [
-                        SizedBox(
-                          height: context.spaceLarge * 3,
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                        _BreakdownTiles(
+                          breakdown: InvoiceBreakdown.fromInvoice(invoice),
                         ),
                       ],
                     ),

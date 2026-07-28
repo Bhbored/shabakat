@@ -12,6 +12,8 @@ import 'package:shabakat/data/providers/meter/meter_reading_provider.dart';
 import 'package:shabakat/domain/entities/customers/customer.dart';
 import 'package:shabakat/domain/entities/invoices/invoice.dart';
 
+import 'package:shabakat/ui/shared/skeletons/subscriber_details_skeleton.dart';
+
 import '../widgets/subscriber_delete_dialog/subscriber_delete_dialog.dart';
 import '../widgets/subscriber_details/subscriber_details_body.dart';
 import '../widgets/subscriber_edit_sheet/subscriber_edit_sheet.dart';
@@ -114,9 +116,10 @@ class _SubscriberDetailsScreenState
         }
       },
       child: detailAsync.when(
+        skipLoadingOnRefresh: false,
         loading: () => Scaffold(
           appBar: _appBar(theme),
-          body: const Center(child: CircularProgressIndicator()),
+          body: const SubscriberDetailsSkeleton(),
         ),
         error: (err, _) {
           final message = err is ApiException
