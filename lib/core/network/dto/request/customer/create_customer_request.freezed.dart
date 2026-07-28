@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CreateCustomerRequest {
 
- String get name; String? get phone; String? get address; String? get building; String? get floor; String? get cableName; String? get boxId; String? get ampereScheduleId; String? get areaId; CustomerType get customerType; PlanType get plan; double get planValue;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? get subscriptionDate; CustomerRelation? get customerRelation; CustomerPricingOverrideDto? get pricingOverride;
+ String get name; String? get phone; String? get address; String? get building; String? get floor; String? get cableName; String? get boxId; String? get ampereScheduleId; String? get areaId; CustomerType get customerType; PlanType get plan; double get planValue; double? get initialMeterReading;@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? get subscriptionDate; CustomerRelation? get customerRelation; CustomerPricingOverrideDto? get pricingOverride;
 /// Create a copy of CreateCustomerRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CreateCustomerRequestCopyWith<CreateCustomerRequest> get copyWith => _$CreateCu
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateCustomerRequest&&(identical(other.name, name) || other.name == name)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.address, address) || other.address == address)&&(identical(other.building, building) || other.building == building)&&(identical(other.floor, floor) || other.floor == floor)&&(identical(other.cableName, cableName) || other.cableName == cableName)&&(identical(other.boxId, boxId) || other.boxId == boxId)&&(identical(other.ampereScheduleId, ampereScheduleId) || other.ampereScheduleId == ampereScheduleId)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.customerType, customerType) || other.customerType == customerType)&&(identical(other.plan, plan) || other.plan == plan)&&(identical(other.planValue, planValue) || other.planValue == planValue)&&(identical(other.subscriptionDate, subscriptionDate) || other.subscriptionDate == subscriptionDate)&&(identical(other.customerRelation, customerRelation) || other.customerRelation == customerRelation)&&(identical(other.pricingOverride, pricingOverride) || other.pricingOverride == pricingOverride));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateCustomerRequest&&(identical(other.name, name) || other.name == name)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.address, address) || other.address == address)&&(identical(other.building, building) || other.building == building)&&(identical(other.floor, floor) || other.floor == floor)&&(identical(other.cableName, cableName) || other.cableName == cableName)&&(identical(other.boxId, boxId) || other.boxId == boxId)&&(identical(other.ampereScheduleId, ampereScheduleId) || other.ampereScheduleId == ampereScheduleId)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.customerType, customerType) || other.customerType == customerType)&&(identical(other.plan, plan) || other.plan == plan)&&(identical(other.planValue, planValue) || other.planValue == planValue)&&(identical(other.initialMeterReading, initialMeterReading) || other.initialMeterReading == initialMeterReading)&&(identical(other.subscriptionDate, subscriptionDate) || other.subscriptionDate == subscriptionDate)&&(identical(other.customerRelation, customerRelation) || other.customerRelation == customerRelation)&&(identical(other.pricingOverride, pricingOverride) || other.pricingOverride == pricingOverride));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,phone,address,building,floor,cableName,boxId,ampereScheduleId,areaId,customerType,plan,planValue,subscriptionDate,customerRelation,pricingOverride);
+int get hashCode => Object.hash(runtimeType,name,phone,address,building,floor,cableName,boxId,ampereScheduleId,areaId,customerType,plan,planValue,initialMeterReading,subscriptionDate,customerRelation,pricingOverride);
 
 @override
 String toString() {
-  return 'CreateCustomerRequest(name: $name, phone: $phone, address: $address, building: $building, floor: $floor, cableName: $cableName, boxId: $boxId, ampereScheduleId: $ampereScheduleId, areaId: $areaId, customerType: $customerType, plan: $plan, planValue: $planValue, subscriptionDate: $subscriptionDate, customerRelation: $customerRelation, pricingOverride: $pricingOverride)';
+  return 'CreateCustomerRequest(name: $name, phone: $phone, address: $address, building: $building, floor: $floor, cableName: $cableName, boxId: $boxId, ampereScheduleId: $ampereScheduleId, areaId: $areaId, customerType: $customerType, plan: $plan, planValue: $planValue, initialMeterReading: $initialMeterReading, subscriptionDate: $subscriptionDate, customerRelation: $customerRelation, pricingOverride: $pricingOverride)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CreateCustomerRequestCopyWith<$Res>  {
   factory $CreateCustomerRequestCopyWith(CreateCustomerRequest value, $Res Function(CreateCustomerRequest) _then) = _$CreateCustomerRequestCopyWithImpl;
 @useResult
 $Res call({
- String name, String? phone, String? address, String? building, String? floor, String? cableName, String? boxId, String? ampereScheduleId, String? areaId, CustomerType customerType, PlanType plan, double planValue,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? subscriptionDate, CustomerRelation? customerRelation, CustomerPricingOverrideDto? pricingOverride
+ String name, String? phone, String? address, String? building, String? floor, String? cableName, String? boxId, String? ampereScheduleId, String? areaId, CustomerType customerType, PlanType plan, double planValue, double? initialMeterReading,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? subscriptionDate, CustomerRelation? customerRelation, CustomerPricingOverrideDto? pricingOverride
 });
 
 
@@ -65,7 +65,7 @@ class _$CreateCustomerRequestCopyWithImpl<$Res>
 
 /// Create a copy of CreateCustomerRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? phone = freezed,Object? address = freezed,Object? building = freezed,Object? floor = freezed,Object? cableName = freezed,Object? boxId = freezed,Object? ampereScheduleId = freezed,Object? areaId = freezed,Object? customerType = null,Object? plan = null,Object? planValue = null,Object? subscriptionDate = freezed,Object? customerRelation = freezed,Object? pricingOverride = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? phone = freezed,Object? address = freezed,Object? building = freezed,Object? floor = freezed,Object? cableName = freezed,Object? boxId = freezed,Object? ampereScheduleId = freezed,Object? areaId = freezed,Object? customerType = null,Object? plan = null,Object? planValue = null,Object? initialMeterReading = freezed,Object? subscriptionDate = freezed,Object? customerRelation = freezed,Object? pricingOverride = freezed,}) {
   return _then(_self.copyWith(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
@@ -79,7 +79,8 @@ as String?,areaId: freezed == areaId ? _self.areaId : areaId // ignore: cast_nul
 as String?,customerType: null == customerType ? _self.customerType : customerType // ignore: cast_nullable_to_non_nullable
 as CustomerType,plan: null == plan ? _self.plan : plan // ignore: cast_nullable_to_non_nullable
 as PlanType,planValue: null == planValue ? _self.planValue : planValue // ignore: cast_nullable_to_non_nullable
-as double,subscriptionDate: freezed == subscriptionDate ? _self.subscriptionDate : subscriptionDate // ignore: cast_nullable_to_non_nullable
+as double,initialMeterReading: freezed == initialMeterReading ? _self.initialMeterReading : initialMeterReading // ignore: cast_nullable_to_non_nullable
+as double?,subscriptionDate: freezed == subscriptionDate ? _self.subscriptionDate : subscriptionDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,customerRelation: freezed == customerRelation ? _self.customerRelation : customerRelation // ignore: cast_nullable_to_non_nullable
 as CustomerRelation?,pricingOverride: freezed == pricingOverride ? _self.pricingOverride : pricingOverride // ignore: cast_nullable_to_non_nullable
 as CustomerPricingOverrideDto?,
@@ -176,10 +177,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String? phone,  String? address,  String? building,  String? floor,  String? cableName,  String? boxId,  String? ampereScheduleId,  String? areaId,  CustomerType customerType,  PlanType plan,  double planValue, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? subscriptionDate,  CustomerRelation? customerRelation,  CustomerPricingOverrideDto? pricingOverride)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String? phone,  String? address,  String? building,  String? floor,  String? cableName,  String? boxId,  String? ampereScheduleId,  String? areaId,  CustomerType customerType,  PlanType plan,  double planValue,  double? initialMeterReading, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? subscriptionDate,  CustomerRelation? customerRelation,  CustomerPricingOverrideDto? pricingOverride)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateCustomerRequest() when $default != null:
-return $default(_that.name,_that.phone,_that.address,_that.building,_that.floor,_that.cableName,_that.boxId,_that.ampereScheduleId,_that.areaId,_that.customerType,_that.plan,_that.planValue,_that.subscriptionDate,_that.customerRelation,_that.pricingOverride);case _:
+return $default(_that.name,_that.phone,_that.address,_that.building,_that.floor,_that.cableName,_that.boxId,_that.ampereScheduleId,_that.areaId,_that.customerType,_that.plan,_that.planValue,_that.initialMeterReading,_that.subscriptionDate,_that.customerRelation,_that.pricingOverride);case _:
   return orElse();
 
 }
@@ -197,10 +198,10 @@ return $default(_that.name,_that.phone,_that.address,_that.building,_that.floor,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String? phone,  String? address,  String? building,  String? floor,  String? cableName,  String? boxId,  String? ampereScheduleId,  String? areaId,  CustomerType customerType,  PlanType plan,  double planValue, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? subscriptionDate,  CustomerRelation? customerRelation,  CustomerPricingOverrideDto? pricingOverride)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String? phone,  String? address,  String? building,  String? floor,  String? cableName,  String? boxId,  String? ampereScheduleId,  String? areaId,  CustomerType customerType,  PlanType plan,  double planValue,  double? initialMeterReading, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? subscriptionDate,  CustomerRelation? customerRelation,  CustomerPricingOverrideDto? pricingOverride)  $default,) {final _that = this;
 switch (_that) {
 case _CreateCustomerRequest():
-return $default(_that.name,_that.phone,_that.address,_that.building,_that.floor,_that.cableName,_that.boxId,_that.ampereScheduleId,_that.areaId,_that.customerType,_that.plan,_that.planValue,_that.subscriptionDate,_that.customerRelation,_that.pricingOverride);}
+return $default(_that.name,_that.phone,_that.address,_that.building,_that.floor,_that.cableName,_that.boxId,_that.ampereScheduleId,_that.areaId,_that.customerType,_that.plan,_that.planValue,_that.initialMeterReading,_that.subscriptionDate,_that.customerRelation,_that.pricingOverride);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -214,10 +215,10 @@ return $default(_that.name,_that.phone,_that.address,_that.building,_that.floor,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String? phone,  String? address,  String? building,  String? floor,  String? cableName,  String? boxId,  String? ampereScheduleId,  String? areaId,  CustomerType customerType,  PlanType plan,  double planValue, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? subscriptionDate,  CustomerRelation? customerRelation,  CustomerPricingOverrideDto? pricingOverride)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String? phone,  String? address,  String? building,  String? floor,  String? cableName,  String? boxId,  String? ampereScheduleId,  String? areaId,  CustomerType customerType,  PlanType plan,  double planValue,  double? initialMeterReading, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)  DateTime? subscriptionDate,  CustomerRelation? customerRelation,  CustomerPricingOverrideDto? pricingOverride)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateCustomerRequest() when $default != null:
-return $default(_that.name,_that.phone,_that.address,_that.building,_that.floor,_that.cableName,_that.boxId,_that.ampereScheduleId,_that.areaId,_that.customerType,_that.plan,_that.planValue,_that.subscriptionDate,_that.customerRelation,_that.pricingOverride);case _:
+return $default(_that.name,_that.phone,_that.address,_that.building,_that.floor,_that.cableName,_that.boxId,_that.ampereScheduleId,_that.areaId,_that.customerType,_that.plan,_that.planValue,_that.initialMeterReading,_that.subscriptionDate,_that.customerRelation,_that.pricingOverride);case _:
   return null;
 
 }
@@ -229,7 +230,7 @@ return $default(_that.name,_that.phone,_that.address,_that.building,_that.floor,
 @JsonSerializable()
 
 class _CreateCustomerRequest implements CreateCustomerRequest {
-  const _CreateCustomerRequest({required this.name, this.phone, this.address, this.building, this.floor, this.cableName, this.boxId, this.ampereScheduleId, this.areaId, required this.customerType, required this.plan, required this.planValue, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.subscriptionDate, this.customerRelation, this.pricingOverride});
+  const _CreateCustomerRequest({required this.name, this.phone, this.address, this.building, this.floor, this.cableName, this.boxId, this.ampereScheduleId, this.areaId, required this.customerType, required this.plan, required this.planValue, this.initialMeterReading, @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) this.subscriptionDate, this.customerRelation, this.pricingOverride});
   factory _CreateCustomerRequest.fromJson(Map<String, dynamic> json) => _$CreateCustomerRequestFromJson(json);
 
 @override final  String name;
@@ -244,6 +245,7 @@ class _CreateCustomerRequest implements CreateCustomerRequest {
 @override final  CustomerType customerType;
 @override final  PlanType plan;
 @override final  double planValue;
+@override final  double? initialMeterReading;
 @override@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) final  DateTime? subscriptionDate;
 @override final  CustomerRelation? customerRelation;
 @override final  CustomerPricingOverrideDto? pricingOverride;
@@ -261,16 +263,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateCustomerRequest&&(identical(other.name, name) || other.name == name)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.address, address) || other.address == address)&&(identical(other.building, building) || other.building == building)&&(identical(other.floor, floor) || other.floor == floor)&&(identical(other.cableName, cableName) || other.cableName == cableName)&&(identical(other.boxId, boxId) || other.boxId == boxId)&&(identical(other.ampereScheduleId, ampereScheduleId) || other.ampereScheduleId == ampereScheduleId)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.customerType, customerType) || other.customerType == customerType)&&(identical(other.plan, plan) || other.plan == plan)&&(identical(other.planValue, planValue) || other.planValue == planValue)&&(identical(other.subscriptionDate, subscriptionDate) || other.subscriptionDate == subscriptionDate)&&(identical(other.customerRelation, customerRelation) || other.customerRelation == customerRelation)&&(identical(other.pricingOverride, pricingOverride) || other.pricingOverride == pricingOverride));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateCustomerRequest&&(identical(other.name, name) || other.name == name)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.address, address) || other.address == address)&&(identical(other.building, building) || other.building == building)&&(identical(other.floor, floor) || other.floor == floor)&&(identical(other.cableName, cableName) || other.cableName == cableName)&&(identical(other.boxId, boxId) || other.boxId == boxId)&&(identical(other.ampereScheduleId, ampereScheduleId) || other.ampereScheduleId == ampereScheduleId)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.customerType, customerType) || other.customerType == customerType)&&(identical(other.plan, plan) || other.plan == plan)&&(identical(other.planValue, planValue) || other.planValue == planValue)&&(identical(other.initialMeterReading, initialMeterReading) || other.initialMeterReading == initialMeterReading)&&(identical(other.subscriptionDate, subscriptionDate) || other.subscriptionDate == subscriptionDate)&&(identical(other.customerRelation, customerRelation) || other.customerRelation == customerRelation)&&(identical(other.pricingOverride, pricingOverride) || other.pricingOverride == pricingOverride));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,phone,address,building,floor,cableName,boxId,ampereScheduleId,areaId,customerType,plan,planValue,subscriptionDate,customerRelation,pricingOverride);
+int get hashCode => Object.hash(runtimeType,name,phone,address,building,floor,cableName,boxId,ampereScheduleId,areaId,customerType,plan,planValue,initialMeterReading,subscriptionDate,customerRelation,pricingOverride);
 
 @override
 String toString() {
-  return 'CreateCustomerRequest(name: $name, phone: $phone, address: $address, building: $building, floor: $floor, cableName: $cableName, boxId: $boxId, ampereScheduleId: $ampereScheduleId, areaId: $areaId, customerType: $customerType, plan: $plan, planValue: $planValue, subscriptionDate: $subscriptionDate, customerRelation: $customerRelation, pricingOverride: $pricingOverride)';
+  return 'CreateCustomerRequest(name: $name, phone: $phone, address: $address, building: $building, floor: $floor, cableName: $cableName, boxId: $boxId, ampereScheduleId: $ampereScheduleId, areaId: $areaId, customerType: $customerType, plan: $plan, planValue: $planValue, initialMeterReading: $initialMeterReading, subscriptionDate: $subscriptionDate, customerRelation: $customerRelation, pricingOverride: $pricingOverride)';
 }
 
 
@@ -281,7 +283,7 @@ abstract mixin class _$CreateCustomerRequestCopyWith<$Res> implements $CreateCus
   factory _$CreateCustomerRequestCopyWith(_CreateCustomerRequest value, $Res Function(_CreateCustomerRequest) _then) = __$CreateCustomerRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String? phone, String? address, String? building, String? floor, String? cableName, String? boxId, String? ampereScheduleId, String? areaId, CustomerType customerType, PlanType plan, double planValue,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? subscriptionDate, CustomerRelation? customerRelation, CustomerPricingOverrideDto? pricingOverride
+ String name, String? phone, String? address, String? building, String? floor, String? cableName, String? boxId, String? ampereScheduleId, String? areaId, CustomerType customerType, PlanType plan, double planValue, double? initialMeterReading,@JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson) DateTime? subscriptionDate, CustomerRelation? customerRelation, CustomerPricingOverrideDto? pricingOverride
 });
 
 
@@ -298,7 +300,7 @@ class __$CreateCustomerRequestCopyWithImpl<$Res>
 
 /// Create a copy of CreateCustomerRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? phone = freezed,Object? address = freezed,Object? building = freezed,Object? floor = freezed,Object? cableName = freezed,Object? boxId = freezed,Object? ampereScheduleId = freezed,Object? areaId = freezed,Object? customerType = null,Object? plan = null,Object? planValue = null,Object? subscriptionDate = freezed,Object? customerRelation = freezed,Object? pricingOverride = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? phone = freezed,Object? address = freezed,Object? building = freezed,Object? floor = freezed,Object? cableName = freezed,Object? boxId = freezed,Object? ampereScheduleId = freezed,Object? areaId = freezed,Object? customerType = null,Object? plan = null,Object? planValue = null,Object? initialMeterReading = freezed,Object? subscriptionDate = freezed,Object? customerRelation = freezed,Object? pricingOverride = freezed,}) {
   return _then(_CreateCustomerRequest(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
@@ -312,7 +314,8 @@ as String?,areaId: freezed == areaId ? _self.areaId : areaId // ignore: cast_nul
 as String?,customerType: null == customerType ? _self.customerType : customerType // ignore: cast_nullable_to_non_nullable
 as CustomerType,plan: null == plan ? _self.plan : plan // ignore: cast_nullable_to_non_nullable
 as PlanType,planValue: null == planValue ? _self.planValue : planValue // ignore: cast_nullable_to_non_nullable
-as double,subscriptionDate: freezed == subscriptionDate ? _self.subscriptionDate : subscriptionDate // ignore: cast_nullable_to_non_nullable
+as double,initialMeterReading: freezed == initialMeterReading ? _self.initialMeterReading : initialMeterReading // ignore: cast_nullable_to_non_nullable
+as double?,subscriptionDate: freezed == subscriptionDate ? _self.subscriptionDate : subscriptionDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,customerRelation: freezed == customerRelation ? _self.customerRelation : customerRelation // ignore: cast_nullable_to_non_nullable
 as CustomerRelation?,pricingOverride: freezed == pricingOverride ? _self.pricingOverride : pricingOverride // ignore: cast_nullable_to_non_nullable
 as CustomerPricingOverrideDto?,

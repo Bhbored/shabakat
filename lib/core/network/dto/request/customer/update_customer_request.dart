@@ -21,6 +21,7 @@ sealed class UpdateCustomerRequest with _$UpdateCustomerRequest {
     CustomerType? customerType,
     PlanType? plan,
     double? planValue,
+    double? initialMeterReading,
     CustomerStatus? customerStatus,
     CustomerRelation? customerRelation,
     CustomerPricingOverrideDto? pricingOverride,

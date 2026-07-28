@@ -10,6 +10,7 @@ import 'package:shabakat/data/providers/area/area_provider.dart';
 import 'package:shabakat/data/providers/company/company_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
 import 'package:shabakat/data/providers/customer/single_customer_provider.dart';
+import 'package:shabakat/data/providers/meter/meter_reading_provider.dart';
 import 'package:shabakat/domain/entities/ampere_schedule/ampere_schedule.dart';
 import 'package:shabakat/domain/entities/customers/customer.dart';
 import 'package:shabakat/ui/shared/dialogs/app_modal.dart';
@@ -54,6 +55,7 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
   late final TextEditingController _floorController;
   late final TextEditingController _cableNameController;
   late final TextEditingController _planValueController;
+  late final TextEditingController _initialMeterReadingController;
   late final TextEditingController _priceOverrideController;
   late final TextEditingController _fixedChargeOverrideController;
   late final TextEditingController _tvaOverrideController;
@@ -84,6 +86,9 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
       text: customer.planValue.toStringAsFixed(
         customer.planValue.truncateToDouble() == customer.planValue ? 0 : 2,
       ),
+    );
+    _initialMeterReadingController = TextEditingController(
+      text: customer.initialMeterReading?.toString() ?? '',
     );
     _priceOverrideController = TextEditingController(
       text: customer.priceOverride?.toString() ?? '',
@@ -155,6 +160,12 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
     return trimmed.isEmpty ? null : trimmed;
   }
 
+  double? _parseOptionalDouble(String value) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) return null;
+    return double.parse(trimmed);
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -164,6 +175,7 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
     _floorController.dispose();
     _cableNameController.dispose();
     _planValueController.dispose();
+    _initialMeterReadingController.dispose();
     _priceOverrideController.dispose();
     _fixedChargeOverrideController.dispose();
     _tvaOverrideController.dispose();
@@ -173,14 +185,6 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
   Future<void> _onSave() async {
     if (!_formKey.currentState!.validate()) return;
     _selectedAreaId ??= _areaIdFromName();
-    if (_selectedAreaId == null) {
-      AppSnackBar.show(
-        context,
-        message: 'subscribers.validation.area_required'.tr(),
-        variant: AppSnackBarVariant.error,
-      );
-      return;
-    }
 
     final planValue = double.parse(_planValueController.text.trim());
     final hadPricingOverride =
@@ -194,9 +198,16 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
         ? _ampereSchedule?.id
         : null;
 
+    final hasMeterReadings =
+        (ref.read(meterReadingProvider(widget.customerId)).asData?.value ??
+                const [])
+            .isNotEmpty;
+    final canEditInitialMeterReading =
+        _plan != PlanType.ampere && !hasMeterReadings;
+
     final request = UpdateCustomerRequest(
       name: _nameController.text.trim(),
-      phone: _phoneController.text.trim(),
+      phone: _trimOrNull(_phoneController.text),
       address: _trimOrNull(_addressController.text),
       building: _trimOrNull(_buildingController.text),
       floor: _trimOrNull(_floorController.text),
@@ -207,6 +218,9 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
       customerType: _customerType,
       plan: _plan,
       planValue: planValue,
+      initialMeterReading: canEditInitialMeterReading
+          ? _parseOptionalDouble(_initialMeterReadingController.text)
+          : null,
       customerStatus: _customerStatus,
       customerRelation: _customerRelation,
       pricingOverride: _hasPricingOverride
@@ -262,10 +276,16 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
     final isSaving = _isSaving;
     final preferences = ref.watch(companyProvider);
     final schedules = ref.watch(ampereScheduleProvider).asData?.value ?? [];
+    final meterReadings =
+        ref.watch(meterReadingProvider(widget.customerId)).asData?.value;
     final showAmpereSchedule = preferences.asData?.value
             .ampereSchedulePricingEnabled ==
         true &&
         _plan == PlanType.ampere;
+    final showInitialMeterReading =
+        _plan != PlanType.ampere &&
+        meterReadings != null &&
+        meterReadings.isEmpty;
 
     return SizedBox(
       height: MediaQuery.sizeOf(context).height * 0.92,
@@ -286,6 +306,7 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
               floorController: _floorController,
               cableNameController: _cableNameController,
               planValueController: _planValueController,
+              initialMeterReadingController: _initialMeterReadingController,
               priceOverrideController: _priceOverrideController,
               fixedChargeOverrideController: _fixedChargeOverrideController,
               tvaOverrideController: _tvaOverrideController,
@@ -299,12 +320,17 @@ class _SubscriberEditSheetState extends ConsumerState<SubscriberEditSheet> {
               ampereSchedule: _ampereSchedule,
               ampereSchedules: schedules,
               showAmpereSchedule: showAmpereSchedule,
+              showInitialMeterReading: showInitialMeterReading,
               hasPricingOverride: _hasPricingOverride,
               isSaving: isSaving,
               onCustomerTypeChanged: (v) => setState(() => _customerType = v),
               onPlanChanged: (v) => setState(() {
                 _plan = v;
-                if (_plan != PlanType.ampere) _ampereSchedule = null;
+                if (_plan != PlanType.ampere) {
+                  _ampereSchedule = null;
+                } else {
+                  _initialMeterReadingController.clear();
+                }
               }),
               onCustomerStatusChanged: (v) =>
                   setState(() => _customerStatus = v),

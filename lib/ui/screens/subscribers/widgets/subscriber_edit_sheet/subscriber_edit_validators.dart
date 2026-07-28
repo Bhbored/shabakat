@@ -13,15 +13,7 @@ class SubscriberEditValidators {
     return null;
   }
 
-  static String? phone(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'subscribers.validation.phone_required'.tr();
-    }
-    if (value.trim().length > 30) {
-      return 'subscribers.validation.max_characters'.tr(args: ['30']);
-    }
-    return null;
-  }
+  static String? phone(String? value) => optionalMax(value, 30);
 
   static String? address(String? value) {
     if (value == null || value.trim().isEmpty) {
@@ -41,6 +33,18 @@ class SubscriberEditValidators {
     if (parsed == null) return 'settings.validation.invalid_number'.tr();
     if (parsed < 1 || parsed > 100) {
       return 'subscribers.validation.plan_value_range'.tr();
+    }
+    return null;
+  }
+
+  static String? initialMeterReading(String? value) {
+    if (value == null || value.trim().isEmpty) return null;
+    final parsed = double.tryParse(value.trim());
+    if (parsed == null) {
+      return 'subscribers.validation.invalid_number'.tr();
+    }
+    if (parsed < 0 || parsed > 9999999) {
+      return 'subscribers.validation.initial_meter_reading_range'.tr();
     }
     return null;
   }

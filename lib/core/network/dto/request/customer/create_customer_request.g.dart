@@ -21,6 +21,7 @@ _CreateCustomerRequest _$CreateCustomerRequestFromJson(
   customerType: $enumDecode(_$CustomerTypeEnumMap, json['customerType']),
   plan: $enumDecode(_$PlanTypeEnumMap, json['plan']),
   planValue: (json['planValue'] as num).toDouble(),
+  initialMeterReading: (json['initialMeterReading'] as num?)?.toDouble(),
   subscriptionDate: _dateOnlyFromJson(json['subscriptionDate'] as String?),
   customerRelation: $enumDecodeNullable(
     _$CustomerRelationEnumMap,
@@ -48,6 +49,7 @@ Map<String, dynamic> _$CreateCustomerRequestToJson(
   'customerType': _$CustomerTypeEnumMap[instance.customerType]!,
   'plan': _$PlanTypeEnumMap[instance.plan]!,
   'planValue': instance.planValue,
+  'initialMeterReading': instance.initialMeterReading,
   'subscriptionDate': _dateOnlyToJson(instance.subscriptionDate),
   'customerRelation': _$CustomerRelationEnumMap[instance.customerRelation],
   'pricingOverride': instance.pricingOverride,

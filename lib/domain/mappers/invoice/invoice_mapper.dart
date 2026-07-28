@@ -8,9 +8,9 @@ import 'package:shabakat/infrastructor/db/database.dart' as drift;
 
 extension InvoiceResponseMapper on InvoiceResponse {
   Invoice toEntity() {
-    final resolvedCustomerId = payments.isNotEmpty
-        ? payments.first.customerId
-        : '';
+    final resolvedCustomerId =
+        customerId ??
+        (payments.isNotEmpty ? payments.first.customerId : '');
 
     return Invoice(
       id: id,

@@ -41,6 +41,7 @@ _Customer _$CustomerFromJson(Map<String, dynamic> json) => _Customer(
       CustomerStatus.active,
   plan: $enumDecode(_$PlanTypeEnumMap, json['plan']),
   planValue: (json['planValue'] as num).toDouble(),
+  initialMeterReading: (json['initialMeterReading'] as num?)?.toDouble(),
   invoices: (json['invoices'] as List<dynamic>?)
       ?.map((e) => Invoice.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -76,6 +77,7 @@ Map<String, dynamic> _$CustomerToJson(_Customer instance) => <String, dynamic>{
   'customerStatus': _$CustomerStatusEnumMap[instance.customerStatus]!,
   'plan': _$PlanTypeEnumMap[instance.plan]!,
   'planValue': instance.planValue,
+  'initialMeterReading': instance.initialMeterReading,
   'invoices': instance.invoices,
 };
 

@@ -29,6 +29,7 @@ sealed class CreateCustomerRequest with _$CreateCustomerRequest {
     required CustomerType customerType,
     required PlanType plan,
     required double planValue,
+    double? initialMeterReading,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
     DateTime? subscriptionDate,
     CustomerRelation? customerRelation,

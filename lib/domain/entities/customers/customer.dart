@@ -37,6 +37,7 @@ sealed class Customer with _$Customer {
     @Default(CustomerStatus.active) CustomerStatus customerStatus,
     required PlanType plan,
     required double planValue,
+    double? initialMeterReading,
     List<Invoice>? invoices,
   }) = _Customer;
   factory Customer.empty() => Customer(
@@ -49,6 +50,7 @@ sealed class Customer with _$Customer {
     subscriptionDate: DateTime.now(),
     plan: PlanType.ampere,
     planValue: 0,
+    initialMeterReading: null,
   );
 
   factory Customer.fromJson(Map<String, dynamic> json) =>

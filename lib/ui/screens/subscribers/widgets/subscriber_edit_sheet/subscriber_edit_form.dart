@@ -23,6 +23,7 @@ class SubscriberEditForm extends StatelessWidget {
   final TextEditingController floorController;
   final TextEditingController cableNameController;
   final TextEditingController planValueController;
+  final TextEditingController initialMeterReadingController;
   final TextEditingController priceOverrideController;
   final TextEditingController fixedChargeOverrideController;
   final TextEditingController tvaOverrideController;
@@ -36,6 +37,7 @@ class SubscriberEditForm extends StatelessWidget {
   final AmpereSchedule? ampereSchedule;
   final List<AmpereSchedule> ampereSchedules;
   final bool showAmpereSchedule;
+  final bool showInitialMeterReading;
   final bool hasPricingOverride;
   final bool isSaving;
   final ValueChanged<CustomerType> onCustomerTypeChanged;
@@ -58,6 +60,7 @@ class SubscriberEditForm extends StatelessWidget {
     required this.floorController,
     required this.cableNameController,
     required this.planValueController,
+    required this.initialMeterReadingController,
     required this.priceOverrideController,
     required this.fixedChargeOverrideController,
     required this.tvaOverrideController,
@@ -71,6 +74,7 @@ class SubscriberEditForm extends StatelessWidget {
     required this.ampereSchedule,
     required this.ampereSchedules,
     required this.showAmpereSchedule,
+    required this.showInitialMeterReading,
     required this.hasPricingOverride,
     required this.isSaving,
     required this.onCustomerTypeChanged,
@@ -103,9 +107,10 @@ class SubscriberEditForm extends StatelessWidget {
             SubscriberEditFormField(
               label: 'subscribers.form.phone'.tr(),
               controller: phoneController,
-              hint: 'subscribers.form.phone_hint'.tr(),
+              hint: 'subscribers.form.optional'.tr(),
               keyboardType: TextInputType.phone,
-              validator: SubscriberEditValidators.phone,
+              validator: (value) =>
+                  SubscriberEditValidators.optionalMax(value, 30),
             ),
             SizedBox(height: context.spaceMedium),
             SubscriberEditAreaField(
@@ -187,6 +192,18 @@ class SubscriberEditForm extends StatelessWidget {
               keyboardType: TextInputType.number,
               validator: SubscriberEditValidators.planValue,
             ),
+            if (showInitialMeterReading) ...[
+              SizedBox(height: context.spaceMedium),
+              SubscriberEditFormField(
+                label: 'subscribers.form.initial_meter_reading'.tr(),
+                controller: initialMeterReadingController,
+                hint: 'subscribers.form.initial_meter_reading_hint'.tr(),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                validator: SubscriberEditValidators.initialMeterReading,
+              ),
+            ],
             SizedBox(height: context.spaceMedium),
             SubscriberEditDropdown<CustomerStatus>(
               label: 'subscribers.form.status'.tr(),

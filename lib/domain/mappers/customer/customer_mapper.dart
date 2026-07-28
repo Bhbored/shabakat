@@ -38,6 +38,7 @@ extension CustomerResponseMapper on CustomerResponse {
     customerStatus: toCustomerStatus(customerStatus),
     plan: plan.toPlanType(),
     planValue: planValue,
+    initialMeterReading: null,
     totalBilled: totalBilled,
     totalPaid: totalPaid,
     totalOutstanding: totalOutstanding,
@@ -94,6 +95,7 @@ extension CustomerSummaryResponseMapper on CustomerSummaryResponse {
     customerStatus: toCustomerStatus(customerStatus),
     plan: plan.toPlanType(),
     planValue: planValue,
+    initialMeterReading: null,
     totalOutstanding: amountDue,
   );
 }
@@ -117,6 +119,7 @@ extension CustomerWithInvoicesResponseMapper on CustomerWithInvoicesResponse {
     customerStatus: toCustomerStatus(customerStatus),
     plan: plan.toPlanType(),
     planValue: planValue,
+    initialMeterReading: null,
     totalBilled: totalBilled,
     totalPaid: totalPaid,
     totalOutstanding: totalOutstanding,
@@ -188,5 +191,6 @@ extension CustomerDriftMapper on drift.Customer {
     customerStatus: toCustomerStatus(customerStatus),
     plan: plan.toPlanType(),
     planValue: planValue,
+    initialMeterReading: null,
   );
 }

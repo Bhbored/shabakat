@@ -17,6 +17,7 @@ sealed class InvoiceResponse with _$InvoiceResponse {
     required int invoiceNumber,
     required String customerName,
     String? customerPhone,
+    String? customerId,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)
     required DateTime consumptionStart,
     @JsonKey(toJson: _dateOnlyToJson, fromJson: _dateOnlyFromJson)

@@ -24,6 +24,7 @@ _UpdateCustomerRequest _$UpdateCustomerRequestFromJson(
   ),
   plan: $enumDecodeNullable(_$PlanTypeEnumMap, json['plan']),
   planValue: (json['planValue'] as num?)?.toDouble(),
+  initialMeterReading: (json['initialMeterReading'] as num?)?.toDouble(),
   customerStatus: $enumDecodeNullable(
     _$CustomerStatusEnumMap,
     json['customerStatus'],
@@ -55,6 +56,7 @@ Map<String, dynamic> _$UpdateCustomerRequestToJson(
   'customerType': _$CustomerTypeEnumMap[instance.customerType],
   'plan': _$PlanTypeEnumMap[instance.plan],
   'planValue': instance.planValue,
+  'initialMeterReading': instance.initialMeterReading,
   'customerStatus': _$CustomerStatusEnumMap[instance.customerStatus],
   'customerRelation': _$CustomerRelationEnumMap[instance.customerRelation],
   'pricingOverride': instance.pricingOverride,

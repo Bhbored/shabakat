@@ -41,6 +41,7 @@ class _SubscriberAddingScreenState
   final _floorController = TextEditingController();
   final _cableNameController = TextEditingController();
   final _planValueController = TextEditingController();
+  final _initialMeterReadingController = TextEditingController();
   final _priceOverrideController = TextEditingController();
   final _fixedChargeOverrideController = TextEditingController();
   final _tvaOverrideController = TextEditingController();
@@ -70,6 +71,7 @@ class _SubscriberAddingScreenState
     _floorController.dispose();
     _cableNameController.dispose();
     _planValueController.dispose();
+    _initialMeterReadingController.dispose();
     _priceOverrideController.dispose();
     _fixedChargeOverrideController.dispose();
     _tvaOverrideController.dispose();
@@ -107,9 +109,10 @@ class _SubscriberAddingScreenState
               _buildTextField(
                 label: 'subscribers.form.phone'.tr(),
                 controller: _phoneController,
-                hint: 'subscribers.form.phone_hint'.tr(),
+                hint: 'subscribers.form.optional'.tr(),
                 keyboardType: TextInputType.phone,
-                validator: SubscriberEditValidators.phone,
+                validator: (value) =>
+                    SubscriberEditValidators.optionalMax(value, 30),
               ),
               SizedBox(height: context.spaceMedium),
               _buildAreaField(),
@@ -164,7 +167,11 @@ class _SubscriberAddingScreenState
                 itemLabel: (e) => e.label,
                 onChanged: (v) => setState(() {
                   _plan = v!;
-                  if (_plan != PlanType.ampere) _ampereSchedule = null;
+                  if (_plan != PlanType.ampere) {
+                    _ampereSchedule = null;
+                  } else {
+                    _initialMeterReadingController.clear();
+                  }
                 }),
               ),
               ...preferences.when(
@@ -197,6 +204,18 @@ class _SubscriberAddingScreenState
                 keyboardType: TextInputType.number,
                 validator: _validatePlanValue,
               ),
+              if (_plan != PlanType.ampere) ...[
+                SizedBox(height: context.spaceMedium),
+                _buildTextField(
+                  label: 'subscribers.form.initial_meter_reading'.tr(),
+                  controller: _initialMeterReadingController,
+                  hint: 'subscribers.form.initial_meter_reading_hint'.tr(),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  validator: SubscriberEditValidators.initialMeterReading,
+                ),
+              ],
               SizedBox(height: context.spaceMedium),
               _buildDatePicker(context),
               SizedBox(height: context.spaceMedium),
@@ -339,8 +358,6 @@ class _SubscriberAddingScreenState
   Widget _buildAreaField() {
     return FormField<Area>(
       key: _areaFieldKey,
-      validator: (value) =>
-          value == null ? 'subscribers.validation.area_required'.tr() : null,
       builder: (field) {
         return AreaSelectField(
           areaName: field.value?.name,
@@ -367,6 +384,12 @@ class _SubscriberAddingScreenState
   String? _trimOrNull(String value) {
     final trimmed = value.trim();
     return trimmed.isEmpty ? null : trimmed;
+  }
+
+  double? _parseOptionalDouble(String value) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) return null;
+    return double.parse(trimmed);
   }
 
   String? _validatePlanValue(String? value) =>
@@ -532,9 +555,6 @@ class _SubscriberAddingScreenState
   Future<void> _onSubmit() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final selectedArea = _areaFieldKey.currentState?.value;
-    if (selectedArea == null) return;
-
     if (_toDateOnly(_subscriptionDate).isAfter(_toDateOnly(DateTime.now()))) {
       setState(
         () =>
@@ -551,7 +571,7 @@ class _SubscriberAddingScreenState
 
     final request = CreateCustomerRequest(
       name: _nameController.text.trim(),
-      phone: _phoneController.text.trim(),
+      phone: _trimOrNull(_phoneController.text),
       address: _trimOrNull(_addressController.text),
       building: _trimOrNull(_buildingController.text),
       floor: _trimOrNull(_floorController.text),
@@ -562,10 +582,13 @@ class _SubscriberAddingScreenState
               _plan == PlanType.ampere
           ? _ampereSchedule?.id
           : null,
-      areaId: selectedArea.id,
+      areaId: _areaFieldKey.currentState?.value?.id,
       customerType: _customerType,
       plan: _plan,
       planValue: planValue,
+      initialMeterReading: _plan != PlanType.ampere
+          ? _parseOptionalDouble(_initialMeterReadingController.text)
+          : null,
       subscriptionDate: _subscriptionDate,
       customerRelation: _customerRelation,
       pricingOverride: _hasPricingOverride

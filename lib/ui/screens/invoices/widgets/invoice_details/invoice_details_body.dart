@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/themes/app_colors.dart';
+import 'package:shabakat/data/providers/invoice/invoice_breakdown_params_provider.dart';
 import 'package:shabakat/domain/entities/invoices/invoice.dart';
 
 import 'invoice_amount_stat_card.dart';
@@ -13,7 +15,7 @@ import 'invoice_detail_tile.dart';
 import 'invoice_details_header.dart';
 import 'invoice_payment_tile.dart';
 
-class InvoiceDetailsBody extends StatelessWidget {
+class InvoiceDetailsBody extends ConsumerWidget {
   final Invoice invoice;
   final Future<void> Function() onRefresh;
 
@@ -30,7 +32,7 @@ class InvoiceDetailsBody extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final mutedLabel = theme.textTheme.labelSmall?.copyWith(
@@ -38,7 +40,9 @@ class InvoiceDetailsBody extends StatelessWidget {
       letterSpacing: 1.0,
       color: colorScheme.onSurface.withValues(alpha: 0.5),
     );
-    final breakdown = InvoiceBreakdown.fromInvoice(invoice);
+    final breakdownParamsAsync = ref.watch(
+      invoiceBreakdownParamsProvider(invoice.id),
+    );
 
     return RefreshIndicator(
       onRefresh: onRefresh,
@@ -114,38 +118,38 @@ class InvoiceDetailsBody extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: context.spaceMedium),
-                  InvoiceDetailSection(
-                    title: 'invoices.details.breakdown'.tr(),
-                    children: [
-                      InvoiceDetailTile(
-                        icon: LucideIcons.zap,
-                        label: 'invoices.details.charge'.tr(),
-                        value: '\$${breakdown.charge.toStringAsFixed(2)}',
-                        accentColor: colorScheme.primary,
-                      ),
-                      SizedBox(height: context.spaceSmall),
-                      const Divider(),
-                      SizedBox(height: context.spaceSmall),
-                      InvoiceDetailTile(
-                        icon: LucideIcons.badgeDollarSign,
-                        label: 'invoices.details.fixed_charge'.tr(),
-                        value: '\$${breakdown.fixedCharge.toStringAsFixed(2)}',
-                        accentColor: colorScheme.primary,
-                      ),
-                      SizedBox(height: context.spaceSmall),
-                      const Divider(),
-                      SizedBox(height: context.spaceSmall),
-                      InvoiceDetailTile(
-                        icon: LucideIcons.percent,
-                        label: breakdown.tvaRate > 0
-                            ? 'invoices.details.tva_rate'.tr(
-                                args: [breakdown.tvaRate.toStringAsFixed(0)],
-                              )
-                            : 'invoices.details.tva'.tr(),
-                        value: '\$${breakdown.tvaAmount.toStringAsFixed(2)}',
-                        accentColor: AppColors.success,
-                      ),
-                    ],
+                  breakdownParamsAsync.when(
+                    loading: () => InvoiceDetailSection(
+                      title: 'invoices.details.breakdown'.tr(),
+                      children: [
+                        SizedBox(
+                          height: context.spaceLarge * 3,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      ],
+                    ),
+                    error: (_, _) => InvoiceDetailSection(
+                      title: 'invoices.details.breakdown'.tr(),
+                      children: [
+                        _BreakdownTiles(
+                          breakdown: InvoiceBreakdown.fromInvoice(invoice),
+                        ),
+                      ],
+                    ),
+                    data: (params) => InvoiceDetailSection(
+                      title: 'invoices.details.breakdown'.tr(),
+                      children: [
+                        _BreakdownTiles(
+                          breakdown: InvoiceBreakdown.fromInvoice(
+                            invoice,
+                            planValue: params.planValue,
+                            includePlanValue: params.includePlanValue,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   invoice.billedConsumption == null
                       ? const SizedBox.shrink()
@@ -222,6 +226,50 @@ class InvoiceDetailsBody extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _BreakdownTiles extends StatelessWidget {
+  final InvoiceBreakdown breakdown;
+
+  const _BreakdownTiles({required this.breakdown});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      children: [
+        InvoiceDetailTile(
+          icon: LucideIcons.zap,
+          label: 'invoices.details.charge'.tr(),
+          value: '\$${breakdown.displayedCharge.toStringAsFixed(2)}',
+          accentColor: colorScheme.primary,
+        ),
+        SizedBox(height: context.spaceSmall),
+        const Divider(),
+        SizedBox(height: context.spaceSmall),
+        InvoiceDetailTile(
+          icon: LucideIcons.badgeDollarSign,
+          label: 'invoices.details.fixed_charge'.tr(),
+          value: '\$${breakdown.fixedCharge.toStringAsFixed(2)}',
+          accentColor: colorScheme.primary,
+        ),
+        SizedBox(height: context.spaceSmall),
+        const Divider(),
+        SizedBox(height: context.spaceSmall),
+        InvoiceDetailTile(
+          icon: LucideIcons.percent,
+          label: breakdown.tvaRate > 0
+              ? 'invoices.details.tva_rate'.tr(
+                  args: [breakdown.tvaRate.toStringAsFixed(0)],
+                )
+              : 'invoices.details.tva'.tr(),
+          value: '\$${breakdown.tvaAmount.toStringAsFixed(2)}',
+          accentColor: AppColors.success,
+        ),
+      ],
     );
   }
 }
