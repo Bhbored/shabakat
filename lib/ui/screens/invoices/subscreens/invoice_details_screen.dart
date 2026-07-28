@@ -7,7 +7,9 @@ import 'package:shabakat/core/exceptions/api_exception.dart';
 import 'package:shabakat/core/network/services/invoice/invoice_service.dart';
 import 'package:shabakat/core/utilities/invoice_pdf_exporter.dart';
 import 'package:shabakat/core/utilities/whatsapp_share_service.dart';
+import 'package:shabakat/data/providers/invoice/invoice_breakdown_params_provider.dart';
 import 'package:shabakat/data/providers/invoice/single_invoice_provider.dart';
+import 'package:shabakat/ui/shared/skeletons/invoice_details_skeleton.dart';
 
 import '../widgets/invoice_delete_dialog/invoice_delete_dialog.dart';
 import '../widgets/invoice_details/invoice_details_body.dart';
@@ -88,15 +90,23 @@ class _InvoiceDetailsScreenState extends ConsumerState<InvoiceDetailsScreen> {
     }
   }
 
+  Widget _loadingScaffold() {
+    return InvoiceDetailsScaffold(
+      title: 'invoices.details.title'.tr(),
+      body: const InvoiceDetailsSkeleton(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final detailAsync = ref.watch(singleInvoiceProvider(widget.invoiceId));
+    final breakdownAsync = ref.watch(
+      invoiceBreakdownParamsProvider(widget.invoiceId),
+    );
 
     return detailAsync.when(
-      loading: () => InvoiceDetailsScaffold(
-        title: 'invoices.details.title'.tr(),
-        body: const Center(child: CircularProgressIndicator()),
-      ),
+      skipLoadingOnRefresh: false,
+      loading: _loadingScaffold,
       error: (err, _) {
         final message = err is ApiException
             ? err.userMessage
@@ -107,6 +117,10 @@ class _InvoiceDetailsScreenState extends ConsumerState<InvoiceDetailsScreen> {
         );
       },
       data: (invoice) {
+        if (!breakdownAsync.hasValue && !breakdownAsync.hasError) {
+          return _loadingScaffold();
+        }
+
         final isUnpaid = invoice.invoiceStatus == InvoiceStatus.unpaid;
         final customerName =
             invoice.customerName ?? invoice.invoiceNumber.toString();
