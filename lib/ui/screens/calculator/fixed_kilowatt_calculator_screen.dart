@@ -47,12 +47,13 @@ class _FixedKilowattCalculatorScreenState
   }
 
   String? _planValueValidator(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'calculator.validation.plan_value_required'.tr();
-    }
-    final parsed = double.tryParse(value.trim());
+    final trimmed = value?.trim() ?? '';
+    if (trimmed.isEmpty) return null;
+    final parsed = double.tryParse(trimmed);
     if (parsed == null) return 'calculator.validation.invalid_number'.tr();
-    if (parsed < 0.01) return 'calculator.validation.plan_value_min'.tr();
+    if (parsed < 0 || parsed > 9999999) {
+      return 'calculator.validation.plan_value_min'.tr();
+    }
     return null;
   }
 
@@ -79,7 +80,9 @@ class _FixedKilowattCalculatorScreenState
     });
 
     try {
-      final planValue = double.parse(_planValueController.text.trim());
+      final planText = _planValueController.text.trim();
+      final planValue =
+          planText.isEmpty ? null : double.parse(planText);
       final amount = double.parse(_amountController.text.trim());
       final request = FixedKilowattCalculateRequest(
         customerType: _customerType,

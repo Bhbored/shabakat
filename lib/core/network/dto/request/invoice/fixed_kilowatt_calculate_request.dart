@@ -8,7 +8,7 @@ part 'fixed_kilowatt_calculate_request.g.dart';
 sealed class FixedKilowattCalculateRequest with _$FixedKilowattCalculateRequest {
   const factory FixedKilowattCalculateRequest({
     required CustomerType customerType,
-    required double planValue,
+    double? planValue,
     double? paymentAmount,
     double? kilowattAmount,
   }) = _FixedKilowattCalculateRequest;

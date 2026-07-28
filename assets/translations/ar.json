@@ -78,7 +78,7 @@
     "subtitle": "أدخل تفاصيل الخطة ومبلغ الدفع أو كمية الكيلوواط.",
     "customer_type": "نوع العميل",
     "plan_value": "قيمة الخطة",
-    "plan_value_hint": "نفس قيمة خطة العميل",
+    "plan_value_hint": "اختياري",
     "calculate_from": "الحساب من",
     "payment": "دفعة",
     "kilowatt": "كيلوواط",
@@ -102,7 +102,7 @@
     "validation": {
       "plan_value_required": "قيمة الخطة مطلوبة",
       "invalid_number": "أدخل رقماً صالحاً",
-      "plan_value_min": "يجب أن تكون قيمة الخطة 0.01 على الأقل",
+      "plan_value_min": "يجب أن تكون قيمة الخطة بين 0 و 9999999",
       "payment_required": "مبلغ الدفع مطلوب",
       "kilowatt_required": "كمية الكيلوواط مطلوبة",
       "amount_min": "يجب أن يكون المبلغ أكبر من 0"

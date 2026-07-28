@@ -10,7 +10,7 @@ _FixedKilowattCalculateRequest _$FixedKilowattCalculateRequestFromJson(
   Map<String, dynamic> json,
 ) => _FixedKilowattCalculateRequest(
   customerType: $enumDecode(_$CustomerTypeEnumMap, json['customerType']),
-  planValue: (json['planValue'] as num).toDouble(),
+  planValue: (json['planValue'] as num?)?.toDouble(),
   paymentAmount: (json['paymentAmount'] as num?)?.toDouble(),
   kilowattAmount: (json['kilowattAmount'] as num?)?.toDouble(),
 );

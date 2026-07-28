@@ -78,7 +78,7 @@
     "subtitle": "Enter plan details and either a payment or kWh amount.",
     "customer_type": "Customer type",
     "plan_value": "Plan value",
-    "plan_value_hint": "Same as customer plan value",
+    "plan_value_hint": "Optional",
     "calculate_from": "Calculate from",
     "payment": "Payment",
     "kilowatt": "kWh",
@@ -102,7 +102,7 @@
     "validation": {
       "plan_value_required": "Plan value is required",
       "invalid_number": "Enter a valid number",
-      "plan_value_min": "Plan value must be at least 0.01",
+      "plan_value_min": "Plan value must be between 0 and 9999999",
       "payment_required": "Payment amount is required",
       "kilowatt_required": "Kilowatt amount is required",
       "amount_min": "Amount must be greater than 0"

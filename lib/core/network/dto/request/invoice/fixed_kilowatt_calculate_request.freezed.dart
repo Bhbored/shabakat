@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FixedKilowattCalculateRequest {
 
- CustomerType get customerType; double get planValue; double? get paymentAmount; double? get kilowattAmount;
+ CustomerType get customerType; double? get planValue; double? get paymentAmount; double? get kilowattAmount;
 /// Create a copy of FixedKilowattCalculateRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $FixedKilowattCalculateRequestCopyWith<$Res>  {
   factory $FixedKilowattCalculateRequestCopyWith(FixedKilowattCalculateRequest value, $Res Function(FixedKilowattCalculateRequest) _then) = _$FixedKilowattCalculateRequestCopyWithImpl;
 @useResult
 $Res call({
- CustomerType customerType, double planValue, double? paymentAmount, double? kilowattAmount
+ CustomerType customerType, double? planValue, double? paymentAmount, double? kilowattAmount
 });
 
 
@@ -65,11 +65,11 @@ class _$FixedKilowattCalculateRequestCopyWithImpl<$Res>
 
 /// Create a copy of FixedKilowattCalculateRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? customerType = null,Object? planValue = null,Object? paymentAmount = freezed,Object? kilowattAmount = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? customerType = null,Object? planValue = freezed,Object? paymentAmount = freezed,Object? kilowattAmount = freezed,}) {
   return _then(_self.copyWith(
 customerType: null == customerType ? _self.customerType : customerType // ignore: cast_nullable_to_non_nullable
-as CustomerType,planValue: null == planValue ? _self.planValue : planValue // ignore: cast_nullable_to_non_nullable
-as double,paymentAmount: freezed == paymentAmount ? _self.paymentAmount : paymentAmount // ignore: cast_nullable_to_non_nullable
+as CustomerType,planValue: freezed == planValue ? _self.planValue : planValue // ignore: cast_nullable_to_non_nullable
+as double?,paymentAmount: freezed == paymentAmount ? _self.paymentAmount : paymentAmount // ignore: cast_nullable_to_non_nullable
 as double?,kilowattAmount: freezed == kilowattAmount ? _self.kilowattAmount : kilowattAmount // ignore: cast_nullable_to_non_nullable
 as double?,
   ));
@@ -153,7 +153,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( CustomerType customerType,  double planValue,  double? paymentAmount,  double? kilowattAmount)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( CustomerType customerType,  double? planValue,  double? paymentAmount,  double? kilowattAmount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FixedKilowattCalculateRequest() when $default != null:
 return $default(_that.customerType,_that.planValue,_that.paymentAmount,_that.kilowattAmount);case _:
@@ -174,7 +174,7 @@ return $default(_that.customerType,_that.planValue,_that.paymentAmount,_that.kil
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( CustomerType customerType,  double planValue,  double? paymentAmount,  double? kilowattAmount)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( CustomerType customerType,  double? planValue,  double? paymentAmount,  double? kilowattAmount)  $default,) {final _that = this;
 switch (_that) {
 case _FixedKilowattCalculateRequest():
 return $default(_that.customerType,_that.planValue,_that.paymentAmount,_that.kilowattAmount);}
@@ -191,7 +191,7 @@ return $default(_that.customerType,_that.planValue,_that.paymentAmount,_that.kil
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( CustomerType customerType,  double planValue,  double? paymentAmount,  double? kilowattAmount)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( CustomerType customerType,  double? planValue,  double? paymentAmount,  double? kilowattAmount)?  $default,) {final _that = this;
 switch (_that) {
 case _FixedKilowattCalculateRequest() when $default != null:
 return $default(_that.customerType,_that.planValue,_that.paymentAmount,_that.kilowattAmount);case _:
@@ -206,11 +206,11 @@ return $default(_that.customerType,_that.planValue,_that.paymentAmount,_that.kil
 @JsonSerializable()
 
 class _FixedKilowattCalculateRequest implements FixedKilowattCalculateRequest {
-  const _FixedKilowattCalculateRequest({required this.customerType, required this.planValue, this.paymentAmount, this.kilowattAmount});
+  const _FixedKilowattCalculateRequest({required this.customerType, this.planValue, this.paymentAmount, this.kilowattAmount});
   factory _FixedKilowattCalculateRequest.fromJson(Map<String, dynamic> json) => _$FixedKilowattCalculateRequestFromJson(json);
 
 @override final  CustomerType customerType;
-@override final  double planValue;
+@override final  double? planValue;
 @override final  double? paymentAmount;
 @override final  double? kilowattAmount;
 
@@ -247,7 +247,7 @@ abstract mixin class _$FixedKilowattCalculateRequestCopyWith<$Res> implements $F
   factory _$FixedKilowattCalculateRequestCopyWith(_FixedKilowattCalculateRequest value, $Res Function(_FixedKilowattCalculateRequest) _then) = __$FixedKilowattCalculateRequestCopyWithImpl;
 @override @useResult
 $Res call({
- CustomerType customerType, double planValue, double? paymentAmount, double? kilowattAmount
+ CustomerType customerType, double? planValue, double? paymentAmount, double? kilowattAmount
 });
 
 
@@ -264,11 +264,11 @@ class __$FixedKilowattCalculateRequestCopyWithImpl<$Res>
 
 /// Create a copy of FixedKilowattCalculateRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? customerType = null,Object? planValue = null,Object? paymentAmount = freezed,Object? kilowattAmount = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? customerType = null,Object? planValue = freezed,Object? paymentAmount = freezed,Object? kilowattAmount = freezed,}) {
   return _then(_FixedKilowattCalculateRequest(
 customerType: null == customerType ? _self.customerType : customerType // ignore: cast_nullable_to_non_nullable
-as CustomerType,planValue: null == planValue ? _self.planValue : planValue // ignore: cast_nullable_to_non_nullable
-as double,paymentAmount: freezed == paymentAmount ? _self.paymentAmount : paymentAmount // ignore: cast_nullable_to_non_nullable
+as CustomerType,planValue: freezed == planValue ? _self.planValue : planValue // ignore: cast_nullable_to_non_nullable
+as double?,paymentAmount: freezed == paymentAmount ? _self.paymentAmount : paymentAmount // ignore: cast_nullable_to_non_nullable
 as double?,kilowattAmount: freezed == kilowattAmount ? _self.kilowattAmount : kilowattAmount // ignore: cast_nullable_to_non_nullable
 as double?,
   ));
