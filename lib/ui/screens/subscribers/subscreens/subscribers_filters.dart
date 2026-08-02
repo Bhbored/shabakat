@@ -5,8 +5,11 @@ import 'package:shabakat/core/constants/app_sizes.dart';
 import 'package:shabakat/core/enums/customer_relation.dart';
 import 'package:shabakat/core/enums/customer_status.dart';
 import 'package:shabakat/core/enums/plan_type.dart';
+import 'package:shabakat/data/providers/ampere_schedule/ampere_schedule_provider.dart';
+import 'package:shabakat/data/providers/company/company_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_filter_provider.dart';
 import 'package:shabakat/data/providers/customer/customer_provider.dart';
+import 'package:shabakat/domain/entities/ampere_schedule/ampere_schedule.dart';
 
 import '../widgets/filter_section/filter_section.dart';
 
@@ -21,6 +24,7 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
   CustomerRelation? _relation;
   PlanType? _planType;
   CustomerStatus? _customerStatus;
+  String? _ampereScheduleId;
   bool _initialized = false;
 
   @override
@@ -32,10 +36,11 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
     _relation = filter.customerRelation;
     _planType = filter.planType;
     _customerStatus = filter.customerStatus;
+    _ampereScheduleId = filter.ampereScheduleId;
     _initialized = true;
   }
 
-  void _applyFilters() {
+  void _applyFilters({required bool ampereScheduleEnabled}) {
     ref
         .read(customerFilterProvider.notifier)
         .updateFilter(
@@ -45,6 +50,9 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
                 customerRelation: _relation,
                 planType: _planType,
                 customerStatus: _customerStatus,
+                ampereScheduleId: ampereScheduleEnabled
+                    ? _ampereScheduleId
+                    : null,
                 pageNumber: 1,
               ),
         );
@@ -56,6 +64,9 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final isLoading = ref.watch(customerProvider).isLoading;
+    final preferencesAsync = ref.watch(companyProvider);
+    final ampereScheduleEnabled =
+        preferencesAsync.asData?.value.ampereSchedulePricingEnabled == true;
 
     return Scaffold(
       appBar: AppBar(
@@ -93,11 +104,43 @@ class _SubscribersFiltersState extends ConsumerState<SubscribersFilters> {
               labelBuilder: (e) => e.label,
               onChanged: (value) => setState(() => _customerStatus = value),
             ),
+            if (ampereScheduleEnabled) ...[
+              SizedBox(height: context.spaceMedium),
+              ref
+                  .watch(ampereScheduleProvider)
+                  .when(
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (_, _) => const SizedBox.shrink(),
+                    data: (schedules) {
+                      AmpereSchedule? selected;
+                      for (final schedule in schedules) {
+                        if (schedule.id == _ampereScheduleId) {
+                          selected = schedule;
+                          break;
+                        }
+                      }
+
+                      return FilterSection<AmpereSchedule>(
+                        title: 'subscribers.filter.ampere_schedule'.tr(),
+                        value: selected,
+                        items: schedules,
+                        labelBuilder: (e) => e.name,
+                        onChanged: (value) =>
+                            setState(() => _ampereScheduleId = value?.id),
+                      );
+                    },
+                  ),
+            ],
             SizedBox(height: context.spaceMedium),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: isLoading ? null : _applyFilters,
+                onPressed: isLoading
+                    ? null
+                    : () => _applyFilters(
+                        ampereScheduleEnabled: ampereScheduleEnabled,
+                      ),
                 child: isLoading
                     ? SizedBox(
                         height: 18,

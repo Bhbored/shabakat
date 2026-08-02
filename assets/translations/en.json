@@ -371,6 +371,9 @@
   "areas": {
     "load_failed": "Failed to load areas.",
     "search_hint": "Search by name...",
+    "search": {
+      "title": "Search areas"
+    },
     "count_all": "{} areas",
     "count_filtered": "{} of {} areas",
     "empty_list": "No areas found",
@@ -510,7 +513,8 @@
     "filter": {
       "relation": "Relation",
       "plan": "Plan",
-      "status": "Status"
+      "status": "Status",
+      "ampere_schedule": "Ampere schedule"
     },
     "selection": {
       "count_selected": "{} selected"

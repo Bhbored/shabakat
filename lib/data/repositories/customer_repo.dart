@@ -16,6 +16,7 @@ class CustomerRepo {
     String? phone,
     String? areaId,
     String? boxId,
+    String? ampereScheduleId,
     PlanType? planType,
     CustomerRelation? customerRelation,
     CustomerStatus? customerStatus, {
@@ -29,6 +30,7 @@ class CustomerRepo {
         phone: phone,
         areaId: areaId,
         boxId: boxId,
+        ampereScheduleId: ampereScheduleId,
         planType: planType,
         customerRelation: customerRelation,
         customerStatus: customerStatus,
@@ -58,6 +60,7 @@ class CustomerRepo {
     String? phone,
     String? areaId,
     String? boxId,
+    String? ampereScheduleId,
     PlanType? planType,
     CustomerRelation? customerRelation,
     CustomerStatus? customerStatus,
@@ -80,6 +83,9 @@ class CustomerRepo {
       }
     }
     if (boxId != null) expressions.add(_db.customers.boxId.equals(boxId));
+    if (ampereScheduleId != null) {
+      expressions.add(_db.customers.ampereScheduleId.equals(ampereScheduleId));
+    }
     if (planType != null) {
       expressions.add(_db.customers.plan.equals(planType.name));
     }
@@ -156,6 +162,7 @@ class CustomerRepo {
     String? phone,
     String? areaId,
     String? boxId,
+    String? ampereScheduleId,
     PlanType? planType,
     CustomerRelation? customerRelation,
     CustomerStatus? customerStatus,
@@ -168,6 +175,7 @@ class CustomerRepo {
         phone: phone,
         areaId: areaId,
         boxId: boxId,
+        ampereScheduleId: ampereScheduleId,
         planType: planType,
         customerRelation: customerRelation,
         customerStatus: customerStatus,

@@ -371,6 +371,9 @@
   "areas": {
     "load_failed": "فشل تحميل المناطق.",
     "search_hint": "البحث بالاسم...",
+    "search": {
+      "title": "بحث المناطق"
+    },
     "count_all": "{} منطقة",
     "count_filtered": "{} من {} مناطق",
     "empty_list": "لا توجد مناطق",
@@ -510,7 +513,8 @@
     "filter": {
       "relation": "العلاقة",
       "plan": "الخطة",
-      "status": "الحالة"
+      "status": "الحالة",
+      "ampere_schedule": "جدول الأمبير"
     },
     "selection": {
       "count_selected": "{} محدد"

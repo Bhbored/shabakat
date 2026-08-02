@@ -11,6 +11,7 @@ sealed class CustomerFilterRequest with _$CustomerFilterRequest {
     String? phone,
     String? areaId,
     String? boxId,
+    String? ampereScheduleId,
     PlanType? planType,
     CustomerRelation? customerRelation,
     CustomerStatus? customerStatus,
