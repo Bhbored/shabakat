@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shabakat/core/constants/app_sizes.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class SubscribersPagination extends StatelessWidget {
   final int currentPage;
@@ -7,6 +8,7 @@ class SubscribersPagination extends StatelessWidget {
   final ValueChanged<int> onPageChanged;
   final VoidCallback? onFirstPage;
   final VoidCallback? onLastPage;
+  final bool isLoading;
 
   const SubscribersPagination({
     super.key,
@@ -15,6 +17,7 @@ class SubscribersPagination extends StatelessWidget {
     required this.onPageChanged,
     this.onFirstPage,
     this.onLastPage,
+    this.isLoading = false,
   });
 
   List<_PageItem> _pageItems() {
@@ -52,6 +55,16 @@ class SubscribersPagination extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return _PaginationSkeleton(
+        showFirstLast: onFirstPage != null || onLastPage != null,
+      );
+    }
+
+    if (totalPages <= 1) {
+      return const SizedBox.shrink();
+    }
+
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -121,6 +134,75 @@ class SubscribersPagination extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _PaginationSkeleton extends StatelessWidget {
+  final bool showFirstLast;
+
+  const _PaginationSkeleton({required this.showFirstLast});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return IgnorePointer(
+      child: Skeletonizer(
+        effect: ShimmerEffect(
+          baseColor: colorScheme.onSurface.withValues(alpha: 0.08),
+          highlightColor: colorScheme.onSurface.withValues(alpha: 0.04),
+        ),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            border: Border(top: BorderSide(color: colorScheme.outline)),
+          ),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              context.paddingMedium,
+              context.paddingSmall * 0.5,
+              context.paddingMedium,
+              context.paddingSmall * 0.5,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (showFirstLast) ...[
+                  const _SkeletonChip(),
+                  SizedBox(width: context.paddingSmall * 0.5),
+                ],
+                const _SkeletonChip(),
+                SizedBox(width: context.paddingSmall * 0.5),
+                const _SkeletonChip(),
+                SizedBox(width: context.paddingSmall * 0.25),
+                const _SkeletonChip(),
+                SizedBox(width: context.paddingSmall * 0.25),
+                const _SkeletonChip(),
+                SizedBox(width: context.paddingSmall * 0.5),
+                const _SkeletonChip(),
+                if (showFirstLast) ...[
+                  SizedBox(width: context.paddingSmall * 0.5),
+                  const _SkeletonChip(),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SkeletonChip extends StatelessWidget {
+  const _SkeletonChip();
+
+  @override
+  Widget build(BuildContext context) {
+    return Bone(
+      width: 32,
+      height: 32,
+      borderRadius: BorderRadius.circular(context.borderRadiusMedium),
     );
   }
 }

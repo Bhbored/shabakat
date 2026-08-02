@@ -77,14 +77,14 @@ class AreaBoxesSection extends ConsumerWidget {
             },
           ),
         ),
-        if (pagination.totalPages > 1)
-          SubscribersPagination(
-            currentPage: pagination.pageNumber,
-            totalPages: pagination.totalPages,
-            onPageChanged: goToPage,
-            onFirstPage: filterNotifier.firstPage,
-            onLastPage: filterNotifier.lastPage,
-          ),
+        SubscribersPagination(
+          currentPage: pagination.pageNumber,
+          totalPages: pagination.totalPages,
+          onPageChanged: goToPage,
+          onFirstPage: filterNotifier.firstPage,
+          onLastPage: filterNotifier.lastPage,
+          isLoading: boxesAsync.isLoading,
+        ),
       ],
     );
   }

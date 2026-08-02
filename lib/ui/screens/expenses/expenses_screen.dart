@@ -48,15 +48,14 @@ class ExpensesScreen extends ConsumerWidget {
           },
           child: ExpenseList(expenses: expenses),
         ),
-        pagination: pagination.totalPages > 1
-            ? SubscribersPagination(
-                currentPage: pagination.pageNumber,
-                totalPages: pagination.totalPages,
-                onPageChanged: goToPage,
-                onFirstPage: filterNotifier.firstPage,
-                onLastPage: filterNotifier.lastPage,
-              )
-            : null,
+        pagination: SubscribersPagination(
+          currentPage: pagination.pageNumber,
+          totalPages: pagination.totalPages,
+          onPageChanged: goToPage,
+          onFirstPage: filterNotifier.firstPage,
+          onLastPage: filterNotifier.lastPage,
+          isLoading: expensesAsync.isLoading,
+        ),
       ),
     );
   }

@@ -47,15 +47,14 @@ class SubscribersScreen extends ConsumerWidget {
           },
           child: SubscriberList(customers: customers),
         ),
-        pagination: pagination.totalPages > 1
-            ? SubscribersPagination(
-                currentPage: pagination.pageNumber,
-                totalPages: pagination.totalPages,
-                onPageChanged: goToPage,
-                onFirstPage: filterNotifier.firstPage,
-                onLastPage: filterNotifier.lastPage,
-              )
-            : null,
+        pagination: SubscribersPagination(
+          currentPage: pagination.pageNumber,
+          totalPages: pagination.totalPages,
+          onPageChanged: goToPage,
+          onFirstPage: filterNotifier.firstPage,
+          onLastPage: filterNotifier.lastPage,
+          isLoading: customersAsync.isLoading,
+        ),
       ),
     );
   }

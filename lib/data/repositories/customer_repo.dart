@@ -63,8 +63,8 @@ class CustomerRepo {
     CustomerStatus? customerStatus,
   }) async {
     final expressions = <Expression<bool>>[];
-    if (name != null) expressions.add(_db.customers.name.equals(name));
-    if (phone != null) expressions.add(_db.customers.phone.equals(phone));
+    if (name != null) expressions.add(_db.customers.name.like('%$name%'));
+    if (phone != null) expressions.add(_db.customers.phone.like('%$phone%'));
     if (areaId != null) {
       final area = await (_db.select(
         _db.areas,

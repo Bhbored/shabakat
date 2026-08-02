@@ -38,10 +38,9 @@ class DioClient {
   }) {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'https://10.0.2.2:7076/api/v1.0/$endpoint',
+        // baseUrl: 'https://10.0.2.2:7076/api/v1.0/$endpoint',
         // baseUrl: 'https://192.168.1.2:7076/api/v1.0/$endpoint',
-        // baseUrl:
-        //     'https://electro-production-9f56.up.railway.app/api/v1.0/$endpoint',
+        baseUrl: 'https://shabakatlb.com/api/v1.0/$endpoint',
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
         sendTimeout: const Duration(seconds: 10),

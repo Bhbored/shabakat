@@ -81,8 +81,7 @@ class _FixedKilowattCalculatorScreenState
 
     try {
       final planText = _planValueController.text.trim();
-      final planValue =
-          planText.isEmpty ? null : double.parse(planText);
+      final planValue = planText.isEmpty ? null : double.parse(planText);
       final amount = double.parse(_amountController.text.trim());
       final request = FixedKilowattCalculateRequest(
         customerType: _customerType,
@@ -355,10 +354,7 @@ class _AmountModeSwitch extends StatelessWidget {
             fontWeight: isKilowattMode ? null : FontWeight.w600,
           ),
         ),
-        Switch(
-          value: isKilowattMode,
-          onChanged: enabled ? onChanged : null,
-        ),
+        Switch(value: isKilowattMode, onChanged: enabled ? onChanged : null),
         Text(
           'calculator.kilowatt'.tr(),
           style: theme.textTheme.labelMedium?.copyWith(
@@ -428,7 +424,11 @@ class _CalculatorResultCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(LucideIcons.checkCircle2, size: 18, color: colorScheme.primary),
+                Icon(
+                  LucideIcons.checkCircle2,
+                  size: 18,
+                  color: colorScheme.primary,
+                ),
                 SizedBox(width: context.paddingSmall * 0.5),
                 Text(
                   'calculator.result.title'.tr(),

@@ -65,15 +65,14 @@ class _InvoicesScreenState extends ConsumerState<InvoicesScreen> {
             },
             child: InvoiceList(invoices: invoices),
           ),
-          pagination: pagination.totalPages > 1
-              ? SubscribersPagination(
-                  currentPage: pagination.pageNumber,
-                  totalPages: pagination.totalPages,
-                  onPageChanged: goToPage,
-                  onFirstPage: filterNotifier.firstPage,
-                  onLastPage: filterNotifier.lastPage,
-                )
-              : null,
+          pagination: SubscribersPagination(
+            currentPage: pagination.pageNumber,
+            totalPages: pagination.totalPages,
+            onPageChanged: goToPage,
+            onFirstPage: filterNotifier.firstPage,
+            onLastPage: filterNotifier.lastPage,
+            isLoading: invoicesAsync.isLoading,
+          ),
         );
       },
     );

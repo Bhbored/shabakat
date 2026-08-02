@@ -131,14 +131,14 @@ class _BoxSelectingScreenState extends ConsumerState<BoxSelectingScreen> {
                 return Column(
                   children: [
                     Expanded(child: _BoxList(boxes: boxes)),
-                    if (pagination.totalPages > 1)
-                      SubscribersPagination(
-                        currentPage: pagination.pageNumber,
-                        totalPages: pagination.totalPages,
-                        onPageChanged: _goToPage,
-                        onFirstPage: filterNotifier.firstPage,
-                        onLastPage: filterNotifier.lastPage,
-                      ),
+                    SubscribersPagination(
+                      currentPage: pagination.pageNumber,
+                      totalPages: pagination.totalPages,
+                      onPageChanged: _goToPage,
+                      onFirstPage: filterNotifier.firstPage,
+                      onLastPage: filterNotifier.lastPage,
+                      isLoading: boxesAsync.isLoading,
+                    ),
                   ],
                 );
               },

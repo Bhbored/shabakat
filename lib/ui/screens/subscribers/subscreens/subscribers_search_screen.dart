@@ -80,7 +80,10 @@ class _SubscribersSearchScreenState
     return _SearchCriteria.name;
   }
 
-  String _queryFromFilter(CustomerFilterRequest filter, _SearchCriteria criteria) {
+  String _queryFromFilter(
+    CustomerFilterRequest filter,
+    _SearchCriteria criteria,
+  ) {
     return switch (criteria) {
       _SearchCriteria.name => filter.name ?? '',
       _SearchCriteria.phone => filter.phone ?? '',
@@ -151,7 +154,7 @@ class _SubscribersSearchScreenState
   @override
   Widget build(BuildContext context) {
     final isArea = _criteria == _SearchCriteria.area;
-
+    final isPhone = _criteria == _SearchCriteria.phone;
     if (isArea) {
       ref.listen(areaProvider, (_, _) {
         _syncAreaFieldText();
@@ -176,6 +179,10 @@ class _SubscribersSearchScreenState
               children: [
                 Expanded(
                   child: TextField(
+                    key: ValueKey(_criteria),
+                    keyboardType: isPhone
+                        ? TextInputType.number
+                        : TextInputType.text,
                     controller: _searchController,
                     autofocus: true,
                     textInputAction: isArea
@@ -196,8 +203,9 @@ class _SubscribersSearchScreenState
                 ),
                 SizedBox(width: context.paddingSmall),
                 IconButton(
-                  onPressed:
-                      _searchController.text.isEmpty ? null : _clearSearch,
+                  onPressed: _searchController.text.isEmpty
+                      ? null
+                      : _clearSearch,
                   icon: const Icon(Icons.clear),
                 ),
               ],
@@ -208,9 +216,12 @@ class _SubscribersSearchScreenState
               runSpacing: context.paddingSmall,
               children: _SearchCriteria.values.map((criteria) {
                 final label = switch (criteria) {
-                  _SearchCriteria.name => 'subscribers.search.criteria.name'.tr(),
-                  _SearchCriteria.area => 'subscribers.search.criteria.area'.tr(),
-                  _SearchCriteria.phone => 'subscribers.search.criteria.phone'.tr(),
+                  _SearchCriteria.name =>
+                    'subscribers.search.criteria.name'.tr(),
+                  _SearchCriteria.area =>
+                    'subscribers.search.criteria.area'.tr(),
+                  _SearchCriteria.phone =>
+                    'subscribers.search.criteria.phone'.tr(),
                 };
                 return FilterChip(
                   label: Text(label),
@@ -235,22 +246,24 @@ class _SubscribersSearchScreenState
             if (isArea) ...[
               SizedBox(height: context.spaceMedium),
               Expanded(
-                child: ref.watch(areaProvider).when(
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (err, _) {
-                    final message = err is ApiException
-                        ? err.userMessage
-                        : 'areas.load_failed'.tr();
-                    return Center(
-                      child: Text(message, textAlign: TextAlign.center),
-                    );
-                  },
-                  data: (areas) => AreaSelectList(
-                    areas: _filterAreas(areas),
-                    onAreaSelected: _selectArea,
-                  ),
-                ),
+                child: ref
+                    .watch(areaProvider)
+                    .when(
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                      error: (err, _) {
+                        final message = err is ApiException
+                            ? err.userMessage
+                            : 'areas.load_failed'.tr();
+                        return Center(
+                          child: Text(message, textAlign: TextAlign.center),
+                        );
+                      },
+                      data: (areas) => AreaSelectList(
+                        areas: _filterAreas(areas),
+                        onAreaSelected: _selectArea,
+                      ),
+                    ),
               ),
             ],
           ],
