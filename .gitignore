@@ -45,3 +45,6 @@ app.*.map.json
 /android/app/release
 **/.gradle/
 shabakat_endpoints_documentation.md
+
+# FVM Version Cache
+.fvm/
